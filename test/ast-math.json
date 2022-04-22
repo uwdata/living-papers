@@ -1,0 +1,131 @@
+{
+  "type": "component",
+  "name": "article",
+  "children": [
+    {
+      "type": "component",
+      "name": "p",
+      "children": [
+        {
+          "type": "textnode",
+          "value": "Inline math: "
+        },
+        {
+          "type": "component",
+          "name": "math",
+          "properties": {
+            "mode": {
+              "type": "value",
+              "value": "inline"
+            }
+          },
+          "children": [
+            {
+              "type": "textnode",
+              "value": "\\sqrt{x_0}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "component",
+      "name": "p",
+      "children": [
+        {
+          "type": "textnode",
+          "value": "Display math:"
+        }
+      ]
+    },
+    {
+      "type": "component",
+      "name": "math",
+      "properties": {
+        "mode": {
+          "type": "value",
+          "value": "display"
+        }
+      },
+      "children": [
+        {
+          "type": "textnode",
+          "value": " \\frac{1}{N} \\sum_{i=1}^N x_i^2 "
+        }
+      ]
+    },
+    {
+      "type": "component",
+      "name": "p",
+      "children": [
+        {
+          "type": "textnode",
+          "value": "An equation of great concern to cats, centered:"
+        }
+      ]
+    },
+    {
+      "type": "component",
+      "name": "equation",
+      "properties": {
+        "fleqn": {
+          "type": "value",
+          "value": "false"
+        }
+      },
+      "children": [
+        {
+          "type": "textnode",
+          "value": "i\\hbar \\frac{\\partial \\Psi}{\\partial t} = -\\frac{\\hbar^2}{2m}\n\\frac{\\partial^2 \\Psi}{\\partial x^2} + V \\Psi"
+        }
+      ]
+    },
+    {
+      "type": "component",
+      "name": "p",
+      "children": [
+        {
+          "type": "textnode",
+          "value": "Aligned equations:"
+        }
+      ]
+    },
+    {
+      "type": "component",
+      "name": "equation",
+      "properties": {},
+      "children": [
+        {
+          "type": "textnode",
+          "value": "f(x) &= (x+a)(x+b) \\nonumber \\\\\n     &= x^2 + (a+b)x + ab"
+        }
+      ]
+    },
+    {
+      "type": "component",
+      "name": "p",
+      "children": [
+        {
+          "type": "textnode",
+          "value": "Aligned equations with no numbering:"
+        }
+      ]
+    },
+    {
+      "type": "component",
+      "name": "equation",
+      "properties": {
+        "nonumber": {
+          "type": "value",
+          "value": "true"
+        }
+      },
+      "children": [
+        {
+          "type": "textnode",
+          "value": "f(x) &= x^4 + 7x^3 + 2x^2 \\\\\n     &\\qquad {} + 10x + 12"
+        }
+      ]
+    }
+  ]
+}

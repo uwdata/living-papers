@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Component Tests</title>
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../node_modules/lit/polyfill-support.js"></script>
+    <script type="module" src="../src/components/observable-cell.js"></script>
+    <script type="module" src="../src/components/named-cell.js"></script>
+    <script type="module" src="../src/components/tex-math.js"></script>
+    <script type="module" src="../src/components/tex-equation.js"></script>
+    <style>
+      body { max-width: 800px; }
+    </style>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.15.3/katex.min.css" />
+    <script type="module">
+      import { ObservableRuntime } from "../src/observable/runtime.js";
+      window.runtime = ObservableRuntime.instance();
+    </script>
+  </head>
+  <body>
+    <h2>Observable Cells: Code Attributes</h2>
+    <div>
+      <obs-cell code="viewof z = Inputs.range([0, 255], {step:1})"></obs-cell>
+      <obs-cell code="html`z<sup>2</sup> = ${z*z}`"></obs-cell>
+    </div><br/>
+
+    <hr/><h2>Observable Cells: Code From Child Nodes</h2>
+    <div>
+      z<sup>3</sup> = <obs-cell><script type="ojs">z*z*z</script></obs-cell>
+    </div><br/>
+
+    <hr/><h2>Observable Cells: Attach to an Existing Variable</h2>
+    <div>
+      The slider value is: <named-cell name="z"></named-cell>
+    </div>
+    <br/>
+
+    <hr/><h2>Math and Equation Components</h2>
+    <tex-math mode="display" code="\frac{1}{N} \sum_{i=1}^N x_i^2"></tex-math>
+    <tex-equation code="f(x) &= (x+a)(x+b) \nonumber \\
+    &= x^2 + (a+b)x + ab"></tex-equation>
+  </body>
+</html>
