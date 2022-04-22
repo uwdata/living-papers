@@ -1,21 +1,9 @@
+import { aliasComponent, aliasProperty } from './alias.js';
 import { bindAssign } from './bind-assign.js';
 import { bindAttr } from './bind-attr.js';
 
 export function astToDOM(ast) {
   return createNode(ast);
-}
-
-const aliasMap = new Map()
-  .set('observable', 'obs-cell')
-  .set('math', 'tex-math')
-  .set('equation', 'tex-equation');
-
-function aliasComponent(name) {
-  return aliasMap.get(name) || name;
-}
-
-function aliasProperty(name) {
-  return name === 'className' ? 'class' : name;
 }
 
 function createNode(ast) {
@@ -30,8 +18,10 @@ function createNode(ast) {
 
   const node = document.createElement(name);
 
-  for (const key in props) {
-    const { type, value } = props[key];
+  for (const propKey in props) {
+    const { type, value } = props[propKey];
+    const key = aliasProperty(propKey);
+
     if (type === 'variable' || type === 'expression') {
       bindAttr(node, key, value);
     } else if (type === 'assign') {
@@ -39,7 +29,7 @@ function createNode(ast) {
         bindAssign(node, key, name, value[name]);
       }
     } else {
-      node.setAttribute(aliasProperty(key), value);
+      node.setAttribute(key, value);
     }
   }
 

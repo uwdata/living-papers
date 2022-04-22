@@ -1,7 +1,6 @@
 import { Runtime } from '@observablehq/runtime';
 import { compile } from './compiler.js';
 
-const MAIN_SCOPE = '__main__';
 const _viewof = name => `viewof ${name}`;
 const _mutable = name => `mutable ${name}`;
 const _initial = name => `initial ${name}`;
@@ -64,7 +63,6 @@ export class ObservableRuntime {
       scope.variable(observer).define(_viewof(name), inputs, defn);
       scope.variable().define(name, ['Generators', _viewof(name)], (G, _) => G.input(_));
     } else if (mutable) {
-      // TODO what about inputs?
       scope.define(_initial(name), inputs, defn);
       scope.variable().define(_mutable(name), ['Mutable', _initial(name)], (M, _) => new M(_));
       scope.variable(observer).define(name, [_mutable(name)], _ => _.generator);

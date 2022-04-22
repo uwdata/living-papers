@@ -4,6 +4,7 @@ export function bindAssign(node, event, name, expr) {
   const runtime = ObservableRuntime.instance();
   let _value;
 
+  // TODO: check for async issues (e.g., pending when event files)
   runtime.define(expr, {
     fulfilled(value/*, name*/) {
       _value = value;

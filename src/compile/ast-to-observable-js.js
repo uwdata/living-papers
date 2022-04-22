@@ -15,6 +15,7 @@ export function extractCells(ast, cells = []) {
   if (type === 'textnode') {
     return;
   } else if (name === 'observable') {
+    // TODO also pull from "code" attribute
     const code = children[0].value.split(/\n\s*---+\s*\n/g);
     cells.push(...code);
   }
@@ -23,7 +24,12 @@ export function extractCells(ast, cells = []) {
   return cells;
 }
 
+/**
+ * Work-in-progress to generate a JavaScript module
+ * with all Observable code in an AST.
+ */
 export function astToObservableJS(codeCells) {
+  // compile with raw=true to get compiled strings, not functions
   const cells = codeCells.map(code => compile(code, true));
   let output = '';
   let i = 0;
@@ -53,7 +59,8 @@ export function astToObservableJS(codeCells) {
 
   cells.forEach(cell => {
     if (cell.import) {
-      const { source, injections, specifiers } = cell.body;
+      // import variables from another module
+      const { injections, specifiers } = cell.body;
 
       const inject = [];
       (injections || []).forEach(({ imported: { name }, local: { name: alias } }) => {
@@ -70,6 +77,7 @@ export function astToObservableJS(codeCells) {
         output += `  main.import(${names}, child${i});\n`;
       });
     } else {
+      // define new variables
       const { viewof, mutable, name, inputs } = cell;
       const deps = JSON.stringify(inputs);
       const nam = `"${name}"`;

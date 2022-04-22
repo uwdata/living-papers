@@ -1,10 +1,13 @@
+import { aliasComponent, aliasProperty } from './alias.js';
 import { bindAssign } from './bind-assign.js';
 import { bindAttr } from './bind-attr.js';
 
-export function astToHTML(ast) {
-  const ctx = { _id: 0, get: [], set: [] };
-  const html = renderNode(ast, ctx);
-  return { html, expr: ctx.get, assign: ctx.set };
+function htmlEscape(str) {
+  return str.replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 export function astMountHTML(ast, root) {
@@ -24,25 +27,10 @@ export function astMountHTML(ast, root) {
   });
 }
 
-function htmlEscape(str) {
-  return str.replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-const aliasMap = new Map()
-  .set('observable', 'obs-cell')
-  .set('math', 'tex-math')
-  .set('equation', 'tex-equation');
-
-function aliasComponent(name) {
-  return aliasMap.get(name) || name;
-}
-
-function aliasProperty(name) {
-  return name === 'className' ? 'class' : name;
+export function astToHTML(ast) {
+  const ctx = { _id: 0, get: [], set: [] };
+  const html = renderNode(ast, ctx);
+  return { html, expr: ctx.get, assign: ctx.set };
 }
 
 function renderNode(node, ctx) {
@@ -68,8 +56,10 @@ function renderProps(props, ctx) {
 
   let id = props.id ? props.id.value : null;
 
-  for (const key in props) {
-    const { type, value } = props[key];
+  for (const propKey in props) {
+    const { type, value } = props[propKey];
+    const key = aliasProperty(propKey);
+
     if (type === 'variable' || type === 'expression') {
       if (id == null) {
         id = `_id${++ctx._id}`;
@@ -83,7 +73,7 @@ function renderProps(props, ctx) {
         ctx.set.push([id, key, name, value[name]]);
       }
     } else {
-      str += ` ${aliasProperty(key)}="${value}"`;
+      str += ` ${key}="${value}"`;
     }
   }
   if (!props.id && id !== null) {
