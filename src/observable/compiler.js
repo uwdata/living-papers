@@ -7,7 +7,7 @@ const AsyncGeneratorFunction = Object.getPrototypeOf(async function*(){}).constr
 const ViewExpression = 'ViewExpression';
 const MutableExpression = 'MutableExpression';
 const ImportDeclaration = 'ImportDeclaration';
-const ImportSpecifier = 'ImportSpecifier';
+// const ImportSpecifier = 'ImportSpecifier';
 
 export function compile(code, raw = false) {
   const cell = parseCell(code);

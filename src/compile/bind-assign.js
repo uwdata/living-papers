@@ -5,10 +5,10 @@ export function bindAssign(node, event, name, expr) {
   let _value;
 
   runtime.define(expr, {
-    fulfilled(value, name) {
+    fulfilled(value/*, name*/) {
       _value = value;
     },
-    error(error, name) {
+    error(error/*, name*/) {
       console.error(error);
     }
   });
@@ -17,5 +17,6 @@ export function bindAssign(node, event, name, expr) {
     event = event.slice(2);
   }
   event = event.toLowerCase();
+
   node.addEventListener(event, () => runtime.redefine(name, _value));
 }

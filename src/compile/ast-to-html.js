@@ -10,15 +10,17 @@ export function astToHTML(ast) {
 export function astMountHTML(ast, root) {
   const { html, expr, assign } = astToHTML(ast);
   root.innerHTML = html;
-  document.addEventListener('DOMContentLoaded', (event) => {
-    expr.forEach(([id, name, expr]) => {
-      const el = document.querySelector(`#${id}`);
-      bindAttr(el, name, expr);
-    });
-    assign.forEach(([id, event, name, expr]) => {
-      const el = document.querySelector(`#${id}`);
-      bindEvent(el, event, name, expr);
-    });
+
+  // bind attribute expressions
+  expr.forEach(([id, name, expr]) => {
+    const el = document.querySelector(`#${id}`);
+    bindAttr(el, name, expr);
+  });
+
+  // bind assignment expressions
+  assign.forEach(([id, event, name, expr]) => {
+    const el = document.querySelector(`#${id}`);
+    bindAssign(el, event, name, expr);
   });
 }
 
@@ -73,7 +75,7 @@ function renderProps(props, ctx) {
         id = `_id${++ctx._id}`;
       }
       ctx.get.push([id, key, value]);
-    } else if (type === 'assignment') {
+    } else if (type === 'assign') {
       if (id == null) {
         id = `_id${++ctx._id}`;
       }
