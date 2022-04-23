@@ -1,6 +1,7 @@
-import {LitElement, html, css} from 'lit';
-import {ObservableRuntime} from '../observable/runtime.js';
-import {PENDING, FULFILLED, ERROR} from '../observable/status.js';
+import { LitElement, html, css } from 'lit';
+import { ObservableRuntime } from '../observable/runtime.js';
+import { PENDING, FULFILLED, ERROR } from '../observable/status.js';
+import { clearChildren } from '../util/clear-children.js';
 
 export class ObservableCell extends LitElement {
   static get styles() {
@@ -51,7 +52,7 @@ export class ObservableCell extends LitElement {
     // attempt to extract code from first child
     if (!this.hasAttribute('code') && this.childNodes.length) {
       const code = this.childNodes[0].textContent;
-      this.innerHTML = '';
+      clearChildren(this);
       const cells = code.split(/\n\s*---+\s*\n/g);
       this.code = cells.pop();
       register(cells);
