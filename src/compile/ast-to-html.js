@@ -16,13 +16,13 @@ export function astMountHTML(ast, root) {
 
   // bind attribute expressions
   expr.forEach(([id, name, expr]) => {
-    const el = document.querySelector(`#${id}`);
+    const el = root.querySelector(`#${id}`);
     bindAttr(el, name, expr);
   });
 
   // bind assignment expressions
   assign.forEach(([id, event, name, expr]) => {
-    const el = document.querySelector(`#${id}`);
+    const el = root.querySelector(`#${id}`);
     bindAssign(el, event, name, expr);
   });
 }
