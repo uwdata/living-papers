@@ -1,9 +1,6 @@
 import { Runtime } from '@observablehq/runtime';
 import { compile } from './compiler.js';
-
-const _viewof = name => `viewof ${name}`;
-const _mutable = name => `mutable ${name}`;
-const _initial = name => `initial ${name}`;
+import { _api, _initial, _mutable, _viewof } from './util.js';
 
 let _Runtime;
 
@@ -27,7 +24,7 @@ export class ObservableRuntime {
 
   async load(name) {
     if (!this.scopes.has(name)) {
-      const def = await import(`https://api.observablehq.com/${name}.js?v=3`);
+      const def = await import(_api(name));
       this.scopes.set(name, this.runtime.module(def.default));
     }
     return this.scopes.get(name);

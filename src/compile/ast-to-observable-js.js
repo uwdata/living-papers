@@ -1,10 +1,7 @@
 import { compile } from '../observable/compiler.js';
+import { _api, _initial, _mutable, _viewof } from '../observable/util.js';
 
-const url = name => `https://api.observablehq.com/${name}.js?v=3`;
 const def = (obs = '', args) => `  main.variable(observer(${obs})).define(${args});\n`;
-const _viewof = name => `viewof ${name}`;
-const _mutable = name => `mutable ${name}`;
-const _initial = name => `initial ${name}`;
 
 export function extractCells(ast, cells = []) {
   const type = ast.type;
@@ -38,7 +35,7 @@ export function astToObservableJS(codeCells) {
   // output top-level import statements
   cells.forEach(cell => {
     if (!cell.import) return;
-    output += `import define${++i} from "${url(cell.body.source.value)}";\n`;
+    output += `import define${++i} from "${_api(cell.body.source.value)}";\n`;
   });
   if (i > 0) output += '\n';
 
