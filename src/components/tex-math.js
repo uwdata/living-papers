@@ -1,12 +1,9 @@
-import {LitElement, html, css} from 'lit';
 import katex from 'katex';
+import { LitElement } from 'lit';
+import { clearChildren } from '../util/clear-children.js';
+import { injectStyle } from '../util/inject-style.js';
 
 export class TexMath extends LitElement {
-  // static get styles() {
-  //   return css`
-  //     @import "http://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.15.3/katex.min.css";
-  //   `;
-  // }
 
   static get properties() {
     return {
@@ -33,8 +30,11 @@ export class TexMath extends LitElement {
     // attempt to extract code from first child
     if (!this.hasAttribute('code') && this.childNodes.length) {
       this.code = this.childNodes[0].textContent;
-      this.innerHTML = '';
+      clearChildren(this);
     }
+
+    injectStyle(this.ownerDocument, 'tex-math', TexMath.CSS);
+
     super.connectedCallback();
   }
 
@@ -56,5 +56,7 @@ export class TexMath extends LitElement {
     return root;
   }
 }
+
+TexMath.CSS = 'https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css';
 
 window.customElements.define('tex-math', TexMath);

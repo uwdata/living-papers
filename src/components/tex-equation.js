@@ -1,5 +1,4 @@
-import {LitElement, html, css} from 'lit';
-import {TexMath} from './tex-math.js';
+import { TexMath } from './tex-math.js';
 
 export class TexEquation extends TexMath {
 
