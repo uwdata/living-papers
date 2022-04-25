@@ -40,5 +40,18 @@
       <tex-math mode="display" code="\frac{1}{N} \sum_{i=1}^N x_i^2"></tex-math>
       <tex-equation code="f(x) &= (x+a)(x+b) \nonumber \\ &= x^2 + (a+b)x + ab"></tex-equation>
     </div><br/>
+
+    <hr/><h2>Dynamic Text</h2>
+    <div>
+      Value in Observable: <obs-cell id="dv" code="value = 100"></obs-cell><br/>
+      Drag me: <dynamic-text id="dt"></dynamic-text>
+      <script type="module">
+        import { bindAssign, bindAttr } from "../src/index.js";
+
+        const dt = document.querySelector('#dt');
+        bindAttr(dt, 'value', 'value');
+        bindAssign(dt, 'value', 'value', '(e) => e.value');
+      </script>
+    </div>
   </body>
 </html>
