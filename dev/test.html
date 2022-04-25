@@ -9,6 +9,7 @@
     <script type="module" src="../src/components/named-cell.js"></script>
     <script type="module" src="../src/components/tex-math.js"></script>
     <script type="module" src="../src/components/tex-equation.js"></script>
+    <script type="module" src="../src/components/dynamic-text.js"></script>
     <style>
       body { max-width: 800px; }
     </style>
@@ -32,12 +33,12 @@
     <hr/><h2>Observable Cells: Attach to an Existing Variable</h2>
     <div>
       The slider value is: <named-cell name="z"></named-cell>
-    </div>
-    <br/>
+    </div><br/>
 
     <hr/><h2>Math and Equation Components</h2>
-    <tex-math mode="display" code="\frac{1}{N} \sum_{i=1}^N x_i^2"></tex-math>
-    <tex-equation code="f(x) &= (x+a)(x+b) \nonumber \\
-    &= x^2 + (a+b)x + ab"></tex-equation>
+    <div>
+      <tex-math mode="display" code="\frac{1}{N} \sum_{i=1}^N x_i^2"></tex-math>
+      <tex-equation code="f(x) &= (x+a)(x+b) \nonumber \\ &= x^2 + (a+b)x + ab"></tex-equation>
+    </div><br/>
   </body>
 </html>

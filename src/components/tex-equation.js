@@ -20,9 +20,9 @@ export class TexEquation extends TexMath {
     this.nonumber = false;
   }
 
-  willUpdate() {
+  prepareMath() {
     const cmd = this.type + (this.nonumber ? '*' : '');
-    this.code = `\\begin{${cmd}}\n${this.code}\n\\end{${cmd}}`;
+    return `\\begin{${cmd}}\n${this.code}\n\\end{${cmd}}`;
   }
 }
 

@@ -1,9 +1,19 @@
-import katex from 'katex';
 import { LitElement } from 'lit';
 import { clearChildren } from '../util/clear-children.js';
-import { injectStyle } from '../util/inject-style.js';
+import { getDependency, hasDependencies, loadDependencies } from '../util/dependencies.js';
 
 export class TexMath extends LitElement {
+
+  static get dependencies() {
+    return [
+      {
+        name: 'katex',
+        version: '0.15.3',
+        main: 'dist/katex.min.js',
+        css: 'dist/katex.min.css'
+      }
+    ]
+  };
 
   static get properties() {
     return {
@@ -23,6 +33,7 @@ export class TexMath extends LitElement {
   }
 
   createRenderRoot() {
+    // no shadow dom, let global CSS apply
     return this;
   }
 
@@ -32,14 +43,23 @@ export class TexMath extends LitElement {
       this.code = this.childNodes[0].textContent;
       clearChildren(this);
     }
-
-    injectStyle(this.ownerDocument, 'tex-math', TexMath.CSS);
-
     super.connectedCallback();
   }
 
+  prepareMath() {
+    return this.code;
+  }
+
+  shouldUpdate() {
+    // check if dependencies are loaded and available
+    // if not, load and request update once ready
+    return hasDependencies(this) ? true
+      : (loadDependencies(this).then(() => { this.requestUpdate() }), false);
+  }
+
   render() {
-    if (!this.code) return;
+    const katex = getDependency(this, 'katex');
+    if (!katex || !this.code) return;
 
     // See https://katex.org/docs/options.html
     const displayMode = this.mode === 'display';
@@ -52,11 +72,9 @@ export class TexMath extends LitElement {
     };
 
     const root = document.createElement(displayMode ? 'div' : 'span');
-    katex.render(this.code, root, options);
+    katex.render(this.prepareMath(), root, options);
     return root;
   }
 }
-
-TexMath.CSS = 'https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css';
 
 window.customElements.define('tex-math', TexMath);
