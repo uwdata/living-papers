@@ -1,4 +1,4 @@
-import { compile } from '../observable/compiler.js';
+import { compile } from '../observable/compile.js';
 import { _api, _initial, _mutable, _viewof } from '../observable/util.js';
 
 const def = (obs = '', args) => `  main.variable(observer(${obs})).define(${args});\n`;
@@ -27,7 +27,7 @@ export function extractCells(ast, cells = []) {
  */
 export function astToObservableJS(codeCells) {
   // compile with raw=true to get compiled strings, not functions
-  const cells = codeCells.map(code => compile(code, true));
+  const cells = codeCells.map(code => compile(code, { raw: true }));
   let output = '';
   let i = 0;
   let v = 0;

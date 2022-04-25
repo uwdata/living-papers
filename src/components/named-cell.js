@@ -1,6 +1,6 @@
-import {LitElement, html, css} from 'lit';
-import {ObservableRuntime} from '../observable/runtime.js';
-import {PENDING, FULFILLED, ERROR} from '../observable/status.js';
+import { LitElement, html, css } from 'lit';
+import { ObservableRuntime } from '../observable/runtime.js';
+import { PENDING, FULFILLED, ERROR } from '../observable/status.js';
 
 /**
  * Work-in-progess test to connect to an existing named Observable

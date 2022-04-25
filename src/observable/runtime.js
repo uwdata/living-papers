@@ -1,5 +1,5 @@
 import { Runtime } from '@observablehq/runtime';
-import { compile } from './compiler.js';
+import { compile } from './compile.js';
 import { _api, _initial, _mutable, _viewof } from './util.js';
 
 let _Runtime;
@@ -46,9 +46,9 @@ export class ObservableRuntime {
     });
   }
 
-  async define(cellCode, observer = undefined) {
+  async define(cellCode, observer = undefined, options) {
     const scope = this.main;
-    const cell = compile(cellCode);
+    const cell = compile(cellCode, options);
 
     if (cell.import) {
       await this.import(scope, cell.body);
