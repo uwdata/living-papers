@@ -1,8 +1,7 @@
-import { LitElement } from 'lit';
+import { DependentElement } from './dependent-element.js';
 import { clearChildren } from '../util/clear-children.js';
-import { getDependency, hasDependencies, loadDependencies } from '../util/dependencies.js';
 
-export class TexMath extends LitElement {
+export class TexMath extends DependentElement {
 
   static get dependencies() {
     return [
@@ -50,15 +49,8 @@ export class TexMath extends LitElement {
     return this.code;
   }
 
-  shouldUpdate() {
-    // check if dependencies are loaded and available
-    // if not, load and request update once ready
-    return hasDependencies(this) ? true
-      : (loadDependencies(this).then(() => { this.requestUpdate() }), false);
-  }
-
   render() {
-    const katex = getDependency(this, 'katex');
+    const katex = this.getDependency('katex');
     if (!katex || !this.code) return;
 
     // See https://katex.org/docs/options.html

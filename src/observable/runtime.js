@@ -2,7 +2,7 @@ import { Runtime } from '@observablehq/runtime';
 import { compile } from './compile.js';
 import { _api, _initial, _mutable, _viewof } from './util.js';
 
-let _Runtime;
+let _instance;
 
 export class ObservableRuntime {
   constructor() {
@@ -12,10 +12,10 @@ export class ObservableRuntime {
   }
 
   static instance() {
-    if (!_Runtime) {
-      _Runtime = new ObservableRuntime();
+    if (!_instance) {
+      _instance = new ObservableRuntime();
     }
-    return _Runtime;
+    return _instance;
   }
 
   redefine(name, value, inputs = []) {

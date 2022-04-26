@@ -66,7 +66,7 @@ export function codegen(code, cell, options = {}) {
 
   // apply code transform if provided
   if (options.transform) {
-    body = options.transform(body, cell);
+    body = options.transform(body, cell, inputs, fnargs);
   }
 
   // return raw code if requested

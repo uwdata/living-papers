@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import { InputEvent } from './event/input-event.js';
 
 export class DynamicText extends LitElement {
   static get styles() {
@@ -16,7 +17,8 @@ export class DynamicText extends LitElement {
       step: {type: Number},
       span: {type: Number},
       min: {type: Number},
-      max: {type: Number}
+      max: {type: Number},
+      title: {type: String}
     };
   }
 
@@ -27,46 +29,50 @@ export class DynamicText extends LitElement {
     this.span = 1;
     this.min = -1000;
     this.max = +1000;
+    this.title = 'Draggable text';
+    this.addEventListener('click', e => e.stopPropagation());
+    this.addEventListener('mousedown', e => this.onMouseDown(e));
+  }
+
+  onMouseDown(e) {
+    e.stopImmediatePropagation();
+    const mx = e.x;
+    const mv = +this.value;
+
+    const cursor = this.ownerDocument.body.style.cursor;
+    this.ownerDocument.body.style.cursor = 'ew-resize';
+
+    const select = this.style.MozUserSelect;
+    this.style.MozUserSelect = 'none';
+
+    const move = e => {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      const { step, span, min, max } = this;
+      const dx = step * Math.round((e.x - mx) / span);
+      const value = Math.max(Math.min(mv + dx, max), min);
+      if (this.value !== value) {
+        this.value = value;
+        this.dispatchEvent(new InputEvent(value));
+        this.requestUpdate();
+      }
+    };
+
+    const up = e => {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      this.ownerDocument.body.style.cursor = cursor;
+      this.style.MozUserSelect = select;
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+    };
+
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
   }
 
   render() {
-    return html`<span>${this.value}</span>`;
-  }
-
-  firstUpdated() {
-    this.renderRoot.addEventListener('mousedown', e => {
-      e.stopImmediatePropagation();
-      const mx = e.x;
-      const mv = this.value;
-      const cursor = this.ownerDocument.body.style.cursor;
-      this.ownerDocument.body.style.cursor = 'ew-resize';
-      const move = e => {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        const { step, span, min, max } = this;
-        const dx = step * Math.round((e.x - mx) / span);
-        const value = Math.max(Math.min(mv + dx, max), min);
-        this.value = value;
-        this.dispatchEvent(new ValueEvent(value));
-        this.requestUpdate();
-      };
-      const up = e => {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        this.ownerDocument.body.style.cursor = cursor;
-        window.removeEventListener('mousemove', move);
-        window.removeEventListener('mouseup', up);
-      };
-      window.addEventListener('mousemove', move);
-      window.addEventListener('mouseup', up);
-    });
-  }
-}
-
-class ValueEvent extends Event {
-  constructor(value) {
-    super('value');
-    this.value = value;
+    return html`<span title=${this.title}>${this.value}</span>`;
   }
 }
 

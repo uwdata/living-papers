@@ -10,6 +10,7 @@
     <script type="module" src="../src/components/tex-math.js"></script>
     <script type="module" src="../src/components/tex-equation.js"></script>
     <script type="module" src="../src/components/dynamic-text.js"></script>
+    <script type="module" src="../src/components/code-block.js"></script>
     <style>
       body { max-width: 800px; }
     </style>
@@ -41,6 +42,15 @@
       <tex-equation code="f(x) &= (x+a)(x+b) \nonumber \\ &= x^2 + (a+b)x + ab"></tex-equation>
     </div><br/>
 
+    <hr/><h2>Code Block</h2>
+    <div>
+      <code-block>
+const x = 1;
+++x
+      </code-block>
+    </div>
+
+
     <hr/><h2>Dynamic Text</h2>
     <div>
       Value in Observable: <obs-cell id="dv" code="value = 100"></obs-cell><br/>
@@ -50,7 +60,7 @@
 
         const dt = document.querySelector('#dt');
         bindAttr(dt, 'value', 'value');
-        bindAssign(dt, 'value', 'value', '(e) => e.value');
+        bindAssign(dt, 'input', 'value', '(e) => e.value');
       </script>
     </div>
   </body>

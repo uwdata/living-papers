@@ -7,10 +7,8 @@ const TRUE = Promise.resolve(true);
 
 const cache = new Map();
 
-function resolver(name, version, main) {
-  return function(path = main) {
-    return `https://cdn.jsdelivr.net/npm/${name}@${version}/${path}`;
-  };
+function resolver(name, version) {
+  return path => `https://cdn.jsdelivr.net/npm/${name}@${version}/${path}`;
 }
 
 function style(href, doc = globalThis.document) {
@@ -67,8 +65,8 @@ export function loadDependencies(object) {
   const load = { main: [], css: [] };
   const schema = base[SCHEMA];
   schema.forEach(({ name, version, main, css }) => {
-    const resolve = resolver(name, version, main);
-    const mainURI = resolve();
+    const resolve = resolver(name, version);
+    const mainURI = resolve(main);
     const cssURI = resolve(css);
 
     const promise = cache.get(mainURI) || require(mainURI);
