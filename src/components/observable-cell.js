@@ -27,19 +27,18 @@ export class ObservableCell extends LitElement {
   constructor() {
     super();
     this.status = PENDING;
-    this.value = 'Loading...';
+    this.value = '';
 
     this.observer = {
-      pending: () => {
-        // this.status = PENDING;
-      },
-      fulfilled: (value, name) => {
+      fulfilled: (value) => {
         this.status = FULFILLED;
         this.value = value;
+        this.dispatchEvent(new Event('change'));
       },
       rejected: (error, name) => {
         this.status = ERROR;
         this.value = { error, name };
+        this.dispatchEvent(new Event('change'));
       }
     };
   }
