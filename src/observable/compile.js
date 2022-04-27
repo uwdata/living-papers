@@ -1,5 +1,6 @@
 import { parseCell } from '@observablehq/parser';
 import { functionConstructor as Fn } from '../util/function-constructor.js';
+import { splice } from '../util/splice.js';
 
 export function compile(code, options) {
   // parse observable cell code
@@ -52,11 +53,9 @@ export function codegen(code, cell, options = {}) {
   // rewrite references to mutable variables
   // work backwards to preserve accurate indices
   for (let i = mref.length; --i >= 0;) {
-    const key = mref[i].id.name;
-    const value = mmap.get(key);
-    body = body.slice(0, mref[i].start - start)
-      + `${value}.value`
-      + body.slice(mref[i].end - start);
+    const { id, start: r0, end: r1 } = mref[i];
+    const value = mmap.get(id.name);
+    body = splice(body, `${value}.value`, r0 - start, r1 - start);
   }
 
   // prepare code for function constructor

@@ -46,5 +46,20 @@
         bindValue('s', document.querySelector('#s1'));
       </script>
     </div>
+
+    <h2>Assignment Handlers</h2>
+    <div>
+      <button id="b0">Assign Values</button>
+      <button id="b1">Reset Range</button>
+      <button id="b2">Reset Select</button><br/>
+      <script type="module">
+        const b0 = document.querySelector('#b0');
+        const b1 = document.querySelector('#b1');
+        const b2 = document.querySelector('#b2');
+        b0.addEventListener('click', runtime.handler('(v = 100, s = "c")'));
+        b1.addEventListener('click', runtime.handler('v = 0'));
+        b2.addEventListener('click', runtime.handler('s = "a"'));
+      </script>
+    </div>
   </body>
 </html>

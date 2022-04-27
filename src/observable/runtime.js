@@ -1,5 +1,6 @@
 import { Runtime } from '@observablehq/runtime';
 import { compile } from './compile.js';
+import { eventHandler } from './handler.js';
 import { _api, _initial, _mutable, _viewof } from './util.js';
 
 let _instance;
@@ -20,6 +21,10 @@ export class ObservableRuntime {
 
   redefine(name, value, inputs = []) {
     this.main.redefine(name, inputs, value);
+  }
+
+  value(name) {
+    return this.main.value(name);
   }
 
   async load(name) {
@@ -68,5 +73,9 @@ export class ObservableRuntime {
     } else {
       scope.variable(observer).define(inputs, defn);
     }
+  }
+
+  handler(handlerCode) {
+    return eventHandler(this, handlerCode);
   }
 }
