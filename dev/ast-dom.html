@@ -5,10 +5,11 @@
     <title>Compile AST to DOM</title>
     <script type="module" src="../src/index.js"></script>
     <script type="module">
-      import { astToDOM } from '../src/index.js';
+      import { astToDOM, ObservableRuntime } from '../src/index.js';
+      const runtime = ObservableRuntime.instance();
       fetch('../test/ast-observable.json')
         .then(res => res.json())
-        .then(ast => document.body.appendChild(astToDOM(ast)));
+        .then(ast => document.body.appendChild(astToDOM(ast, runtime)));
     </script>
   </head>
   <body>

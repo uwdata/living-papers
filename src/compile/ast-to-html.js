@@ -1,29 +1,22 @@
 import { aliasComponent, aliasProperty } from './alias.js';
 import { bindAttr } from './bind-attr.js';
 import { bindHandler } from './bind-handler.js';
+import { htmlEscape } from '../util/html-escape.js';
 
-function htmlEscape(str) {
-  return str.replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-export function astMountHTML(ast, root) {
+export function astMountHTML(ast, root, runtime) {
   const { html, expr, handler } = astToHTML(ast);
   root.innerHTML = html;
 
   // bind attribute expressions
   expr.forEach(([id, name, expr]) => {
     const el = root.querySelector(`#${id}`);
-    bindAttr(el, name, expr);
+    bindAttr(runtime, el, name, expr);
   });
 
   // bind event handlers
   handler.forEach(([id, event, expr]) => {
     const el = root.querySelector(`#${id}`);
-    bindHandler(el, event, expr);
+    bindHandler(runtime, el, event, expr);
   });
 }
 

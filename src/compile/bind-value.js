@@ -1,14 +1,12 @@
-import { ObservableRuntime } from '../observable/runtime.js';
 import { ObservableCell } from '../components/observable-cell.js';
 
-const runtime = ObservableRuntime.instance();
 const contexts = {};
 
 /**
  * Add an input or observable cell to a binding group.
  */
-export async function bindValue(name, input, event, valueof) {
-  const ctx = await context(name);
+export async function bindValue(runtime, name, input, event, valueof) {
+  const ctx = await context(runtime, name);
   const bind = input instanceof ObservableCell ? bindCell : bindInput;
   bind(ctx, input, event, valueof);
 }
@@ -48,10 +46,15 @@ function bindInput(
  * Get the context object for a binding group.
  * @returns a Promise to the context object.
  */
-function context(name) {
+function context(runtime, name) {
   if (!contexts[name]) {
-    contexts[name] = runtime.main.value(name)
-      .then(value => observe({ name, enabled: true, inputs: new Map, value }));
+    contexts[name] = runtime.main.value(name).then(value => observe({
+      name,
+      runtime,
+      enabled: true,
+      inputs: new Map,
+      value
+    }));
   }
   return contexts[name];
 }
@@ -59,8 +62,8 @@ function context(name) {
 /**
  * Observe a variable cell
  */
- function observe(ctx) {
-  runtime.define(ctx.name, {
+function observe(ctx) {
+  ctx.runtime.variable(null, x => x, [ctx.name], {
     fulfilled: (value) => {
       if (ctx.enabled) update(ctx, value);
       ctx.enabled = true;
@@ -90,7 +93,7 @@ function update(ctx, value) {
   // update shared variable
   ctx.enabled = false;
   ctx.value = value;
-  runtime.redefine(ctx.name, value);
+  ctx.runtime.redefine(ctx.name, value);
 }
 
 /**

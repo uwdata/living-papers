@@ -59,8 +59,8 @@ const x = 1;
         import { bindAssign, bindAttr } from "../src/index.js";
 
         const dt = document.querySelector('#dt');
-        bindAttr(dt, 'value', 'value');
-        bindAssign(dt, 'input', 'value', '(e) => e.value');
+        bindAttr(runtime, dt, 'value', 'value');
+        bindAssign(runtime, dt, 'input', 'value', '(e) => e.value');
       </script>
     </div>
   </body>

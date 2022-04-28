@@ -19,8 +19,12 @@ export class ObservableRuntime {
     return _instance;
   }
 
-  redefine(name, value, inputs = []) {
-    this.main.redefine(name, inputs, value);
+  redefine(name, defn, inputs = []) {
+    this.main.redefine(name, inputs, defn);
+  }
+
+  variable(name, defn, inputs = [], observer) {
+    this.main.variable(observer).define(name, inputs, defn);
   }
 
   value(name) {

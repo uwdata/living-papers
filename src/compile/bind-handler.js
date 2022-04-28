@@ -1,5 +1,3 @@
-import {ObservableRuntime} from '../observable/runtime.js';
-
-export function bindHandler(node, event, expr) {
-  node.addEventListener(event, ObservableRuntime.instance().handler(expr));
+export function bindHandler(runtime, node, event, expr) {
+  node.addEventListener(event, runtime.handler(expr));
 }

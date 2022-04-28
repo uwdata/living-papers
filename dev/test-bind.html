@@ -26,10 +26,10 @@
       Range Value Observers: [<obs-cell code="r0"></obs-cell>, <obs-cell code="r1"></obs-cell>]
       <script type="module">
         import { bindValue } from '../src/compile/bind-value.js';
-        bindValue('v', document.querySelector('#r0'));
-        bindValue('v', document.querySelector('#r1'));
-        bindValue('v', document.querySelector('#dt'));
-        bindValue('v', document.querySelector('#ot'));
+        bindValue(runtime, 'v', document.querySelector('#r0'));
+        bindValue(runtime, 'v', document.querySelector('#r1'));
+        bindValue(runtime, 'v', document.querySelector('#dt'));
+        bindValue(runtime, 'v', document.querySelector('#ot'));
       </script>
     </div>
 
@@ -42,8 +42,8 @@
       Select Value Observers: [<obs-cell code="s0"></obs-cell>, <obs-cell code="s1"></obs-cell>]
       <script type="module">
         import { bindValue } from '../src/compile/bind-value.js';
-        bindValue('s', document.querySelector('#s0'));
-        bindValue('s', document.querySelector('#s1'));
+        bindValue(runtime, 's', document.querySelector('#s0'));
+        bindValue(runtime, 's', document.querySelector('#s1'));
       </script>
     </div>
 
