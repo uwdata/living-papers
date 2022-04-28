@@ -1,6 +1,6 @@
 import { aliasComponent, aliasProperty } from './alias.js';
-import { bindAssign } from './bind-assign.js';
 import { bindAttr } from './bind-attr.js';
+import { bindHandler } from './bind-handler.js';
 
 function htmlEscape(str) {
   return str.replace(/&/g, '&amp;')
@@ -11,7 +11,7 @@ function htmlEscape(str) {
 }
 
 export function astMountHTML(ast, root) {
-  const { html, expr, assign } = astToHTML(ast);
+  const { html, expr, handler } = astToHTML(ast);
   root.innerHTML = html;
 
   // bind attribute expressions
@@ -20,17 +20,17 @@ export function astMountHTML(ast, root) {
     bindAttr(el, name, expr);
   });
 
-  // bind assignment expressions
-  assign.forEach(([id, event, name, expr]) => {
+  // bind event handlers
+  handler.forEach(([id, event, expr]) => {
     const el = root.querySelector(`#${id}`);
-    bindAssign(el, event, name, expr);
+    bindHandler(el, event, expr);
   });
 }
 
 export function astToHTML(ast) {
-  const ctx = { _id: 0, get: [], set: [] };
+  const ctx = { _id: 0, expr: [], handler: [] };
   const html = renderNode(ast, ctx);
-  return { html, expr: ctx.get, assign: ctx.set };
+  return { html, ...ctx };
 }
 
 function renderNode(node, ctx) {
@@ -64,14 +64,12 @@ function renderProps(props, ctx) {
       if (id == null) {
         id = `_id${++ctx._id}`;
       }
-      ctx.get.push([id, key, value]);
-    } else if (type === 'assign') {
+      ctx.expr.push([id, key, value]);
+    } else if (type === 'handler') {
       if (id == null) {
         id = `_id${++ctx._id}`;
       }
-      for (const name in value) {
-        ctx.set.push([id, key, name, value[name]]);
-      }
+      ctx.handler.push([id, key, value]);
     } else {
       str += ` ${key}="${value}"`;
     }

@@ -1,6 +1,6 @@
 import { aliasComponent, aliasProperty } from './alias.js';
-import { bindAssign } from './bind-assign.js';
 import { bindAttr } from './bind-attr.js';
+import { bindHandler } from './bind-handler.js';
 
 export function astToDOM(ast) {
   return createNode(ast);
@@ -24,10 +24,8 @@ function createNode(ast) {
 
     if (type === 'variable' || type === 'expression') {
       bindAttr(node, key, value);
-    } else if (type === 'assign') {
-      for (const name in value) {
-        bindAssign(node, key, name, value[name]);
-      }
+    } else if (type === 'handler') {
+      bindHandler(node, key, value);
     } else {
       node.setAttribute(key, value);
     }

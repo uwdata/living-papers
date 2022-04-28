@@ -5,5 +5,5 @@ export { TexEquation } from './components/tex-equation.js';
 export { astToDOM } from './compile/ast-to-dom.js';
 export { astToHTML, astMountHTML } from './compile/ast-to-html.js';
 export { astToObservableJS } from './compile/ast-to-observable-js.js';
-export { bindAssign } from './compile/bind-assign.js';
 export { bindAttr } from './compile/bind-attr.js';
+export { bindHandler } from './compile/bind-handler.js';

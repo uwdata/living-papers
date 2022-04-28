@@ -73,10 +73,8 @@
           "name": "a",
           "properties": {
             "click": {
-              "type": "assign",
-              "value": {
-                "init": "(a + 1) % 256"
-              }
+              "type": "handler",
+              "value": "init = (a + 1) % 256"
             },
             "href": {
               "type": "value",
