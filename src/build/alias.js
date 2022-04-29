@@ -1,5 +1,5 @@
 const aliasMap = new Map()
-  .set('observable', 'obs-cell')
+  .set('observable', 'cell-view')
   .set('math', 'tex-math')
   .set('equation', 'tex-equation');
 

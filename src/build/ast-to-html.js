@@ -1,27 +1,15 @@
 import { aliasComponent, aliasProperty } from './alias.js';
-import { bindAttr } from './bind-attr.js';
-import { bindHandler } from './bind-handler.js';
 import { htmlEscape } from '../util/html-escape.js';
 
-export function astMountHTML(ast, root, runtime) {
-  const { html, expr, handler } = astToHTML(ast);
+export function astMountHTML(ast) {
+  const { html, attrs, events } = astToHTML(ast);
+  const root = document.createElement('div');
   root.innerHTML = html;
-
-  // bind attribute expressions
-  expr.forEach(([id, name, expr]) => {
-    const el = root.querySelector(`#${id}`);
-    bindAttr(runtime, el, name, expr);
-  });
-
-  // bind event handlers
-  handler.forEach(([id, event, expr]) => {
-    const el = root.querySelector(`#${id}`);
-    bindHandler(runtime, el, event, expr);
-  });
+  return { node: root.childNodes[0], attrs, events };
 }
 
 export function astToHTML(ast) {
-  const ctx = { _id: 0, expr: [], handler: [] };
+  const ctx = { _id: 0, attrs: [], events: [] };
   const html = renderNode(ast, ctx);
   return { html, ...ctx };
 }
@@ -57,12 +45,12 @@ function renderProps(props, ctx) {
       if (id == null) {
         id = `_id${++ctx._id}`;
       }
-      ctx.expr.push([id, key, value]);
-    } else if (type === 'handler') {
+      ctx.attrs.push([id, key, value]);
+    } else if (type === 'event') {
       if (id == null) {
         id = `_id${++ctx._id}`;
       }
-      ctx.handler.push([id, key, value]);
+      ctx.events.push([id, key, value]);
     } else {
       str += ` ${key}="${value}"`;
     }

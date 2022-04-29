@@ -5,11 +5,11 @@
     <title>Bundle Test</title>
     <script type="module" src="../bundle.js"></script>
     <script type="module">
-      import { astToDOM, ObservableRuntime } from '../bundle.js';
-      const runtime = ObservableRuntime.instance();
+      import { buildArticle } from '../bundle.js';
       fetch('../test/ast-observable.json')
         .then(res => res.json())
-        .then(ast => document.body.appendChild(astToDOM(ast, runtime)));
+        .then(ast => buildArticle(ast))
+        .then(root => document.body.appendChild(root));
     </script>
   </head>
   <body>

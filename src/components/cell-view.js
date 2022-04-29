@@ -1,12 +1,10 @@
 import { LitElement, html, css } from 'lit';
-import { UnsafeRuntime } from '../observable/runtime-unsafe.js';
-import { clearChildren } from '../util/clear-children.js';
 
 const PENDING = 'pending';
 const FULFILLED = 'fulfilled';
 const ERROR = 'error';
 
-export class ObservableCell extends LitElement {
+export class CellView extends LitElement {
   static get styles() {
     return css`
       .error {
@@ -21,17 +19,14 @@ export class ObservableCell extends LitElement {
   static get properties() {
     return {
       value: {state: true},
-      hide: {type: Boolean},
-      status: {type: String, state: true},
-      code: {type: String}
+      status: {type: String, state: true}
     };
   }
 
   constructor() {
     super();
     this.status = PENDING;
-    this.value = '';
-
+    this.value = undefined;
     this.observer = {
       fulfilled: (value) => {
         this.status = FULFILLED;
@@ -50,29 +45,7 @@ export class ObservableCell extends LitElement {
     return this;
   }
 
-  connectedCallback() {
-    // attempt to extract code from first child
-    if (!this.hasAttribute('code') && this.childNodes.length) {
-      const code = this.childNodes[0].textContent;
-      clearChildren(this);
-      const cells = code.split(/\n\s*---+\s*\n/g);
-      this.code = cells.pop();
-      register(cells);
-    }
-
-    super.connectedCallback();
-  }
-
-  willUpdate(changedProperties) {
-    if (changedProperties.has('code')) {
-      UnsafeRuntime.instance().defineUnsafe(this.code, this.observer);
-    }
-  }
-
   render() {
-    if (this.hide || !this.code) {
-      return;
-    }
     switch (this.status) {
       case PENDING:
       case FULFILLED:
@@ -89,10 +62,4 @@ function error(message) {
   return html`<span class="error">${message}</span>`;
 }
 
-async function register(cells) {
-  for (const cell of cells) {
-    await UnsafeRuntime.instance().defineUnsafe(cell);
-  }
-}
-
-window.customElements.define('obs-cell', ObservableCell);
+window.customElements.define('cell-view', CellView);

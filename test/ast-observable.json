@@ -48,10 +48,6 @@
       "type": "component",
       "name": "observable",
       "properties": {
-        "className": {
-          "type": "value",
-          "value": "ojs"
-        },
         "hide": {
           "type": "value",
           "value": "true"
@@ -73,7 +69,7 @@
           "name": "a",
           "properties": {
             "click": {
-              "type": "handler",
+              "type": "event",
               "value": "init = (a + 1) % 256"
             },
             "href": {
@@ -97,12 +93,6 @@
     {
       "type": "component",
       "name": "observable",
-      "properties": {
-        "className": {
-          "type": "value",
-          "value": "ojs"
-        }
-      },
       "children": [
         {
           "type": "textnode",
@@ -113,12 +103,6 @@
     {
       "type": "component",
       "name": "observable",
-      "properties": {
-        "className": {
-          "type": "value",
-          "value": "ojs"
-        }
-      },
       "children": [
         {
           "type": "textnode",
@@ -213,12 +197,6 @@
     {
       "type": "component",
       "name": "observable",
-      "properties": {
-        "className": {
-          "type": "value",
-          "value": "ojs"
-        }
-      },
       "children": [
         {
           "type": "textnode",
@@ -280,10 +258,6 @@
       "type": "component",
       "name": "observable",
       "properties": {
-        "className": {
-          "type": "value",
-          "value": "ojs"
-        },
         "hide": {
           "type": "value",
           "value": "true"
@@ -319,12 +293,6 @@
     {
       "type": "component",
       "name": "observable",
-      "properties": {
-        "className": {
-          "type": "value",
-          "value": "ojs"
-        }
-      },
       "children": [
         {
           "type": "textnode",
@@ -335,12 +303,6 @@
     {
       "type": "component",
       "name": "observable",
-      "properties": {
-        "className": {
-          "type": "value",
-          "value": "ojs"
-        }
-      },
       "children": [
         {
           "type": "textnode",

@@ -5,11 +5,11 @@
     <title>Compile AST to HTML</title>
     <script type="module" src="../src/index.js"></script>
     <script type="module">
-      import { astMountHTML, ObservableRuntime } from '../src/index.js';
-      const runtime = ObservableRuntime.instance();
+      import { astMountHTML, buildArticle } from '../src/index.js';
       fetch('../test/ast-observable.json')
         .then(res => res.json())
-        .then(ast => astMountHTML(ast, document.body, runtime))
+        .then(ast => buildArticle(ast, { builder: astMountHTML }))
+        .then(root => document.body.appendChild(root));
     </script>
   </head>
   <body>

@@ -1,22 +1,9 @@
 import { Runtime } from '@observablehq/runtime';
-import { compile } from './compile.js';
-import { eventHandler } from './handler.js';
-import { _api, _initial, _mutable, _viewof } from './util.js';
-
-let _instance;
 
 export class ObservableRuntime {
   constructor() {
     this.runtime = new Runtime();
     this.main = this.runtime.module();
-    this.scopes = new Map();
-  }
-
-  static instance() {
-    if (!_instance) {
-      _instance = new ObservableRuntime();
-    }
-    return _instance;
   }
 
   redefine(name, defn, inputs = []) {
@@ -27,59 +14,55 @@ export class ObservableRuntime {
     this.main.variable(observer).define(name, inputs, defn);
   }
 
+  module(define, inject) {
+    const mod = this.runtime.module(define);
+    return inject ? mod.derive(inject, this.main) : mod;
+  }
+
+  import(from, name, alias = name) {
+    this.main.import(name, alias, from);
+  }
+
   value(name) {
     return this.main.value(name);
   }
 
-  async load(name) {
-    if (!this.scopes.has(name)) {
-      const def = await import(_api(name));
-      this.scopes.set(name, this.runtime.module(def.default));
-    }
-    return this.scopes.get(name);
-  }
-
-  // TODO: viewof, mutable specifiers
-  async import(scope, spec) {
-    const { source, injections, specifiers } = spec;
-    const inject = (injections || []).map(s => {
-      const name = s.imported.name;
-      const alias = s.local.name;
-      return name === alias ? name : { name, alias };
-    });
-
-    const mod = (await this.load(source.value)).derive(inject, scope);
-
-    specifiers.forEach(({ imported, local }) => {
-      scope.import(imported.name, local.name, mod);
+  define(defs, observer) {
+    const mods = new Map;
+    defs.forEach(def => {
+      if (def.module) {
+        const [id, define, inject] = def.module;
+        mods.set(id, this.module(define, inject));
+      } else if (def.import) {
+        const [id, name, alias] = def.import;
+        this.import(mods.get(id), name, alias);
+      } else if (def.define) {
+        const [name, inputs, defn] = def.define;
+        this.variable(name, defn, inputs, observer(def));
+      }
     });
   }
 
-  async define(cellCode, observer = undefined, options) {
-    const scope = this.main;
-    const cell = compile(cellCode, options);
+  handler(id) {
+    return async (e) => {
+      // retrieve handler and variables from runtime
+      const [handler, vars] = await this.value(id);
+      const values = await Promise.all(vars.map(name => this.value(name)));
 
-    if (cell.import) {
-      await this.import(scope, cell.body);
-      return;
+      // populate proxy object with variable values
+      const proxy = Object.create(null);
+      values.forEach((value, i) => proxy[vars[i]] = value);
+
+      // invoke event handler
+      await handler(proxy)(e);
+
+      // propagate proxied assignments back to the runtime
+      values.forEach((value, i) => {
+        const name = vars[i];
+        if (value !== proxy[name]) {
+          this.redefine(name, proxy[name]);
+        }
+      });
     }
-
-    const { viewof, mutable, name, inputs, defn } = cell;
-    if (viewof) {
-      scope.variable(observer).define(_viewof(name), inputs, defn);
-      scope.variable().define(name, ['Generators', _viewof(name)], (G, _) => G.input(_));
-    } else if (mutable) {
-      scope.define(_initial(name), inputs, defn);
-      scope.variable().define(_mutable(name), ['Mutable', _initial(name)], (M, _) => new M(_));
-      scope.variable(observer).define(name, [_mutable(name)], _ => _.generator);
-    } else if (name) {
-      scope.variable(observer).define(name, inputs, defn);
-    } else {
-      scope.variable(observer).define(inputs, defn);
-    }
-  }
-
-  handler(handlerCode) {
-    return eventHandler(this, handlerCode);
   }
 }

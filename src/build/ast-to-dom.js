@@ -1,12 +1,11 @@
 import { aliasComponent, aliasProperty } from './alias.js';
-import { bindAttr } from './bind-attr.js';
-import { bindHandler } from './bind-handler.js';
 
-export function astToDOM(ast, runtime) {
-  return createNode(ast, runtime);
+export function astToDOM(ast) {
+  const ctx = { attrs: [], events: [] };
+  return { node: createNode(ast, ctx), ...ctx };
 }
 
-function createNode(ast, runtime) {
+function createNode(ast, ctx) {
   const type = ast.type;
   const name = aliasComponent(ast.name);
   const props = ast.properties;
@@ -23,16 +22,16 @@ function createNode(ast, runtime) {
     const key = aliasProperty(propKey);
 
     if (type === 'variable' || type === 'expression') {
-      bindAttr(runtime, node, key, value);
-    } else if (type === 'handler') {
-      bindHandler(runtime, node, key, value);
+      ctx.attrs.push([node, key, value]);
+    } else if (type === 'event') {
+      ctx.events.push([node, key, value]);
     } else {
       node.setAttribute(key, value);
     }
   }
 
   children.forEach(child => {
-    node.appendChild(createNode(child, runtime));
+    node.appendChild(createNode(child, ctx));
   });
 
   return node;

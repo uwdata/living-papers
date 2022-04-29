@@ -19,8 +19,7 @@
     "test:dev": "wtr",
     "test:watch": "wtr --watch",
     "test:prod": "MODE=prod wtr",
-    "test:prod:watch": "MODE=prod wtr --watch",
-    "checksize": "rollup -c ; cat bundle.js | gzip -9 | wc -c ; rm bundle.js"
+    "test:prod:watch": "MODE=prod wtr --watch"
   },
   "dependencies": {
     "@observablehq/parser": "^6.0.0",
