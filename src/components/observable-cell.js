@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import { UnsafeRuntime } from '../observable/runtime-unsafe.js';
+import { UnsafeRuntime } from '../runtime/runtime-unsafe.js';
 import { clearChildren } from '../util/clear-children.js';
 
 const PENDING = 'pending';
@@ -94,5 +94,3 @@ async function register(cells) {
     await UnsafeRuntime.instance().defineUnsafe(cell);
   }
 }
-
-window.customElements.define('obs-cell', ObservableCell);

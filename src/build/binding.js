@@ -41,7 +41,7 @@ class Binding {
     cell.addEventListener('change', async () => {
       const next = cell.value;
       if (next === prev) return;
-      if (prev) this.delete(ctx, name, prev);
+      if (prev) this.delete(prev);
       this.add(prev = next, event, valueof);
     });
     return this;

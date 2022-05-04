@@ -5,18 +5,23 @@
     <title>Component Tests</title>
     <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="../node_modules/lit/polyfill-support.js"></script>
-    <script type="module" src="../src/components/observable-cell.js"></script>
-    <script type="module" src="../src/components/tex-math.js"></script>
-    <script type="module" src="../src/components/tex-equation.js"></script>
-    <script type="module" src="../src/components/dynamic-text.js"></script>
-    <script type="module" src="../src/components/code-block.js"></script>
+    <script type="module">
+      import { ObservableCell } from '../src/components/observable-cell.js';
+      import { TexMath } from '../src/components/tex-math.js';
+      import { TexEquation } from '../src/components/tex-equation.js';
+      import { RangeText } from '../src/components/range-text.js';
+      import { CodeBlock } from '../src/components/code-block.js';
+      import { UnsafeRuntime } from "../src/runtime/runtime-unsafe.js";
+      window.customElements.define('obs-cell', ObservableCell);
+      window.customElements.define('tex-math', TexMath);
+      window.customElements.define('tex-equation', TexEquation);
+      window.customElements.define('range-text', RangeText);
+      window.customElements.define('code-block', CodeBlock);
+      window.runtime = UnsafeRuntime.instance();
+    </script>
     <style>
       body { max-width: 800px; }
     </style>
-    <script type="module">
-      import { UnsafeRuntime } from "../src/observable/runtime-unsafe.js";
-      window.runtime = UnsafeRuntime.instance();
-    </script>
   </head>
   <body>
     <h2>Observable Cells</h2>
@@ -34,8 +39,8 @@
 
     <hr/><h2>Code Block</h2>
     <div>
-      <code-block>
-const x = 1;
+      <code-block language="javascript">
+let x = 1;
 ++x
       </code-block>
     </div>
@@ -43,8 +48,8 @@ const x = 1;
     <hr/><h2>Multi-Way Binding</h2>
     <div>
       Variable: <obs-cell code="v = 0"></obs-cell><br/>
-      Drag me: <dynamic-text id="dt" value="20"></dynamic-text><br/>
-      Or me: <dynamic-text id="ot" value="25"></dynamic-text><br/>
+      Drag me: <range-text id="dt" value="20"></range-text><br/>
+      Or me: <range-text id="ot" value="25"></range-text><br/>
       <obs-cell id="r0" code="viewof r0 = Inputs.range([-1000, 1000], {step:1, value:-5})"></obs-cell>
       <obs-cell id="r1" code="viewof r1 = Inputs.range([-1000, 1000], {step:1, value:10})"></obs-cell>
       Range Value Observers: [<obs-cell code="r0"></obs-cell>, <obs-cell code="r1"></obs-cell>]

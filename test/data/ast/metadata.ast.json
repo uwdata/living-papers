@@ -1,0 +1,43 @@
+{
+  "metadata": {
+    "author": [
+      {
+        "name": "First Second",
+        "org": "English"
+      },
+      {
+        "name": "Erste Zweite",
+        "org": "Deutsch"
+      }
+    ],
+    "title": {
+      "type": "component",
+      "name": "span",
+      "children": [
+        {
+          "type": "textnode",
+          "value": "My "
+        },
+        {
+          "type": "component",
+          "name": "em",
+          "children": [
+            {
+              "type": "textnode",
+              "value": "article"
+            }
+          ]
+        },
+        {
+          "type": "textnode",
+          "value": " title"
+        }
+      ]
+    },
+    "version": "1"
+  },
+  "article": {
+    "type": "component",
+    "name": "article"
+  }
+}

@@ -3,12 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <title>Compile AST to HTML</title>
-    <script type="module" src="../src/index.js"></script>
     <script type="module">
-      import { astMountHTML, buildArticle } from '../src/index.js';
-      fetch('../test/ast-observable.json')
+      import { CellView } from '../src/components/cell-view.js';
+      import { TexMath } from '../src/components/tex-math.js';
+      import { TexEquation } from '../src/components/tex-equation.js';
+      import { astMountHTML } from '../src/build/ast-to-html.js';
+      import { article } from '../src/build/article.js';
+      window.customElements.define('cell-view', CellView);
+      window.customElements.define('tex-math', TexMath);
+      window.customElements.define('tex-equation', TexEquation);
+      fetch('../test/data/ast/observable.ast.json')
         .then(res => res.json())
-        .then(ast => buildArticle(ast, { builder: astMountHTML }))
+        .then(ast => article(ast, { builder: astMountHTML }))
         .then(root => document.body.appendChild(root));
     </script>
   </head>

@@ -1,0 +1,134 @@
+{
+  "metadata": {
+    "author": [
+      {
+        "name": "Living Papers Team",
+        "org": "University of Washington"
+      }
+    ],
+    "bibliography": "references.bib",
+    "title": "Citation Test"
+  },
+  "article": {
+    "type": "component",
+    "name": "article",
+    "children": [
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Did you read "
+          },
+          {
+            "type": "component",
+            "name": "cite-ref",
+            "properties": {
+              "key": {
+                "type": "value",
+                "value": "Scott:1985"
+              },
+              "mode": {
+                "type": "value",
+                "value": "inline-author"
+              }
+            }
+          },
+          {
+            "type": "textnode",
+            "value": "? It was part of the reading list "
+          },
+          {
+            "type": "component",
+            "name": "cite-list",
+            "children": [
+              {
+                "type": "component",
+                "name": "cite-ref",
+                "properties": {
+                  "key": {
+                    "type": "value",
+                    "value": "Scott:1985"
+                  }
+                }
+              },
+              {
+                "type": "component",
+                "name": "cite-ref",
+                "properties": {
+                  "key": {
+                    "type": "value",
+                    "value": "Jones:1983"
+                  }
+                }
+              },
+              {
+                "type": "component",
+                "name": "cite-ref",
+                "properties": {
+                  "key": {
+                    "type": "value",
+                    "value": "Silverman:1982"
+                  }
+                }
+              },
+              {
+                "type": "component",
+                "name": "cite-ref",
+                "properties": {
+                  "key": {
+                    "type": "value",
+                    "value": "Wand:1994"
+                  }
+                }
+              },
+              {
+                "type": "component",
+                "name": "cite-ref",
+                "properties": {
+                  "key": {
+                    "type": "value",
+                    "value": "Wells:1986"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": "."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "I also liked "
+          },
+          {
+            "type": "component",
+            "name": "cite-ref",
+            "properties": {
+              "doi": {
+                "type": "value",
+                "value": "10.1145/3242587.3242600"
+              },
+              "mode": {
+                "type": "value",
+                "value": "inline-author"
+              }
+            }
+          },
+          {
+            "type": "textnode",
+            "value": "!"
+          }
+        ]
+      }
+    ]
+  }
+}

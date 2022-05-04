@@ -1,21 +1,22 @@
 import { aliasComponent, aliasProperty } from './alias.js';
 
 export function astToDOM(ast) {
-  const ctx = { attrs: [], events: [] };
+  const ctx = { attrs: [], events: [], tags: new Set };
   return { node: createNode(ast, ctx), ...ctx };
 }
 
 function createNode(ast, ctx) {
   const type = ast.type;
-  const name = aliasComponent(ast.name);
-  const props = ast.properties;
-  const children = ast.children || [];
 
   if (type === 'textnode') {
     return document.createTextNode(ast.value);
   }
 
+  const name = aliasComponent(ast.name);
+  const props = ast.properties;
+  const children = ast.children || [];
   const node = document.createElement(name);
+  ctx.tags.add(name);
 
   for (const propKey in props) {
     const { type, value } = props[propKey];

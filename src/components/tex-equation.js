@@ -5,11 +5,7 @@ export class TexEquation extends TexMath {
   static get properties() {
     return {
       type: {type: String},
-      nonumber: {type: Boolean},
-      code: {type: String},
-      leqno: {type: Boolean},
-      fleqn: {type: Boolean},
-      minRuleThickness: {type: Number}
+      nonumber: {type: Boolean}
     };
   }
 
@@ -25,5 +21,3 @@ export class TexEquation extends TexMath {
     return `\\begin{${cmd}}\n${this.code}\n\\end{${cmd}}`;
   }
 }
-
-window.customElements.define('tex-equation', TexEquation);

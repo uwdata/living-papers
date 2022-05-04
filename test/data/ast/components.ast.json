@@ -1,0 +1,363 @@
+{
+  "metadata": {},
+  "article": {
+    "type": "component",
+    "name": "article",
+    "children": [
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "figure"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Figure"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "figure",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "dune"
+          },
+          "class": {
+            "type": "value",
+            "value": "figure page"
+          }
+        },
+        "children": [
+          {
+            "type": "component",
+            "name": "p",
+            "children": [
+              {
+                "type": "component",
+                "name": "image",
+                "properties": {
+                  "width": {
+                    "type": "value",
+                    "value": "100%"
+                  },
+                  "height": {
+                    "type": "value",
+                    "value": "100px"
+                  },
+                  "alt": {
+                    "type": "value",
+                    "value": "Panorama of a sand dune in Belgium"
+                  },
+                  "src": {
+                    "type": "value",
+                    "value": "https://upload.wikimedia.org/wikipedia/commons/d/df/Panorama_depanne.jpg"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "caption",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "Coastal dunes in\n"
+              },
+              {
+                "type": "component",
+                "name": "link",
+                "properties": {
+                  "href": {
+                    "type": "value",
+                    "value": "https://en.wikipedia.org/wiki/De_Panne"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "De Panne"
+                  }
+                ]
+              },
+              {
+                "type": "textnode",
+                "value": ", Belgium"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "figure",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "wave"
+          },
+          "class": {
+            "type": "value",
+            "value": "figure"
+          }
+        },
+        "children": [
+          {
+            "type": "component",
+            "name": "p",
+            "children": [
+              {
+                "type": "component",
+                "name": "image",
+                "properties": {
+                  "height": {
+                    "type": "value",
+                    "value": "100px"
+                  },
+                  "alt": {
+                    "type": "value",
+                    "value": "Animation of a sound pressure wave"
+                  },
+                  "src": {
+                    "type": "value",
+                    "value": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Half-open_pipe_wave.gif/440px-Half-open_pipe_wave.gif"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "caption",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "Sound pressure standing wave in a half-open pipe\nplaying the 7th harmonic of the fundamental (n = 4)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "equation"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Equation"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "equation",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "eq"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "\\beta_2 x^2 + \\beta_1 x + \\beta_0"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "code"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Code"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "code-block",
+        "properties": {
+          "class": {
+            "type": "value",
+            "value": "js"
+          },
+          "language": {
+            "type": "value",
+            "value": "js"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "const x = { a: 1, b: [3, 4, 5] }"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "code-block",
+        "properties": {
+          "class": {
+            "type": "value",
+            "value": "sql"
+          },
+          "language": {
+            "type": "value",
+            "value": "sql"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "SELECT * FROM table\n  WHERE x > 5"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "code-block",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Code of unknown language ~ 42"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Inline, Python: "
+          },
+          {
+            "type": "component",
+            "name": "code",
+            "properties": {
+              "class": {
+                "type": "value",
+                "value": "python"
+              },
+              "language": {
+                "type": "value",
+                "value": "python"
+              },
+              "inline": {
+                "type": "value",
+                "value": true
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "(7 * 5) + 2"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": "."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Inline, nameless: "
+          },
+          {
+            "type": "component",
+            "name": "code",
+            "properties": {
+              "inline": {
+                "type": "value",
+                "value": true
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "code % 5"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": "."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "inputs"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Inputs"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Range Text:\n"
+          },
+          {
+            "type": "component",
+            "name": "range-text",
+            "properties": {
+              "min": {
+                "type": "value",
+                "value": "-1000"
+              },
+              "max": {
+                "type": "value",
+                "value": "1000"
+              },
+              "step": {
+                "type": "value",
+                "value": "1"
+              },
+              "value": {
+                "type": "value",
+                "value": "100"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

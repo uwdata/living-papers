@@ -1,0 +1,175 @@
+article {
+	display: grid;
+	/* Looks like this: (sections '1' and '5' expand to fill available screen width)
+	|             full             |
+	| 1 | nav | main | margin | 5 |
+	*/
+	grid-template-columns: [full-start] 1fr [nav-start] minmax(100px, 150px) [main-start nav-end] 540px [main-end margin-start] 400px [margin-end] 1fr [full-end];
+	gap: 16px 40px;
+}
+
+/* remove left margin when `width <= 1270px` */
+@media (max-width: 1270px) {
+	.grid {
+		/* combining main and nav */
+		/* Looks like this:
+		|             full             |
+		| 1 | main = nav | margin | 4 |
+		*/
+		grid-template-columns: [full-start] 1fr [main-start nav-start] 540px [main-end nav-end margin-start] 400px [margin-end] 1fr [full-end];
+		column-gap: 20px;
+	}
+	nav.toc {
+		position: static;
+		grid-row: auto;
+		padding: 0;
+	}
+}
+
+/* remove right margin when `width <= 920px` */
+@media (max-width: 920px) {
+	.grid {
+		/* combining main and nav and margin */
+		/* Looks like this:
+		|             full             |
+		| 1 | main = nav = margin | 3 |
+		*/
+		grid-template-columns: [full-start] 1fr [main-start nav-start margin-start] minmax(auto, 540px) [main-end nav-end margin-end] 1fr [full-end];
+		column-gap: 10px;
+	}
+	.margin {
+		text-align: center;
+	}
+}
+
+article > *, .grid > * {
+	grid-column: main;
+}
+
+/* article {
+	margin-top: 1em;
+} */
+
+h1,
+h2 {
+	margin: 0;
+	padding: 3px;
+}
+
+h3 {
+	margin: 0;
+	padding: 1px;
+}
+
+.title {
+	font-size: 24pt;
+	font-weight: bold;
+}
+
+p, pre, ul, ol, table {
+	margin: 0;
+}
+
+section > p {
+	margin-bottom: 16px;
+}
+
+section > p:last-child {
+	margin-bottom: 0;
+}
+
+.header {
+	grid-column: main / margin;
+}
+
+.margin {
+	position: relative;
+	grid-column: margin;
+}
+
+.float-left {
+	float: left;
+	margin-right: 1em;
+}
+
+.float-right {
+	float: right;
+	margin-left: 1em;
+}
+
+.sticky {
+	position: sticky;
+	top: 10px;
+}
+
+.page {
+	text-align: justify;
+	grid-column: main / margin;
+}
+
+.full {
+	grid-column: full;
+	max-width: 100vw;
+}
+
+.full-image {
+	width: 100%;
+	object-fit: cover;
+	vertical-align: middle;
+}
+
+.full figcaption {
+	background: #eee;
+	padding: 16px 0;
+}
+
+.centered {
+	text-align: center;
+}
+
+.justify {
+	text-align: justify;
+}
+
+figure {
+	margin: 0;
+	padding: 5px 0;
+}
+
+figcaption {
+	font-weight: 600;
+}
+
+figure img {
+  max-width: 100%;
+}
+
+footer {
+	padding: 2em 0;
+	background: #eee;
+}
+
+.toc {
+	grid-column: nav;
+	grid-row: span 5; /* TODO: kind of sketchy, doesn't work as expected if there are < 5 rows */
+	align-self: start;
+	width: fit-content;
+	position: sticky;
+	top: 10px;
+	background: white;
+	border-radius: 8px;
+	padding: 16px;
+}
+
+.toc ol {
+	list-style: none;
+}
+
+.toc li {
+	padding-left: 16px;
+	margin: 8px 0;
+	border-left: 4px solid #ddd;
+}
+.toc li a {
+	text-decoration: none;
+}

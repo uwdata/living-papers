@@ -1,0 +1,323 @@
+{
+  "metadata": {
+    "title": "Observable Integration"
+  },
+  "article": {
+    "type": "component",
+    "name": "article",
+    "children": [
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "block-and-inline-elements"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Block and Inline Elements"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "cell-view",
+        "properties": {
+          "hide": {
+            "type": "value",
+            "value": "true"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "init = 128"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "component",
+            "name": "link",
+            "properties": {
+              "click": {
+                "type": "event",
+                "value": "init = (a + 1) % 256"
+              },
+              "href": {
+                "type": "value",
+                "value": "#"
+              },
+              "title": {
+                "type": "value",
+                "value": "Increment the initial value."
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "Increment the initial value"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "cell-view",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "viewof a = Inputs.range([0, 255], {step: 1, value: init})"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "cell-view",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "format = new Intl.NumberFormat().format\n---\nPlot.plot({\n  marginLeft: 50,\n  y: { grid: true },\n  marks: [\n    Plot.ruleX([a], { stroke: '#888' }),\n    Plot.line(d3.range(0, Math.max(256, a)), { x: d => d, y: d => d * d, stroke: 'steelblue', strokeWidth: 2 }),\n    Plot.dot([a], { x: d => d, y: d => d * d, fill: 'steelblue' })\n  ],\n  height: 300\n})"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "math",
+        "properties": {
+          "mode": {
+            "type": "value",
+            "value": "display"
+          },
+          "code": {
+            "type": "expression",
+            "value": "`x^2 = ${a*a}`"
+          }
+        }
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "The square of "
+          },
+          {
+            "type": "component",
+            "name": "cell-view",
+            "properties": {
+              "inline": {
+                "type": "value",
+                "value": "true"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "a"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": " is "
+          },
+          {
+            "type": "component",
+            "name": "cell-view",
+            "properties": {
+              "inline": {
+                "type": "value",
+                "value": "true"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "format(a * a)"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": "."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "multi-cell-code-blocks"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Multi-Cell Code Blocks"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "cell-view",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "import { aq } from '@uwdata/arquero'\n---\ndt = aq\n  .table({\n    k: ['a', 'b', 'c'],\n    v: [1, 2, 3]\n  })\n  .pivot('k', 'v')\n  .view()"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "hidden-cell"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Hidden Cell"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "One plus one is "
+          },
+          {
+            "type": "component",
+            "name": "cell-view",
+            "properties": {
+              "inline": {
+                "type": "value",
+                "value": "true"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "plus1(1)"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": "."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "cell-view",
+        "properties": {
+          "hide": {
+            "type": "value",
+            "value": "true"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "function plus1(x) { return x + 1; }"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "mutable-state"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Mutable State"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "cell-view",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "mutable z = 4\n---\nmd`The state value is ${z}.`"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "cell-view",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "{\n  const button = html`<button>Increment the state</button>`;\n  button.addEventListener('click', () => (mutable z++));\n  return button;\n}"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "generators"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Generators"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "The current time is "
+          },
+          {
+            "type": "component",
+            "name": "cell-view",
+            "properties": {
+              "inline": {
+                "type": "value",
+                "value": "true"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "{   for (let i = 0; ++i < 10;) {     yield Promises.delay(1000, new Date().toLocaleTimeString());   } }"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -61,5 +61,3 @@ export class CellView extends LitElement {
 function error(message) {
   return html`<span class="error">${message}</span>`;
 }
-
-window.customElements.define('cell-view', CellView);

@@ -1,12 +1,21 @@
-const aliasMap = new Map()
-  .set('observable', 'cell-view')
-  .set('math', 'tex-math')
-  .set('equation', 'tex-equation');
+const aliasMap = new Map([
+  ['caption', 'figcaption'],
+  ['code', 'code-block'],
+  ['cross-list', 'span'],
+  ['equation', 'tex-equation'],
+  ['image', 'img'],
+  ['math', 'tex-math'],
+  ['link', 'a'],
+  ['quote', 'span']
+]);
 
 export function aliasComponent(name) {
   return aliasMap.get(name) || name;
 }
 
 export function aliasProperty(name) {
-  return name === 'className' ? 'class' : name;
+  if (name === 'bind') {
+    return 'data-bind';
+  }
+  return name;
 }

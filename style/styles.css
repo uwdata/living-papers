@@ -1,0 +1,122 @@
+.normal {
+  font-weight: 400;
+}
+
+.demi {
+  font-weight: 600;
+}
+
+.bold, .strong {
+  font-weight: 700;
+}
+
+.mono, .code {
+  font-family: monospace;
+}
+
+.em, .emph, .italic {
+  font-style: italic;
+}
+
+.highlight {
+  background-color: #ff0;
+}
+
+.strike {
+  text-decoration: line-through;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.smallcaps {
+  font-variant: small-caps;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}
+
+.center {
+  text-align: center;
+}
+
+.justify {
+  text-align: justify;
+}
+
+.hide {
+  display: none;
+}
+
+.quote-single::before {
+  content: "‘";
+}
+.quote-single::after {
+  content: "’";
+}
+.quote-double::before {
+  content: "“";
+}
+.quote-double::after {
+  content: "”";
+}
+
+.note {
+  font-style: italic;
+}
+
+h1[data-counter]::before,
+h2[data-counter]::before,
+h3[data-counter]::before {
+  content: attr(data-counter) " ";
+}
+
+figure.figure > figcaption[data-counter]::before {
+  content: "Figure " attr(data-counter) ". ";
+}
+
+figure.table > figcaption[data-counter]::before {
+  content: "Table " attr(data-counter) ". ";
+}
+
+.xref.sec.full::before {
+  content: "§";
+}
+
+.xref.fig.full::before {
+  content: "Figure ";
+}
+
+.xref.tbl.full::before {
+  content: "Table ";
+}
+
+.xref.eqn.full::before {
+  content: "Equation ";
+}
+
+header .author-org {
+	font-style: italic;
+}
+
+header .author-org::before {
+  content: " · "
+}

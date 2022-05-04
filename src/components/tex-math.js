@@ -8,6 +8,7 @@ export class TexMath extends DependentElement {
       {
         name: 'katex',
         version: '0.15.3',
+        module: 'dist/katex.mjs',
         main: 'dist/katex.min.js',
         css: 'dist/katex.min.css'
       }
@@ -19,7 +20,7 @@ export class TexMath extends DependentElement {
       mode: {type: String},
       code: {type: String},
       leqno: {type: Boolean},
-      fleqn: {type: Boolean},
+      fleqn: {type: Boolean, converter: v => v !== 'false'},
       minRuleThickness: {type: Number}
     };
   }
@@ -68,5 +69,3 @@ export class TexMath extends DependentElement {
     return root;
   }
 }
-
-window.customElements.define('tex-math', TexMath);

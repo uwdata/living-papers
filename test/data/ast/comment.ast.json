@@ -1,0 +1,19 @@
+{
+  "metadata": {},
+  "article": {
+    "type": "component",
+    "name": "article",
+    "children": [
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Here is a  comment."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,8 +1,7 @@
-import { compile, handler } from '../observable/compile.js';
-import { _api, _initial, _mutable, _viewof } from '../observable/util.js';
-
-const OBSERVABLE = 'observable';
-const DATA_CELL = 'data-cell';
+import { setValueProperty } from '../ast/index.js';
+import { compile, handler } from '../runtime/compile.js';
+import { _api, _initial, _mutable, _viewof } from '../runtime/util.js';
+import { CELL_VIEW, DATA_CELL } from './constants.js';
 
 const isTrue = b => (b + '').toLowerCase() === 'true';
 
@@ -15,17 +14,13 @@ function gatherCode(ast) {
 }
 
 function gatherHelper(ast, parent, ctx) {
-  if (ast.name === OBSERVABLE) {
+  if (ast.name === CELL_VIEW) {
     const code = ast.children[0].value.split(/\n\s*---+\s*\n/g);
     ctx.cells.push(...code);
     if (isTrue(ast.properties?.hide?.value)) { // remove hidden cells
       parent.children = parent.children.filter(c => c !== ast);
     } else {
-      const props = ast.properties || (ast.properties = {});
-      props[DATA_CELL] = {
-        type: 'value',
-        value: ctx.cells.length - 1
-      };
+      setValueProperty(ast, DATA_CELL, ctx.cells.length - 1);
       ast.children = null;
     }
   } else {
@@ -55,14 +50,19 @@ function generateScript(ctx) {
     generate('cells', ctx.cells, compile),
     generate('attrs', ctx.attrs, compile),
     generate('event', ctx.events, handler)
-  ].join('\n\n');
+  ].filter(s => s).join('\n\n');
 }
 
 function generate(exportName, codeCells, compile) {
-  const cells = codeCells.map(code => compile(code));
   let code = '';
   let i = 0;
   let v = 0;
+
+  if (!codeCells?.length) {
+    return '';
+  }
+
+  const cells = codeCells.map(code => compile(code));
 
   // generate import statements
   cells.forEach(cell => {

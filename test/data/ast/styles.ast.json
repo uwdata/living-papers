@@ -1,0 +1,823 @@
+{
+  "metadata": {},
+  "article": {
+    "type": "component",
+    "name": "article",
+    "children": [
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "styles"
+          },
+          "class": {
+            "type": "value",
+            "value": "underline"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Styles"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h2",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "styled-spans"
+          },
+          "class": {
+            "type": "value",
+            "value": "lowercase smallcaps"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Styled spans"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "ul",
+        "children": [
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "span",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "strong"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "strong"
+                  }
+                ]
+              },
+              {
+                "type": "textnode",
+                "value": ", "
+              },
+              {
+                "type": "component",
+                "name": "span",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "bold"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "textnode",
+                "value": ", "
+              },
+              {
+                "type": "component",
+                "name": "span",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "demi"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "demi"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "span",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "mono"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "mono"
+                  }
+                ]
+              },
+              {
+                "type": "textnode",
+                "value": ", "
+              },
+              {
+                "type": "component",
+                "name": "span",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "code"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "code"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "span",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "em"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "em"
+                  }
+                ]
+              },
+              {
+                "type": "textnode",
+                "value": ", "
+              },
+              {
+                "type": "component",
+                "name": "span",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "emph"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "emph"
+                  }
+                ]
+              },
+              {
+                "type": "textnode",
+                "value": ", "
+              },
+              {
+                "type": "component",
+                "name": "span",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "italic"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "italic"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "span",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "strike"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "strike"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "span",
+                "properties": {
+                  "class": "underline"
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "underline"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "span",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "highlight"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "highlight"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "span",
+                "properties": {
+                  "class": "smallcaps"
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "smallcaps"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "span",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "lowercase"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "lowercase"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "span",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "uppercase"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "uppercase"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "span",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "capitalize"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "capitalize"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "span",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "smallcaps em highlight underline"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "mixed"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h2",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "styled-links"
+          },
+          "class": {
+            "type": "value",
+            "value": "lowercase smallcaps"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Styled links"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "ul",
+        "children": [
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "link",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "strong"
+                  },
+                  "href": {
+                    "type": "value",
+                    "value": "#"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "strong"
+                  }
+                ]
+              },
+              {
+                "type": "textnode",
+                "value": ", "
+              },
+              {
+                "type": "component",
+                "name": "link",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "bold"
+                  },
+                  "href": {
+                    "type": "value",
+                    "value": "#"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "textnode",
+                "value": ", "
+              },
+              {
+                "type": "component",
+                "name": "link",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "demi"
+                  },
+                  "href": {
+                    "type": "value",
+                    "value": "#"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "demi"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "link",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "mono"
+                  },
+                  "href": {
+                    "type": "value",
+                    "value": "#"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "mono"
+                  }
+                ]
+              },
+              {
+                "type": "textnode",
+                "value": ", "
+              },
+              {
+                "type": "component",
+                "name": "link",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "code"
+                  },
+                  "href": {
+                    "type": "value",
+                    "value": "#"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "code"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "link",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "em"
+                  },
+                  "href": {
+                    "type": "value",
+                    "value": "#"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "em"
+                  }
+                ]
+              },
+              {
+                "type": "textnode",
+                "value": ", "
+              },
+              {
+                "type": "component",
+                "name": "link",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "emph"
+                  },
+                  "href": {
+                    "type": "value",
+                    "value": "#"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "emph"
+                  }
+                ]
+              },
+              {
+                "type": "textnode",
+                "value": ", "
+              },
+              {
+                "type": "component",
+                "name": "link",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "italic"
+                  },
+                  "href": {
+                    "type": "value",
+                    "value": "#"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "italic"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "link",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "strike"
+                  },
+                  "href": {
+                    "type": "value",
+                    "value": "#"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "strike"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "link",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "underline"
+                  },
+                  "href": {
+                    "type": "value",
+                    "value": "#"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "underline"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "link",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "highlight"
+                  },
+                  "href": {
+                    "type": "value",
+                    "value": "#"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "highlight"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "link",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "smallcaps"
+                  },
+                  "href": {
+                    "type": "value",
+                    "value": "#"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "smallcaps"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "link",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "lowercase"
+                  },
+                  "href": {
+                    "type": "value",
+                    "value": "#"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "lowercase"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "link",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "uppercase"
+                  },
+                  "href": {
+                    "type": "value",
+                    "value": "#"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "uppercase"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "link",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "capitalize"
+                  },
+                  "href": {
+                    "type": "value",
+                    "value": "#"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "capitalize"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "component",
+                "name": "link",
+                "properties": {
+                  "class": {
+                    "type": "value",
+                    "value": "smallcaps em highlight underline"
+                  },
+                  "href": {
+                    "type": "value",
+                    "value": "#"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "mixed"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,373 @@
+{
+  "metadata": {
+    "title": "Cross-References"
+  },
+  "article": {
+    "type": "component",
+    "name": "article",
+    "children": [
+      {
+        "type": "component",
+        "name": "figure",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "teaser"
+          },
+          "class": {
+            "type": "value",
+            "value": "figure"
+          }
+        },
+        "children": [
+          {
+            "type": "component",
+            "name": "p",
+            "children": [
+              {
+                "type": "component",
+                "name": "image",
+                "properties": {
+                  "alt": {
+                    "type": "value",
+                    "value": "IDL logo"
+                  },
+                  "src": {
+                    "type": "value",
+                    "value": "http://idl.cs.washington.edu/static/images/logo/idl-logo.png"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "caption",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "The IDL Logo."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "intro"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Introduction"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Introductory text, see "
+          },
+          {
+            "type": "component",
+            "name": "cross-ref",
+            "properties": {
+              "type": {
+                "type": "value",
+                "value": "fig"
+              },
+              "xref": {
+                "type": "value",
+                "value": "teaser"
+              }
+            }
+          },
+          {
+            "type": "textnode",
+            "value": "."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "relwork"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Related Work"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "This relates to the content of "
+          },
+          {
+            "type": "component",
+            "name": "cross-ref",
+            "properties": {
+              "type": {
+                "type": "value",
+                "value": "sec"
+              },
+              "xref": {
+                "type": "value",
+                "value": "methods"
+              }
+            }
+          },
+          {
+            "type": "textnode",
+            "value": "."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h2",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "some"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Some Stuff"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "equation",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "sch"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "i\\hbar \\frac{\\partial \\Psi}{\\partial t} = -\\frac{\\hbar^2}{2m}\n\\frac{\\partial^2 \\Psi}{\\partial x^2} + V \\Psi"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "component",
+            "name": "cross-ref",
+            "properties": {
+              "type": {
+                "type": "value",
+                "value": "eqn"
+              },
+              "xref": {
+                "type": "value",
+                "value": "sch"
+              }
+            }
+          },
+          {
+            "type": "textnode",
+            "value": " demonstrates this clearly."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "equation",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "x2"
+          },
+          "nonumber": {
+            "type": "value",
+            "value": "true"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "y = x^2"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "The "
+          },
+          {
+            "type": "component",
+            "name": "link",
+            "properties": {
+              "href": {
+                "type": "value",
+                "value": "#x2"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "next equation"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": " has no number."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h2",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "other"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Other Stuff"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "We can also cite Fig. "
+          },
+          {
+            "type": "component",
+            "name": "cross-ref",
+            "properties": {
+              "type": {
+                "type": "value",
+                "value": "fig"
+              },
+              "xref": {
+                "type": "value",
+                "value": "teaser"
+              },
+              "short": {
+                "type": "value",
+                "value": true
+              }
+            }
+          },
+          {
+            "type": "textnode",
+            "value": " by number only."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "methods"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Methods"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Drawing on the ideas of "
+          },
+          {
+            "type": "component",
+            "name": "cross-ref",
+            "properties": {
+              "type": {
+                "type": "value",
+                "value": "sec"
+              },
+              "xref": {
+                "type": "value",
+                "value": "some"
+              }
+            }
+          },
+          {
+            "type": "textnode",
+            "value": "."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "acknowledgements"
+          },
+          "nonumber": {
+            "type": "value",
+            "value": "true"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Acknowledgements"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "This section has no number."
+          }
+        ]
+      }
+    ]
+  }
+}

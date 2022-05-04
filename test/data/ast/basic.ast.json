@@ -1,0 +1,409 @@
+{
+  "metadata": {},
+  "article": {
+    "type": "component",
+    "name": "article",
+    "children": [
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "markdown"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Markdown"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Here is a paragraph with "
+          },
+          {
+            "type": "component",
+            "name": "em",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "italics"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": ", "
+          },
+          {
+            "type": "component",
+            "name": "strong",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "bold"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": ", "
+          },
+          {
+            "type": "component",
+            "name": "strong",
+            "children": [
+              {
+                "type": "component",
+                "name": "em",
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "both"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": ".\nand some code "
+          },
+          {
+            "type": "component",
+            "name": "code",
+            "properties": {
+              "inline": {
+                "type": "value",
+                "value": true
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "x = Math.PI * r * r"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": "."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Here is another paragraph, with x"
+          },
+          {
+            "type": "component",
+            "name": "sup",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": ", y"
+          },
+          {
+            "type": "component",
+            "name": "sub",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "0"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": ", and "
+          },
+          {
+            "type": "component",
+            "name": "s",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "zzz"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": "."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Here are someone’s "
+          },
+          {
+            "type": "component",
+            "name": "quote",
+            "properties": {
+              "class": {
+                "type": "value",
+                "value": "quote-single"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "single quotes"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": " and "
+          },
+          {
+            "type": "component",
+            "name": "quote",
+            "properties": {
+              "class": {
+                "type": "value",
+                "value": "quote-double"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "double quotes"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": " from the ’90s."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h2",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "links"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Links"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Here is a "
+          },
+          {
+            "type": "component",
+            "name": "link",
+            "properties": {
+              "href": {
+                "type": "value",
+                "value": "http://www.example.com/"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "hyperlink"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": ".\nHere is a "
+          },
+          {
+            "type": "component",
+            "name": "link",
+            "properties": {
+              "href": {
+                "type": "value",
+                "value": "example.com"
+              },
+              "title": {
+                "type": "value",
+                "value": "Example"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "titled link"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": ".\nHere is a "
+          },
+          {
+            "type": "component",
+            "name": "span",
+            "properties": {
+              "class": {
+                "type": "value",
+                "value": "bold"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "styled span"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": "."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h3",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "lists"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Lists"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "ul",
+        "children": [
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "Item 1"
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "Item 2"
+              },
+              {
+                "type": "component",
+                "name": "ul",
+                "children": [
+                  {
+                    "type": "component",
+                    "name": "li",
+                    "children": [
+                      {
+                        "type": "textnode",
+                        "value": "Item 2a"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "component",
+                    "name": "li",
+                    "children": [
+                      {
+                        "type": "textnode",
+                        "value": "Item 2b"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "Item 3"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "ol",
+        "children": [
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "Ordered 1"
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "Ordered 2"
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "li",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "Ordered 3"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

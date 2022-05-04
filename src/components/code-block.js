@@ -17,13 +17,15 @@ export class CodeBlock extends DependentElement {
   static get properties() {
     return {
       code: {type: String},
+      inline: {type: Boolean},
       language: {type: String}
     };
   }
 
   constructor() {
     super();
-    this.language = 'javascript';
+    this.inline = false;
+    this.language = null;
   }
 
   createRenderRoot() {
@@ -44,11 +46,11 @@ export class CodeBlock extends DependentElement {
     const hljs = this.getDependency('@uwdata/highlightjs');
     if (!hljs || !this.code) return;
 
-    const { value } = hljs.highlight(this.code, { language: this.language });
-    const root = document.createElement('pre');
-    root.innerHTML = value;
+    const { language, inline } = this;
+    const root = document.createElement(inline ? 'code' : 'pre');
+    language
+      ? (root.innerHTML = hljs.highlight(this.code, { language }).value)
+      : (root.innerText = this.code);
     return root;
   }
 }
-
-window.customElements.define('code-block', CodeBlock);

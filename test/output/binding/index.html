@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
+    <meta charset="utf-8" />
+    <title>Living Paper</title>
+    <meta property="og:title" content="Living Paper" />
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="Living Papers Article" />
+    <meta property="description" content="Living Papers Article" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <article><header><h1 role="banner">Multi-Way Input Binding</h1></header><p>Variable: <cell-view inline="true" data-cell="0"></cell-view></p><p>Drag me: <range-text min="0" max="255" step="1" data-bind="x"></range-text></p><p>Or me: <range-text min="0" max="255" step="1" data-bind="x"></range-text></p><cell-view data-bind="x" data-cell="1"></cell-view><cell-view data-bind="x" inline="true" data-cell="2"></cell-view><p><a data-attr="1" href="#">Reset</a></p></article>
+    <script type="module" src="./bundle.js"></script>
+  </body>
+</html>

@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit';
-import { InputEvent } from './event/input-event.js';
+import { InputEvent } from './events/input-event.js';
 
-export class DynamicText extends LitElement {
+export class RangeText extends LitElement {
   static get styles() {
     return css`
       :host {
@@ -75,5 +75,3 @@ export class DynamicText extends LitElement {
     return html`<span title=${this.title}>${this.value}</span>`;
   }
 }
-
-window.customElements.define('dynamic-text', DynamicText);

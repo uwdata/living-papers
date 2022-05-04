@@ -1,5 +1,6 @@
 import { aliasComponent, aliasProperty } from './alias.js';
 import { htmlEscape } from '../util/html-escape.js';
+import { DATA_ATTR } from './constants.js';
 
 export function astMountHTML(ast) {
   const { html, attrs, events } = astToHTML(ast);
@@ -9,25 +10,27 @@ export function astMountHTML(ast) {
 }
 
 export function astToHTML(ast) {
-  const ctx = { _id: 0, attrs: [], events: [] };
-  const html = renderNode(ast, ctx);
-  return { html, ...ctx };
+  const ctx = {
+    _id: 0,
+    attrs: [],
+    events: [],
+    tags: new Set
+  };
+  return { html: renderNode(ast, ctx), ...ctx };
 }
 
 function renderNode(node, ctx) {
   const type = node.type;
-  const name = aliasComponent(node.name);
-  const props = node.properties;
-  const children = node.children || [];
 
   if (type === 'textnode') {
     return htmlEscape(node.value);
   }
 
-  return '<' + name
-    + renderProps(props, ctx)
-    + '>'
-    + children.map(c => renderNode(c, ctx)).join('')
+  const name = aliasComponent(node.name);
+  ctx.tags.add(name); // track all tags used
+
+  return '<' + name + renderProps(node.properties, ctx) + '>'
+    + (node.children || []).map(c => renderNode(c, ctx)).join('')
     + '</' + name + '>';
 }
 
@@ -35,28 +38,23 @@ function renderProps(props, ctx) {
   let str = '';
   if (!props) return str;
 
-  let id = props.id ? props.id.value : null;
+  let id = null;
+  const _id = () => id || (id = `${++ctx._id}`);
 
   for (const propKey in props) {
     const { type, value } = props[propKey];
     const key = aliasProperty(propKey);
 
     if (type === 'variable' || type === 'expression') {
-      if (id == null) {
-        id = `_id${++ctx._id}`;
-      }
-      ctx.attrs.push([id, key, value]);
+      ctx.attrs.push([_id(), key, value]);
     } else if (type === 'event') {
-      if (id == null) {
-        id = `_id${++ctx._id}`;
-      }
-      ctx.events.push([id, key, value]);
+      ctx.events.push([_id(), key, value]);
     } else {
-      str += ` ${key}="${value}"`;
+      str += ` ${key}="${htmlEscape(value + '')}"`;
     }
   }
-  if (!props.id && id !== null) {
-    str = ` id="${id}"` + str;
+  if (id !== null) {
+    str = ` ${DATA_ATTR}="${id}"` + str;
   }
   return str;
 }
