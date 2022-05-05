@@ -4,7 +4,7 @@ import {
 } from '../ast/index.js';
 
 import {
-  append, codeAttributes, extractText, isDisplayMath, isInterpolated,
+  append, extractText, isDisplayMath, isInterpolated,
   getMathType, getQuoteType, getListType, getMarkerType,
   getTableCellAlign, getCiteMode
 } from './parse-util.js';
@@ -348,7 +348,7 @@ export class PandocASTParser {
     // TODO output two components if both presented and evaluated
     return createComponentNode(
       name,
-      parseProperties(name === 'code-block' ? codeAttributes(attrs) : attrs),
+      parseProperties(attrs),
       [ createTextNode(content) ]
     );
   }
@@ -502,10 +502,9 @@ export class PandocASTParser {
         [ createTextNode(content.slice(3)) ]
       );
     } else {
-      // TODO?: custom component
       return createComponentNode(
         'code',
-        parseProperties(codeAttributes(attrs), { inline: true }),
+        parseProperties(attrs),
         [ createTextNode(content) ]
       );
     }

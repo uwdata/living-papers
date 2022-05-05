@@ -94,11 +94,3 @@ export function getCiteMode(mode) {
       throw new Error(`Unrecognized citation mode: ${mode}.`);
   }
 }
-
-export function codeAttributes(attrs) {
-  const [id, classes, props] = attrs;
-  if (classes.length && props.findIndex(p => p[0] === 'language') < 0) {
-    return [id, classes, [['language', classes[0]]].concat(props)];
-  }
-  return attrs;
-}

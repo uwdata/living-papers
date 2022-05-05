@@ -79,12 +79,6 @@
           {
             "type": "component",
             "name": "code",
-            "properties": {
-              "inline": {
-                "type": "value",
-                "value": true
-              }
-            },
             "children": [
               {
                 "type": "textnode",
