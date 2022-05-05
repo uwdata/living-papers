@@ -18,6 +18,10 @@
 ){ height=100px }
 :::
 
+# Notes
+
+Here is a sentence.^[With a footnote!]
+
 # Equation
 
 ~~~ equation {#eq}

@@ -79,10 +79,6 @@
   content: "”";
 }
 
-.note {
-  font-style: italic;
-}
-
 h1[data-counter]::before,
 h2[data-counter]::before,
 h3[data-counter]::before {
@@ -119,4 +115,24 @@ header .author-org {
 
 header .author-org::before {
   content: " · "
+}
+
+.note {
+  counter-increment: notes;
+}
+
+.note > sup::before {
+  content: counter(notes);
+}
+
+.note-content::before {
+  content: counter(notes) ". ";
+}
+
+.note-content {
+  float: right;
+  width: 200px;
+  clear: right;
+  margin: 0.5ex -300px 1em 0;
+  text-align: left;
 }

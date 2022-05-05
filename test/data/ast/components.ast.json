@@ -150,6 +150,48 @@
         "properties": {
           "id": {
             "type": "value",
+            "value": "notes"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Notes"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Here is a sentence."
+          },
+          {
+            "type": "component",
+            "name": "note",
+            "children": [
+              {
+                "type": "component",
+                "name": "p",
+                "children": [
+                  {
+                    "type": "textnode",
+                    "value": "With a footnote!"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
             "value": "equation"
           }
         },

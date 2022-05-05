@@ -551,7 +551,7 @@ export class PandocASTParser {
 
   parseNote(content) {
     return createComponentNode(
-      'foot-note',
+      'note',
       null,
       this.parseBlocks(content)
     );

@@ -2,7 +2,7 @@ import path from 'node:path';
 import { builtins, parseContext, numbered } from './config.js';
 import { bundle } from './bundle/bundle.js';
 import { parseMarkdown } from './parser/parse-markdown.js';
-import { citations, crossref, header } from './plugins/index.js';
+import { citations, crossref, header, notes } from './plugins/index.js';
 
 async function transformAST(ast, plugins, context) {
   for (const plugin of plugins) {
@@ -21,6 +21,7 @@ export async function compile(inputFile, options = {}) {
   // Apply AST transformation plugins
   const plugins = [
     crossref(numbered()),
+    notes,
     header,
     citations
   ];
