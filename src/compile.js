@@ -37,8 +37,6 @@ export async function compile(inputFile, options = {}) {
 
   const bundleOptions = {
     components: builtins(),
-    checksize: false,
-    minify: false,
     ...options
   };
 
