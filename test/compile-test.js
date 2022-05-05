@@ -9,6 +9,8 @@ function compileTest(input) {
   const outputDir = path.join('test/output', path.parse(input).name);
   return compile(inputFile, {
     outputDir,
+    checksize: false,
+    minify: false,
     debug: DEBUG
   });
 }
