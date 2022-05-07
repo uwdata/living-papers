@@ -22,7 +22,8 @@
     "@observablehq/runtime": "^4.19.0",
     "citation-js": "^0.5.7",
     "d3-require": "^1.2.4",
-    "lit": "^2.2.3"
+    "lit": "^2.2.3",
+    "node-fetch": "^3.2.4"
   },
   "devDependencies": {
     "@11ty/eleventy": "^0.12.1",

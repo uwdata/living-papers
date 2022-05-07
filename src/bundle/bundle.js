@@ -1,13 +1,14 @@
 import CleanCSS from 'clean-css';
-import fs from 'node:fs/promises';
 import path from 'node:path';
 import { URL, fileURLToPath } from 'node:url';
+import { mkdirp, readFile, rmrf, writeFile } from '../util/fs.js';
 import { astToHTML } from '../build/ast-to-html.js';
 import { astToScript } from '../build/ast-to-script.js';
 import { rollup } from './rollup.js';
 import { default as _template } from './template.js';
 
-export async function bundle(ast, options) {
+export async function bundle(article, options) {
+  const { metadata, article: ast } = article;
   const {
     components,
     template = _template,
@@ -44,6 +45,7 @@ export async function bundle(ast, options) {
   const entrypoint = entrypointScript({
     root: 'article',
     bind,
+    metadata,
     components: components.filter(c => tags.has(c.name)),
     runtime: !!script,
   });
@@ -71,14 +73,16 @@ export async function bundle(ast, options) {
 }
 
 async function css(styles) {
-  const files = await Promise.all(styles.map(f => fs.readFile(f, 'utf8')));
+  const files = await Promise.all(styles.map(f => readFile(f)));
   const css = new CleanCSS({ level: 2}).minify(files.join('\n'));
   return css.styles;
 }
 
-function entrypointScript({ root, bind, components, runtime }) {
+function entrypointScript({ root, bind, metadata, components, runtime }) {
   const src = fileURLToPath(new URL('..', import.meta.url));
   const script = [];
+  const refdata = metadata.references;
+  const hasRefs = refdata?.length > 0;
 
   components.forEach(({ exported, path }) => {
     script.push(`import { ${exported} } from '${path}';`);
@@ -90,35 +94,27 @@ import { ObservableRuntime } from '${src}runtime/runtime.js';
 import { hydrate } from '${src}build/hydrate.js';
 import * as module from './runtime.js';`);
   }
+  if (hasRefs) {
+    script.push(`import { reference } from '${src}/build/reference.js';`);
+  }
 
   components.forEach(({ name, exported }) => {
     script.push(`window.customElements.define('${name}', ${exported});`);
   });
 
-  if (runtime) {
+  if (runtime || hasRefs) {
     script.push(`window.addEventListener('DOMContentLoaded', () => {
-  hydrate(
-    new ObservableRuntime,
-    document.querySelector('${root}'),
-    module,
-    ${JSON.stringify(bind)}
-  );
-});`);
+  const root = document.querySelector('${root}');`);
+  }
+  if (hasRefs) {
+    script.push(`  reference(root, ${JSON.stringify(refdata)});`);
+  }
+  if (runtime) {
+    script.push(`  hydrate(new ObservableRuntime, root, module, ${JSON.stringify(bind)});`);
+  }
+  if (runtime || hasRefs) {
+    script.push(`});`);
   }
 
   return script.join('\n');
-}
-
-///////
-
-function mkdirp(path) {
-  return fs.mkdir(path, { recursive: true });
-}
-
-function rmrf(path) {
-  return fs.rm(path, { recursive: true, force: true });
-}
-
-function writeFile(path, data) {
-  return data ? fs.writeFile(path, data) : null;
 }

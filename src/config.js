@@ -12,7 +12,7 @@ export function parseContext() {
     ],
     fence: ['figure', 'table'],
     block: ['equation', 'cell-view', 'js'],
-    cite: ['doi'],
+    cite: ['doi', 's2id'],
     xref: ['sec', 'fig', 'tbl', 'eqn'],
     env: ['figure', 'table']
   };
@@ -24,7 +24,6 @@ export function builtins() {
     'cell-view',
     'cite-bib',
     'cite-ref',
-    'cite-list',
     'code-block',
     'cross-ref',
     'figure-env',

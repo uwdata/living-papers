@@ -1,15 +1,10 @@
+import fetch from 'node-fetch';
 import path from 'node:path';
 import { builtins, parseContext, numbered } from './config.js';
 import { bundle } from './bundle/bundle.js';
 import { parseMarkdown } from './parser/parse-markdown.js';
 import { citations, code, crossref, header, notes } from './plugins/index.js';
-
-async function transformAST(ast, plugins, context) {
-  for (const plugin of plugins) {
-    ast = await plugin(ast, context);
-  }
-  return ast;
-}
+import { cache } from './util/cache.js';
 
 export async function compile(inputFile, options = {}) {
   // Parse Markdown to initial AST
@@ -27,8 +22,10 @@ export async function compile(inputFile, options = {}) {
     citations
   ];
   const ast = await transformAST(article, plugins, {
+    cache: await cache(),
+    fetch,
     metadata,
-    INPUT_DIR: path.dirname(inputFile)
+    inputDir: path.dirname(inputFile)
   });
 
   if (options.debug) {
@@ -42,5 +39,12 @@ export async function compile(inputFile, options = {}) {
     ...options
   };
 
-  return bundle(ast, bundleOptions);
+  return bundle({ metadata, article: ast }, bundleOptions);
+}
+
+async function transformAST(ast, plugins, options) {
+  for (const plugin of plugins) {
+    ast = await plugin(ast, options);
+  }
+  return ast;
 }

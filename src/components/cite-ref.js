@@ -11,6 +11,7 @@ export class CiteRef extends LitElement {
 
   static get properties() {
     return {
+      key: {type: String},
       mode: {type: String},
       index: {type: Number},
       data: {type: Object},
@@ -24,11 +25,20 @@ export class CiteRef extends LitElement {
   }
 
   render() {
-    const { data, index, mode } = this;
-    const title = `${authors(data)} (${data.year}) ${data.title}. ${data.venue}.`;
-    const body = mode === 'inline-author' ? inlineAuthor(data) : index;
+    const { key, data, index, mode } = this;
+    const title = tooltip(data, key, index);
+    const body = (mode === 'inline-author'
+      ? (data ? inlineAuthor(data) : '???')
+      : index) || '???';
     return html`<span class="citation" title=${title}><slot name="prefix"></slot>${body}<slot name="suffix"></slot></span>`;
   }
+}
+
+function tooltip(data, key, index) {
+  return data
+    ? `${authors(data)} (${data.year}) ${data.title}. ${data.venue}.`
+    : !index ? `Unresolved citation: ${key}`
+    : null;
 }
 
 function authors(data, etal = 2) {
@@ -45,7 +55,7 @@ function authors(data, etal = 2) {
 
 // TODO: what if no author?
 function inlineAuthor(data) {
-  const { author, year } = data;
+  const { author } = data;
   let authors = author[0].family;
   if (author.length === 2) {
     authors += ` & ${author[1].family}`;

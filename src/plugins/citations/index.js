@@ -1,181 +1,186 @@
-import fs from 'node:fs/promises';
 import path from 'node:path';
 import {
-  createComponentNode, createTextNode, isComponentNode, getPropertyValue,
-  getProperties, getProperty, setValueProperty, queryNodes, visitNodes
+  createComponentNode, createTextNode, getPropertyValue,
+  setValueProperty, queryNodes, visitNodes, hasProperty
 } from '../../ast/index.js';
+import { readFile } from '../../util/fs.js';
+import { lookup } from './lookup.js';
+import { Citations } from './citations.js';
+import { scholarAPI } from './scholar-api.js';
 
-import { CitationManager } from './citation-manager.js';
-// import * as Scholar from './semantic-scholar.js';
-
-// TODO
-// Use newer AST lib, ESM once ready
-// Embed citation data as Idyll variable
-// Pull data from Semantic Scholar, embed as well.
-// Setup caching to avoid DOI, Semantic Scholar, etc., lookups
-
-/*
-SEMANTIC SCHOLAR DATA
-paperId - Always included
-externalIds
-url
-title - Included if no fields are specified
-abstract
-venue
-year
-referenceCount
-citationCount
---> authors
---> references
-
-> Citation tooltip
-> References: tooltip, links, show other works cited?
-*/
-
-const CITEREF = 'cite-ref';
-const CITELIST = 'cite-list';
-
-function isCite(node) {
-  return isComponentNode(node) && node.name === CITEREF;
-}
-
-function updateCite(node, id) {
-  setValueProperty(node, 'id', id);
-}
+const CITE_BIB = 'cite-bib';
+const CITE_REF = 'cite-ref';
+const CITE_LIST = 'cite-list';
 
 export default async function(ast, context) {
-  const { INPUT_DIR, metadata } = context;
-  // const INPUT_DIR = path.dirname(paths.IDYLL_INPUT_FILE);
-  // console.log(INPUT_DIR);
+  const { cache, fetch, inputDir, metadata } = context;
 
-  // reference collection
-  const citations = new CitationManager();
+  // extract all citation nodes in the AST
+  const nodes = queryNodes(ast, node => node.name === CITE_REF);
+  if (nodes.length === 0) return ast;
+
+  // collect bibliography files
   const sources = [];
-
   if (metadata.bibliography) {
-    sources.push.apply(sources, [metadata.bibliography].flat());
+    sources.push(...([metadata.bibliography].flat()));
   }
 
-  // collect references and citations
-  const cites = queryNodes(ast, isCite);
-
+  // load bibliography files
+  const bib = new Citations();
   for (const source of sources) {
-    const file = await fs.readFile(path.join(INPUT_DIR, source), 'utf-8');
-    await citations.add(file);
+    const file = await readFile(path.join(inputDir, source));
+    await bib.parse(file);
   }
 
-  const ids = new Set();
-  for (const cite of cites) {
-    const props = getProperties(cite);
-    if (props.doi) {
-      const key = props.doi.value;
-      // TODO validate against existing references
-      // TODO validate property value type
-      // TODO local caching
-      // extend bibliography
-      const ref = await CitationManager.doi(key);
-      const id = ref.id;
-      citations.add(ref);
-      ids.add(id);
-      updateCite(cite, id);
-    } else if (props.key) {
-      // TODO validate against references
-      // TODO validate property value type
-      const id = props.key.value;
-      ids.add(id);
-      updateCite(cite, id);
-    } else {
-      // TODO warn/error about citation properties
+  // collect citations used in article
+  const citations = await getCitations(nodes, bib, lookup(cache, fetch));
+
+  // set citation indices
+  const indices = citations.indices();
+  nodes.forEach(node => {
+    const id = getPropertyValue(node, 'key');
+    if (indices.has(id)) {
+      setValueProperty(node, 'index', 1 + indices.get(id));
+    }
+  });
+
+  // collect citation data to embed in article
+  const data = await citationData(citations, scholarAPI(cache, fetch));
+  metadata.references = data;
+
+  // add bibliography to AST
+  if (nodes.length) {
+    ast.children.push(createBibComponent(citations));
+  }
+
+  // sort citation lists in AST by ascending index
+  updateCitationLists(ast);
+
+  return ast;
+}
+
+async function getCitations(nodes, bib, lookup) {
+  const keys = new Set();
+  const refs = bib.mapOf('id');
+  const dois = bib.mapOf('DOI');
+  const s2ids = bib.mapOf('S2ID');
+
+  for (const node of nodes) {
+    let ref;
+
+    if (hasProperty(node, 'key')) {
+      const key = getPropertyValue(node, 'key');
+      if (ref = refs.get(key)) {
+        keys.add(key);
+      } else {
+        console.warn(`Citation key not found: ${key}`);
+      }
+    }
+
+    if (!ref && hasProperty(node, 'doi')) {
+      const doi = getPropertyValue(node, 'doi');
+      if (!(ref = dois.get(doi))) {
+        ref = await lookup.doi(doi);
+        if (ref) (dois.set(doi, ref), bib.add(ref));
+      }
+      if (ref) {
+        keys.add(ref.id);
+      } else {
+        console.warn(`Citation DOI lookup failed: ${doi}`);
+      }
+      setValueProperty(node, 'key', ref?.id || `doi:${doi}`);
+    }
+
+    if (!ref && hasProperty(node, 's2id')) {
+      const id = getPropertyValue(node, 's2id');
+      const s2id = (+id == id && id.length < 40) ? `CorpusID:${id}` : id;
+      if (!(ref = s2ids.get(s2id))) {
+        ref = await lookup.s2id(s2id);
+        if (ref) {
+          const doi = ref.DOI;
+          ref = dois.get(doi) || (dois.set(doi, ref), bib.add(ref), ref);
+          ref.S2ID = s2id;
+        }
+      }
+      if (ref) {
+        keys.add(ref.id);
+      } else {
+        console.warn(`Citation S2ID lookup failed: ${s2id}`);
+      }
+      setValueProperty(node, 'key', ref?.id || `s2id:${s2id}`);
     }
   }
 
   // filter and sort references
-  citations.subset(ids).sort();
-
-  // attempt to resolve semantic scholar ids
-  // TODO: local caching
-  // TODO: calculate output data for each citation here
-  // for (const ref of citations.data()) {
-    // console.log(ref.id, ref.S2ID);
-    // console.log('LOOKUP',
-    //   ref.title,
-    //   Object.keys(ref)
-    // );
-
-    // const results = ref.DOI
-    //   ? { data: [ { paperId: ref.DOI } ], total: 1 }
-    //   : await Scholar.lookup(ref);
-
-    // if (results.total > 0) {
-    //   ref.ssid = results.data[0].paperId;
-    //   ref.ssdata = await Scholar.paper(ref.ssid);
-    //   // console.log(ref.id, ref.title, ref.ssid);
-    // }
-  // }
-
-  // update citation components
-  for (const cite of cites) {
-    const id = getProperty(cite, 'id').value;
-    const ref = citations.get(id);
-    const data = {
-      title: ref.title + (ref.subtitle ? `: ${ref.subtitle}` : ''),
-      author: ref.author,
-      year: ref.issued ? ref.issued['date-parts'][0][0] : undefined,
-      venue: ref['container-title'],
-      doi: ref.DOI || undefined,
-      url: ref.URL
-    };
-    setValueProperty(cite, 'index', citations.indexOf(id));
-    setValueProperty(cite, 'data', JSON.stringify(data));
-    // setValueProperty(cite, 'ssid', ref.ssid || -1);
-    // setValueProperty(cite, 'data', `(${JSON.stringify(ref.ssdata)})`);
-    // console.log('CITE', cite.properties.data.value);
-  }
-
-  // update reference components
-  if (cites.length) {
-    ast.children.push(
-      createComponentNode(
-        'cite-bib',
-        null,
-        [ createBibliographyList(citations) ]
-      )
-    );
-  }
-  // for (const refs of references) {
-  //   refs.children = [
-  //     outputReferences(citations)
-  //   ];
-  // }
-
-  // TODO: make sorting optional
-  return sortCitationLists(ast);
+  return bib.subset(keys).sort();
 }
 
-function sortCitationLists(ast) {
+async function citationData(citations, api) {
+  const s2data = await scholarData(citations, api);
+
+  return citations.refs().map((ref, i) => {
+    const s2 = s2data[i] || {};
+    return {
+      id: ref.id,
+      doi: ref.DOI || s2.doi || undefined,
+      s2id: s2.paperId,
+      year: s2.year || ref.issued?.['date-parts'][0][0],
+      author: ref.author,
+      title: ref.title + (ref.subtitle ? `: ${ref.subtitle}` : ''),
+      venue: ref['container-title'] || s2.venue || undefined,
+      url: s2.url || ref.URL || undefined,
+      abstract: s2.abstract || undefined,
+      tldr: s2.tldr?.text
+    };
+  });
+}
+
+function scholarData(citations, api) {
+  function response(data) {
+    if (data.error) {
+      console.warn(`Semantic Scholar: ${data.error}`);
+      return;
+    }
+    return data;
+  }
+
+  // attempt to resolve semantic scholar ids
+  return Promise.all(
+    citations.refs().map(async ref => {
+      let data;
+      if (!data && ref.S2ID) {
+        data = response(await api.paper(ref.S2ID));
+      }
+      if (!data && ref.DOI) {
+        data = response(await api.paper(`DOI:${ref.DOI}`));
+      }
+      if (!data && ref.PMID) {
+        data = response(await api.paper(`PMID:${ref.PMID}`));
+      }
+      return data;
+    })
+  );
+}
+
+function updateCitationLists(ast) {
   visitNodes(ast, node => {
-    if (node.name !== CITELIST) return;
+    if (node.name !== CITE_LIST) return;
+    setValueProperty(node, 'class', CITE_LIST);
     node.children.sort(
       (a, b) => getPropertyValue(a, 'index') - getPropertyValue(b, 'index')
     );
+    node.children = node.children
+      .map((node, i) => i > 0 ? [ createTextNode(', '), node ] : node)
+      .flat();
   });
   return ast;
 }
 
-function createBibliographyList(refs) {
-  const data = refs.data();
+function createBibComponent(refs) {
   const lines = refs.bibliography();
   const list = createComponentNode('ol');
-
-  list.children = lines.map((text, index) => {
-    const li = createComponentNode('li', null, [ createTextNode(text) ]);
-    // const { url } = data[index].ssdata;
-    // const props = createProperties({ href: url });
-    // li.children = [
-    //   createComponentNode('a', props, [ createTextNode(text) ])
-    // ];
-    return li;
+  list.children = lines.map(text => {
+    return createComponentNode('li', null, [ createTextNode(text) ]);
   });
-
-  return list;
+  return createComponentNode(CITE_BIB, null, [ list ]);
 }

@@ -79,6 +79,13 @@
   content: "”";
 }
 
+.cite-list::before {
+  content: "[";
+}
+.cite-list::after {
+  content: "]";
+}
+
 h1[data-counter]::before,
 h2[data-counter]::before,
 h3[data-counter]::before {

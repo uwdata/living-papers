@@ -107,7 +107,7 @@
         "children": [
           {
             "type": "textnode",
-            "value": "I also liked "
+            "value": "I liked "
           },
           {
             "type": "component",
@@ -125,7 +125,77 @@
           },
           {
             "type": "textnode",
-            "value": "!"
+            "value": ", which should be the same as "
+          },
+          {
+            "type": "component",
+            "name": "cite-list",
+            "children": [
+              {
+                "type": "component",
+                "name": "cite-ref",
+                "properties": {
+                  "s2id": {
+                    "type": "value",
+                    "value": "4fca64e6dc4e803d3ed904c04c6845a9e6adc53e"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": " and "
+          },
+          {
+            "type": "component",
+            "name": "cite-list",
+            "children": [
+              {
+                "type": "component",
+                "name": "cite-ref",
+                "properties": {
+                  "s2id": {
+                    "type": "value",
+                    "value": "52037222"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": "."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "We should also handle unresolved citations "
+          },
+          {
+            "type": "component",
+            "name": "cite-list",
+            "children": [
+              {
+                "type": "component",
+                "name": "cite-ref",
+                "properties": {
+                  "key": {
+                    "type": "value",
+                    "value": "badcite"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": "."
           }
         ]
       }

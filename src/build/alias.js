@@ -1,5 +1,6 @@
 const aliasMap = new Map([
   ['caption', 'figcaption'],
+  ['cite-list', 'span'],
   ['cross-list', 'span'],
   ['equation', 'tex-equation'],
   ['image', 'img'],
