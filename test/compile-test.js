@@ -4,15 +4,27 @@ import { compile } from '../src/compile.js';
 
 const DEBUG = false;
 
-function compileTest(input) {
+async function compileTest(input, msgcount = {}) {
+  // setup logger
+  const msg = { log: [], debug: [], info: [], warn: [], error: [] };
+  const logger = Object.keys(msg)
+    .reduce((obj, key) => (obj[key] = _ => msg[key].push(_), obj), {});
+
+  // compile
   const inputFile = path.join('test/data', input);
   const outputDir = path.join('test/output', path.parse(input).name);
-  return compile(inputFile, {
+  await compile(inputFile, {
     outputDir,
     checksize: false,
     minify: false,
-    debug: DEBUG
+    debug: DEBUG,
+    logger
   });
+
+  // check message counts
+  for (const key in msgcount) {
+    assert.strictEqual(msg[key].length, msgcount[key]);
+  }
 }
 
 describe('compile', () => {
@@ -25,7 +37,7 @@ describe('compile', () => {
   });
 
   it('an article with citations', () => {
-    return compileTest('article/cite.md');
+    return compileTest('article/cite.md', { warn: 1 });
   });
 
   it('an article with custom components', () => {
@@ -33,7 +45,7 @@ describe('compile', () => {
   });
 
   it('an article with cross-references', () => {
-    return compileTest('article/crossref.md');
+    return compileTest('article/crossref.md', { warn: 3 });
   });
 
   it('an article with math and equations', () => {

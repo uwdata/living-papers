@@ -25,7 +25,8 @@ export async function compile(inputFile, options = {}) {
     cache: await cache(),
     fetch,
     metadata,
-    inputDir: path.dirname(inputFile)
+    inputDir: path.dirname(inputFile),
+    logger: options.logger || console
   });
 
   if (options.debug) {

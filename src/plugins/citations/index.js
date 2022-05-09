@@ -13,7 +13,7 @@ const CITE_REF = 'cite-ref';
 const CITE_LIST = 'cite-list';
 
 export default async function(ast, context) {
-  const { cache, fetch, inputDir, metadata } = context;
+  const { cache, fetch, inputDir, metadata, logger } = context;
 
   // extract all citation nodes in the AST
   const nodes = queryNodes(ast, node => node.name === CITE_REF);
@@ -33,7 +33,7 @@ export default async function(ast, context) {
   }
 
   // collect citations used in article
-  const citations = await getCitations(nodes, bib, lookup(cache, fetch));
+  const citations = await getCitations(nodes, bib, lookup(cache, fetch), logger);
 
   // set citation indices
   const indices = citations.indices();
@@ -59,7 +59,7 @@ export default async function(ast, context) {
   return ast;
 }
 
-async function getCitations(nodes, bib, lookup) {
+async function getCitations(nodes, bib, lookup, logger) {
   const keys = new Set();
   const refs = bib.mapOf('id');
   const dois = bib.mapOf('DOI');
@@ -73,7 +73,7 @@ async function getCitations(nodes, bib, lookup) {
       if (ref = refs.get(key)) {
         keys.add(key);
       } else {
-        console.warn(`Citation key not found: ${key}`);
+        logger.warn(`Citation key not found: ${key}`);
       }
     }
 
@@ -86,7 +86,7 @@ async function getCitations(nodes, bib, lookup) {
       if (ref) {
         keys.add(ref.id);
       } else {
-        console.warn(`Citation DOI lookup failed: ${doi}`);
+        logger.warn(`Citation DOI lookup failed: ${doi}`);
       }
       setValueProperty(node, 'key', ref?.id || `doi:${doi}`);
     }
@@ -105,7 +105,7 @@ async function getCitations(nodes, bib, lookup) {
       if (ref) {
         keys.add(ref.id);
       } else {
-        console.warn(`Citation S2ID lookup failed: ${s2id}`);
+        logger.warn(`Citation S2ID lookup failed: ${s2id}`);
       }
       setValueProperty(node, 'key', ref?.id || `s2id:${s2id}`);
     }
@@ -115,8 +115,8 @@ async function getCitations(nodes, bib, lookup) {
   return bib.subset(keys).sort();
 }
 
-async function citationData(citations, api) {
-  const s2data = await scholarData(citations, api);
+async function citationData(citations, api, logger) {
+  const s2data = await scholarData(citations, api, logger);
 
   return citations.refs().map((ref, i) => {
     const s2 = s2data[i] || {};
@@ -135,10 +135,10 @@ async function citationData(citations, api) {
   });
 }
 
-function scholarData(citations, api) {
+function scholarData(citations, api, logger) {
   function response(data) {
     if (data.error) {
-      console.warn(`Semantic Scholar: ${data.error}`);
+      logger.warn(`Semantic Scholar: ${data.error}`);
       return;
     }
     return data;

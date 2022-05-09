@@ -9,7 +9,7 @@ export default function(nodeNames) {
   const count = counter(counts, lookup);
   const xref = crossref(lookup);
 
-  return function(ast) {
-    return xref(count(ast));
+  return function(ast, context) {
+    return xref(count(ast), context);
   };
 }

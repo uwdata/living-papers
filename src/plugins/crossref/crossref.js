@@ -10,7 +10,7 @@ const XREF = 'xref';
 const INDEX = 'index';
 
 export default function(lookup) {
-  return function(ast) {
+  return function(ast, { logger }) {
     visitNodes(ast, node => {
       const name = getNodeName(node);
       if (name === CROSSREF) {
@@ -18,7 +18,7 @@ export default function(lookup) {
         if (lookup.has(key)) {
           setValueProperty(node, INDEX, lookup.get(key));
         } else {
-          console.warn(`Cross-reference key not found: ${key}`);
+          logger.warn(`Cross-reference key not found: ${key}`);
         }
       }
     });
