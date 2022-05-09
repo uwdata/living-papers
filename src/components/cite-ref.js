@@ -14,8 +14,7 @@ export class CiteRef extends LitElement {
       key: {type: String},
       mode: {type: String},
       index: {type: Number},
-      data: {type: Object},
-      s2id: {type: String}
+      data: {type: Object}
     };
   }
 
@@ -28,8 +27,8 @@ export class CiteRef extends LitElement {
     const { key, data, index, mode } = this;
     const title = tooltip(data, key, index);
     const body = (mode === 'inline-author'
-      ? (data ? inlineAuthor(data) : '???')
-      : index) || '???';
+      ? (data ? inlineAuthor(data) : '??')
+      : index) || '??';
     return html`<span class="citation" title=${title}><slot name="prefix"></slot>${body}<slot name="suffix"></slot></span>`;
   }
 }

@@ -2,21 +2,6 @@ const BASE_URL = 'https://api.semanticscholar.org/graph/v1/';
 const PAPER_SEARCH = 'paper/search';
 const PAPER = 'paper';
 
-/*
-SEMANTIC SCHOLAR DATA
-paperId - Always included
-externalIds
-url
-title - Included if no fields are specified
-abstract
-venue
-year
-referenceCount
-citationCount
---> authors
---> references
-*/
-
 const DEFAULT_FIELDS = [
   'url', 'title', 'abstract', 'venue', 'year',
   'referenceCount', 'citationCount', 'tldr'
