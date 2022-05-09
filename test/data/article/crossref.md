@@ -32,7 +32,9 @@ The [next equation](#x2) has no number.
 
 ## Other Stuff {#other}
 
-We can also cite Fig. [-@fig:teaser] by number only.
+We can cite Fig. [-@fig:teaser] by number only.
+
+We also handle broken references, like @sec:bad-sec, @fig:bad-fig, and @tbl:bad-tbl.
 
 # Methods {#methods}
 

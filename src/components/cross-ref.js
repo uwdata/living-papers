@@ -15,8 +15,8 @@ export class CrossRef extends LitElement {
   }
 
   render() {
-    // TODO title tooltip
-    const { type, xref, index, short } = this;
+    // TODO? title tooltip
+    const { type, xref, index = '?', short } = this;
     const cls = `xref ${type}${!short ? ' full' : ''}`;
     return html`<a class=${cls} href=${`#${xref}`}>${index}</a>`;
   }

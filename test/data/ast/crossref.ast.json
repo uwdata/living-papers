@@ -268,7 +268,7 @@
         "children": [
           {
             "type": "textnode",
-            "value": "We can also cite Fig. "
+            "value": "We can cite Fig. "
           },
           {
             "type": "component",
@@ -291,6 +291,70 @@
           {
             "type": "textnode",
             "value": " by number only."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "We also handle broken references, like "
+          },
+          {
+            "type": "component",
+            "name": "cross-ref",
+            "properties": {
+              "type": {
+                "type": "value",
+                "value": "sec"
+              },
+              "xref": {
+                "type": "value",
+                "value": "bad-sec"
+              }
+            }
+          },
+          {
+            "type": "textnode",
+            "value": ", "
+          },
+          {
+            "type": "component",
+            "name": "cross-ref",
+            "properties": {
+              "type": {
+                "type": "value",
+                "value": "fig"
+              },
+              "xref": {
+                "type": "value",
+                "value": "bad-fig"
+              }
+            }
+          },
+          {
+            "type": "textnode",
+            "value": ", and "
+          },
+          {
+            "type": "component",
+            "name": "cross-ref",
+            "properties": {
+              "type": {
+                "type": "value",
+                "value": "tbl"
+              },
+              "xref": {
+                "type": "value",
+                "value": "bad-tbl"
+              }
+            }
+          },
+          {
+            "type": "textnode",
+            "value": "."
           }
         ]
       },
