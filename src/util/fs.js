@@ -8,6 +8,10 @@ export function ls(path) {
   return fs.readdir(path);
 }
 
+export function copy(source, target) {
+  return fs.copyFile(source, target);
+}
+
 export function rmrf(path) {
   return fs.rm(path, { recursive: true, force: true });
 }

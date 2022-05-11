@@ -1,6 +1,7 @@
 export const MetaInlines = 'MetaInlines';
 export const MetaList = 'MetaList';
 export const MetaMap = 'MetaMap';
+export const MetaBool = 'MetaBool';
 
 export const Str = 'Str';
 export const Space = 'Space';

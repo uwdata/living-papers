@@ -267,8 +267,14 @@ export function cloneNode(node) {
  * @param {function} callack Callback function invoked for each visited node.
  */
 export function visitNodes(node, callback) {
-  callback(node);
-  getChildren(node).forEach(node => visitNodes(node, callback));
+  visitHelper(node, null, callback);
+}
+
+function visitHelper(node, parent, callback) {
+  callback(node, parent);
+  getChildren(node).forEach(child => {
+    visitHelper(child, node, callback);
+  });
 }
 
 /**

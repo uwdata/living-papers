@@ -11,18 +11,18 @@ export async function bundle(article, options) {
   const { metadata, article: ast } = article;
   const {
     components,
-    template = _template,
     outputDir,
     outputHTML = 'index.html',
     outputCSS = 'styles.css',
     outputJS = 'bundle.js',
+    template = _template,
+    tempDir = path.join(outputDir, '.temp'),
     ...rollupOptions
   } = options;
 
   // set up path variables
   const libDir = fileURLToPath(new URL('../..', import.meta.url));
   const styleDir = path.join(libDir, 'style');
-  const tempDir = path.join(outputDir, '.temp');
   const runtimePath = path.join(tempDir, 'runtime.js');
   const entryPath = path.join(tempDir, 'entry.js');
   const htmlPath = path.join(outputDir, outputHTML);
@@ -69,7 +69,7 @@ export async function bundle(article, options) {
   }
 
   // delete temp directory
-  await rmrf(tempDir);
+  // await rmrf(tempDir);
 }
 
 async function css(styles) {
