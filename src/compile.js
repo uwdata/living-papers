@@ -4,9 +4,13 @@ import { builtins, parseContext, numbered } from './config.js';
 import { bundle } from './bundle/bundle.js';
 import { parseMarkdown } from './parser/parse-markdown.js';
 import { citations, code, crossref, header, notes } from './plugins/index.js';
+import knitr from './plugins/knitr/index.js';
 import { cache } from './util/cache.js';
 
 export async function compile(inputFile, options = {}) {
+  const outputDir = options.outputDir;
+  const tempDir = options.tempDir || path.join(outputDir, '.temp');
+
   // Parse Markdown to initial AST
   const { metadata, article } = await parseMarkdown({
     inputFile,
@@ -15,6 +19,7 @@ export async function compile(inputFile, options = {}) {
 
   // Apply AST transformation plugins
   const plugins = [
+    ...pluginsPre(metadata.plugins),
     code,
     crossref(numbered()),
     notes,
@@ -26,6 +31,8 @@ export async function compile(inputFile, options = {}) {
     fetch,
     metadata,
     inputDir: path.dirname(inputFile),
+    outputDir,
+    tempDir,
     logger: options.logger || console
   });
 
@@ -35,12 +42,32 @@ export async function compile(inputFile, options = {}) {
     console.log('---------------');
   }
 
+  // Generate bundled output
   const bundleOptions = {
     components: builtins(),
+    outputDir,
+    tempDir,
     ...options
   };
-
   return bundle({ metadata, article: ast }, bundleOptions);
+}
+
+function pluginsPre(plugins) {
+  const list = [];
+  for (const key in plugins) {
+    if (plugins[key]) {
+      list.push(resolvePlugin(key));
+    }
+  }
+  return list;
+}
+
+function resolvePlugin(name) {
+  // TODO plugin resolution
+  if (name === 'knitr') {
+    return knitr;
+  }
+  throw new Error(`Can not find plugin: ${name}`);
 }
 
 async function transformAST(ast, plugins, options) {

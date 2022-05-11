@@ -10,7 +10,7 @@ import {
 } from './parse-util.js';
 
 import {
-  MetaInlines, MetaList, MetaMap,
+  MetaInlines, MetaList, MetaMap, MetaBool,
   Str, Space, SoftBreak, Quoted,
   Emph, Strong, Subscript, Superscript, Strikeout, SmallCaps, Underline,
   Para, Header, Math, CodeBlock, LineBlock, BlockQuote, HorizontalRule,
@@ -128,6 +128,8 @@ export class PandocASTParser {
         return this.parseMetaList(content);
       case MetaMap:
         return this.parseMetaMap(content);
+      case MetaBool:
+        return content;
       default:
         throw new Error(`Unrecognized metadata type: ${type}.`);
     }

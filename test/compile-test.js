@@ -55,4 +55,8 @@ describe('compile', () => {
   it('an article with observable code', () => {
     return compileTest('article/observable.md');
   });
+
+  it('an article with R code', () => {
+    return compileTest('article/rscript.md');
+  });
 });
