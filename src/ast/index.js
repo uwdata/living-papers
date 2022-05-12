@@ -208,6 +208,35 @@ export function removeProperty(node, key) {
   return node;
 }
 
+// -- AST Classes ----
+
+export function getClasses(ast) {
+  if (getPropertyType(ast, 'class') === VALUE) {
+    return getPropertyValue(ast, 'class').split(/\s+/);
+  }
+  return [];
+}
+
+export function removeClass(ast, className) {
+  if (getPropertyType(ast, 'class') === VALUE) {
+    const classes = getClasses(ast)
+      .filter(c => c !== className)
+      .join(' ');
+    if (classes) {
+      setValueProperty(ast, 'class', classes);
+    } else {
+      removeProperty(ast, 'class');
+    }
+  }
+}
+
+export function addClass(ast, className) {
+  const cls = getClasses(ast);
+  if (cls.indexOf(className) < 0) {
+    setValueProperty(ast, 'class', [...cls, className]);
+  }
+}
+
 // -- AST Node Children ----
 
 /**
