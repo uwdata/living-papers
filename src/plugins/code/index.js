@@ -1,7 +1,8 @@
 import {
-  createComponentNode, getPropertyValue, hasProperty,
-  setValueProperty, visitNodes
+  createComponentNode, getClasses, getPropertyValue, hasProperty,
+  removeClass, setValueProperty, visitNodes
 } from '../../ast/index.js';
+import { languages } from './languages.js';
 
 const LANGUAGE = 'language';
 
@@ -16,11 +17,13 @@ export default function(ast) {
 }
 
 function codeAttributes(node) {
-  const classNames = getPropertyValue(node, 'class');
-  if (!hasProperty(LANGUAGE) && classNames) {
-    const classes = classNames.split(/\s+/);
-    setValueProperty(node, 'class', classes.slice(1).join(' '));
-    setValueProperty(node, LANGUAGE, classes[0]);
+  if (!hasProperty(LANGUAGE)) {
+    const classes = getClasses(node);
+    const lang = classes.find(c => languages.has(c));
+    if (lang) {
+      removeClass(node, lang);
+      setValueProperty(node, LANGUAGE, lang);
+    }
   }
   return getPropertyValue(node, LANGUAGE);
 }
