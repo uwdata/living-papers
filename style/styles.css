@@ -62,6 +62,34 @@
   text-align: justify;
 }
 
+.tiny {
+  font-size: 0.5em;
+}
+
+.scriptsize {
+  font-size: 0.7em;
+}
+
+.smaller, .footnotesize {
+  font-size: 0.8em;
+}
+
+.small {
+  font-size: 0.9em;
+}
+
+.large {
+  font-size: 1.2em;
+}
+
+.larger {
+  font-size: 1.4em;
+}
+
+.huge {
+  font-size: 1.8em;
+}
+
 .hide {
   display: none;
 }
