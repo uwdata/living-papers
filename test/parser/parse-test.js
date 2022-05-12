@@ -66,6 +66,10 @@ describe('parseMarkdown', () => {
     await parseTest('article/observable.md', 'ast/observable.ast.json');
   });
 
+  it('parses python code', async () => {
+    await parseTest('article/pyodide.md', 'ast/pyodide.ast.json');
+  });
+
   it('parses knitr R code', async () => {
     await parseTest('article/knitr.md', 'ast/knitr.ast.json');
   });

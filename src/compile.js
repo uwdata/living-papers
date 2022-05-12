@@ -7,6 +7,7 @@ import { citations, code, crossref, header, notes } from './plugins/index.js';
 import { cache } from './util/cache.js';
 
 import knitr from './plugins/knitr/index.js';
+import pyodide from './plugins/pyodide/index.js';
 
 export async function compile(inputFile, options = {}) {
   const outputDir = options.outputDir;
@@ -67,6 +68,9 @@ function resolvePlugin(name) {
   // TODO plugin resolution
   if (name === 'knitr') {
     return knitr;
+  }
+  if (name === 'pyodide') {
+    return pyodide;
   }
   throw new Error(`Can not find plugin: ${name}`);
 }

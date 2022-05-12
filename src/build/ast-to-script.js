@@ -1,9 +1,10 @@
 import { setValueProperty } from '../ast/index.js';
 import { compile, handler } from '../runtime/compile.js';
 import { _api, _initial, _mutable, _viewof } from '../runtime/util.js';
+import { splitCodeCells } from '../util/code-cells.js';
 import { CELL_VIEW, DATA_CELL } from './constants.js';
 
-const isTrue = b => (b + '').toLowerCase() === 'true';
+const isTrue = b => String(b).toLowerCase() === 'true';
 
 export function astToScript(ast) {
   return { ast, script: generateScript(gatherCode(ast)) };
@@ -15,7 +16,7 @@ function gatherCode(ast) {
 
 function gatherHelper(ast, parent, ctx) {
   if (ast.name === CELL_VIEW) {
-    const code = ast.children[0].value.split(/\n\s*---+\s*\n/g);
+    const code = splitCodeCells(ast.children[0].value);
     ctx.cells.push(...code);
     if (isTrue(ast.properties?.hide?.value)) { // remove hidden cells
       parent.children = parent.children.filter(c => c !== ast);
