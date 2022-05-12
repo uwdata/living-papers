@@ -52,11 +52,11 @@ describe('compile', () => {
     return compileTest('article/math.md');
   });
 
-  it('an article with observable code', () => {
+  it('an article with observable javascript code', () => {
     return compileTest('article/observable.md');
   });
 
   it('an article with R code', () => {
-    return compileTest('article/rscript.md');
+    return compileTest('article/knitr.md');
   });
 });
