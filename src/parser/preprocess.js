@@ -160,13 +160,13 @@ function scan(_) {
         }
         break;
       case '"':
-        if (!qsing.length && !backs.length) {
+        if ((links.length || attrs.length) && !qsing.length && !backs.length) {
           qdoub.length ? qdoub.pop() : qdoub.push(i);
         }
         ++i;
         break;
       case '\'':
-        if (!qdoub.length && !backs.length) {
+        if ((links.length || attrs.length) && !qdoub.length && !backs.length) {
           qsing.length ? qsing.pop() : qsing.push(i);
         }
         ++i;
