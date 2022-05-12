@@ -1,6 +1,7 @@
 import path from 'node:path';
 import {
-  getPropertyValue, hasProperty, removeProperty, setValueProperty, visitNodes
+  createProperties, hasProperty, getClasses, getPropertyValue,
+  removeClass, removeProperty, setValueProperty, visitNodes
 } from '../../ast/index.js';
 import { pandoc } from '../../parser/pandoc.js';
 import { parsePandocAST } from '../../parser/parse-pandoc-ast.js';
@@ -9,14 +10,18 @@ import { generateChunk, generateRMarkdown, generateRScript } from './codegen.js'
 import { rscript } from './rscript.js';
 
 export default async function(ast, context) {
-  const { outputDir, tempDir, metadata } = context;
-  const knitr = metadata.plugins?.knitr || {};
+  const { outputDir, tempDir, logger, metadata } = context;
+  const options = {
+    lang: 'r', // language class in AST
+    ...(metadata.plugins?.knitr || {})
+  };
+  const { lang } = options;
 
   // gather R code nodes, generate Rmd chunks
   const rnodes = [];
   const chunks = [];
   visitNodes(ast, (node, parent) => {
-    if (isRCode(node)) {
+    if (isRCode(node, lang)) {
       rnodes.push([node, parent]);
       chunks.push(generateChunk(node, chunks.length));
     }
@@ -34,7 +39,7 @@ export default async function(ast, context) {
   const mdPath = path.join(knitDir, 'markdown.md');
   await mkdirp(knitDir);
   await Promise.all([
-    writeFile(rmdPath, generateRMarkdown(knitr, chunks)),
+    writeFile(rmdPath, generateRMarkdown(options, chunks)),
     writeFile(rPath, generateRScript())
   ]);
   await rscript('knit.R', ['markdown.Rmd'], { cwd: knitDir });
@@ -43,51 +48,86 @@ export default async function(ast, context) {
   const mdAST = parsePandocAST(await pandoc({ inputFile: mdPath }));
   await mkdirp(path.join(outputDir, 'figure'));
   copyOutput(mdAST.article, knitDir, outputDir);
-  updateAST(rnodes, mdAST.article.children);
+  updateAST(rnodes, mdAST.article.children, lang, logger);
 
   return ast;
 }
 
-function isRCode(node) {
+function isRCode(node, lang) {
   if (node.name === 'code-block') {
-    const classNames = getPropertyValue(node, 'class');
-    const classes = classNames ? classNames.split(/\s+/) : [];
-    return classes.indexOf('r') >= 0;
+    return getClasses(node).indexOf(lang) >= 0;
   } else if (node.name === 'code') {
-    return node.children[0].value.startsWith('r ');
+    return node.children[0].value.startsWith(`${lang} `);
   }
   return false;
 }
 
-function updateAST(rnodes, blocks) {
-  // filter generated blocks to remove error messages, etc.
-  // const blocks = generated.filter(block => {
-  //   if (hasProperty(block, 'label')) {
-  //     removeProperty(block, 'label');
-  //     return true;
-  //   } else {
-  //     return block.name !== 'code-block';
-  //   }
-  // });
+function bool(v) {
+  return v && String(v).toLowerCase() !== 'false';
+}
 
-  rnodes.forEach(([node, parent], i) => {
-    const block = blocks[i];
-    if (node.name === 'code-block') {
-      if (block.name === 'code-block') {
-        // rewrite r node to generated code block
-        Object.assign(node, block);
-      } else {
-        // insert generated children in lieu of r node
-        parent.children = parent.children
-          .map(n => n === node ? block.children : n)
-          .flat();
+function updateAST(rnodes, output, lang, logger) {
+  // log messages, return output blocks
+  const blocks = output.filter(block => {
+    if (block.name === 'code-block') {
+      if (hasProperty(block, 'type')) {
+        const type = getPropertyValue(block, 'type');
+        if (type === 'output') {
+          removeProperty(block, 'type');
+          return true;
+        } else {
+          logger[type](`knitr ${type}:\n${block.children[0].value}`);
+        }
       }
-    } else {
-      // rewrite r node to span with generated children
-      node.name = 'span';
-      node.children = block.children;
+      return false;
     }
+    return true;
   });
+
+  // remove hidden nodes
+  const nodes = rnodes.filter(([node, parent]) => {
+    const hide = bool(getPropertyValue(node, 'hide'));
+    if (hide) {
+      parent.children = parent.children.filter(n => n !== node);
+    }
+    return !hide;
+  });
+
+  // update visible nodes
+  nodes.forEach(([node, parent], i) => {
+      const block = blocks[i];
+      if (node.name === 'code-block') {
+        // we show output, not code, so strip r language class
+        removeClass(node, lang);
+
+        if (block.name !== 'code-block') {
+          // transfer relevant properties to image nodes
+          transferChildProperties(node, block);
+        } else if (hasProperty(node, 'as')) {
+          // bind the output to a runtime variable
+          const alias = getPropertyValue(node, 'as');
+          node.name = 'cell-view';
+          node.properties = createProperties({ hide: true });
+          node.children[0].value = `${alias} = (${block.children[0].value})`;
+          return;
+        }
+
+        if (block.name !== 'code-block' && parent.name !== 'article') {
+          // output is not a code block and is not top-level
+          // extract children from unneeded paragraph container
+          parent.children = parent.children
+            .map(n => n === node ? block.children : n)
+            .flat();
+        } else {
+          // rewrite r node to generated output block
+          Object.assign(node, block);
+        }
+      } else {
+        // rewrite r node to span containing generated children
+        node.name = 'span';
+        node.children = block.children;
+      }
+    });
 }
 
 function copyOutput(ast, inputDir, outputDir) {
@@ -100,6 +140,20 @@ function copyOutput(ast, inputDir, outputDir) {
         path.join(inputDir, src),
         path.join(outputDir, src)
       ).catch(err => console.error(err));
+    }
+  });
+}
+
+function transferChildProperties(node, block) {
+  const props = ['width', 'height'];
+  props.forEach(key => {
+    if (hasProperty(node, key)) {
+      const value = getPropertyValue(node, key);
+      block.children.forEach(child => {
+        if (child.name === 'image') {
+          setValueProperty(child, key, value);
+        }
+      });
     }
   });
 }
