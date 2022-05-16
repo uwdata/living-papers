@@ -1,7 +1,8 @@
-import { LitElement, html } from 'lit';
+import { html } from 'lit';
+import { ArticleElement } from './article-element.js';
 
-export class CiteBib extends LitElement {
+export class CiteBib extends ArticleElement {
   render() {
-    return html`<h1>References</h1><slot></slot>`;
+    return html`<h1>References</h1>${this.__children}`;
   }
 }

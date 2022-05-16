@@ -1,21 +1,11 @@
-import { LitElement, html, css } from 'lit';
+import { html } from 'lit';
+import { ArticleElement } from './article-element';
 
 const PENDING = 'pending';
 const FULFILLED = 'fulfilled';
 const ERROR = 'error';
 
-export class CellView extends LitElement {
-  static get styles() {
-    return css`
-      .error {
-        display: block;
-        border: solid 1px red;
-        padding: 1em;
-        max-width: 800px;
-      }
-    `;
-  }
-
+export class CellView extends ArticleElement {
   static get properties() {
     return {
       value: {state: true},
@@ -41,10 +31,6 @@ export class CellView extends LitElement {
     };
   }
 
-  createRenderRoot() {
-    return this;
-  }
-
   render() {
     switch (this.status) {
       case PENDING:
@@ -59,5 +45,5 @@ export class CellView extends LitElement {
 }
 
 function error(message) {
-  return html`<span class="error">${message}</span>`;
+  return html`<span class="error-block">${message}</span>`;
 }

@@ -1,16 +1,8 @@
-import { LitElement, html, css } from 'lit';
-import { InputEvent } from './events/input-event.js';
+import { html } from 'lit';
+import { ArticleElement } from './article-element.js';
+import { InputEvent } from './util/input-event.js';
 
-export class RangeText extends LitElement {
-  static get styles() {
-    return css`
-      :host {
-        text-decoration: underline dashed #888;
-        cursor: ew-resize;
-      }
-    `;
-  }
-
+export class RangeText extends ArticleElement {
   static get properties() {
     return {
       value: {type: Number},
@@ -72,6 +64,6 @@ export class RangeText extends LitElement {
   }
 
   render() {
-    return html`<span title=${this.title}>${this.value}</span>`;
+    return html`<span class="range-text" title=${this.title}>${this.value}</span>`;
   }
 }

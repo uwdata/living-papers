@@ -1,14 +1,7 @@
-import { LitElement, html, css } from 'lit';
+import { html } from 'lit';
+import { ArticleElement } from './article-element.js';
 
-export class CiteRef extends LitElement {
-  static get styles() {
-    return css`
-      .citation {
-        text-decoration: underline dotted #aaa;
-      }
-    `;
-  }
-
+export class CiteRef extends ArticleElement {
   static get properties() {
     return {
       key: {type: String},
@@ -23,13 +16,18 @@ export class CiteRef extends LitElement {
     this.mode = 'citation';
   }
 
+  initialChildNodes(nodes) {
+    this.__prefix = nodes[0];
+    this.__suffix = nodes[1];
+  }
+
   render() {
     const { key, data, index, mode } = this;
     const title = tooltip(data, key, index);
     const body = (mode === 'inline-author'
       ? (data ? inlineAuthor(data) : '??')
       : index) || '??';
-    return html`<span class="citation" title=${title}><slot name="prefix"></slot>${body}<slot name="suffix"></slot></span>`;
+    return html`<span class="cite-ref" title=${title}>${this.__prefix}${body}${this.__suffix}</slot></span>`;
   }
 }
 
