@@ -53,6 +53,9 @@ describe('preprocess', () => {
       '~~~ {#id .cls foo=`a = \'3\'`}',
       '~~~ {#id .cls foo="`a = \'3\'`"}'
     );
+    test('~~~ {#id .cls foo = 3}', '~~~ {#id .cls foo=3}');
+    test('~~~ {#id .cls foo= 3}',  '~~~ {#id .cls foo=3}');
+    test('~~~ {#id .cls foo =3}',  '~~~ {#id .cls foo=3}');
   });
 
   it('handles span attributes', () => {
