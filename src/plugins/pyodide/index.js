@@ -108,7 +108,7 @@ function extractName(cell) {
   if (idx === 0) {
     // if single line, attempt to match import statement
     // TODO: multiple imports
-    const match = line.match(/^(?:from\s+(?:[A-Za-z_]\w*)\s+)?import\s+([A-Za-z_]\w*)(?:\s+as\s+([A-Za-z_]\w*))?/);
+    const match = line.match(/^(?:from\s+(?:[A-Za-z_]\w*)\s+)?import\s+([A-Za-z_](?:\w|\.)*)(?:\s+as\s+([A-Za-z_]\w*))?/);
     if (match) {
       return [match[2] || match[1], true];
     }
