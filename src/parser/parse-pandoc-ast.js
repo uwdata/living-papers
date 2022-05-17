@@ -34,7 +34,6 @@ export function parsePandocAST(doc, options = {}) {
 export class PandocASTParser {
   constructor(options) {
     this.ctx = {
-      alias: new Map(options.alias || []),
       fence: new Set(options.fence || []),
       block: new Set(options.block || []),
       xref: new Set(options.xref || []),
@@ -51,24 +50,23 @@ export class PandocASTParser {
   }
 
   blockLookup(item) {
-    return this.componentLookup(item, this.ctx.block, 'code');
+    return this.componentLookup(item, this.ctx.block);
   }
 
   fenceLookup(item) {
     return this.componentLookup(item, this.ctx.fence);
   }
 
-  componentLookup(item, lookup, skip) {
+  componentLookup(item, lookup) {
     const [attrs, content] = item;
     const [id, classes, props] = attrs;
-    const cls = classes.includes(skip) ? skip : classes.find(c => lookup.has(c));
+    const cls = classes.find(c => lookup.has(c));
 
     if (cls) {
-      const name = cls !== skip ? (this.ctx.alias.get(cls) || cls) : undefined;
       item = [
         [id, classes.filter(c => c !== cls), props],
         content,
-        name
+        cls
       ];
     }
     return item;
@@ -346,7 +344,6 @@ export class PandocASTParser {
 
   parseCodeBlock(item) {
     const [attrs, content, name = 'code-block'] = this.blockLookup(item);
-    // TODO output two components if both presented and evaluated
     return createComponentNode(
       name,
       parseProperties(attrs),
@@ -495,20 +492,11 @@ export class PandocASTParser {
 
   parseCode(item) {
     const [ attrs, content ] = item;
-    if (content.startsWith('js ')) {
-      // TODO?: generalize / use context
-      return createComponentNode(
-        'cell-view',
-        parseProperties(attrs, { inline: 'true' }),
-        [ createTextNode(content.slice(3)) ]
-      );
-    } else {
-      return createComponentNode(
-        'code',
-        parseProperties(attrs),
-        [ createTextNode(content) ]
-      );
-    }
+    return createComponentNode(
+      'code',
+      parseProperties(attrs),
+      [ createTextNode(content) ]
+    );
   }
 
   parseImage(item) {
@@ -667,6 +655,8 @@ export class PandocASTParser {
     const [type, ...rest] = key.split(':');
     return [type, rest.join(':')];
   }
+
+  // -- Comments --
 
   parseRaw(content) {
     const [format, text] = content;

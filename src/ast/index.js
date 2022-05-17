@@ -210,6 +210,10 @@ export function removeProperty(node, key) {
 
 // -- AST Classes ----
 
+export function hasClass(node, className) {
+  return getClasses(node).indexOf(className) >= 0;
+}
+
 export function getClasses(node) {
   if (getPropertyType(node, 'class') === VALUE) {
     return getPropertyValue(node, 'class').split(/\s+/);

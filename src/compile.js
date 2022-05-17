@@ -3,7 +3,7 @@ import path from 'node:path';
 import { builtins, parseContext, numbered } from './config.js';
 import { bundle } from './bundle/bundle.js';
 import { parseMarkdown } from './parser/parse-markdown.js';
-import { citations, code, crossref, header, notes } from './plugins/index.js';
+import { citations, code, crossref, header, notes, runtime } from './plugins/index.js';
 import { cache } from './util/cache.js';
 
 import knitr from './plugins/knitr/index.js';
@@ -22,6 +22,7 @@ export async function compile(inputFile, options = {}) {
   // Apply AST transformation plugins
   const plugins = [
     ...pluginsPre(metadata.plugins),
+    runtime,
     code,
     crossref(numbered()),
     notes,

@@ -7,11 +7,8 @@ export function numbered() {
 
 export function parseContext() {
   return {
-    alias: [
-      ['js', 'cell-view']
-    ],
     fence: ['figure', 'table'],
-    block: ['bibliography', 'equation', 'cell-view', 'js'],
+    block: ['bibliography', 'equation'],
     xref: ['sec', 'fig', 'tbl', 'eqn'],
     env: ['figure', 'table']
   };

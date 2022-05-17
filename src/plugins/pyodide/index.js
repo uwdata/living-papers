@@ -2,10 +2,10 @@ import {
   createComponentNode,
   createProperties,
   createTextNode,
-  getPropertyValue,
+  hasClass,
   prependChildren,
   setValueProperty,
-  queryNodes
+  visitNodes
 } from '../../ast/index.js';
 import { splitCodeCells, joinCodeCells } from '../../util/code-cells.js';
 
@@ -26,33 +26,32 @@ export default async function(ast, context) {
   ));
 
   // gather and transform Python code nodes
-  queryNodes(ast, n => isPyCode(n, lang)).forEach(node => {
-    const code = node.children[0].value;
-    if (node.name === 'code') {
-      setValueProperty(node, 'inline', true);
-      node.children = [
-        createTextNode(`${tag}\`${code.slice(lang.length + 1)}\``)
-      ];
-    } else {
-      node.children = [
-        createTextNode(toPyodideBlock(code, tag))
-      ];
+  visitNodes(ast, node => {
+    switch (node.name) {
+      case 'code':
+        const code = node.children[0].value;
+        if (code.startsWith(`${lang} `)) {
+          node.name = 'cell-view';
+          setValueProperty(node, 'inline', true);
+          node.children = [
+            createTextNode(`${tag}\`${code.slice(lang.length + 1)}\``)
+          ];
+        }
+        break;
+
+      case 'code-block':
+        if (hasClass(node, lang) && !hasClass(node, 'code')) {
+          const code = node.children[0].value;
+          node.name = 'cell-view';
+          node.children = [
+            createTextNode(toPyodideBlock(code, tag))
+          ];
+        }
+        break;
     }
-    node.name = 'cell-view';
-  })
+  });
 
   return ast;
-}
-
-function isPyCode(node, lang) {
-  if (node.name === 'code-block') {
-    const classNames = getPropertyValue(node, 'class');
-    const classes = classNames ? classNames.split(/\s+/) : [];
-    return classes.indexOf(lang) >= 0;
-  } else if (node.name === 'code') {
-    return node.children[0].value.startsWith(`${lang} `);
-  }
-  return false;
 }
 
 function toPyodideBlock(code, tag) {
