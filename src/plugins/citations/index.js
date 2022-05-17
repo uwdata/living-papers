@@ -1,13 +1,14 @@
 import path from 'node:path';
 import {
   createComponentNode, createTextNode, getPropertyValue,
-  setValueProperty, queryNodes, visitNodes, hasProperty
+  setValueProperty, queryNodes, visitNodes, hasProperty, removeChild
 } from '../../ast/index.js';
 import { readFile } from '../../util/fs.js';
 import { lookup } from './lookup.js';
 import { Citations } from './citations.js';
 import { scholarAPI } from './scholar-api.js';
 
+const BIBLIOGRAPHY = 'bibliography';
 const CITE_BIB = 'cite-bib';
 const CITE_REF = 'cite-ref';
 const CITE_LIST = 'cite-list';
@@ -19,18 +20,8 @@ export default async function(ast, context) {
   const nodes = queryNodes(ast, node => node.name === CITE_REF);
   if (nodes.length === 0) return ast;
 
-  // collect bibliography files
-  const sources = [];
-  if (metadata.bibliography) {
-    sources.push(...([metadata.bibliography].flat()));
-  }
-
-  // load bibliography files
-  const bib = new Citations();
-  for (const source of sources) {
-    const file = await readFile(path.join(inputDir, source));
-    await bib.parse(file);
-  }
+  // load bibliographic data for article
+  const bib = await getBibliography(ast, metadata, inputDir);
 
   // collect citations used in article
   const citations = await getCitations(nodes, bib, lookup(cache, fetch), logger);
@@ -57,6 +48,29 @@ export default async function(ast, context) {
   updateCitationLists(ast);
 
   return ast;
+}
+
+async function getBibliography(ast, metadata, inputDir) {
+  const bib = new Citations();
+
+  // collect bibliography files
+  if (metadata.bibliography) {
+    const sources = [metadata.bibliography].flat()
+      .map(source => path.join(inputDir, source))
+      .map(source => readFile(source));
+    (await Promise.all(sources))
+      .forEach(source => bib.parse(source));
+  }
+
+  // collect bibliography nodes
+  visitNodes(ast, (node, parent) => {
+    if (node.name === BIBLIOGRAPHY) {
+      bib.parse(node.children[0].value);
+      removeChild(parent, node);
+    }
+  });
+
+  return bib;
 }
 
 async function getCitations(nodes, bib, lookup, logger) {

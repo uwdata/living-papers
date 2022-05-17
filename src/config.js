@@ -11,7 +11,7 @@ export function parseContext() {
       ['js', 'cell-view']
     ],
     fence: ['figure', 'table'],
-    block: ['equation', 'cell-view', 'js'],
+    block: ['bibliography', 'equation', 'cell-view', 'js'],
     cite: ['doi', 's2id'],
     xref: ['sec', 'fig', 'tbl', 'eqn'],
     env: ['figure', 'table']
