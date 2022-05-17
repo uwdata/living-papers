@@ -113,9 +113,9 @@
             "type": "component",
             "name": "cite-ref",
             "properties": {
-              "doi": {
+              "key": {
                 "type": "value",
-                "value": "10.1145/3242587.3242600"
+                "value": "doi:10.1145/3242587.3242600"
               },
               "mode": {
                 "type": "value",
@@ -135,9 +135,9 @@
                 "type": "component",
                 "name": "cite-ref",
                 "properties": {
-                  "s2id": {
+                  "key": {
                     "type": "value",
-                    "value": "4fca64e6dc4e803d3ed904c04c6845a9e6adc53e"
+                    "value": "s2id:4fca64e6dc4e803d3ed904c04c6845a9e6adc53e"
                   }
                 }
               }
@@ -155,9 +155,9 @@
                 "type": "component",
                 "name": "cite-ref",
                 "properties": {
-                  "s2id": {
+                  "key": {
                     "type": "value",
-                    "value": "52037222"
+                    "value": "s2id:52037222"
                   }
                 }
               }

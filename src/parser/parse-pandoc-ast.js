@@ -37,7 +37,6 @@ export class PandocASTParser {
       alias: new Map(options.alias || []),
       fence: new Set(options.fence || []),
       block: new Set(options.block || []),
-      cite: new Set(options.cite || []),
       xref: new Set(options.xref || []),
       env: new Set(options.env || [])
     };
@@ -617,7 +616,6 @@ export class PandocASTParser {
   }
 
   parseCite(item) {
-    // const nodes = [];
     const [ cites/*, content */ ] = item;
 
     const nodes = cites.map(cite => {
@@ -628,18 +626,12 @@ export class PandocASTParser {
         citationMode: { t: mode }
       } = cite;
 
-      const [keyName, keyValue] = this.getCiteKey(key);
-      const attrs = {
-        [keyName]: keyValue,
-        mode: getCiteMode(mode)
-      };
-
-      let children = []
+      const children = [];
       if (prefix.length) {
         children.push(
           createComponentNode(
-            'cite-prefix',
-            createProperties({ slot: 'prefix'}),
+            'span',
+            createProperties({ slot: 'prefix' }),
             this.parseInline(prefix)
           )
         );
@@ -647,8 +639,8 @@ export class PandocASTParser {
       if (suffix.length) {
         children.push(
           createComponentNode(
-            'cite-suffix',
-            createProperties({ slot: 'suffix'}),
+            'span',
+            createProperties({ slot: 'suffix' }),
             this.parseInline(suffix)
           )
         );
@@ -656,7 +648,7 @@ export class PandocASTParser {
 
       return createComponentNode(
         'cite-ref',
-        createProperties(attrs),
+        createProperties({ key, mode: getCiteMode(mode) }),
         children
       );
     });
@@ -674,13 +666,6 @@ export class PandocASTParser {
   getXrefKey(key) {
     const [type, ...rest] = key.split(':');
     return [type, rest.join(':')];
-  }
-
-  getCiteKey(key) {
-    const [type, ...rest] = key.split(':');
-    return rest.length && this.ctx.cite.has(type)
-      ? [type, rest.join(':')]
-      : ['key', key];
   }
 
   parseRaw(content) {

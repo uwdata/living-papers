@@ -12,6 +12,7 @@ const BIBLIOGRAPHY = 'bibliography';
 const CITE_BIB = 'cite-bib';
 const CITE_REF = 'cite-ref';
 const CITE_LIST = 'cite-list';
+const KEYS = new Set(['doi', 's2id']);
 
 export default async function(ast, context) {
   const { cache, fetch, inputDir, metadata, logger } = context;
@@ -79,54 +80,63 @@ async function getCitations(nodes, bib, lookup, logger) {
   const dois = bib.mapOf('DOI');
   const s2ids = bib.mapOf('S2ID');
 
+  const addKey = (ref, type, key) => {
+    if (ref) {
+      keys.add(ref.id);
+    } else {
+      logger.warn(`Citation ${type} lookup failed: ${key}`);
+    }
+  }
+
   for (const node of nodes) {
+    const [type, key] = getCiteKey(getPropertyValue(node, 'key'));
     let ref;
 
-    if (hasProperty(node, 'key')) {
-      const key = getPropertyValue(node, 'key');
-      if (ref = refs.get(key)) {
-        keys.add(key);
-      } else {
-        logger.warn(`Citation key not found: ${key}`);
-      }
-    }
+    switch (type) {
+      case 'key':
+        ref = refs.get(key);
+        addKey(ref, type, key);
+        break;
 
-    if (!ref && hasProperty(node, 'doi')) {
-      const doi = getPropertyValue(node, 'doi');
-      if (!(ref = dois.get(doi))) {
-        ref = await lookup.doi(doi);
-        if (ref) (dois.set(doi, ref), bib.add(ref));
-      }
-      if (ref) {
-        keys.add(ref.id);
-      } else {
-        logger.warn(`Citation DOI lookup failed: ${doi}`);
-      }
-      setValueProperty(node, 'key', ref?.id || `doi:${doi}`);
-    }
-
-    if (!ref && hasProperty(node, 's2id')) {
-      const id = getPropertyValue(node, 's2id');
-      const s2id = (+id == id && id.length < 40) ? `CorpusID:${id}` : id;
-      if (!(ref = s2ids.get(s2id))) {
-        ref = await lookup.s2id(s2id);
-        if (ref) {
-          const doi = ref.DOI;
-          ref = dois.get(doi) || (dois.set(doi, ref), bib.add(ref), ref);
-          ref.S2ID = s2id;
+      case 'doi':
+        ref = dois.get(key);
+        if (!ref) {
+          ref = await lookup.doi(key);
+          if (ref) (dois.set(key, ref), bib.add(ref));
         }
-      }
-      if (ref) {
-        keys.add(ref.id);
-      } else {
-        logger.warn(`Citation S2ID lookup failed: ${s2id}`);
-      }
-      setValueProperty(node, 'key', ref?.id || `s2id:${s2id}`);
+        addKey(ref, type, key);
+        setValueProperty(node, 'key', ref?.id || `doi:${key}`);
+        break;
+
+      case 's2id':
+        const s2id = (+key == key && key.length < 40) ? `CorpusID:${key}` : key;
+        ref = s2ids.get(s2id);
+        if (!ref) {
+          ref = await lookup.s2id(s2id);
+          if (ref) {
+            const doi = ref.DOI;
+            ref = dois.get(doi) || (dois.set(doi, ref), bib.add(ref), ref);
+            ref.S2ID = s2id;
+          }
+        }
+        addKey(ref, type, key);
+        setValueProperty(node, 'key', ref?.id || `s2id:${s2id}`);
+        break;
+
+      default:
+        throw new Error(`Unrecognized citation prefix: ${type}`);
     }
   }
 
   // filter and sort references
   return bib.subset(keys).sort();
+}
+
+function getCiteKey(key) {
+  const [type, ...rest] = key.split(':');
+  return rest.length && KEYS.has(type)
+    ? [type, rest.join(':')]
+    : ['key', key];
 }
 
 async function citationData(citations, api, logger) {
