@@ -24,10 +24,8 @@ export class CiteRef extends ArticleElement {
   render() {
     const { key, data, index, mode } = this;
     const title = tooltip(data, key, index);
-    const body = (mode === 'inline-author'
-      ? (data ? inlineAuthor(data) : '??')
-      : index) || '??';
-    return html`<span class="cite-ref" title=${title}>${this.__prefix}${body}${this.__suffix}</slot></span>`;
+    const body = (mode === 'inline-author' ? inline(data, index) : index) || '??';
+    return html`<span class="cite-ref" title=${title}>${this.__prefix}${body}${this.__suffix}</span>`;
   }
 }
 
@@ -50,14 +48,19 @@ function authors(data, etal = 2) {
   }
 }
 
-// TODO: what if no author?
-function inlineAuthor(data) {
-  const { author } = data;
-  let authors = author[0].family;
-  if (author.length === 2) {
-    authors += ` & ${author[1].family}`;
-  } else if (author.length > 2) {
-    authors += ' et al.';
+function inline(data, index) {
+  let authors = '';
+
+  if (data && data.author) {
+    const { author } = data;
+    authors = author[0].family;
+    if (author.length === 2) {
+      authors += ` & ${author[1].family}`;
+    } else if (author.length > 2) {
+      authors += ' et al.';
+    }
+    authors = html`${authors}&nbsp;`;
   }
-  return authors;
+
+  return html`${authors}<span class="cite-list">${index}</span>`;
 }
