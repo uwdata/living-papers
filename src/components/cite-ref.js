@@ -67,9 +67,7 @@ export class CiteRef extends LitElement {
         border-top: .1px solid black;
       }`;
   }
-}
-
-export class CiteRef extends ArticleElement {
+  
   static get properties() {
     return {
       key: {type: String},
