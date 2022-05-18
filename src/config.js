@@ -7,12 +7,8 @@ export function numbered() {
 
 export function parseContext() {
   return {
-    alias: [
-      ['js', 'cell-view']
-    ],
     fence: ['figure', 'table'],
-    block: ['equation', 'cell-view', 'js'],
-    cite: ['doi', 's2id'],
+    block: ['bibliography', 'equation', 'math'],
     xref: ['sec', 'fig', 'tbl', 'eqn'],
     env: ['figure', 'table']
   };
@@ -26,7 +22,6 @@ export function builtins() {
     'cite-ref',
     'code-block',
     'cross-ref',
-    'figure-env',
     'range-text',
     'tex-math',
     'tex-equation'

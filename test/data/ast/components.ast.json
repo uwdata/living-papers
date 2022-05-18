@@ -240,7 +240,7 @@
         "properties": {
           "class": {
             "type": "value",
-            "value": "js"
+            "value": "js code"
           }
         },
         "children": [

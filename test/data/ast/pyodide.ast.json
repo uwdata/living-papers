@@ -94,7 +94,13 @@
       },
       {
         "type": "component",
-        "name": "cell-view",
+        "name": "code-block",
+        "properties": {
+          "class": {
+            "type": "value",
+            "value": "js"
+          }
+        },
         "children": [
           {
             "type": "textnode",
@@ -140,7 +146,13 @@
       },
       {
         "type": "component",
-        "name": "cell-view",
+        "name": "code-block",
+        "properties": {
+          "class": {
+            "type": "value",
+            "value": "js"
+          }
+        },
         "children": [
           {
             "type": "textnode",
@@ -150,7 +162,13 @@
       },
       {
         "type": "component",
-        "name": "cell-view",
+        "name": "code-block",
+        "properties": {
+          "class": {
+            "type": "value",
+            "value": "js"
+          }
+        },
         "children": [
           {
             "type": "textnode",

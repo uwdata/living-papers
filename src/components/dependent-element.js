@@ -1,7 +1,7 @@
-import { LitElement } from 'lit';
-import { getDependency, hasDependencies, loadDependencies } from '../util/dependencies.js';
+import { ArticleElement } from './article-element.js';
+import { getDependency, hasDependencies, loadDependencies } from './util/dependencies.js';
 
-export class DependentElement extends LitElement {
+export class DependentElement extends ArticleElement {
   getDependency(name) {
     return getDependency(this, name);
   }

@@ -1,7 +1,6 @@
 import { TexMath } from './tex-math.js';
 
 export class TexEquation extends TexMath {
-
   static get properties() {
     return {
       type: {type: String},

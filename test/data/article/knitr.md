@@ -2,7 +2,8 @@
 title: R knitr Integration
 plugins:
   knitr:
-    import: [ggplot2]
+    import: [ggplot2, jsonlite]
+    dev: svglite
 ---
 
 Version: `r R.version.string`{.bold}
@@ -32,7 +33,7 @@ hist(rnorm(1000))
 m <- lm(hwy ~ displ, data = mpg)
 ```
 
-Let's fit a model: `hwy ~ displ`{.r}
+Let's fit a model: `lm(hwy ~ displ, data = mpg)`{.r}
 
 ::: figure { .page }
 | (Left) Displacement vs. highway efficiency. (Right) Residual plot.
@@ -53,7 +54,11 @@ ggplot(m, aes(x = mpg$displ, y = .resid)) +
 summary(m)
 ```
 
-The fitted slope parameter is `r coefficients(m)['displ']`
+``` r { bind="coef" }
+toJSON(coefficients(m))
+```
+
+The fitted line is $$y = ${coef[1]} x + ${coef[0]}$$.
 
 # Et Cetera
 

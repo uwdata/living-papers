@@ -60,6 +60,7 @@ export function generateRMarkdown(knitr, blocks) {
   return `\`\`\`{r, setup, include=FALSE}
 knitr::opts_chunk$set(
   echo = FALSE,
+  fig.path = ${Str(knitr.figpath)},
   ${getChunkOptions(node, true).join(',\n  ')}
 )${ imports.map(lib => `\nlibrary(${lib})`).join('') }
 \`\`\`\n\n` + blocks.join('\n\n');

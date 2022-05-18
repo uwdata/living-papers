@@ -1,8 +1,6 @@
 import { DependentElement } from './dependent-element.js';
-import { clearChildren } from '../util/clear-children.js';
 
 export class TexMath extends DependentElement {
-
   static get dependencies() {
     return [
       {
@@ -27,23 +25,16 @@ export class TexMath extends DependentElement {
 
   constructor() {
     super();
-    this.mode = 'inline';
+    this.mode = 'display';
     this.leqno = false;
     this.fleqn = true;
   }
 
-  createRenderRoot() {
-    // no shadow dom, let global CSS apply
-    return this;
-  }
-
-  connectedCallback() {
+  initialChildNodes(nodes) {
     // attempt to extract code from first child
-    if (!this.hasAttribute('code') && this.childNodes.length) {
-      this.code = this.childNodes[0].textContent;
-      clearChildren(this);
+    if (!this.hasAttribute('code') && nodes.length) {
+      this.code = nodes[0].textContent;
     }
-    super.connectedCallback();
   }
 
   prepareMath() {

@@ -210,30 +210,34 @@ export function removeProperty(node, key) {
 
 // -- AST Classes ----
 
-export function getClasses(ast) {
-  if (getPropertyType(ast, 'class') === VALUE) {
-    return getPropertyValue(ast, 'class').split(/\s+/);
+export function hasClass(node, className) {
+  return getClasses(node).indexOf(className) >= 0;
+}
+
+export function getClasses(node) {
+  if (getPropertyType(node, 'class') === VALUE) {
+    return getPropertyValue(node, 'class').split(/\s+/);
   }
   return [];
 }
 
-export function removeClass(ast, className) {
-  if (getPropertyType(ast, 'class') === VALUE) {
-    const classes = getClasses(ast)
+export function removeClass(node, className) {
+  if (getPropertyType(node, 'class') === VALUE) {
+    const classes = getClasses(node)
       .filter(c => c !== className)
       .join(' ');
     if (classes) {
-      setValueProperty(ast, 'class', classes);
+      setValueProperty(node, 'class', classes);
     } else {
-      removeProperty(ast, 'class');
+      removeProperty(node, 'class');
     }
   }
 }
 
-export function addClass(ast, className) {
-  const cls = getClasses(ast);
+export function addClass(node, className) {
+  const cls = getClasses(node);
   if (cls.indexOf(className) < 0) {
-    setValueProperty(ast, 'class', [...cls, className]);
+    setValueProperty(node, 'class', [...cls, className]);
   }
 }
 
@@ -246,8 +250,8 @@ export function addClass(ast, className) {
  * @param {object} node The parent node.
  * @return {object[]} The children of the node, or an empty array if none.
  */
-export function getChildren(ast) {
-  return ast.children || [];
+export function getChildren(node) {
+  return node.children || [];
 }
 
 /**
@@ -256,9 +260,9 @@ export function getChildren(ast) {
  * @param {...(object|object[])} children The children AST nodes to append.
  * @return {object} A modified AST node.
  */
-export function appendChildren(ast, ...children) {
-  ast.children = (ast.children || []).concat(children.flat());
-  return ast;
+export function appendChildren(node, ...children) {
+  node.children = (node.children || []).concat(children.flat());
+  return node;
 }
 
 /**
@@ -267,9 +271,22 @@ export function appendChildren(ast, ...children) {
  * @param {...(object|object[])} children The children AST nodes to prepend.
  * @return {object} A modified AST node.
  */
-export function prependChildren(ast, ...children) {
-  ast.children = children.flat().concat(ast.children || []);
-  return ast;
+export function prependChildren(node, ...children) {
+  node.children = children.flat().concat(node.children || []);
+  return node;
+}
+
+/**
+ * Remove a child node from a parent node.
+ * @param {object} node The parent AST node.
+ * @param {...(object|object[])} children The child AST node to remove.
+ * @return {object} A modified AST node.
+ */
+export function removeChild(node, child) {
+  if (node.children) {
+    node.children = node.children.filter(n => n !== child);
+  }
+  return node;
 }
 
 // -- AST Traversal ----

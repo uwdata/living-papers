@@ -5,7 +5,7 @@ import {
 
 import {
   append, extractText, isDisplayMath, isInterpolated,
-  getMathType, getQuoteType, getListType, getMarkerType,
+  getQuoteType, getListType, getMarkerType,
   getTableCellAlign, getCiteMode
 } from './parse-util.js';
 
@@ -34,42 +34,31 @@ export function parsePandocAST(doc, options = {}) {
 export class PandocASTParser {
   constructor(options) {
     this.ctx = {
-      alias: new Map(options.alias || []),
       fence: new Set(options.fence || []),
       block: new Set(options.block || []),
-      cite: new Set(options.cite || []),
       xref: new Set(options.xref || []),
       env: new Set(options.env || [])
     };
   }
 
-  shouldExtractFromPara(children) {
-    if (children.length !== 1) return false;
-    const [node] = children;
-    return isDisplayMath(node)
-      || this.ctx.fence.has(getNodeName(node))
-      || this.ctx.block.has(getNodeName(node));
-  }
-
   blockLookup(item) {
-    return this.componentLookup(item, this.ctx.block, 'code');
+    return this.componentLookup(item, this.ctx.block);
   }
 
   fenceLookup(item) {
     return this.componentLookup(item, this.ctx.fence);
   }
 
-  componentLookup(item, lookup, skip) {
+  componentLookup(item, lookup) {
     const [attrs, content] = item;
     const [id, classes, props] = attrs;
-    const cls = classes.includes(skip) ? skip : classes.find(c => lookup.has(c));
+    const cls = classes.find(c => lookup.has(c));
 
     if (cls) {
-      const name = cls !== skip ? (this.ctx.alias.get(cls) || cls) : undefined;
       item = [
         [id, classes.filter(c => c !== cls), props],
         content,
-        name
+        cls
       ];
     }
     return item;
@@ -280,10 +269,11 @@ export class PandocASTParser {
   }
 
   parsePara(content) {
-    const children = this.parseInline(content);
-    return this.shouldExtractFromPara(children)
-      ? children[0]
-      : createComponentNode('p', null, children);
+    return createComponentNode(
+      'p',
+      null,
+      this.parseInline(content)
+    );
   }
 
   parseBlockQuote(content) {
@@ -347,7 +337,6 @@ export class PandocASTParser {
 
   parseCodeBlock(item) {
     const [attrs, content, name = 'code-block'] = this.blockLookup(item);
-    // TODO output two components if both presented and evaluated
     return createComponentNode(
       name,
       parseProperties(attrs),
@@ -484,11 +473,11 @@ export class PandocASTParser {
   }
 
   parseMath(item) {
-    const [ { t: type }, content ] = item;
+    const [ , content ] = item;
     return createComponentNode(
       'math',
       createProperties({
-        mode: getMathType(type),
+        mode: 'inline',
         code: isInterpolated(content) ? `\`\`${content}\`\`` : content
       })
     );
@@ -496,20 +485,11 @@ export class PandocASTParser {
 
   parseCode(item) {
     const [ attrs, content ] = item;
-    if (content.startsWith('js ')) {
-      // TODO?: generalize / use context
-      return createComponentNode(
-        'cell-view',
-        parseProperties(attrs, { inline: 'true' }),
-        [ createTextNode(content.slice(3)) ]
-      );
-    } else {
-      return createComponentNode(
-        'code',
-        parseProperties(attrs),
-        [ createTextNode(content) ]
-      );
-    }
+    return createComponentNode(
+      'code',
+      parseProperties(attrs),
+      [ createTextNode(content) ]
+    );
   }
 
   parseImage(item) {
@@ -617,7 +597,6 @@ export class PandocASTParser {
   }
 
   parseCite(item) {
-    // const nodes = [];
     const [ cites/*, content */ ] = item;
 
     const nodes = cites.map(cite => {
@@ -628,18 +607,12 @@ export class PandocASTParser {
         citationMode: { t: mode }
       } = cite;
 
-      const [keyName, keyValue] = this.getCiteKey(key);
-      const attrs = {
-        [keyName]: keyValue,
-        mode: getCiteMode(mode)
-      };
-
-      let children = []
+      const children = [];
       if (prefix.length) {
         children.push(
           createComponentNode(
-            'cite-prefix',
-            createProperties({ slot: 'prefix'}),
+            'span',
+            createProperties({ slot: 'prefix' }),
             this.parseInline(prefix)
           )
         );
@@ -647,8 +620,8 @@ export class PandocASTParser {
       if (suffix.length) {
         children.push(
           createComponentNode(
-            'cite-suffix',
-            createProperties({ slot: 'suffix'}),
+            'span',
+            createProperties({ slot: 'suffix' }),
             this.parseInline(suffix)
           )
         );
@@ -656,7 +629,7 @@ export class PandocASTParser {
 
       return createComponentNode(
         'cite-ref',
-        createProperties(attrs),
+        createProperties({ key, mode: getCiteMode(mode) }),
         children
       );
     });
@@ -676,12 +649,7 @@ export class PandocASTParser {
     return [type, rest.join(':')];
   }
 
-  getCiteKey(key) {
-    const [type, ...rest] = key.split(':');
-    return rest.length && this.ctx.cite.has(type)
-      ? [type, rest.join(':')]
-      : ['key', key];
-  }
+  // -- Comments --
 
   parseRaw(content) {
     const [format, text] = content;

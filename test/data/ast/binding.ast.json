@@ -16,17 +16,11 @@
           },
           {
             "type": "component",
-            "name": "cell-view",
-            "properties": {
-              "inline": {
-                "type": "value",
-                "value": "true"
-              }
-            },
+            "name": "code",
             "children": [
               {
                 "type": "textnode",
-                "value": "x = 128"
+                "value": "js x = 128"
               }
             ]
           }
@@ -98,8 +92,12 @@
       },
       {
         "type": "component",
-        "name": "cell-view",
+        "name": "code-block",
         "properties": {
+          "class": {
+            "type": "value",
+            "value": "js"
+          },
           "bind": {
             "type": "value",
             "value": "x"
@@ -114,21 +112,23 @@
       },
       {
         "type": "component",
-        "name": "cell-view",
-        "properties": {
-          "bind": {
-            "type": "value",
-            "value": "x"
-          },
-          "inline": {
-            "type": "value",
-            "value": "true"
-          }
-        },
+        "name": "p",
         "children": [
           {
-            "type": "textnode",
-            "value": "viewof b = Inputs.range([0, 255], {step: 1})"
+            "type": "component",
+            "name": "code",
+            "properties": {
+              "bind": {
+                "type": "value",
+                "value": "x"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "js viewof b = Inputs.range([0, 255], {step: 1})"
+              }
+            ]
           }
         ]
       },

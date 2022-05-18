@@ -68,6 +68,7 @@ export class CiteRef extends LitElement {
       }`;
   }
 
+export class CiteRef extends ArticleElement {
   static get properties() {
     return {
       key: {type: String},
@@ -85,6 +86,11 @@ export class CiteRef extends LitElement {
   constructor() {
     super();
     this.mode = 'citation';
+  }
+
+  initialChildNodes(nodes) {
+    this.__prefix = nodes[0];
+    this.__suffix = nodes[1];
   }
 
   render() {
@@ -134,14 +140,19 @@ function authors(data, etal = 2) {
   }
 }
 
-// TODO: what if no author?
-function inlineAuthor(data) {
-  const { author } = data;
-  let authors = author[0].family;
-  if (author.length === 2) {
-    authors += ` & ${author[1].family}`;
-  } else if (author.length > 2) {
-    authors += ' et al.';
+function inline(data, index) {
+  let authors = '';
+
+  if (data && data.author) {
+    const { author } = data;
+    authors = author[0].family;
+    if (author.length === 2) {
+      authors += ` & ${author[1].family}`;
+    } else if (author.length > 2) {
+      authors += ' et al.';
+    }
+    authors = html`${authors}&nbsp;`;
   }
-  return authors;
+
+  return html`${authors}<span class="cite-list">${index}</span>`;
 }

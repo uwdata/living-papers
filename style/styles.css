@@ -97,27 +97,27 @@
 .quote-single::before {
   content: "‘";
 }
+
 .quote-single::after {
   content: "’";
 }
+
 .quote-double::before {
   content: "“";
 }
+
 .quote-double::after {
   content: "”";
-}
-
-.cite-list::before {
-  content: "[";
-}
-.cite-list::after {
-  content: "]";
 }
 
 h1[data-counter]::before,
 h2[data-counter]::before,
 h3[data-counter]::before {
   content: attr(data-counter) " ";
+}
+
+figure > figcaption {
+  font-size: 0.9em;
 }
 
 figure.figure > figcaption[data-counter]::before {
@@ -128,19 +128,31 @@ figure.table > figcaption[data-counter]::before {
   content: "Table " attr(data-counter) ". ";
 }
 
-.xref.sec.full::before {
+.cite-list::before {
+  content: "[";
+}
+
+.cite-list::after {
+  content: "]";
+}
+
+.cite-ref {
+  text-decoration: underline dotted #aaa;
+}
+
+.cross-ref.sec.full::before {
   content: "§";
 }
 
-.xref.fig.full::before {
+.cross-ref.fig.full::before {
   content: "Figure ";
 }
 
-.xref.tbl.full::before {
+.cross-ref.tbl.full::before {
   content: "Table ";
 }
 
-.xref.eqn.full::before {
+.cross-ref.eqn.full::before {
   content: "Equation ";
 }
 
@@ -166,8 +178,29 @@ header .author-org::before {
 
 .note-content {
   float: right;
-  width: 200px;
+  width: 250px;
   clear: right;
   margin: 0.5ex -300px 1em 0;
   text-align: left;
+  font-size: 0.8em;
+  line-height: 1.2em;
+}
+
+.error-block {
+  display: block;
+  border: solid 1px red;
+  padding: 1em;
+  max-width: 800px;
+  font-size: 0.9em;
+}
+
+.range-text {
+  text-decoration: underline dashed #888;
+  cursor: ew-resize;
+}
+
+.katex { font-size: 1em !important; }
+
+article > p {
+  line-height: 1.3em;
 }

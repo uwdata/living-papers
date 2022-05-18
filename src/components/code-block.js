@@ -1,8 +1,6 @@
 import { DependentElement } from './dependent-element.js';
-import { clearChildren } from '../util/clear-children.js';
 
 export class CodeBlock extends DependentElement {
-
   static get dependencies() {
     return [
       {
@@ -28,18 +26,11 @@ export class CodeBlock extends DependentElement {
     this.language = null;
   }
 
-  createRenderRoot() {
-    // no shadow dom, let global CSS apply
-    return this;
-  }
-
-  connectedCallback() {
+  initialChildNodes(nodes) {
     // attempt to extract code from first child
-    if (!this.hasAttribute('code') && this.childNodes.length) {
-      this.code = this.childNodes[0].textContent.trim();
-      clearChildren(this);
+    if (!this.hasAttribute('code') && nodes.length) {
+      this.code = nodes[0].textContent.trim();
     }
-    super.connectedCallback();
   }
 
   render() {

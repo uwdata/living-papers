@@ -3,15 +3,17 @@ import path from 'node:path';
 import { builtins, parseContext, numbered } from './config.js';
 import { bundle } from './bundle/bundle.js';
 import { parseMarkdown } from './parser/parse-markdown.js';
-import { citations, code, crossref, header, notes } from './plugins/index.js';
+import { citations, code, crossref, header, notes, runtime } from './plugins/index.js';
 import { cache } from './util/cache.js';
 
 import knitr from './plugins/knitr/index.js';
 import pyodide from './plugins/pyodide/index.js';
 
 export async function compile(inputFile, options = {}) {
+  const startTime = Date.now();
   const outputDir = options.outputDir;
   const tempDir = options.tempDir || path.join(outputDir, '.temp');
+  const logger = options.logger || console;
 
   // Parse Markdown to initial AST
   const { metadata, article } = await parseMarkdown({
@@ -22,6 +24,7 @@ export async function compile(inputFile, options = {}) {
   // Apply AST transformation plugins
   const plugins = [
     ...pluginsPre(metadata.plugins),
+    runtime,
     code,
     crossref(numbered()),
     notes,
@@ -35,7 +38,7 @@ export async function compile(inputFile, options = {}) {
     inputDir: path.dirname(inputFile),
     outputDir,
     tempDir,
-    logger: options.logger || console
+    logger
   });
 
   if (options.debug) {
@@ -51,7 +54,11 @@ export async function compile(inputFile, options = {}) {
     tempDir,
     ...options
   };
-  return bundle({ metadata, article: ast }, bundleOptions);
+
+  return {
+    bundle: await bundle({ metadata, article: ast }, bundleOptions),
+    elapsedTime: Date.now() - startTime
+  };
 }
 
 function pluginsPre(plugins) {

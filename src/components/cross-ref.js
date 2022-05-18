@@ -1,6 +1,7 @@
-import { LitElement, html } from 'lit';
+import { html } from 'lit';
+import { ArticleElement } from './article-element';
 
-export class CrossRef extends LitElement {
+export class CrossRef extends ArticleElement {
   static get properties() {
     return {
       type: {type: String},
@@ -10,14 +11,10 @@ export class CrossRef extends LitElement {
     };
   }
 
-  createRenderRoot() {
-    return this;
-  }
-
   render() {
     // TODO? title tooltip
     const { type, xref, index = '?', short } = this;
-    const cls = `xref ${type}${!short ? ' full' : ''}`;
+    const cls = `cross-ref ${type}${!short ? ' full' : ''}`;
     return html`<a class=${cls} href=${`#${xref}`}>${index}</a>`;
   }
 }

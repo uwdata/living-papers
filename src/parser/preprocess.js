@@ -215,13 +215,20 @@ function attributes(_) {
   const { input, n } = _;
   let i = 0, j;
   let c;
-  let dq, sq, bq, bn;
+  let dq, sq, bq, bn, sp;
 
   while (i < n) {
     c = input[i];
     switch (c) {
       case '\\':
         i += 2;
+        break;
+      case ' ':
+        if (sp && sp[1] === i) {
+          sp[1] = ++i;
+        } else {
+          sp = [i, ++i];
+        }
         break;
       case '.':
       case '#':
@@ -230,7 +237,13 @@ function attributes(_) {
         break;
       case '=':
         if (!dq && !sq && !bq) {
-          i = _.space(i + 1);
+          // consume space before/after equals, otherwise pandoc breaks
+          if (sp && sp[1] === i) {
+            _.write(sp[0], null, i);
+          }
+          j = _.space(++i);
+          if (j > i) _.write(i, null, i = j);
+
           if ((j = _.consume(i, '`')) > i) {
             // backtick quoted attribute
             bq = i;

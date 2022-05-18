@@ -1,23 +1,12 @@
-import { LitElement, html, css } from 'lit';
+import { html } from 'lit';
+import { ArticleElement } from './article-element.js';
 import { UnsafeRuntime } from '../runtime/runtime-unsafe.js';
-import { clearChildren } from '../util/clear-children.js';
 
 const PENDING = 'pending';
 const FULFILLED = 'fulfilled';
 const ERROR = 'error';
 
-export class ObservableCell extends LitElement {
-  static get styles() {
-    return css`
-      .error {
-        display: block;
-        border: solid 1px red;
-        padding: 1em;
-        max-width: 800px;
-      }
-    `;
-  }
-
+export class ObservableCell extends ArticleElement {
   static get properties() {
     return {
       value: {state: true},
@@ -50,17 +39,14 @@ export class ObservableCell extends LitElement {
     return this;
   }
 
-  connectedCallback() {
+  initialChildNodes(nodes) {
     // attempt to extract code from first child
-    if (!this.hasAttribute('code') && this.childNodes.length) {
-      const code = this.childNodes[0].textContent;
-      clearChildren(this);
+    if (!this.hasAttribute('code') && nodes.length) {
+      const code = nodes[0].textContent;
       const cells = code.split(/\n\s*---+\s*\n/g);
       this.code = cells.pop();
       register(cells);
     }
-
-    super.connectedCallback();
   }
 
   willUpdate(changedProperties) {
@@ -86,7 +72,7 @@ export class ObservableCell extends LitElement {
 }
 
 function error(message) {
-  return html`<span class="error">${message}</span>`;
+  return html`<span class="error-block">${message}</span>`;
 }
 
 async function register(cells) {
