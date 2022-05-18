@@ -8,7 +8,7 @@ export function numbered() {
 export function parseContext() {
   return {
     fence: ['figure', 'table'],
-    block: ['bibliography', 'equation'],
+    block: ['bibliography', 'equation', 'math'],
     xref: ['sec', 'fig', 'tbl', 'eqn'],
     env: ['figure', 'table']
   };

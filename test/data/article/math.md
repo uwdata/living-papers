@@ -2,7 +2,9 @@ Inline math: $\sqrt{x_0}$
 
 Display math:
 
-$$ \frac{1}{N} \sum_{i=1}^N x_i^2 $$
+~~~ math
+\frac{1}{N} \sum_{i=1}^N x_i^2
+~~~
 
 An equation of great concern to cats, centered:
 

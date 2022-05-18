@@ -5,7 +5,7 @@ import {
 
 import {
   append, extractText, isDisplayMath, isInterpolated,
-  getMathType, getQuoteType, getListType, getMarkerType,
+  getQuoteType, getListType, getMarkerType,
   getTableCellAlign, getCiteMode
 } from './parse-util.js';
 
@@ -39,14 +39,6 @@ export class PandocASTParser {
       xref: new Set(options.xref || []),
       env: new Set(options.env || [])
     };
-  }
-
-  shouldExtractFromPara(children) {
-    if (children.length !== 1) return false;
-    const [node] = children;
-    return isDisplayMath(node)
-      || this.ctx.fence.has(getNodeName(node))
-      || this.ctx.block.has(getNodeName(node));
   }
 
   blockLookup(item) {
@@ -277,10 +269,11 @@ export class PandocASTParser {
   }
 
   parsePara(content) {
-    const children = this.parseInline(content);
-    return this.shouldExtractFromPara(children)
-      ? children[0]
-      : createComponentNode('p', null, children);
+    return createComponentNode(
+      'p',
+      null,
+      this.parseInline(content)
+    );
   }
 
   parseBlockQuote(content) {
@@ -480,11 +473,11 @@ export class PandocASTParser {
   }
 
   parseMath(item) {
-    const [ { t: type }, content ] = item;
+    const [ , content ] = item;
     return createComponentNode(
       'math',
       createProperties({
-        mode: getMathType(type),
+        mode: 'inline',
         code: isInterpolated(content) ? `\`\`${content}\`\`` : content
       })
     );
