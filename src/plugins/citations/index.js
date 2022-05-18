@@ -37,7 +37,7 @@ export default async function(ast, context) {
   });
 
   // collect citation data to embed in article
-  const data = await citationData(citations, scholarAPI(cache, fetch));
+  const data = await citationData(citations, scholarAPI(cache, fetch), logger);
   metadata.references = data;
 
   // add bibliography to AST
