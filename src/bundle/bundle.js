@@ -4,8 +4,11 @@ import { URL, fileURLToPath } from 'node:url';
 import { mkdirp, readFile, rmrf, writeFile } from '../util/fs.js';
 import { astToHTML } from '../build/ast-to-html.js';
 import { astToScript } from '../build/ast-to-script.js';
+import { astToPDF } from '../build/ast-to-pdf.js';
+
 import { rollup } from './rollup.js';
-import { default as _template } from './template.js';
+import { default as _template } from './templates/template.js';
+import { default as _selfContainedTemplate } from './templates/self-contained.js';
 
 export async function bundle(article, options) {
   const { metadata, article: ast } = article;
@@ -16,6 +19,7 @@ export async function bundle(article, options) {
     outputCSS = 'styles.css',
     outputJS = 'bundle.js',
     template = _template,
+    selfContainedTemplate = _selfContainedTemplate,
     tempDir = path.join(outputDir, '.temp'),
     ...rollupOptions
   } = options;
@@ -42,6 +46,7 @@ export async function bundle(article, options) {
   // generate page content
   const { script } = astToScript(ast);
   const { html, tags, ...bind } = astToHTML(ast);
+
   const entrypoint = entrypointScript({
     root: 'article',
     bind,
@@ -63,9 +68,19 @@ export async function bundle(article, options) {
     writeFile(cssPath, await css(styles))
   ]);
 
+
   // if we have javascript code, bundle it with rollup
   if (entrypoint) {
     await rollup({ ...rollupOptions, input: entryPath, output: jsPath });
+  }
+
+  // TODO - make this conditional 
+  if (true) {
+    const { pdf } = await astToPDF(ast, await selfContainedTemplate({
+      html,
+      css: cssPath,
+      script: jsPath
+    }));
   }
 
   // delete temp directory
