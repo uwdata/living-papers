@@ -116,6 +116,10 @@ h3[data-counter]::before {
   content: attr(data-counter) " ";
 }
 
+figure > figcaption {
+  font-size: 0.9em;
+}
+
 figure.figure > figcaption[data-counter]::before {
   content: "Figure " attr(data-counter) ". ";
 }
@@ -174,10 +178,12 @@ header .author-org::before {
 
 .note-content {
   float: right;
-  width: 200px;
+  width: 250px;
   clear: right;
   margin: 0.5ex -300px 1em 0;
   text-align: left;
+  font-size: 0.8em;
+  line-height: 1.2em;
 }
 
 .error-block {
@@ -185,9 +191,16 @@ header .author-org::before {
   border: solid 1px red;
   padding: 1em;
   max-width: 800px;
+  font-size: 0.9em;
 }
 
 .range-text {
   text-decoration: underline dashed #888;
   cursor: ew-resize;
+}
+
+.katex { font-size: 1em !important; }
+
+article > p {
+  line-height: 1.3em;
 }

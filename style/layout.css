@@ -4,7 +4,7 @@ article {
 	|             full             |
 	| 1 | nav | main | margin | 5 |
 	*/
-	grid-template-columns: [full-start] 1fr [nav-start] minmax(100px, 150px) [main-start nav-end] 540px [main-end margin-start] 400px [margin-end] 1fr [full-end];
+	grid-template-columns: [full-start] 1fr [nav-start] minmax(60px, 90px) [main-start nav-end] 600px [main-end margin-start] 350px [margin-end] 1fr [full-end];
 	gap: 16px 40px;
 }
 
