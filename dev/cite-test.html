@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Citation Test</title>
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../node_modules/lit/polyfill-support.js"></script>
+    <script type="module">
+      import { CiteRef } from '../src/components/cite-ref.js';
+      window.customElements.define('cite-ref', CiteRef);
+    </script>
+    <style>
+      body {font-family: Helvetica Neue;-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;overflow-x: hidden;}
+      .center {display: grid;place-items: start center;height: 100vh;width: 100vw;text-align: left;}
+      .col {place-items: start left;width: 75vw;}
+    </style>
+  </head>
+
+  <body>
+    <div class="center">
+      <div class="col">
+        <h1>Citations</h1>
+        <p>Living Papers Team - University of Washington</p>
+        <p>Did you read Scott & Sheather 
+        [<cite-ref mode="inline-author" index=3 key="key" data="" cit_head_title='Kernel density estimation with binned data. Communications in Statistics - Theory and Methods' cit_info_year='1985' cit_info_lab='COMMUN STAT-THEOR M' cit_body_auth='Scott, D. W., & Sheather, S. J.' cit_body_abst='Continuous data are often measured or used in binned or rounded form. In this paper we follow up on Hall&#39;s work analyzing the effect of using equally-spaced binned data in a kernel density estimator. It is shown that a surprisingly large amount of binning does not adversely affect the integrated mean...' ></cite-ref>]
+        ? It was part of the reading list [
+        <cite-ref mode="inline-author" index=1 key="key" data="" cit_head_title='Idyll: A Markup Language for Authoring and Publishing Interactive Articles on the Web' cit_info_year='2018' cit_info_lab='UIST &#39;18: 31st Annual ACM Symposium' cit_body_auth='Conlen, M., & Heer, J.' cit_body_abst='The web has matured as a publishing platform: news outlets regularly publish rich, interactive stories while technical writers use animation and interaction to communicate complex ideas. This style of interactive media has the potential to engage a large audience and more clearly explain concepts, but...' ></cite-ref>,
+        <cite-ref mode="inline-author" index=2 key="key" data="" cit_head_title='On the errors involved in computing the empirical characteristic function' cit_info_year='1983' cit_info_lab='J. Stat. Comput. Simul.' cit_body_auth='Jones, M. C., & Lotwick, H. W.' cit_body_abst='This paper considers discretisation errors involved in using the Fast Fourier Transform to compute the empirical characteristic function efficiently. A simple improvement to the usual histogram discretisation scheme is shown to reduce the mean square error considerably, as the grid size tends to zero...' ></cite-ref>,
+        <cite-ref mode="inline-author" index=3 key="key" data="" cit_head_title='Kernel density estimation with binned data. Communications in Statistics - Theory and Methods' cit_info_year='1985' cit_info_lab='COMMUN STAT-THEOR M' cit_body_auth='Scott, D. W., & Sheather, S. J.' cit_body_abst='Continuous data are often measured or used in binned or rounded form. In this paper we follow up on Hall&#39;s work analyzing the effect of using equally-spaced binned data in a kernel density estimator. It is shown that a surprisingly large amount of binning does not adversely affect the integrated mean...' ></cite-ref>,
+        <cite-ref mode="inline-author" index=4 key="key" data="" cit_head_title='Algorithm AS 176: Kernel density estimation using the fast Fourier transform.' cit_info_year='1982' cit_info_lab='J R STAT SOC B' cit_body_auth='Silverman, B. W.' cit_body_abst='No abstract is available for this article.' ></cite-ref>,
+        <cite-ref mode="inline-author" index=5 key="key" data="" cit_head_title='Fast Computation of Multivariate Kernel Estimators' cit_info_year='1994' cit_info_lab='J. Stat. Comput. Simul.' cit_body_auth='Wand, M. P.' cit_body_abst='Multivariate extensions of binning techniques for fast computation of kernel estimators are described and examined. Several questions arising from this multivariate extension are addressed. The choice of binning rule is discussed, and it is demonstrated that linear binning leads to substantial accuracy...' ></cite-ref>]
+        </p>
+        <p>
+        I also liked Conlen & Heer
+        [<cite-ref mode="inline-author" index=1 key="key" data="" cit_head_title='Idyll: A Markup Language for Authoring and Publishing Interactive Articles on the Web' cit_info_year='2018' cit_info_lab='UIST &#39;18: 31st Annual ACM Symposium' cit_body_auth='Conlen, M., & Heer, J.' cit_body_abst='The web has matured as a publishing platform: news outlets regularly publish rich, interactive stories while technical writers use animation and interaction to communicate complex ideas. This style of interactive media has the potential to engage a large audience and more clearly explain concepts, but...' ></cite-ref>]
+        </p>
+
+        <h1>References</h1>
+        <ol>
+          <li>Conlen, M., & Heer, J. (2018, October 11). Idyll. Proceedings of the 31st Annual ACM Symposium on User Interface Software and Technology. UIST '18: The 31st Annual ACM Symposium on User Interface Software and Technology.
+              https://doi.org/10.1145/3242587.3242600</li>
+          <li>Jones, M. C., & Lotwick, H. W. (1983). On the errors involved in computing the empirical characteristic function. Journal of Statistical Computation and Simulation, 17(2), 133-149.
+              https://doi.org/10.1080/00949658308810650</li>
+          <li>Scott, D. W., & Sheather, S. J. (1985). Kernel density estimation with binned data. Communications in Statistics - Theory and Methods, 14(6), 1353-1359.
+              https://doi.org/10.1080/03610928508828980</li>
+          <li>Silverman, B. W. (1982). Algorithm AS 176: Kernel density estimation using the fast Fourier transform. Journal of the Royal Statistical Society, Series C (Applied Statistics), 31(1), 93-99.
+              https://doi.org/10.2307/2347084</li>
+          <li>Wand, M. P. (1994). Fast Computation of Multivariate Kernel Estimators. Journal of Statistical Computation and Simulation, 3(4), 433-445.
+              https://doi.org/10.1080/10618600.1994.10474656</li>
+          <li>Wells, W. M. (1986). Efficient synthesis of Gaussian filters by cascaded uniform filters. IEEE Transactions on Pattern Analysis and Machine Intelligence, 8(2), 234-239.
+              https://doi.org/10.1109/TPAMI.1986.4767776</li>
+        </ol>
+      </div>
+    </div>
+
+  </body>
+</html>
