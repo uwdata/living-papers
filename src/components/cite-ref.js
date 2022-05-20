@@ -1,84 +1,14 @@
-import { LitElement, html, css } from 'lit';
+import { html } from 'lit';
+import { ArticleElement } from './article-element.js';
 
-export class CiteRef extends LitElement {
-  static get styles() {
-    return css`
-      .citation {
-        font-weight: bold;
-      }
-
-      .citation:hover {
-        color: steelblue;
-      }
-
-      .citation:not(:hover) * {
-        display: none;
-      }
-
-      .cit {
-        position: absolute;
-        transform: translate(-15px, 20px);
-        width: 300px;
-        background: whitesmoke;
-        font-size: small;
-        font-weight: 300;
-        color: black;
-        filter: drop-shadow(1px 1px 3px lightgray);
-        border-radius: 10px 10px 10px 10px;
-        border: .1px solid black;
-      }
-
-      .cit-head {
-        display: flex;
-        flex-direction: column;
-        background: rgb(230, 230, 230);
-        padding: 5px 10px 5px 10px;
-        border-radius : 10px 10px 0 0;
-      }
-      
-      .cit-head-title {
-        min-height: 24px;
-        line-height: 1;
-        font-size: medium;
-      }
-      
-      .cit-head-info {
-        padding-top: 5px;
-        min-height: 18px;
-        display: flex;
-        justify-content: space-between;
-      }
-      
-      .cit-body {
-        padding: 5px 10px 5px 10px;
-        border-radius : 0 0 10px 10px;
-        border-top: .1px solid black;
-        line-height: 1.3;
-      }
-      
-      .cit-body-auth {
-        min-height: 18px;
-        padding-bottom: 5px;
-      }
-      
-      .cit-body-abst {
-        min-height: 108px;
-        padding-top: 5px;
-        border-top: .1px solid black;
-      }`;
-  }
+export class CiteRef extends ArticleElement {
   
   static get properties() {
     return {
       key: {type: String},
       mode: {type: String},
       index: {type: Number},
-      data: {type: Object},
-      cit_head_title: {type: String},
-      cit_info_year: {type: String},
-      cit_info_lab: {type: String},
-      cit_body_auth: {type: String},
-      cit_body_abst: {type: String}
+      data: {type: Object}
     };
   }
 
@@ -93,31 +23,32 @@ export class CiteRef extends LitElement {
   }
 
   render() {
-    const { key, data, index, mode,
-       cit_head_title, cit_info_year, cit_info_lab,
-        cit_body_auth, cit_body_abst } = this;
+    const { key, data, index, mode } = this;
+    if (data == null) { return html`<span class ='citation-err'>!!<span class ='cit-err'>Unresolved Citation</span></span>`; }
     const title = tooltip(data, key, index);
-    const body = (mode === 'inline-author'
-      ? (data ? inlineAuthor(data) : '??')
-      : index) || '??';
+    const body = (mode === 'inline-author' ? inline(data, index) : index) || '??';
+    // <!-- <div class='cit-info-item'>${data.venue}</div> -->
     return html`
-    <span class ='citation'>${index}
-      <span class='cit'>
+    <span class='citation'>${body}<span class='cit'>
         <div class='cit-head'>
-          <div class='cit-head-title'>${cit_head_title}</div>
+          <div class='cit-head-title'>${data.title}</div>
           <div class='cit-head-info'>
-            <div class='cit-info-item'>${cit_info_year}</div>
-            <div class='cit-info-item'>${cit_info_lab}</div>
+            <div class='cit-info-item'>${data.year}</div>
           </div>
         </div>
         <div class='cit-body'>
-          <div class='cit-body-auth'>${cit_body_auth}</div>
-          <div class='cit-body-abst'>${cit_body_abst}</div>
+          <div class='cit-body-auth'>${authors(data)}</div>
+          <div class='cit-body-abst'>${limitAbstract(data.abstract, 300)}</div>
         </div>
       </span>
     </span> 
     `;
   }
+}
+
+function limitAbstract(abstract, charLimit) {
+  if (abstract == null) { return 'No abstract is available for this article.' }
+  return abstract.length > charLimit ? abstract.substring(0, charLimit) + '...' : abstract;
 }
 
 function tooltip(data, key, index) {
