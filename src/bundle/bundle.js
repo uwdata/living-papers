@@ -22,9 +22,11 @@ export async function bundle(article, options) {
 
   // set up path variables
   const libDir = fileURLToPath(new URL('../..', import.meta.url));
+  const assetsDir = path.join(libDir, 'assets');
   const styleDir = path.join(libDir, 'style');
   const runtimePath = path.join(tempDir, 'runtime.js');
   const entryPath = path.join(tempDir, 'entry.js');
+  const assetsPath = path.join(tempDir, 'assets');
   const htmlPath = path.join(outputDir, outputHTML);
   const cssPath = path.join(outputDir, outputCSS);
   const jsPath = path.join(outputDir, outputJS);
@@ -48,7 +50,7 @@ export async function bundle(article, options) {
     metadata,
     components: components.filter(c => tags.has(c.name)),
     runtime: !!script,
-  });
+  }).replaceAll("\\", "\\\\");
 
   // write content and css files
   // javascript code is written to temp directory

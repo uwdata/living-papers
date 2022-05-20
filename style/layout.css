@@ -1,54 +1,13 @@
+:root {
+	--main-width: 540px;
+	--margin-width: 400px;
+	--gap-width: 100px;
+}
+
 article {
-	display: grid;
-	/* Looks like this: (sections '1' and '5' expand to fill available screen width)
-	|             full             |
-	| 1 | nav | main | margin | 5 |
-	*/
-	grid-template-columns: [full-start] 1fr [nav-start] minmax(60px, 90px) [main-start nav-end] 600px [main-end margin-start] 350px [margin-end] 1fr [full-end];
-	gap: 16px 40px;
+	margin-left: calc(calc(100vw - var(--main-width) - var(--margin-width) - var(--gap-width)) / 2);
+	width: var(--main-width);
 }
-
-/* remove left margin when `width <= 1270px` */
-@media (max-width: 1270px) {
-	.grid {
-		/* combining main and nav */
-		/* Looks like this:
-		|             full             |
-		| 1 | main = nav | margin | 4 |
-		*/
-		grid-template-columns: [full-start] 1fr [main-start nav-start] 540px [main-end nav-end margin-start] 400px [margin-end] 1fr [full-end];
-		column-gap: 20px;
-	}
-	nav.toc {
-		position: static;
-		grid-row: auto;
-		padding: 0;
-	}
-}
-
-/* remove right margin when `width <= 920px` */
-@media (max-width: 920px) {
-	.grid {
-		/* combining main and nav and margin */
-		/* Looks like this:
-		|             full             |
-		| 1 | main = nav = margin | 3 |
-		*/
-		grid-template-columns: [full-start] 1fr [main-start nav-start margin-start] minmax(auto, 540px) [main-end nav-end margin-end] 1fr [full-end];
-		column-gap: 10px;
-	}
-	.margin {
-		text-align: center;
-	}
-}
-
-article > *, .grid > * {
-	grid-column: main;
-}
-
-/* article {
-	margin-top: 1em;
-} */
 
 h1,
 h2 {
@@ -78,13 +37,28 @@ section > p:last-child {
 	margin-bottom: 0;
 }
 
-.header {
-	grid-column: main / margin;
-}
-
 .margin {
 	position: relative;
-	grid-column: margin;
+	float: right;
+	clear: right;
+	width: var(--margin-width);
+	margin-right: calc(-1 * var(--gap-width) - var(--margin-width));
+	margin-bottom: 1em;
+	vertical-align: reset;
+}
+
+.inlinenote-number {
+	line-height: 1;
+}
+
+.inlinenote:hover, .inlinenote:hover .note {
+	background: yellow;
+}
+
+.inlinenote .note::before {
+	content: "[" attr(data-number) "]";
+	position: absolute;
+	left: -32px;
 }
 
 .float-left {
@@ -104,11 +78,9 @@ section > p:last-child {
 
 .page {
 	text-align: justify;
-	grid-column: main / margin;
 }
 
 .full {
-	grid-column: full;
 	max-width: 100vw;
 }
 
@@ -149,27 +121,25 @@ footer {
 	background: #eee;
 }
 
-.toc {
-	grid-column: nav;
-	grid-row: span 5; /* TODO: kind of sketchy, doesn't work as expected if there are < 5 rows */
-	align-self: start;
-	width: fit-content;
-	position: sticky;
-	top: 10px;
-	background: white;
-	border-radius: 8px;
-	padding: 16px;
-}
-
-.toc ol {
-	list-style: none;
-}
-
-.toc li {
-	padding-left: 16px;
-	margin: 8px 0;
-	border-left: 4px solid #ddd;
-}
-.toc li a {
-	text-decoration: none;
+@media (max-width: 1170px) {
+	:root {
+		--main-width: 100%;
+	}
+	.page {
+		width: var(--main-width);
+	}
+	article {
+		margin-left: 0;
+	}
+	.margin {
+		float: none;
+		margin: 0;
+		width: auto;
+	}
+	.inlinenote-number {
+		cursor: pointer;
+	}
+	.inlinenote:not(.open) .note, .inlinenote .note::before {
+		display: none;
+	}
 }
