@@ -36,6 +36,13 @@ describe('preprocess', () => {
     test('```foo {.bar}\ncode\n```', '```{.foo .bar}\ncode\n```');
   });
 
+  it('handles pipes', () => {
+    test(':::\nfoo\n| bar', ':::\nfoo\n\n| bar');
+    test(':::\nfoo\n| bar\n| baz', ':::\nfoo\n\n| bar\n| baz');
+    test(':::\nfoo\n|  bar', ':::\nfoo\n\n|  bar');
+    test(':::\nfoo\n|  bar\n|  baz', ':::\nfoo\n\n|  bar\n|  baz');
+  });
+
   it('handles links', () => {
     test('[link](`foo = 1`)', '[link](%60foo%20=%201%60)');
     test('[link](`foo = 1` "title")', '[link](%60foo%20=%201%60 "title")');
