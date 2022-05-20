@@ -74,7 +74,10 @@ export async function bundle(article, options) {
     await rollup({ ...rollupOptions, input: entryPath, output: jsPath });
   }
 
-  // TODO - make this conditional 
+  // TODO: 
+  //   - make this conditional 
+  //   - configure output paths
+  //   - what options are needed?
   if (true) {
     const { pdf } = await astToPDF(ast, await selfContainedTemplate({
       html,
@@ -106,6 +109,7 @@ function entrypointScript({ root, bind, metadata, components, runtime }) {
   if (runtime) {
     script.push(`
 import { ObservableRuntime } from '${src}runtime/runtime.js';
+import { UnsafeRuntime } from '${src}runtime/runtime-unsafe.js';
 import { hydrate } from '${src}build/hydrate.js';
 import * as module from './runtime.js';`);
   }
@@ -125,7 +129,7 @@ import * as module from './runtime.js';`);
     script.push(`  reference(root, ${JSON.stringify(refdata)});`);
   }
   if (runtime) {
-    script.push(`  hydrate(new ObservableRuntime, root, module, ${JSON.stringify(bind)});`);
+    script.push(`  window.runtime = UnsafeRuntime.instance(); hydrate(window.runtime, root, module, ${JSON.stringify(bind)});`);
   }
   if (runtime || hasRefs) {
     script.push(`});`);
