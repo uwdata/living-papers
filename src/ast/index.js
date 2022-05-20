@@ -279,12 +279,28 @@ export function prependChildren(node, ...children) {
 /**
  * Remove a child node from a parent node.
  * @param {object} node The parent AST node.
- * @param {...(object|object[])} children The child AST node to remove.
+ * @param {object} child The child AST node to remove.
  * @return {object} A modified AST node.
  */
 export function removeChild(node, child) {
   if (node.children) {
     node.children = node.children.filter(n => n !== child);
+  }
+  return node;
+}
+
+/**
+ * Remove a child node from a parent node.
+ * @param {object} node The parent AST node.
+ * @param {object} child The child AST node to replace.
+ * @param {...(object|object[])} insert The new child AST nodes to insert.
+ * @return {object} A modified AST node.
+ */
+ export function replaceChild(node, child, insert) {
+  if (node.children) {
+    node.children = node.children
+      .map(n => n === child ? insert : n)
+      .flat();
   }
   return node;
 }
@@ -373,4 +389,10 @@ export function mergeTextNodes(nodes) {
   merge();
 
   return output;
+}
+
+export function extractText(ast) {
+  return ast == null ? ''
+    : typeof ast === 'string' ? ast
+    : getChildren(ast).map(node => extractText(node)).join('');
 }
