@@ -1,7 +1,7 @@
 
 import fs from 'fs/promises';
 
-export default async function(data = {}) {
+export default async function(data = {}, options = {}) {
   const {
     title = 'Living Paper',
     description = 'Living Papers Article',
@@ -11,8 +11,19 @@ export default async function(data = {}) {
     script = './bundle.js'
   } = data;
 
-  const scriptText = script ? await fs.readFile(script) : '';
-  const cssText = script ? await fs.readFile(css) : '';
+  const {
+    selfContained = false
+  } = options;
+
+  let scriptTag = '';
+  if (script) {
+    scriptTag = selfContained ? `<script type="module">${await fs.readFile(script)}</script>` : `<script type="module" src="${script}"></script>`;
+  }
+
+  let cssTag = '';
+  if (css) {
+    cssTag = selfContained ? `<style>${await fs.readFile(css)}</style>` : `<link rel="stylesheet" href="${css}" />`;
+  }
 
   return `<!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -25,14 +36,11 @@ export default async function(data = {}) {
     <meta property="og:type" content="article" />
     <meta property="og:description" content="${description}" />
     <meta property="description" content="${description}" />
-    <style>
-      ${cssText}
-    </style>
+    ${cssTag}
   </head>
   <body>
-    ${html}${script
-      ? `\n    <script type="module">${scriptText}</script>`
-      : ''}
+    ${html}
+    ${scriptTag}
   </body>
 </html>`;
 }

@@ -16,9 +16,6 @@ export async function astToPDF(ast, html) {
     }
   });
   
-  // Hack to wait for the runtime to initialize
-  await page.waitForTimeout(1000);
-
   await page.evaluate(async () => { 
     console.log(await window.runtime.value('a'));
   });

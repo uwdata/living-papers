@@ -7,8 +7,7 @@ import { astToScript } from '../build/ast-to-script.js';
 import { astToPDF } from '../build/ast-to-pdf.js';
 
 import { rollup } from './rollup.js';
-import { default as _template } from './templates/template.js';
-import { default as _selfContainedTemplate } from './templates/self-contained.js';
+import { default as _template } from './template.js';
 
 export async function bundle(article, options) {
   const { metadata, article: ast } = article;
@@ -19,7 +18,6 @@ export async function bundle(article, options) {
     outputCSS = 'styles.css',
     outputJS = 'bundle.js',
     template = _template,
-    selfContainedTemplate = _selfContainedTemplate,
     tempDir = path.join(outputDir, '.temp'),
     ...rollupOptions
   } = options;
@@ -58,7 +56,7 @@ export async function bundle(article, options) {
   // write content and css files
   // javascript code is written to temp directory
   await Promise.all([
-    writeFile(htmlPath, template({
+    writeFile(htmlPath, await template({
       html,
       css: `./${outputCSS}`,
       script: entrypoint && `./${outputJS}`
@@ -79,10 +77,12 @@ export async function bundle(article, options) {
   //   - configure output paths
   //   - what options are needed?
   if (true) {
-    const { pdf } = await astToPDF(ast, await selfContainedTemplate({
+    const { pdf } = await astToPDF(ast, await template({
       html,
       css: cssPath,
       script: jsPath
+    }, {
+      selfContained: true
     }));
   }
 
