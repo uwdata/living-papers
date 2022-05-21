@@ -82,6 +82,16 @@ export class Citations {
         .trim()
     );
   }
+
+  bibtex(ids = null) {
+    // citation.js configuration values are hardwired. sigh.
+    const config = Cite.plugins.config.get('@bibtex').format;
+    const prev = config.useIdAsLabel;
+    config.useIdAsLabel = true;
+    const output = new Cite(this.refs(ids)).format('bibtex');
+    config.useIdAsLabel = prev;
+    return output;
+  }
 }
 
 function filterBy(data, ids) {

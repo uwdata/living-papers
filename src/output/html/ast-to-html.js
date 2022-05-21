@@ -1,5 +1,5 @@
 import { aliasComponent, aliasProperty } from './alias.js';
-import { htmlEscape } from '../util/html-escape.js';
+import { htmlEscape } from '../../util/html-escape.js';
 import { DATA_ATTR } from './constants.js';
 
 export function astMountHTML(ast) {
@@ -27,6 +27,10 @@ function renderNode(node, ctx) {
   }
 
   const name = aliasComponent(node.name);
+  if (name == null) {
+    return '';
+  }
+
   ctx.tags.add(name); // track all tags used
 
   return '<' + name + renderProps(node.properties, ctx) + '>'

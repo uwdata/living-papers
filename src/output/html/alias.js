@@ -1,4 +1,6 @@
 const aliasMap = new Map([
+  ['abstract', 'p'],
+  ['acknowledgements', 'p'],
   ['caption', 'figcaption'],
   ['cite-list', 'span'],
   ['cross-list', 'span'],
@@ -7,11 +9,13 @@ const aliasMap = new Map([
   ['math', 'tex-math'],
   ['note', 'span'],
   ['link', 'a'],
-  ['quote', 'span']
+  ['quote', 'span'],
+  ['teaser', 'figure'],
+  ['raw', null]
 ]);
 
 export function aliasComponent(name) {
-  return aliasMap.get(name) || name;
+  return aliasMap.has(name) ? aliasMap.get(name) : name;
 }
 
 export function aliasProperty(name) {
