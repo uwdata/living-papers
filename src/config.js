@@ -7,10 +7,10 @@ export function numbered() {
 
 export function parseContext() {
   return {
-    fence: ['figure', 'table'],
+    fence: ['abstract', 'acknowledgments', 'figure', 'table', 'teaser'],
     block: ['bibliography', 'equation', 'math'],
     xref: ['sec', 'fig', 'tbl', 'eqn'],
-    env: ['figure', 'table']
+    env: ['figure', 'table', 'teaser']
   };
 }
 

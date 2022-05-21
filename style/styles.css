@@ -176,16 +176,6 @@ header .author-org::before {
   content: counter(notes) ". ";
 }
 
-.note-content {
-  float: right;
-  width: 250px;
-  clear: right;
-  margin: 0.5ex -300px 1em 0;
-  text-align: left;
-  font-size: 0.8em;
-  line-height: 1.2em;
-}
-
 .error-block {
   display: block;
   border: solid 1px red;
@@ -199,7 +189,23 @@ header .author-org::before {
   cursor: ew-resize;
 }
 
-.katex { font-size: 1em !important; }
+.katex {
+  font-size: 1em !important;
+}
+
+.katex-display {
+  margin: 0 !important;
+}
+
+sup, sub {
+  vertical-align: baseline;
+  position: relative;
+  top: -0.4em;
+}
+
+sub {
+  top: 0.4em;
+}
 
 article > p {
   line-height: 1.3em;

@@ -13,6 +13,10 @@ function createNode(ast, ctx) {
   }
 
   const name = aliasComponent(ast.name);
+  if (name == null) {
+    return null;
+  }
+
   const props = ast.properties;
   const children = ast.children || [];
   const node = document.createElement(name);
@@ -32,7 +36,8 @@ function createNode(ast, ctx) {
   }
 
   children.forEach(child => {
-    node.appendChild(createNode(child, ctx));
+    const dom = createNode(child, ctx);
+    if (dom) node.appendChild(dom);
   });
 
   return node;

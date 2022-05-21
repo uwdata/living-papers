@@ -1,7 +1,7 @@
-import { setValueProperty } from '../ast/index.js';
-import { compile, handler } from '../runtime/compile.js';
-import { _api, _initial, _mutable, _viewof } from '../runtime/util.js';
-import { splitCodeCells } from '../util/code-cells.js';
+import { setValueProperty } from '../../ast/index.js';
+import { compile, handler } from '../../runtime/compile.js';
+import { _api, _initial, _mutable, _viewof } from '../../runtime/util.js';
+import { splitCodeCells } from '../../util/code-cells.js';
 import { CELL_VIEW, DATA_CELL } from './constants.js';
 
 const isTrue = b => String(b).toLowerCase() === 'true';

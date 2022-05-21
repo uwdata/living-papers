@@ -1,14 +1,15 @@
 import CleanCSS from 'clean-css';
 import path from 'node:path';
 import { URL, fileURLToPath } from 'node:url';
-import { mkdirp, readFile, rmrf, writeFile } from '../util/fs.js';
-import { astToHTML } from '../build/ast-to-html.js';
-import { astToScript } from '../build/ast-to-script.js';
+import { extractText } from '../../ast/index.js';
+import { mkdirp, readFile, writeFile } from '../../util/fs.js';
+import { astToHTML } from './ast-to-html.js';
+import { astToScript } from './ast-to-script.js';
 import { rollup } from './rollup.js';
 import { default as _template } from './template.js';
 
-export async function bundle(article, options) {
-  const { metadata, article: ast } = article;
+export default async function(ast, metadata, options) {
+  // TODO: use output.html options
   const {
     components,
     outputDir,
@@ -21,7 +22,7 @@ export async function bundle(article, options) {
   } = options;
 
   // set up path variables
-  const libDir = fileURLToPath(new URL('../..', import.meta.url));
+  const libDir = fileURLToPath(new URL('../../..', import.meta.url));
   const styleDir = path.join(libDir, 'style');
   const runtimePath = path.join(tempDir, 'runtime.js');
   const entryPath = path.join(tempDir, 'entry.js');
@@ -54,6 +55,7 @@ export async function bundle(article, options) {
   // javascript code is written to temp directory
   await Promise.all([
     writeFile(htmlPath, template({
+      title: extractText(metadata.title) || undefined,
       html,
       css: `./${outputCSS}`,
       script: entrypoint && `./${outputJS}`
@@ -67,9 +69,6 @@ export async function bundle(article, options) {
   if (entrypoint) {
     await rollup({ ...rollupOptions, input: entryPath, output: jsPath });
   }
-
-  // delete temp directory
-  // await rmrf(tempDir);
 }
 
 async function css(styles) {
@@ -79,7 +78,7 @@ async function css(styles) {
 }
 
 function entrypointScript({ root, bind, metadata, components, runtime }) {
-  const src = fileURLToPath(new URL('..', import.meta.url));
+  const src = fileURLToPath(new URL('../..', import.meta.url));
   const script = [];
   const refdata = metadata.references;
   const hasRefs = refdata?.length > 0;
@@ -91,11 +90,11 @@ function entrypointScript({ root, bind, metadata, components, runtime }) {
   if (runtime) {
     script.push(`
 import { ObservableRuntime } from '${src}runtime/runtime.js';
-import { hydrate } from '${src}build/hydrate.js';
+import { hydrate } from '${src}output/html/hydrate.js';
 import * as module from './runtime.js';`);
   }
   if (hasRefs) {
-    script.push(`import { reference } from '${src}/build/reference.js';`);
+    script.push(`import { reference } from '${src}output/html/reference.js';`);
   }
 
   components.forEach(({ name, exported }) => {

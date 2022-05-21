@@ -7,14 +7,17 @@
       import { CellView } from '../src/components/cell-view.js';
       import { TexMath } from '../src/components/tex-math.js';
       import { TexEquation } from '../src/components/tex-equation.js';
-      import { astToDOM } from '../src/build/ast-to-dom.js';
-      import { article } from '../src/build/article.js';
+      import { astToDOM } from '../src/output/html/ast-to-dom.js';
+      import { article } from '../src/output/html/article.js';
+      import ast_code from '../src/plugins/code/index.js';
+      import ast_runtime from '../src/plugins/runtime/index.js';
       window.customElements.define('cell-view', CellView);
       window.customElements.define('tex-math', TexMath);
       window.customElements.define('tex-equation', TexEquation);
 
       fetch('../test/data/ast/observable.ast.json')
         .then(res => res.json())
+        .then(ast => ({...ast, article: ast_code(ast_runtime(ast.article))}))
         .then(ast => article(ast, { builder: astToDOM }))
         .then(root => document.body.appendChild(root));
     </script>

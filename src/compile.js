@@ -1,19 +1,20 @@
 import fetch from 'node-fetch';
 import path from 'node:path';
 import { builtins, parseContext, numbered } from './config.js';
-import { bundle } from './bundle/bundle.js';
 import { parseMarkdown } from './parser/parse-markdown.js';
-import { citations, code, crossref, header, notes, runtime } from './plugins/index.js';
 import { cache } from './util/cache.js';
 
+import {
+  citations, code, crossref, header, notes, runtime, section
+} from './plugins/index.js';
 import knitr from './plugins/knitr/index.js';
 import pyodide from './plugins/pyodide/index.js';
 
+import outputHTML from './output/html/index.js';
+import outputLatex from './output/latex/index.js';
+
 export async function compile(inputFile, options = {}) {
   const startTime = Date.now();
-  const outputDir = options.outputDir;
-  const tempDir = options.tempDir || path.join(outputDir, '.temp');
-  const logger = options.logger || console;
 
   // Parse Markdown to initial AST
   const { metadata, article } = await parseMarkdown({
@@ -21,47 +22,61 @@ export async function compile(inputFile, options = {}) {
     parseContext: parseContext()
   });
 
-  // Apply AST transformation plugins
-  const plugins = [
-    ...pluginsPre(metadata.plugins),
-    runtime,
-    code,
-    crossref(numbered()),
-    notes,
-    header,
-    citations
-  ];
-  const ast = await transformAST(article, plugins, {
+  // Prepare compiler context
+  const context = {
+    tempDir: path.join(options.outputDir, '.temp'),
+    inputDir: path.dirname(inputFile),
+    logger: console,
     cache: await cache(),
     fetch,
+    components: builtins(),
+    ...options,
     metadata,
-    inputDir: path.dirname(inputFile),
-    outputDir,
-    tempDir,
-    logger
-  });
+    inputFile
+  };
 
-  if (options.debug) {
+  // Apply AST transform plugins
+  const ast = await transformAST(article, context, [
+    ...plugins(metadata.plugins),
+    runtime,
+    code,
+    citations
+  ]);
+
+  if (context.debug) {
     console.log('---------------');
-    console.log(JSON.stringify(article, 0, 2));
+    console.log(JSON.stringify(ast, 0, 2));
     console.log('---------------');
   }
 
-  // Generate bundled output
-  const bundleOptions = {
-    components: builtins(),
-    outputDir,
-    tempDir,
-    ...options
+  // Marshal output directives
+  // TODO? merge rather than overwrite
+  const output = {
+    html: true,
+    ...metadata.output,
+    ...context.output
   };
 
+  if (output.latex) {
+    await outputLatex(ast, metadata, context);
+  }
+
+  if (output.html) {
+    const astHTML = await transformAST(ast, context, [
+      crossref(numbered()),
+      notes,
+      header,
+      section
+    ]);
+    await outputHTML(astHTML, metadata, context);
+  }
+
   return {
-    bundle: await bundle({ metadata, article: ast }, bundleOptions),
     elapsedTime: Date.now() - startTime
   };
 }
 
-function pluginsPre(plugins) {
+function plugins(plugins) {
   const list = [];
   for (const key in plugins) {
     if (plugins[key]) {
@@ -82,9 +97,9 @@ function resolvePlugin(name) {
   throw new Error(`Can not find plugin: ${name}`);
 }
 
-async function transformAST(ast, plugins, options) {
+async function transformAST(ast, context, plugins) {
   for (const plugin of plugins) {
-    ast = await plugin(ast, options);
+    ast = await plugin(ast, context);
   }
   return ast;
 }

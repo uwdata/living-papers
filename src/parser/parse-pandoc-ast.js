@@ -1,12 +1,11 @@
 import {
   createTextNode, createComponentNode, createProperties, parseProperties,
-  getNodeName, isTextNode, isBacktickQuoted, mergeTextNodes
+  isTextNode, isBacktickQuoted, mergeTextNodes
 } from '../ast/index.js';
 
 import {
-  append, extractText, isDisplayMath, isInterpolated,
-  getQuoteType, getListType, getMarkerType,
-  getTableCellAlign, getCiteMode
+  append, extractText, isInterpolated,
+  getQuoteType, getListType, getMarkerType, getTableCellAlign, getCiteMode
 } from './parse-util.js';
 
 import {
@@ -359,27 +358,26 @@ export class PandocASTParser {
   parseEnv(item) {
     const [attrs, content, name] = item;
     const [id, classes, props] = attrs;
-    const extract = [];
-    let blocks = content;
 
-    // extract caption from line block
-    if (content[0]?.t === LineBlock) {
-      const cap = [];
-      content[0].c.forEach((l, i) => {
-        if (i > 0) cap.push({ t: SoftBreak });
-        l.forEach(({ t, c }) => cap.push({ t, c: t === Str ? c.trim() : c }));
-      });
-      extract.push(
-        createComponentNode('caption', null, this.parseInline(cap))
-      );
-      blocks = content.slice(1);
-    }
+    // extract captions from line blocks
+    const children = content.map(block => {
+      if (block.t === LineBlock) {
+        const cap = [];
+        block.c.forEach((l, i) => {
+          if (i > 0) cap.push({ t: SoftBreak });
+          l.forEach(({ t, c }) => cap.push({ t, c: t === Str ? c.trim() : c }));
+        });
+        return createComponentNode('caption', null, this.parseInline(cap))
+      } else {
+        return this.parseBlocks([block])[0];
+      }
+    });
 
     // create component, inject name as a class
     return createComponentNode(
       name,
       parseProperties([id, [name, ...classes], props]),
-      this.parseBlocks(blocks).concat(extract)
+      children
     );
   }
 
@@ -653,8 +651,10 @@ export class PandocASTParser {
 
   parseRaw(content) {
     const [format, text] = content;
-    return format === 'html' && text.startsWith('<!--')
-      ? null
-      : createTextNode(text);
+    return createComponentNode(
+      'raw',
+      createProperties({ format }),
+      [ createTextNode(text) ]
+    );
   }
 }
