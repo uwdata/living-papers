@@ -34,6 +34,7 @@ export default async function(ast, metadata, options) {
       ['eqn', 'Equation~'],
       ['sec', '\\S']
     ]),
+    // TODO sizes, colors?
     classes: new Map([
       ['smallcaps', 'textsc'],
       ['italic', 'textit'],
@@ -43,7 +44,8 @@ export default async function(ast, metadata, options) {
       ['demi', 'textbf'],
       ['underline', 'uline']
     ]),
-    places: places(ast)
+    places: places(ast),
+    vspace: new Map(Object.entries(latex.vspace || {}))
   });
 
   // Collect template data
