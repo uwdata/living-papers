@@ -359,9 +359,9 @@ export class PandocASTParser {
     const [attrs, content, name] = item;
     const [id, classes, props] = attrs;
 
-    // extract captions from line blocks
     const children = content.map(block => {
       if (block.t === LineBlock) {
+        // extract captions from line blocks
         const cap = [];
         block.c.forEach((l, i) => {
           if (i > 0) cap.push({ t: SoftBreak });
@@ -369,7 +369,9 @@ export class PandocASTParser {
         });
         return createComponentNode('caption', null, this.parseInline(cap))
       } else {
-        return this.parseBlocks([block])[0];
+        // flatten internal paragraphs
+        const parsed = this.parseBlocks([block])[0];
+        return parsed.name === 'p' ? parsed.children : parsed;
       }
     });
 
@@ -377,7 +379,7 @@ export class PandocASTParser {
     return createComponentNode(
       name,
       parseProperties([id, [name, ...classes], props]),
-      children
+      children.flat()
     );
   }
 
