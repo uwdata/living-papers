@@ -47,18 +47,20 @@ export default async function(ast, metadata, options) {
   });
 
   // Collect template data
-  // TODO: auto-generate metadata properties (_short)
+  // TODO: auto-generate metadata properties (author_short)
   const author = metadata.author || [{name: 'Unknown Author'}];
+  const title = tex.tex(metadata.title) || 'Untitled Article';
   const data = {
     date: tex.tex(metadata.date) || getDate(),
-    title: tex.tex(metadata.title) || 'Untitled Article',
+    title,
     author,
     author_first: author[0],
     author_rest: author.slice(1),
     author_names: author.map(a => a.name).join(', '),
-    title_short: tex.tex(metadata.title_short) || undefined,
-    author_short: tex.tex(metadata.author_short) || undefined,
+    title_short: tex.tex(metadata.title_short),
+    author_short: tex.tex(metadata.author_short),
     bibtex: bibtex ? `${articleName}.bib` : undefined,
+    keywords: metadata.keywords?.join(', '),
     content: tex.tex(ast).trim()
   };
 
