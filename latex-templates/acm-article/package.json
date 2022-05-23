@@ -1,0 +1,14 @@
+{
+  "template": "template.tex",
+  "files": [
+    "files/ACM-Reference-Format.bst",
+    "files/acmart.cls",
+    "files/acmart.dtx",
+    "files/acmart.ins",
+    "files/acmauthoryear.bbx",
+    "files/acmauthoryear.cbx",
+    "files/acmdatamodel.dbx",
+    "files/acmnumeric.bbx",
+    "files/acmnumeric.cbx"
+  ]
+}
