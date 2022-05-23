@@ -79,6 +79,7 @@ export class TexFormat {
       case 'lineblock': // all children have type 'line'
       case 'table':
       case 'code-block':
+        // TODO implement
         throw new Error(`Not yet implemented: ${ast.name}`);
       case 'ul':
         return this.list(ast, 'itemize');
@@ -310,19 +311,8 @@ export class TexFormat {
     }
   }
 
-  // TODO: re-engineer vspace, allow user-specified values
-  // this is only a prototype placeholder
   vspace(ast) {
-    const type = ast.name;
-    switch (type) {
-      case 'equation':
-        return '\\vspace{-15pt}\n';
-      case 'caption':
-        return '\\vspace{-10pt}\n';
-      case 'figure':
-      case 'teaser':
-        return '\\vspace{-15pt}\n';
-    }
-    return '';
+    const vsp = this.options.vspace.get(ast.name);
+    return vsp ? `\\vspace{${vsp}}\n` : '';
   }
 }
