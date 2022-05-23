@@ -76,6 +76,7 @@ export class TexFormat {
       case 'hr':
         return this.env('center', '\\rule{0.5\\linewidth}{0.5pt}');
       case 'blockquote':
+        return this.env('quote', this.fragment(ast));
       case 'lineblock': // all children have type 'line'
       case 'table':
       case 'code-block':
