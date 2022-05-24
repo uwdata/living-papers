@@ -1,4 +1,5 @@
 import CleanCSS from 'clean-css';
+import mustache from 'mustache';
 import path from 'node:path';
 import { URL, fileURLToPath } from 'node:url';
 import { extractText } from '../../ast/index.js';
@@ -6,16 +7,18 @@ import { mkdirp, readFile, writeFile } from '../../util/fs.js';
 import { astToHTML } from './ast-to-html.js';
 import { astToScript } from './ast-to-script.js';
 import { rollup } from './rollup.js';
-import { default as _template } from './template.js';
+import defaultTemplate from './template.js';
 
 export default async function(ast, context, options) {
   const { metadata, components, outputDir, tempDir } = context;
   const {
     selfContained = false,
-    outputHTML = 'index.html',
-    outputCSS = 'styles.css',
-    outputJS = 'bundle.js',
-    template = _template,
+    htmlFile = 'index.html',
+    cssFile = 'styles.css',
+    jsFile = 'bundle.js',
+    template = defaultTemplate(),
+    lang = 'en',
+    dir = 'ltr',
     ...rollupOptions
   } = options;
 
@@ -24,13 +27,9 @@ export default async function(ast, context, options) {
   const styleDir = path.join(libDir, 'style');
   const runtimePath = path.join(tempDir, 'runtime.js');
   const entryPath = path.join(tempDir, 'entry.js');
-  const htmlPath = path.join(outputDir, outputHTML);
-  const cssPath = path.join(outputDir, outputCSS);
-  const jsPath = path.join(outputDir, outputJS);
-  const stylePaths = [
-    path.join(styleDir, 'layout.css'),
-    path.join(styleDir, 'styles.css')
-  ];
+  const htmlPath = path.join(outputDir, htmlFile);
+  const cssPath = path.join(outputDir, cssFile);
+  const jsPath = path.join(outputDir, jsFile);
 
   // create directories
   await Promise.all([
@@ -40,8 +39,8 @@ export default async function(ast, context, options) {
 
   // generate page content
   const { script } = astToScript(ast);
-  const { html, tags, ...bind } = astToHTML(ast);
-  const entrypoint = entrypointScript({
+  const { html: content, tags, ...bind } = astToHTML(ast);
+  const entry = entryScript({
     root: 'article',
     bind,
     metadata,
@@ -49,45 +48,56 @@ export default async function(ast, context, options) {
     runtime: !!script,
   });
 
-  // write content and css files
-  // javascript code is written to temp directory
+  // bundle style sheets
+  const stylePaths = [
+    path.join(styleDir, 'layout.css'),
+    path.join(styleDir, 'styles.css')
+  ];
   const css = await bundleCSS(stylePaths, options.minify);
+
+  // write javascript and css files
+  // any javascript code is written to temp directory
   await Promise.all([
     writeFile(runtimePath, script),
-    writeFile(entryPath, entrypoint),
+    writeFile(entryPath, entry),
     writeFile(cssPath, css)
   ]);
 
   // if we have javascript code, bundle it with rollup
-  if (entrypoint) {
+  if (entry) {
     await rollup({ ...rollupOptions, input: entryPath, output: jsPath });
   }
 
-  // write output html
+  // generate output html
   const title = extractText(metadata.title) || undefined;
-  await writeFile(htmlPath, template({
-    title,
+  const html = mustache.render(template, {
+    title: title || 'Untitled Article',
     description: extractText(metadata.description) || title,
+    favicon: metadata.favicon,
     selfContained,
-    html,
-    css: selfContained ? css : `./${outputCSS}`,
-    script: entrypoint && (
-      selfContained ? await readFile(jsPath) : `./${outputJS}`
-    )
-  }));
+    content,
+    lang,
+    dir,
+    css: selfContained ? css : `./${cssFile}`,
+    script: entry && (selfContained ? await readFile(jsPath) : `./${jsFile}`)
+  }, {}, { escape: x => x });
 
-  return htmlPath;
+  // write html file or return html text
+  return htmlFile
+    ? (await writeFile(htmlPath, html), htmlPath)
+    : html;
 }
 
 async function bundleCSS(styles, minify) {
-  const files = await Promise.all(styles.map(f => readFile(f)));
-  const css = files.join('\n');
+  const css = (
+    await Promise.all(styles.map(f => readFile(f)))
+  ).join('\n');
   return minify
     ? new CleanCSS({ level: 2 }).minify(css).styles
     : css;
 }
 
-function entrypointScript({ root, bind, metadata, components, runtime }) {
+function entryScript({ root, bind, metadata, components, runtime }) {
   const src = fileURLToPath(new URL('../..', import.meta.url));
   const script = [];
   const refdata = metadata.references;
