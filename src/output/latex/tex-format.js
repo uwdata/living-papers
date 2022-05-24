@@ -222,7 +222,7 @@ export class TexFormat {
   }
 
   quoted(ast) {
-    const num = hasClass(ast, 'quote-single') ? 1 : 2;
+    const num = hasClass(ast, 'single') ? 1 : 2;
     return repeat('`', num)
       + this.fragment(ast)
       + repeat('\'', num);
