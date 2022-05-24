@@ -84,6 +84,7 @@ function scan(_) {
   const codeq = [];
   const codet = [];
   const fdivs = [];
+  let pipe = false;
   let i = -1, j, k;
   let c = '\n', cc;
 
@@ -94,6 +95,13 @@ function scan(_) {
         break;
       case '\r':
       case '\n':
+        // ensure line blocks in a fence are treated as block elements
+        if (fdivs.length && !pipe && _.peek(i + 1, '| ')) {
+          _.write(i, '\n');
+          ++i;
+          pipe = true;
+          break;
+        }
         // TODO? handle closing fence on same line (```, ~~~)
         i = _.ws(++i);
         cc = _.peek(i, ':::') ? ':'
@@ -111,6 +119,7 @@ function scan(_) {
             break;
           } else if (cc === ':' && fdivs.length) {
             fdivs.pop();
+            pipe = false;
             break;
           }
 

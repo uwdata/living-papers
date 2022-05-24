@@ -53,7 +53,7 @@ function limitAbstract(abstract, charLimit) {
 
 function tooltip(data, key, index) {
   return data
-    ? `${authors(data)} (${data.year}) ${data.title}. ${data.venue}.`
+    ? `${authors(data)} (${data.year}). ${data.title}.${data.venue ? ` ${data.venue}.` : '' }`
     : !index ? `Unresolved citation: ${key}`
     : null;
 }

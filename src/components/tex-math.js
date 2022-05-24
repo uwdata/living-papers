@@ -27,7 +27,7 @@ export class TexMath extends DependentElement {
     super();
     this.mode = 'display';
     this.leqno = false;
-    this.fleqn = true;
+    this.fleqn = false;
   }
 
   initialChildNodes(nodes) {
