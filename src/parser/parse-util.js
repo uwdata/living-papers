@@ -36,8 +36,8 @@ export function isInterpolated(text) {
 
 export function getQuoteType(type) {
   switch (type) {
-    case SingleQuote: return 'quote-single';
-    case DoubleQuote: return 'quote-double';
+    case SingleQuote: return 'single';
+    case DoubleQuote: return undefined;
     default:
       throw new Error(`Unrecognized quote type: ${type}.`);
   }

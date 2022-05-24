@@ -94,20 +94,18 @@
   display: none;
 }
 
-.quote-single::before {
-  content: "‘";
+q.single {
+  quotes: "‘" "’"
 }
 
-.quote-single::after {
-  content: "’";
+sup, sub {
+  vertical-align: baseline;
+  position: relative;
+  top: -0.4em;
 }
 
-.quote-double::before {
-  content: "“";
-}
-
-.quote-double::after {
-  content: "”";
+sub {
+  top: 0.4em;
 }
 
 h1[data-counter]::before,
@@ -195,16 +193,6 @@ header .author-org::before {
 
 .katex-display {
   margin: 0 !important;
-}
-
-sup, sub {
-  vertical-align: baseline;
-  position: relative;
-  top: -0.4em;
-}
-
-sub {
-  top: 0.4em;
 }
 
 article > p {
