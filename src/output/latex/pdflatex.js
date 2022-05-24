@@ -1,21 +1,12 @@
 import { spawn } from 'child_process';
 
-export async function pdflatex(
-  path,
-  name,
-  bibtex = true,
-  logger = console
-) {
-  const texArgs = ['-interaction=nonstopmode', name];
-  const bibArgs = [name];
-  const cwd = path;
-
-  logger.debug(`Running pdflatex for ${name}.tex`);
-  await exec('pdflatex', texArgs, cwd);
+export async function pdflatex(path, name, bibtex = true) {
+  const args = ['-interaction=nonstopmode', name];
+  await exec('pdflatex', args, path);
   if (bibtex) {
-    await exec('bibtex',   bibArgs, cwd);
-    await exec('pdflatex', texArgs, cwd);
-    await exec('pdflatex', texArgs, cwd);
+    await exec('bibtex', [name], path);
+    await exec('pdflatex', args, path);
+    await exec('pdflatex', args, path);
   }
 }
 

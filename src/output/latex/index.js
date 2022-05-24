@@ -11,14 +11,7 @@ import { TexFormat } from './tex-format.js';
 import { pdflatex } from './pdflatex.js';
 
 export default async function(ast, context, options) {
-  const {
-    metadata,
-    inputFile,
-    outputDir,
-    tempDir,
-    logger
-  } = context;
-
+  const { metadata, inputFile, outputDir, tempDir, logger } = context;
   const {
     template = 'article',
     tags = ['<<', '>>'],
@@ -108,12 +101,17 @@ export default async function(ast, context, options) {
   ]);
 
   if (pdf) {
-    await pdflatex(latexDir, articleName, !!metadata.bibtex, logger);
-    await copy(
-      path.join(latexDir, `${articleName}.pdf`),
-      path.join(outputDir, `${articleName}.pdf`)
-    );
-    return path.join(outputDir, `${articleName}.pdf`);
+    try {
+      logger.debug(`Running pdflatex for ${articleName}.tex`);
+      await pdflatex(latexDir, articleName, !!metadata.bibtex);
+      await copy(
+        path.join(latexDir, `${articleName}.pdf`),
+        path.join(outputDir, `${articleName}.pdf`)
+      );
+      return path.join(outputDir, `${articleName}.pdf`);
+    } catch (err) {
+      logger.error('Compiling latex PDF', err);
+    }
   } else {
     return latexDir;
   }

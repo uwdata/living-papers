@@ -28,9 +28,10 @@ const logger = {
 compile(inputFile, { outputDir, logger, debug })
   .then(({ elapsedTime, output }) => {
     for (const type in output) {
-      [output[type]].flat().forEach(file => {
-        console.log(`Created ${type} output ${chalk.cyan(file)}`);
-      });
+      [output[type]]
+        .flat()
+        .filter(x => x)
+        .forEach(file => console.log(`Created ${type} output ${chalk.cyan(file)}`));
     }
     const sec = (elapsedTime / 1000).toFixed(2);
     console.log(`Processed article ${chalk.cyan(inputFile)}: ${chalk.green(`${sec} sec`)}`);
