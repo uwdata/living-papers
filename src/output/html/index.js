@@ -75,6 +75,8 @@ export default async function(ast, context, options) {
       selfContained ? await readFile(jsPath) : `./${outputJS}`
     )
   }));
+
+  return htmlPath;
 }
 
 async function bundleCSS(styles, minify) {

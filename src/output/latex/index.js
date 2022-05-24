@@ -6,14 +6,17 @@ import {
   setValueProperty, visitNodes
 } from '../../ast/index.js';
 import { copy, mkdirp, readFile, writeFile } from '../../util/fs.js';
+
 import { TexFormat } from './tex-format.js';
+import { pdflatex } from './pdflatex.js';
 
 export default async function(ast, context, options) {
   const {
     metadata,
     inputFile,
     outputDir,
-    tempDir
+    tempDir,
+    logger
   } = context;
 
   const {
@@ -24,7 +27,7 @@ export default async function(ast, context, options) {
   } = options;
 
   const articleName = path.parse(inputFile).name;
-  const latexDir = path.join(tempDir, 'latex');
+  const latexDir = path.join(pdf ? tempDir : outputDir, 'latex');
 
   // create directories
   await Promise.all([
@@ -86,8 +89,8 @@ export default async function(ast, context, options) {
   const tmpl = await readFile(path.join(pkg.dir, pkg.template));
   const content = mustache.render(tmpl, data, {}, { tags, escape: x => x });
 
-  // write output LaTeX files to temp directory
-  return Promise.all([
+  // write output LaTeX files to target directory
+  await Promise.all([
     writeFile(
       path.join(latexDir, `${articleName}.tex`),
       content
@@ -104,7 +107,16 @@ export default async function(ast, context, options) {
     ))
   ]);
 
-  // TODO compile pdf *or* write to output directory
+  if (pdf) {
+    await pdflatex(latexDir, articleName, !!metadata.bibtex, logger);
+    await copy(
+      path.join(latexDir, `${articleName}.pdf`),
+      path.join(outputDir, `${articleName}.pdf`)
+    );
+    return path.join(outputDir, `${articleName}.pdf`);
+  } else {
+    return latexDir;
+  }
 }
 
 async function resolveTemplate(id) {

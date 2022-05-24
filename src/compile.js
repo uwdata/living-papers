@@ -51,9 +51,10 @@ export async function compile(inputFile, options = {}) {
 
   // Marshal output options
   const output = outputOptions(context);
+  const files = {};
 
   if (output.latex) {
-    await outputLatex(ast, context, output.latex);
+    files.latex = await outputLatex(ast, context, output.latex);
   }
 
   if (output.html) {
@@ -63,11 +64,12 @@ export async function compile(inputFile, options = {}) {
       header,
       section
     ]);
-    await outputHTML(astHTML, context, output.html);
+    files.html = await outputHTML(astHTML, context, output.html);
   }
 
   return {
-    elapsedTime: Date.now() - startTime
+    elapsedTime: Date.now() - startTime,
+    output: files
   };
 }
 
