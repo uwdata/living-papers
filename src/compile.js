@@ -49,16 +49,11 @@ export async function compile(inputFile, options = {}) {
     console.log('---------------');
   }
 
-  // Marshal output directives
-  // TODO? merge rather than overwrite
-  const output = {
-    html: true,
-    ...metadata.output,
-    ...context.output
-  };
+  // Marshal output options
+  const output = outputOptions(context);
 
   if (output.latex) {
-    await outputLatex(ast, metadata, context);
+    await outputLatex(ast, context, output.latex);
   }
 
   if (output.html) {
@@ -68,7 +63,7 @@ export async function compile(inputFile, options = {}) {
       header,
       section
     ]);
-    await outputHTML(astHTML, metadata, context);
+    await outputHTML(astHTML, context, output.html);
   }
 
   return {
@@ -102,4 +97,12 @@ async function transformAST(ast, context, plugins) {
     ast = await plugin(ast, context);
   }
   return ast;
+}
+
+function outputOptions(context) {
+  const options = {
+    ...context.metadata.output,
+    ...context.output
+  };
+  return Object.keys(options).length ? options : { html: true };
 }

@@ -15,8 +15,12 @@ async function compileTest(input, msgcount = {}) {
   const outputDir = path.join('test/output', path.parse(input).name);
   await compile(inputFile, {
     outputDir,
-    checksize: false,
-    minify: false,
+    output: {
+      html: {
+        checksize: false,
+        minify: false
+      }
+    },
     debug: DEBUG,
     logger
   });
