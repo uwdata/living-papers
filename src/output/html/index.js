@@ -8,16 +8,14 @@ import { astToScript } from './ast-to-script.js';
 import { rollup } from './rollup.js';
 import { default as _template } from './template.js';
 
-export default async function(ast, metadata, options) {
-  // TODO: use output.html options
+export default async function(ast, context, options) {
+  const { metadata, components, outputDir, tempDir } = context;
   const {
-    components,
-    outputDir,
+    selfContained = false,
     outputHTML = 'index.html',
     outputCSS = 'styles.css',
     outputJS = 'bundle.js',
     template = _template,
-    tempDir = path.join(outputDir, '.temp'),
     ...rollupOptions
   } = options;
 
@@ -29,7 +27,7 @@ export default async function(ast, metadata, options) {
   const htmlPath = path.join(outputDir, outputHTML);
   const cssPath = path.join(outputDir, outputCSS);
   const jsPath = path.join(outputDir, outputJS);
-  const styles = [
+  const stylePaths = [
     path.join(styleDir, 'layout.css'),
     path.join(styleDir, 'styles.css')
   ];
@@ -53,28 +51,38 @@ export default async function(ast, metadata, options) {
 
   // write content and css files
   // javascript code is written to temp directory
+  const css = await bundleCSS(stylePaths, options.minify);
   await Promise.all([
-    writeFile(htmlPath, template({
-      title: extractText(metadata.title) || undefined,
-      html,
-      css: `./${outputCSS}`,
-      script: entrypoint && `./${outputJS}`
-    })),
     writeFile(runtimePath, script),
     writeFile(entryPath, entrypoint),
-    writeFile(cssPath, await css(styles))
+    writeFile(cssPath, css)
   ]);
 
   // if we have javascript code, bundle it with rollup
   if (entrypoint) {
     await rollup({ ...rollupOptions, input: entryPath, output: jsPath });
   }
+
+  // write output html
+  const title = extractText(metadata.title) || undefined;
+  await writeFile(htmlPath, template({
+    title,
+    description: extractText(metadata.description) || title,
+    selfContained,
+    html,
+    css: selfContained ? css : `./${outputCSS}`,
+    script: entrypoint && (
+      selfContained ? await readFile(jsPath) : `./${outputJS}`
+    )
+  }));
 }
 
-async function css(styles) {
+async function bundleCSS(styles, minify) {
   const files = await Promise.all(styles.map(f => readFile(f)));
-  const css = new CleanCSS({ level: 2}).minify(files.join('\n'));
-  return css.styles;
+  const css = files.join('\n');
+  return minify
+    ? new CleanCSS({ level: 2 }).minify(css).styles
+    : css;
 }
 
 function entrypointScript({ root, bind, metadata, components, runtime }) {
