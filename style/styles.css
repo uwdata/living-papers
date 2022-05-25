@@ -98,14 +98,8 @@ q.single {
   quotes: "‘" "’"
 }
 
-sup, sub {
-  vertical-align: baseline;
-  position: relative;
-  top: -0.4em;
-}
-
-sub {
-  top: 0.4em;
+sub, sup {
+  line-height: 0;
 }
 
 h1[data-counter]::before,
