@@ -241,8 +241,12 @@ function attributes(_) {
         break;
       case '.':
       case '#':
-        // consume class or id definitions
-        i = _.ws(_.notspace(i + 1) + 1);
+        if (!dq && !sq && !bq) {
+          // consume class or id definitions
+          i = _.ws(_.notspace(i + 1) + 1);
+        } else {
+          ++i;
+        }
         break;
       case '=':
         if (!dq && !sq && !bq) {
