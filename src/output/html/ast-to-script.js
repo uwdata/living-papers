@@ -63,7 +63,7 @@ function generate(exportName, codeCells, compile) {
     return '';
   }
 
-  const cells = codeCells.map(code => compile(code));
+  const cells = codeCells.map(compile);
 
   // generate import statements
   cells.forEach(cell => {
