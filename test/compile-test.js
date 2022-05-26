@@ -1,6 +1,6 @@
 import assert from 'node:assert';
 import path from 'node:path';
-import { compile } from '../src/compile.js';
+import { compile } from '../src/compile/compile.js';
 
 const DEBUG = false;
 

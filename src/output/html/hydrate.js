@@ -1,5 +1,7 @@
 import { binding } from './binding.js';
-import { CELL_VIEW, DATA_ATTR, DATA_BIND, DATA_CELL } from './constants.js';
+import {
+  CELL_VIEW, DATA_ATTR, DATA_BIND, DATA_BIND_SET, DATA_CELL
+} from './constants.js';
 
 export function hydrate(runtime, root, module, bind = {}) {
   const {
@@ -61,20 +63,28 @@ function observeEvent(resolve, event, runtime) {
 }
 
 function createBindings(root, runtime) {
-  // collect input elements with declared bindings
   const bind = new Map;
-  root.querySelectorAll(`[${DATA_BIND}]`).forEach(el => {
-    const name = el.getAttribute(DATA_BIND);
-    bind.has(name) ? bind.get(name).push(el) : bind.set(name, [el]);
-  });
+
+  // collect input elements with declared bindings
+  const process = (attr, override) => {
+    root.querySelectorAll(`[${attr}]`).forEach(el => {
+      const name = el.getAttribute(attr);
+      const input = { el, override };
+      bind.has(name) ? bind.get(name).push(input) : bind.set(name, [input]);
+    });
+  };
+  process(DATA_BIND, false);
+  process(DATA_BIND_SET, true);
 
   // instantiate bindings
-  const add = (b, el) => {
-    el.tagName.toLowerCase() === CELL_VIEW ? b.addCell(el) : b.add(el);
+  const add = (binding, { el, override }) => {
+    el.tagName.toLowerCase() === CELL_VIEW
+      ? binding.addCell(el, { override })
+      : binding.add(el, { override });
   };
   bind.forEach((list, name) => {
-    binding(runtime, name).then(b => {
-      list.forEach(el => add(b, el))
+    binding(runtime, name).then(binding => {
+      list.forEach(input => add(binding, input))
     });
-  })
+  });
 }

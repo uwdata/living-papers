@@ -3,18 +3,19 @@ import mustache from 'mustache';
 import path from 'node:path';
 import { URL, fileURLToPath } from 'node:url';
 import { extractText } from '../../ast/index.js';
-import { mkdirp, readFile, writeFile } from '../../util/fs.js';
+import { copy, mkdirp, readFile, writeFile } from '../../util/fs.js';
 import { astToHTML } from './ast-to-html.js';
 import { astToScript } from './ast-to-script.js';
 import { rollup } from './rollup.js';
 import defaultTemplate from './template.js';
 
 export default async function(ast, context, options) {
-  const { metadata, components, outputDir, tempDir } = context;
+  const { metadata, outputDir, tempDir } = context;
   const {
+    components,
     selfContained = false,
     htmlFile = 'index.html',
-    cssFile = 'styles.css',
+    cssFile = 'bundle.css',
     jsFile = 'bundle.js',
     template = defaultTemplate(),
     lang = 'en',
@@ -29,7 +30,7 @@ export default async function(ast, context, options) {
   const entryPath = path.join(tempDir, 'entry.js');
   const htmlPath = path.join(outputDir, htmlFile);
   const cssPath = path.join(outputDir, cssFile);
-  const jsPath = path.join(outputDir, jsFile);
+  const jsPath = path.join(tempDir, jsFile);
 
   // create directories
   await Promise.all([
@@ -53,14 +54,14 @@ export default async function(ast, context, options) {
     path.join(styleDir, 'layout.css'),
     path.join(styleDir, 'styles.css')
   ];
-  const css = await bundleCSS(stylePaths, options.minify);
+  const css = await bundleCSS(stylePaths, rollupOptions.minify);
 
   // write javascript and css files
   // any javascript code is written to temp directory
   await Promise.all([
     writeFile(runtimePath, script),
     writeFile(entryPath, entry),
-    writeFile(cssPath, css)
+    ...(selfContained ? [] : [writeFile(cssPath, css)])
   ]);
 
   // if we have javascript code, bundle it with rollup
@@ -82,13 +83,17 @@ export default async function(ast, context, options) {
     script: entry && (selfContained ? await readFile(jsPath) : `./${jsFile}`)
   }, {}, { escape: x => x });
 
+  if (!selfContained) {
+    copy(jsPath, path.join(outputDir, jsFile));
+  }
+
   // write html file or return html text
   return htmlFile
     ? (await writeFile(htmlPath, html), htmlPath)
     : html;
 }
 
-async function bundleCSS(styles, minify) {
+async function bundleCSS(styles, minify = true) {
   const css = (
     await Promise.all(styles.map(f => readFile(f)))
   ).join('\n');
@@ -103,13 +108,13 @@ function entryScript({ root, bind, metadata, components, runtime }) {
   const refdata = metadata.references;
   const hasRefs = refdata?.length > 0;
 
-  components.forEach(({ exported, path }) => {
-    script.push(`import { ${exported} } from '${path}';`);
+  components.forEach(entry => {
+    const spec = entry.default ? entry.import : `{ ${entry.import} }`;
+    script.push(`import ${spec} from '${entry.file}';`);
   });
 
   if (runtime) {
-    script.push(`
-import { ObservableRuntime } from '${src}runtime/runtime.js';
+    script.push(`import { ObservableRuntime } from '${src}runtime/runtime.js';
 import { hydrate } from '${src}output/html/hydrate.js';
 import * as module from './runtime.js';`);
   }
@@ -117,12 +122,13 @@ import * as module from './runtime.js';`);
     script.push(`import { reference } from '${src}output/html/reference.js';`);
   }
 
-  components.forEach(({ name, exported }) => {
-    script.push(`window.customElements.define('${name}', ${exported});`);
+  components.forEach(entry => {
+    script.push(`window.customElements.define('${entry.name}', ${entry.import});`);
   });
 
   if (runtime || hasRefs) {
-    script.push(`window.addEventListener('DOMContentLoaded', () => {
+    script.push(`
+window.addEventListener('DOMContentLoaded', () => {
   const root = document.querySelector('${root}');`);
   }
   if (hasRefs) {

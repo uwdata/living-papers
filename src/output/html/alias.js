@@ -19,8 +19,9 @@ export function aliasComponent(name) {
 }
 
 export function aliasProperty(name) {
-  if (name === 'bind') {
-    return 'data-bind';
+  switch (name) {
+    case 'bind': return 'data-bind';
+    case 'bind-set': return 'data-bind-set';
+    default: return name;
   }
-  return name;
 }

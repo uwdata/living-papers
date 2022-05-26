@@ -1,20 +1,21 @@
 import fetch from 'node-fetch';
 import path from 'node:path';
-import { builtins, parseContext, numbered } from './config.js';
-import { parseMarkdown } from './parser/parse-markdown.js';
-import { cache } from './util/cache.js';
+import { parseContext, numbered, outputOptions } from './config.js';
+import { parseMarkdown } from '../parse/parse-markdown.js';
+import { cache } from '../util/cache.js';
 
 import {
   citations, code, crossref, header, notes, runtime, section
-} from './plugins/index.js';
-import knitr from './plugins/knitr/index.js';
-import pyodide from './plugins/pyodide/index.js';
+} from '../plugins/index.js';
+import knitr from '../plugins/knitr/index.js';
+import pyodide from '../plugins/pyodide/index.js';
 
-import outputHTML from './output/html/index.js';
-import outputLatex from './output/latex/index.js';
+import outputHTML from '../output/html/index.js';
+import outputLatex from '../output/latex/index.js';
 
 export async function compile(inputFile, options = {}) {
   const startTime = Date.now();
+  const inputDir = path.dirname(inputFile);
 
   // Parse Markdown to initial AST
   const { metadata, article } = await parseMarkdown({
@@ -25,14 +26,13 @@ export async function compile(inputFile, options = {}) {
   // Prepare compiler context
   const context = {
     tempDir: path.join(options.outputDir, '.temp'),
-    inputDir: path.dirname(inputFile),
     logger: console,
     cache: await cache(),
     fetch,
-    components: builtins(),
     ...options,
     metadata,
-    inputFile
+    inputFile,
+    inputDir
   };
 
   // Apply AST transform plugins
@@ -50,7 +50,7 @@ export async function compile(inputFile, options = {}) {
   }
 
   // Marshal output options
-  const output = outputOptions(context);
+  const output = await outputOptions(context);
   const files = {};
 
   if (output.latex) {
@@ -99,12 +99,4 @@ async function transformAST(ast, context, plugins) {
     ast = await plugin(ast, context);
   }
   return ast;
-}
-
-function outputOptions(context) {
-  const options = {
-    ...context.metadata.output,
-    ...context.output
-  };
-  return Object.keys(options).length ? options : { html: true };
 }

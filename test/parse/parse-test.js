@@ -2,8 +2,8 @@ import assert from 'node:assert';
 import { URL } from 'node:url';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { parseContext } from '../../src/config.js';
-import { parseMarkdown } from '../../src/parser/parse-markdown.js';
+import { parseContext } from '../../src/compile/config.js';
+import { parseMarkdown } from '../../src/parse/parse-markdown.js';
 
 const DEBUG = false;
 
