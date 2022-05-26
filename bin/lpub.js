@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 import path from 'node:path';
 import chalk from 'chalk';
-import { compile } from '../src/compile.js';
+import { compile } from '../src/compile/compile.js';
 
 const inputFile = process.argv[2];
 const outputDir = path.dirname(inputFile);
