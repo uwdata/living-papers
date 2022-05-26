@@ -20,6 +20,7 @@ export default async function(ast, context, options) {
   } = options;
 
   const articleName = path.parse(inputFile).name;
+  const bibtex = metadata.bibtex?.length > 0;
   const latexDir = path.join(pdf ? tempDir : outputDir, 'latex');
 
   // create directories
@@ -62,7 +63,7 @@ export default async function(ast, context, options) {
     author_names: author.map(a => a.name).join(', '),
     title_short: tex.tex(metadata.title_short),
     author_short: tex.tex(metadata.author_short),
-    bibtex: metadata.bibtex ? `${articleName}.bib` : undefined,
+    bibtex: bibtex ? `${articleName}.bib` : undefined,
     keywords: metadata.keywords?.join(', '),
     content: tex.tex(ast).trim()
   };
@@ -88,10 +89,10 @@ export default async function(ast, context, options) {
       path.join(latexDir, `${articleName}.tex`),
       content
     ),
-    ...(metadata.bibtex ? [
+    ...(bibtex ? [
       writeFile(
         path.join(latexDir, `${articleName}.bib`),
-        tex.string(metadata.bibtex)
+        tex.string(metadata.bibtex.join('\n\n'))
       )
     ] : []),
     ...(pkg.files || []).map(f => copy(
@@ -103,7 +104,7 @@ export default async function(ast, context, options) {
   if (pdf) {
     try {
       logger.debug(`Running pdflatex for ${articleName}.tex`);
-      await pdflatex(latexDir, articleName, !!metadata.bibtex);
+      await pdflatex(latexDir, articleName, bibtex);
       await copy(
         path.join(latexDir, `${articleName}.pdf`),
         path.join(outputDir, `${articleName}.pdf`)

@@ -75,8 +75,8 @@ export class Citations {
       ...options
     };
 
-    return this.refs(ids).map(ref =>
-      new Cite(ref)
+    return this.refs(ids).map(
+      ref => new Cite(ref)
         .format('bibliography', options)
         .replaceAll('&amp;', '&')
         .trim()
@@ -84,13 +84,13 @@ export class Citations {
   }
 
   bibtex(ids = null) {
-    // citation.js configuration values are hardwired. sigh.
-    const config = Cite.plugins.config.get('@bibtex').format;
-    const prev = config.useIdAsLabel;
-    config.useIdAsLabel = true;
-    const output = new Cite(this.refs(ids)).format('bibtex');
-    config.useIdAsLabel = prev;
-    return output;
+    // format bibtex, work around citation-js id mangling
+    return this.refs(ids).map(
+      ref => new Cite(ref)
+        .format('bibtex')
+        .replace(/^(@\w+\{)\w+,/, `$1${ref.id},`)
+        .trim()
+    );
   }
 }
 
