@@ -41,16 +41,12 @@
       {
         "type": "component",
         "name": "math",
-        "properties": {
-          "mode": {
-            "type": "value",
-            "value": "display"
-          },
-          "code": {
-            "type": "value",
-            "value": " \\frac{1}{N} \\sum_{i=1}^N x_i^2 "
+        "children": [
+          {
+            "type": "textnode",
+            "value": "\\frac{1}{N} \\sum_{i=1}^N x_i^2"
           }
-        }
+        ]
       },
       {
         "type": "component",

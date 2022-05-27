@@ -54,7 +54,7 @@ let x = 1;
       <obs-cell id="r1" code="viewof r1 = Inputs.range([-1000, 1000], {step:1, value:10})"></obs-cell>
       Range Value Observers: [<obs-cell code="r0"></obs-cell>, <obs-cell code="r1"></obs-cell>]
       <script type="module">
-        import { binding } from '../src/build/binding.js';
+        import { binding } from '../src/output/html/binding.js';
         (await binding(runtime, 'v'))
           .addCell(document.querySelector('#r0'))
           .addCell(document.querySelector('#r1'))
@@ -69,7 +69,7 @@ let x = 1;
       <obs-cell id="s1" code="viewof s1 = Inputs.select(['a', 'b', 'c'])"></obs-cell>
       Select Value Observers: [<obs-cell code="s0"></obs-cell>, <obs-cell code="s1"></obs-cell>]
       <script type="module">
-        import { binding } from '../src/build/binding.js';
+        import { binding } from '../src/output/html/binding.js';
         (await binding(runtime, 's'))
           .addCell(document.querySelector('#s0'))
           .addCell(document.querySelector('#s1'));

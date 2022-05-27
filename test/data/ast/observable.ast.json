@@ -106,17 +106,23 @@
       },
       {
         "type": "component",
-        "name": "math",
-        "properties": {
-          "mode": {
-            "type": "value",
-            "value": "display"
-          },
-          "code": {
-            "type": "expression",
-            "value": "`x^2 = ${a*a}`"
+        "name": "p",
+        "children": [
+          {
+            "type": "component",
+            "name": "math",
+            "properties": {
+              "mode": {
+                "type": "value",
+                "value": "inline"
+              },
+              "code": {
+                "type": "expression",
+                "value": "`x^2 = ${a*a}`"
+              }
+            }
           }
-        }
+        ]
       },
       {
         "type": "component",

@@ -3,19 +3,22 @@ import {
   createProperties, hasProperty, getClasses, getPropertyValue,
   removeClass, removeProperty, setValueProperty, visitNodes
 } from '../../ast/index.js';
-import { pandoc } from '../../parser/pandoc.js';
-import { parsePandocAST } from '../../parser/parse-pandoc-ast.js';
+import { pandoc } from '../../parse/pandoc.js';
+import { parsePandocAST } from '../../parse/parse-pandoc-ast.js';
 import { copy, mkdirp, writeFile } from '../../util/fs.js';
 import { generateChunk, generateRMarkdown, generateRScript } from './codegen.js';
 import { rscript } from './rscript.js';
 
+const BIND = 'bind';
+
 export default async function(ast, context) {
   const { outputDir, tempDir, logger, metadata } = context;
   const options = {
+    figpath: 'knitr/',
     lang: 'r', // language class in AST
     ...(metadata.plugins?.knitr || {})
   };
-  const { lang } = options;
+  const { figpath, lang } = options;
 
   // gather R code nodes, generate Rmd chunks
   const rnodes = [];
@@ -46,7 +49,7 @@ export default async function(ast, context) {
 
   // parse knitr output, copy generated images, update AST
   const mdAST = parsePandocAST(await pandoc({ inputFile: mdPath }));
-  await mkdirp(path.join(outputDir, 'figure'));
+  await mkdirp(path.join(outputDir, figpath));
   copyOutput(mdAST.article, knitDir, outputDir);
   updateAST(rnodes, mdAST.article.children, lang, logger);
 
@@ -103,9 +106,9 @@ function updateAST(rnodes, output, lang, logger) {
         if (block.name !== 'code-block') {
           // transfer relevant properties to image nodes
           transferChildProperties(node, block);
-        } else if (hasProperty(node, 'as')) {
+        } else if (hasProperty(node, BIND)) {
           // bind the output to a runtime variable
-          const alias = getPropertyValue(node, 'as');
+          const alias = getPropertyValue(node, BIND);
           node.name = 'cell-view';
           node.properties = createProperties({ hide: true });
           node.children[0].value = `${alias} = (${block.children[0].value})`;

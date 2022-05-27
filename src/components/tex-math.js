@@ -1,5 +1,4 @@
 import { DependentElement } from './dependent-element.js';
-import { removeChildren } from './util/remove-children.js';
 
 export class TexMath extends DependentElement {
   static get dependencies() {
@@ -26,9 +25,9 @@ export class TexMath extends DependentElement {
 
   constructor() {
     super();
-    this.mode = 'inline';
+    this.mode = 'display';
     this.leqno = false;
-    this.fleqn = true;
+    this.fleqn = false;
   }
 
   initialChildNodes(nodes) {

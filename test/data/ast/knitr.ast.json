@@ -2,8 +2,10 @@
   "metadata": {
     "plugins": {
       "knitr": {
+        "dev": "svglite",
         "import": [
-          "ggplot2"
+          "ggplot2",
+          "jsonlite"
         ]
       }
     },
@@ -209,7 +211,7 @@
             "children": [
               {
                 "type": "textnode",
-                "value": "hwy ~ displ"
+                "value": "lm(hwy ~ displ, data = mpg)"
               }
             ]
           }
@@ -287,21 +289,49 @@
       },
       {
         "type": "component",
+        "name": "code-block",
+        "properties": {
+          "class": {
+            "type": "value",
+            "value": "r"
+          },
+          "bind": {
+            "type": "value",
+            "value": "coef"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "toJSON(coefficients(m))"
+          }
+        ]
+      },
+      {
+        "type": "component",
         "name": "p",
         "children": [
           {
             "type": "textnode",
-            "value": "The fitted slope parameter is "
+            "value": "The fitted line is "
           },
           {
             "type": "component",
-            "name": "code",
-            "children": [
-              {
-                "type": "textnode",
-                "value": "r coefficients(m)['displ']"
+            "name": "math",
+            "properties": {
+              "mode": {
+                "type": "value",
+                "value": "inline"
+              },
+              "code": {
+                "type": "expression",
+                "value": "`y = ${coef[1]} x + ${coef[0]}`"
               }
-            ]
+            }
+          },
+          {
+            "type": "textnode",
+            "value": "."
           }
         ]
       },

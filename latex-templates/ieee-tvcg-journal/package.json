@@ -1,0 +1,9 @@
+{
+  "template": "template.tex",
+  "files": [
+    "files/abbrv-doi.bst",
+    "files/diamondrule.eps",
+    "files/diamondrule.pdf",
+    "files/vgtc.cls"
+  ]
+}
