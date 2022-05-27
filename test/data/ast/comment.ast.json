@@ -10,7 +10,43 @@
         "children": [
           {
             "type": "textnode",
-            "value": "Here is a  comment."
+            "value": "Here is a "
+          },
+          {
+            "type": "component",
+            "name": "raw",
+            "properties": {
+              "format": {
+                "type": "value",
+                "value": "html"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "<!-- inline -->"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": " comment."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "raw",
+        "properties": {
+          "format": {
+            "type": "value",
+            "value": "html"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "<!--\nMultiline comment.\n-->"
           }
         ]
       }

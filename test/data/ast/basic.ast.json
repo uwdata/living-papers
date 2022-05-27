@@ -158,7 +158,7 @@
             "properties": {
               "class": {
                 "type": "value",
-                "value": "quote-single"
+                "value": "single"
               }
             },
             "children": [
@@ -175,12 +175,6 @@
           {
             "type": "component",
             "name": "quote",
-            "properties": {
-              "class": {
-                "type": "value",
-                "value": "quote-double"
-              }
-            },
             "children": [
               {
                 "type": "textnode",

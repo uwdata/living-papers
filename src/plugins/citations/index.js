@@ -1,7 +1,7 @@
 import path from 'node:path';
 import {
   createComponentNode, createTextNode, getPropertyValue,
-  setValueProperty, queryNodes, visitNodes, hasProperty, removeChild
+  setValueProperty, queryNodes, visitNodes, removeChild
 } from '../../ast/index.js';
 import { readFile } from '../../util/fs.js';
 import { lookup } from './lookup.js';
@@ -9,7 +9,7 @@ import { Citations } from './citations.js';
 import { scholarAPI } from './scholar-api.js';
 
 const BIBLIOGRAPHY = 'bibliography';
-const CITE_BIB = 'cite-bib';
+const REFERENCES = 'references';
 const CITE_REF = 'cite-ref';
 const CITE_LIST = 'cite-list';
 const KEYS = new Set(['doi', 's2id']);
@@ -39,6 +39,7 @@ export default async function(ast, context) {
   // collect citation data to embed in article
   const data = await citationData(citations, scholarAPI(cache, fetch), logger);
   metadata.references = data;
+  metadata.bibtex = citations.bibtex();
 
   // add bibliography to AST
   if (nodes.length) {
@@ -206,5 +207,5 @@ function createBibComponent(refs) {
   list.children = lines.map(text => {
     return createComponentNode('li', null, [ createTextNode(text) ]);
   });
-  return createComponentNode(CITE_BIB, null, [ list ]);
+  return createComponentNode(REFERENCES, null, [ list ]);
 }

@@ -36,31 +36,25 @@
         "children": [
           {
             "type": "component",
-            "name": "p",
-            "children": [
-              {
-                "type": "component",
-                "name": "image",
-                "properties": {
-                  "width": {
-                    "type": "value",
-                    "value": "100%"
-                  },
-                  "height": {
-                    "type": "value",
-                    "value": "100px"
-                  },
-                  "alt": {
-                    "type": "value",
-                    "value": "Panorama of a sand dune in Belgium"
-                  },
-                  "src": {
-                    "type": "value",
-                    "value": "https://upload.wikimedia.org/wikipedia/commons/d/df/Panorama_depanne.jpg"
-                  }
-                }
+            "name": "image",
+            "properties": {
+              "width": {
+                "type": "value",
+                "value": "100%"
+              },
+              "height": {
+                "type": "value",
+                "value": "100px"
+              },
+              "alt": {
+                "type": "value",
+                "value": "Panorama of a sand dune in Belgium"
+              },
+              "src": {
+                "type": "value",
+                "value": "https://upload.wikimedia.org/wikipedia/commons/d/df/Panorama_depanne.jpg"
               }
-            ]
+            }
           },
           {
             "type": "component",
@@ -110,27 +104,21 @@
         "children": [
           {
             "type": "component",
-            "name": "p",
-            "children": [
-              {
-                "type": "component",
-                "name": "image",
-                "properties": {
-                  "height": {
-                    "type": "value",
-                    "value": "100px"
-                  },
-                  "alt": {
-                    "type": "value",
-                    "value": "Animation of a sound pressure wave"
-                  },
-                  "src": {
-                    "type": "value",
-                    "value": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Half-open_pipe_wave.gif/440px-Half-open_pipe_wave.gif"
-                  }
-                }
+            "name": "image",
+            "properties": {
+              "height": {
+                "type": "value",
+                "value": "100px"
+              },
+              "alt": {
+                "type": "value",
+                "value": "Animation of a sound pressure wave"
+              },
+              "src": {
+                "type": "value",
+                "value": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Half-open_pipe_wave.gif/440px-Half-open_pipe_wave.gif"
               }
-            ]
+            }
           },
           {
             "type": "component",

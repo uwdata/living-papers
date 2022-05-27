@@ -22,23 +22,17 @@
         "children": [
           {
             "type": "component",
-            "name": "p",
-            "children": [
-              {
-                "type": "component",
-                "name": "image",
-                "properties": {
-                  "alt": {
-                    "type": "value",
-                    "value": "IDL logo"
-                  },
-                  "src": {
-                    "type": "value",
-                    "value": "http://idl.cs.washington.edu/static/images/logo/idl-logo.png"
-                  }
-                }
+            "name": "image",
+            "properties": {
+              "alt": {
+                "type": "value",
+                "value": "IDL logo"
+              },
+              "src": {
+                "type": "value",
+                "value": "http://idl.cs.washington.edu/static/images/logo/idl-logo.png"
               }
-            ]
+            }
           },
           {
             "type": "component",

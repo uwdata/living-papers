@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 import path from 'node:path';
 import chalk from 'chalk';
-import { compile } from '../src/compile.js';
+import { compile } from '../src/compile/compile.js';
 
 const inputFile = process.argv[2];
 const outputDir = process.argv[3] || path.dirname(inputFile);
@@ -26,7 +26,13 @@ const logger = {
 };
 
 compile(inputFile, { outputDir, logger, debug })
-  .then(({ elapsedTime }) => {
+  .then(({ elapsedTime, output }) => {
+    for (const type in output) {
+      [output[type]]
+        .flat()
+        .filter(x => x)
+        .forEach(file => console.log(`Created ${type} output ${chalk.cyan(file)}`));
+    }
     const sec = (elapsedTime / 1000).toFixed(2);
     console.log(`Processed article ${chalk.cyan(inputFile)}: ${chalk.green(`${sec} sec`)}`);
     console.log(`Output to ${chalk.cyan(outputDir)}`);

@@ -102,20 +102,12 @@ body {
   display: none;
 }
 
-.quote-single::before {
-  content: "‘";
+q.single {
+  quotes: "‘" "’"
 }
 
-.quote-single::after {
-  content: "’";
-}
-
-.quote-double::before {
-  content: "“";
-}
-
-.quote-double::after {
-  content: "”";
+sub, sup {
+  line-height: 0;
 }
 
 h1[data-counter]::before,
@@ -189,7 +181,13 @@ header .author-org::before {
   cursor: ew-resize;
 }
 
-.katex { font-size: 1em !important; }
+.katex {
+  font-size: 1em !important;
+}
+
+.katex-display {
+  margin: 0 !important;
+}
 
 /* article > p {
   line-height: 1.3em;

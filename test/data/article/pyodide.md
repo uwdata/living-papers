@@ -11,8 +11,6 @@ import sys
 
 Python version `py ${sys}.version`{.bold}
 
-# Altair Plot
-
 ``` py
 import altair as alt
 from vega_datasets import data
@@ -26,11 +24,12 @@ chart = alt.Chart(cars).mark_point().encode(
 chart
 ```
 
+::: figure
 ``` js
 vl.spec(JSON.parse(chart.to_json())).render()
 ```
-
-# Matplotlib Plot
+| Miles per gallon as a function of horsepower. (Altair + Vega-Lite)
+:::
 
 ``` py { hide=true }
 import numpy as np
@@ -65,16 +64,19 @@ plt.svg = types.MethodType(svg, plt)
 plt
 ```
 
+::: figure
 ``` js
 x = np.linspace(0, sx * np.pi, 300)
 ---
 {
   plt.figure();
   plt.plot(x, np.sin(x));
-  return plt.svg();
+  const svg = plt.svg();
+  return (plt.close(), svg);
 }
 ```
-
 ``` js
 viewof sx = Inputs.range([2, 20], { step: 0.1, value: 10 })
 ```
+| Surfing on sinusoids! (Matplotlib + Observable)
+:::

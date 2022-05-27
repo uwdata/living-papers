@@ -1,21 +1,19 @@
 # Figure
 
 ::: figure {#dune .page}
-| Coastal dunes in
-| [De Panne](https://en.wikipedia.org/wiki/De_Panne), Belgium
-
 ![Panorama of a sand dune in Belgium](
   https://upload.wikimedia.org/wikipedia/commons/d/df/Panorama_depanne.jpg
 ){ width=100% height=100px }
+| Coastal dunes in
+| [De Panne](https://en.wikipedia.org/wiki/De_Panne), Belgium
 :::
 
 ::: figure {#wave}
-| Sound pressure standing wave in a half-open pipe
-| playing the 7th harmonic of the fundamental (n = 4)
-
 ![Animation of a sound pressure wave](
   https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Half-open_pipe_wave.gif/440px-Half-open_pipe_wave.gif
 ){ height=100px }
+| Sound pressure standing wave in a half-open pipe
+| playing the 7th harmonic of the fundamental (n = 4)
 :::
 
 # Notes

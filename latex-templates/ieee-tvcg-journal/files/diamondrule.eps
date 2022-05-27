@@ -1,0 +1,56 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%Title: diamondrule2.eps
+%%Creator: Gordon Kindlmann + emacs (TLA)
+%%BoundingBox: 0 0 213 12
+%%HiResBoundingBox: 0 0 213 12
+%%Pages: 1
+%%EndComments
+%%BeginProlog
+%%EndProlog
+%%Page: 1 1
+
+% This is very much like "diamondrule.eps", but simpler, shorter, better
+% centered, and slightly thinner.  Unlike in the original "diamondrule.eps":
+% * Diamond is made of circular arcs (with no rounding at the tips)
+% * Diamond is centered between the two lines
+% * The two lines are centered vertically
+% * The BoundingBox and HiResBoundingBox are equal. The original
+%   HiResBoundingBox was 0 0 212.9981 12.2764
+% * The vertical height was decreased from 13 to 12 points, in recognition
+%   of what the height was in the original HiResBoundingBox (12.2764).
+
+0 setgray                % everything is black
+
+0 setlinecap             % line parameters
+0.92 setlinewidth
+
+0 6 moveto               % first line (original lines were at Y ~= 6.3)
+95.45 0 rlineto stroke
+
+213 6 moveto             % second line
+-95.45 0 rlineto stroke
+
+gsave                    % diamond
+106.5 6 translate        % center (original was at around 106.755 5.875)
+4.55 dup scale           % size
+0.31                     % smaller means more concave on sides
+dup dup 1 add dup        % begin stack hacking ...
+dup
+dup dup mul
+5 -1 roll
+dup mul
+add sqrt
+5 -2 roll 
+atan
+dup
+180 add
+2 -1 roll
+-1 mul
+270 add                  % stack now has the 5 args to "arc"
+5 copy 5 copy 5 copy     % copy the "arc" args 3 more times
+arc                      % do four sides of diamond
+90 rotate arc
+90 rotate arc
+90 rotate arc
+closepath fill
+grestore

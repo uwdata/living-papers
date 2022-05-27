@@ -15,9 +15,13 @@ h2 {
 	padding: 3px;
 }
 
-h3 {
+h1, h2, h3 {
 	margin: 0;
-	padding: 1px;
+	padding: 0;
+}
+
+h1 {
+	padding-top: 0.5em;
 }
 
 .title {
@@ -112,8 +116,14 @@ figcaption {
 	font-weight: 600;
 }
 
-figure img {
-  max-width: 100%;
+figure img, figure svg, figure canvas {
+  object-fit: contain;
+	max-width: 100%;
+	height: auto !important;
+}
+
+header {
+	padding-bottom: 1em;
 }
 
 footer {

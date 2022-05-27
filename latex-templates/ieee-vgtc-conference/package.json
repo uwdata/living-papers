@@ -1,0 +1,7 @@
+{
+  "template": "template.tex",
+  "files": [
+    "files/abbrv-doi.bst",
+    "files/vgtc.cls"
+  ]
+}
