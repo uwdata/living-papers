@@ -1,5 +1,3 @@
-
-
 import puppeteer from 'puppeteer';
 
 export async function astToPDF(ast, html) {
@@ -21,8 +19,9 @@ export async function astToPDF(ast, html) {
   });
 
   await page.evaluate(async () => {
-    await window.runtime.redefine('a', 10);
+    await window.runtime.handlerUnsafe('(a = 10)')();
   });
+
   await page.evaluate(async () => {
     console.log(await window.runtime.value('a'));
   });

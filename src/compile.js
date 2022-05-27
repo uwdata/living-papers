@@ -3,7 +3,7 @@ import path from 'node:path';
 import { builtins, parseContext, numbered } from './config.js';
 import { bundle } from './bundle/bundle.js';
 import { parseMarkdown } from './parser/parse-markdown.js';
-import { citations, code, crossref, header, notes, runtime } from './plugins/index.js';
+import { citations, code, crossref, header, notes, runtime, puppeteer } from './plugins/index.js';
 import { cache } from './util/cache.js';
 
 import knitr from './plugins/knitr/index.js';
@@ -29,7 +29,8 @@ export async function compile(inputFile, options = {}) {
     crossref(numbered()),
     notes,
     header,
-    citations
+    citations,
+    puppeteer
   ];
   const ast = await transformAST(article, plugins, {
     cache: await cache(),
