@@ -3,8 +3,8 @@ title: Cross-References
 ---
 
 ::: figure {#teaser}
-| The IDL Logo.
 ![IDL logo](http://idl.cs.washington.edu/static/images/logo/idl-logo.png)
+| The IDL Logo.
 :::
 
 # Introduction {#intro}

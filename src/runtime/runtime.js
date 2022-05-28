@@ -104,6 +104,9 @@ export class ObservableRuntime {
    */
   handler(id) {
     return async (e) => {
+      // prevent default event response
+      e.preventDefault();
+
       // retrieve handler and variables from runtime
       const [handler, vars] = await this.value(id);
       const values = await Promise.all(vars.map(name => this.value(name)));

@@ -75,10 +75,20 @@ export class Citations {
       ...options
     };
 
-    return this.refs(ids).map(ref =>
-      new Cite(ref)
+    return this.refs(ids).map(
+      ref => new Cite(ref)
         .format('bibliography', options)
         .replaceAll('&amp;', '&')
+        .trim()
+    );
+  }
+
+  bibtex(ids = null) {
+    // format bibtex, work around citation-js id mangling
+    return this.refs(ids).map(
+      ref => new Cite(ref)
+        .format('bibtex')
+        .replace(/^(@\w+\{)\w+,/, `$1${ref.id},`)
         .trim()
     );
   }

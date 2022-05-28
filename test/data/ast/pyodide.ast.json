@@ -62,22 +62,6 @@
       },
       {
         "type": "component",
-        "name": "h1",
-        "properties": {
-          "id": {
-            "type": "value",
-            "value": "altair-plot"
-          }
-        },
-        "children": [
-          {
-            "type": "textnode",
-            "value": "Altair Plot"
-          }
-        ]
-      },
-      {
-        "type": "component",
         "name": "code-block",
         "properties": {
           "class": {
@@ -94,33 +78,39 @@
       },
       {
         "type": "component",
-        "name": "code-block",
+        "name": "figure",
         "properties": {
           "class": {
             "type": "value",
-            "value": "js"
+            "value": "figure"
           }
         },
         "children": [
           {
-            "type": "textnode",
-            "value": "vl.spec(JSON.parse(chart.to_json())).render()"
-          }
-        ]
-      },
-      {
-        "type": "component",
-        "name": "h1",
-        "properties": {
-          "id": {
-            "type": "value",
-            "value": "matplotlib-plot"
-          }
-        },
-        "children": [
+            "type": "component",
+            "name": "code-block",
+            "properties": {
+              "class": {
+                "type": "value",
+                "value": "js"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "vl.spec(JSON.parse(chart.to_json())).render()"
+              }
+            ]
+          },
           {
-            "type": "textnode",
-            "value": "Matplotlib Plot"
+            "type": "component",
+            "name": "caption",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "Miles per gallon as a function of horsepower. (Altair + Vega-Lite)"
+              }
+            ]
           }
         ]
       },
@@ -146,33 +136,55 @@
       },
       {
         "type": "component",
-        "name": "code-block",
+        "name": "figure",
         "properties": {
           "class": {
             "type": "value",
-            "value": "js"
+            "value": "figure"
           }
         },
         "children": [
           {
-            "type": "textnode",
-            "value": "x = np.linspace(0, sx * np.pi, 300)\n---\n{\n  plt.figure();\n  plt.plot(x, np.sin(x));\n  return plt.svg();\n}"
-          }
-        ]
-      },
-      {
-        "type": "component",
-        "name": "code-block",
-        "properties": {
-          "class": {
-            "type": "value",
-            "value": "js"
-          }
-        },
-        "children": [
+            "type": "component",
+            "name": "code-block",
+            "properties": {
+              "class": {
+                "type": "value",
+                "value": "js"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "x = np.linspace(0, sx * np.pi, 300)\n---\n{\n  plt.figure();\n  plt.plot(x, np.sin(x));\n  const svg = plt.svg();\n  return (plt.close(), svg);\n}"
+              }
+            ]
+          },
           {
-            "type": "textnode",
-            "value": "viewof sx = Inputs.range([2, 20], { step: 0.1, value: 10 })"
+            "type": "component",
+            "name": "code-block",
+            "properties": {
+              "class": {
+                "type": "value",
+                "value": "js"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "viewof sx = Inputs.range([2, 20], { step: 0.1, value: 10 })"
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "caption",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "Surfing on sinusoids! (Matplotlib + Observable)"
+              }
+            ]
           }
         ]
       }

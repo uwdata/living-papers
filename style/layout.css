@@ -4,19 +4,35 @@ article {
 	|             full             |
 	| 1 | nav | main | margin | 5 |
 	*/
-	grid-template-columns: [full-start] 1fr [nav-start] minmax(60px, 90px) [main-start nav-end] 600px [main-end margin-start] 350px [margin-end] 1fr [full-end];
+	grid-template-columns: [full-start] 1fr [main-start nav-start] 600px [main-end nav-end margin-start] 350px [margin-end] 1fr [full-end];
 	gap: 16px 40px;
 }
 
+nav.toc {
+	position: static;
+	grid-row: auto;
+	padding: 0;
+}
+
+.note-content {
+  float: right;
+  width: 250px;
+  clear: right;
+  margin: 0.5ex -300px 1em 0;
+  text-align: left;
+  font-size: 0.8em;
+  line-height: 1.2em;
+}
+
 /* remove left margin when `width <= 1270px` */
-@media (max-width: 1270px) {
-	.grid {
+/* @media (max-width: 1270px) {
+	article {
 		/* combining main and nav */
 		/* Looks like this:
 		|             full             |
 		| 1 | main = nav | margin | 4 |
-		*/
-		grid-template-columns: [full-start] 1fr [main-start nav-start] 540px [main-end nav-end margin-start] 400px [margin-end] 1fr [full-end];
+		*/ /*
+		grid-template-columns: [full-start] 1fr [main-start nav-start] 600px [main-end nav-end margin-start] 350px [margin-end] 1fr [full-end];
 		column-gap: 20px;
 	}
 	nav.toc {
@@ -24,41 +40,54 @@ article {
 		grid-row: auto;
 		padding: 0;
 	}
-}
+} */
 
 /* remove right margin when `width <= 920px` */
 @media (max-width: 920px) {
-	.grid {
+	article {
 		/* combining main and nav and margin */
 		/* Looks like this:
 		|             full             |
 		| 1 | main = nav = margin | 3 |
 		*/
-		grid-template-columns: [full-start] 1fr [main-start nav-start margin-start] minmax(auto, 540px) [main-end nav-end margin-end] 1fr [full-end];
+		grid-template-columns: [full-start] 1fr [main-start nav-start margin-start] minmax(auto, 600px) [main-end nav-end margin-end] 1fr [full-end];
 		column-gap: 10px;
 	}
 	.margin {
 		text-align: center;
 	}
+	.note-content {
+		display: none;
+	}
 }
 
-article > *, .grid > * {
+article > * {
 	grid-column: main;
 }
 
-/* article {
-	margin-top: 1em;
-} */
-
-h1,
-h2 {
-	margin: 0;
-	padding: 3px;
+.rowspan2 {
+	grid-row-end: span 2;
 }
 
-h3 {
+.rowspan3 {
+	grid-row-end: span 3;
+}
+
+.rowspan4 {
+	grid-row-end: span 4;
+}
+
+article {
+	padding-bottom: 1em;
+}
+
+h1, h2, h3 {
 	margin: 0;
-	padding: 1px;
+	padding: 0;
+}
+
+h1 {
+	padding-top: 0.5em;
 }
 
 .title {
@@ -140,8 +169,14 @@ figcaption {
 	font-weight: 600;
 }
 
-figure img {
-  max-width: 100%;
+figure img, figure svg, figure canvas {
+  object-fit: contain;
+	max-width: 100%;
+	height: auto !important;
+}
+
+header {
+	padding-bottom: 1em;
 }
 
 footer {
