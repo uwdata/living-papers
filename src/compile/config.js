@@ -22,6 +22,7 @@ export async function outputOptions(context) {
   // include html output by default
   if (Object.keys(options).length === 0) {
     options.html = {};
+    options.latex = {};
   }
 
   // include components for html output

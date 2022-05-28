@@ -5,7 +5,7 @@ import { parseMarkdown } from '../parse/parse-markdown.js';
 import { cache } from '../util/cache.js';
 
 import {
-  citations, code, crossref, header, notes, runtime, section
+  citations, code, crossref, header, notes, runtime, section, puppeteer
 } from '../plugins/index.js';
 import knitr from '../plugins/knitr/index.js';
 import pyodide from '../plugins/pyodide/index.js';
@@ -53,19 +53,39 @@ export async function compile(inputFile, options = {}) {
   const output = await outputOptions(context);
   const files = {};
 
-  if (output.latex) {
-    files.latex = await outputLatex(ast, context, output.latex);
-  }
+  const astHTML = await transformAST(ast, context, [
+    crossref(numbered()),
+    notes,
+    header,
+    section
+  ]);
+
+  // For some reason running outputHTML affects the 
+  // AST. So you can't run it twice...
+  //          await outputHTML(astHTML, ...)
+  //          await outputHTML(astHTML, ...)
+  // The puppeteer library needs to generate its own
+  // version of the HTML, so we just deep clone the ast
+  // here to make it work. 
+  let astLatex = JSON.parse(JSON.stringify(astHTML));
 
   if (output.html) {
-    const astHTML = await transformAST(ast, context, [
-      crossref(numbered()),
-      notes,
-      header,
-      section
-    ]);
     files.html = await outputHTML(astHTML, context, output.html);
   }
+
+  if (output.latex) {
+    const plan = [{
+      input: 'svg',
+      output: 'png'
+    }];
+
+    astLatex = await transformAST(astLatex, context, [
+      puppeteer({plan, htmlOptions: output.html})
+    ]);
+  
+    files.latex = await outputLatex(astLatex, context, output.latex);
+  }
+
 
   return {
     elapsedTime: Date.now() - startTime,
