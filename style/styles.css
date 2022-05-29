@@ -128,10 +128,6 @@ figure.table > figcaption[data-counter]::before {
   content: "]";
 }
 
-.cite-ref {
-  text-decoration: underline dotted #aaa;
-}
-
 .citation, .citation-err {
   font-weight: bold;
 }
@@ -186,6 +182,7 @@ figure.table > figcaption[data-counter]::before {
   min-height: 18px;
   display: flex;
   justify-content: space-between;
+  font-weight: bold;
 }
 
 .cit-body {
