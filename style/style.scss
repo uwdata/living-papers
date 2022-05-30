@@ -1,0 +1,20 @@
+// This file imports all the other SCSS/CSS files
+// Gets compiled into style.css
+
+// constants that get passed into the theme file
+$bg: #fff;
+$fg: #111;
+
+@import "layout";
+@import "common";
+@import "_theme";
+
+// can override layout variables:
+/*
+:root {
+	--max-article-width: 100ex;
+	--article-padding: 32px;
+	--margin-width: 400px;
+	--gap-width: 100px;
+}
+*/

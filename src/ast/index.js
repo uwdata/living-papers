@@ -237,7 +237,7 @@ export function removeClass(node, className) {
 export function addClass(node, className) {
   const cls = getClasses(node);
   if (cls.indexOf(className) < 0) {
-    setValueProperty(node, 'class', [...cls, className]);
+    setValueProperty(node, 'class', [...cls, className].join(' '));
   }
 }
 
