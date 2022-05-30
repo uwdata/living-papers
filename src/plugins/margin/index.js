@@ -1,40 +1,58 @@
 import {
-  createComponentNode, createProperties, getPropertyValue, queryNodes, setValueProperty
+  addClass, appendChildren, createComponentNode, createProperties, getProperty, getPropertyValue, hasClass, hasProperty, queryNodes, removeProperty
 } from '../../ast/index.js';
 
-export default function(ast, { logger }) {
+export default function (ast, { logger }) {
   queryNodes(ast, node => {
-    const hasMarginClass = node.properties?.layout?.value === 'margin';
-    const isAsideNote = node.name === 'aside' && getPropertyValue(node, 'class')?.split(' ').includes('note');
-    return hasMarginClass || isAsideNote;
+    const hasMarginProp = getPropertyValue(node, 'layout') === 'margin';
+    const isAsideNote = node.name === 'aside' && hasClass(node, 'note');
+    const isSticky = hasProperty(node, 'sticky-until-top') || hasProperty(node, 'sticky-until-bottom');
+    return hasMarginProp || isAsideNote || isSticky;
   }).forEach(node => {
-    const isAsideNote = node.name === 'aside' && getPropertyValue(node, 'class')?.split(' ').includes('note');
+    const hasMarginProp = getPropertyValue(node, 'layout') === 'margin';
+    const isAsideNote = node.name === 'aside' && hasClass(node, 'note');
+    const isSticky = hasProperty(node, 'sticky-until-top') || hasProperty(node, 'sticky-until-bottom');
 
-    const isSticky = node.properties?.['sticky-until-top'] || node.properties?.['sticky-until-bottom'];
-
-    let className = 'margin';
+    let classes = [];
+    if (hasMarginProp || isAsideNote) {
+      classes.push('margin');
+    }
     if (isSticky) {
-      className += ' sticky';
+      classes.push('sticky');
     }
 
     if (isAsideNote) {
       // add margin class
-      setValueProperty(node, 'class', getPropertyValue(node, 'class') + ' margin');
+      for (const c of classes) {
+        addClass(node, c)
+      }
     } else {
+      const properties = createProperties({ class: classes.join(' ') });
+      if (hasProperty(node, 'sticky-until-top')) {
+        properties['sticky-until-top'] = getProperty(node, 'sticky-until-top');
+        removeProperty(node, 'sticky-until-top');
+      }
+      if (hasProperty(node, 'sticky-until-bottom')) {
+        properties['sticky-until-bottom'] = getProperty(node, 'sticky-until-bottom');
+        removeProperty(node, 'sticky-until-bottom');
+      }
+
       const parent = createComponentNode('div',
-        createProperties({ class: className }),
+        properties,
         [
-          {...node} // shallow copy node
+          { ...node } // shallow copy node
         ]
       );
-  
+
       // replace node with parent, but keep reference the same
       node.type = parent.type;
       node.name = parent.name;
       node.properties = parent.properties;
       node.children = parent.children;
     }
-
   });
+
+  appendChildren(ast, createComponentNode('scroll-manager'));
+
   return ast;
 }

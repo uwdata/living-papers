@@ -1,11 +1,11 @@
 import {
-  createComponentNode, createProperties, createTextNode, getPropertyValue, queryNodes
+  createComponentNode, createProperties, createTextNode, hasClass, queryNodes
 } from '../../ast/index.js';
 
-export default function(ast, { logger }) {
+export default function (ast, { logger }) {
   let numNotes = 0;
   queryNodes(ast, node => {
-    return node.name === 'inlinenote' || getPropertyValue(node, 'class')?.split(' ').includes('note')
+    return node.name === 'inlinenote' || hasClass(node, 'note')
   }).forEach(node => {
     const { children } = node;
 
@@ -13,7 +13,7 @@ export default function(ast, { logger }) {
       if (children.length > 1) {
         logger.warn('Dropping extraneous content from note.');
       }
-  
+
       node.properties = createProperties({ class: 'inlinenote' });
       node.children = [
         createComponentNode('sup', createProperties({ class: 'inlinenote-number' }), [createTextNode(`[${++numNotes}]`)]),

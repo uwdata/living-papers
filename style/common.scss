@@ -1,0 +1,225 @@
+// Styles common to every theme
+
+.normal {
+	font-weight: 400;
+}
+
+.demi {
+	font-weight: 600;
+}
+
+.bold,
+.strong {
+	font-weight: 700;
+}
+
+.mono,
+.code {
+	font-family: monospace;
+}
+
+.em,
+.emph,
+.italic {
+	font-style: italic;
+}
+
+.highlight {
+	background-color: #ff0;
+}
+
+.strike {
+	text-decoration: line-through;
+}
+
+.underline {
+	text-decoration: underline;
+}
+
+.smallcaps {
+	font-variant: small-caps;
+}
+
+.lowercase {
+	text-transform: lowercase;
+}
+
+.uppercase {
+	text-transform: uppercase;
+}
+
+.capitalize {
+	text-transform: capitalize;
+}
+
+.left {
+	text-align: left;
+}
+
+.right {
+	text-align: right;
+}
+
+.center {
+	text-align: center;
+}
+
+.justify {
+	text-align: justify;
+}
+
+.tiny {
+	font-size: 0.5em;
+}
+
+.scriptsize {
+	font-size: 0.7em;
+}
+
+.smaller,
+.footnotesize {
+	font-size: 0.8em;
+}
+
+.small {
+	font-size: 0.9em;
+}
+
+.large {
+	font-size: 1.2em;
+}
+
+.larger {
+	font-size: 1.4em;
+}
+
+.huge {
+	font-size: 1.8em;
+}
+
+.hide {
+	display: none;
+}
+
+h1 {
+	font-size: 2rem;
+}
+
+h2 {
+	font-size: 1.4rem;
+}
+
+h3 {
+	font-size: 1.15rem;
+}
+
+h4,
+h5,
+h6 {
+	font-size: 1rem;
+}
+
+q.single {
+	quotes: "‘""’"
+}
+
+sub,
+sup {
+	line-height: 0;
+}
+
+h1[data-counter]::before,
+h2[data-counter]::before,
+h3[data-counter]::before {
+	content: attr(data-counter) " ";
+}
+
+figure>figcaption {
+	font-size: 0.9em;
+	padding-bottom: 1ex;
+}
+
+figure.figure>figcaption[data-counter]::before {
+	content: "Figure " attr(data-counter) ". ";
+}
+
+figure.table>figcaption[data-counter]::before {
+	content: "Table " attr(data-counter) ". ";
+}
+
+.cite-list::before {
+	content: "[";
+}
+
+.cite-list::after {
+	content: "]";
+}
+
+.cite-ref {
+	text-decoration: underline dotted #aaa;
+}
+
+.cross-ref.sec.full::before {
+	content: "§";
+}
+
+.cross-ref.fig.full::before {
+	content: "Figure ";
+}
+
+.cross-ref.tbl.full::before {
+	content: "Table ";
+}
+
+.cross-ref.eqn.full::before {
+	content: "Equation ";
+}
+
+header .author-org {
+	font-style: italic;
+}
+
+header .author-org::before {
+	content: " · "
+}
+
+.note {
+	font-style: italic;
+}
+
+.error-block {
+	display: block;
+	border: solid 1px red;
+	padding: 1em;
+	max-width: 800px;
+	font-size: 0.9em;
+}
+
+.range-text {
+	text-decoration: underline dashed #888;
+	cursor: ew-resize;
+}
+
+.katex {
+	font-size: 1em !important;
+}
+
+.katex-display {
+	margin: 0 !important;
+}
+
+table {
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+th,
+td {
+	padding: 0.5ex 1ex;
+}
+
+.inlinenote .note::before {
+	content: "[" attr(data-number) "]";
+	position: absolute;
+	left: -32px;
+}
