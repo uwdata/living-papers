@@ -1,6 +1,5 @@
 import { html } from 'lit';
 import { ArticleElement } from './article-element.js';
-import { InputEvent } from './util/input-event.js';
 
 export class RangeText extends ArticleElement {
   static get properties() {
@@ -45,7 +44,7 @@ export class RangeText extends ArticleElement {
       const value = Math.max(Math.min(mv + dx, max), min);
       if (this.value !== value) {
         this.value = value;
-        this.dispatchEvent(new InputEvent(value));
+        this.dispatchEvent(new Event('input'));
         this.requestUpdate();
       }
     };
