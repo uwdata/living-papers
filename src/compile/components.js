@@ -74,7 +74,7 @@ function toEntry(item, dir) {
     throw new Error(`Malformed component entry: ${JSON.stringify(entry)}`);
   }
 
-  const { name, import: _import = 'default', file } = entry;
+  const { name, import: _import = 'default', file, css } = entry;
   const _default = _import === 'default';
 
   if (name.indexOf('-') < 0) {
@@ -87,7 +87,8 @@ function toEntry(item, dir) {
     name,
     import: _default ? toCamelCase(name) : _import,
     default: _default,
-    file: path.join(dir, file)
+    file: path.resolve(path.join(dir, file)),
+    css: css ? path.resolve(path.join(dir, css)) : undefined
   };
 }
 

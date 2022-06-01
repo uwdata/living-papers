@@ -41,19 +41,23 @@ export default async function(ast, context, options) {
   // generate page content
   const { script } = astToScript(ast);
   const { html: content, tags, ...bind } = astToHTML(ast);
+  const activeComponents = components.filter(c => tags.has(c.name));
   const entry = entryScript({
     root: 'article',
     bind,
     metadata,
-    components: components.filter(c => tags.has(c.name)),
+    components: activeComponents,
     runtime: !!script,
   });
 
   // bundle style sheets
   const stylePaths = [
+    path.join(styleDir, 'span.css'),
     path.join(styleDir, 'layout.css'),
-    path.join(styleDir, 'styles.css')
+    path.join(styleDir, 'article.css'),
+    ...componentCSSPaths(activeComponents)
   ];
+  console.log('STYLE PATHS', stylePaths);
   const css = await bundleCSS(stylePaths, rollupOptions.minify);
 
   // write javascript and css files
@@ -91,6 +95,12 @@ export default async function(ast, context, options) {
   return htmlFile
     ? (await writeFile(htmlPath, html), htmlPath)
     : html;
+}
+
+function componentCSSPaths(components) {
+  const set = new Set;
+  components.forEach(entry => { if (entry.css) set.add(entry.css); });
+  return Array.from(set);
 }
 
 async function bundleCSS(styles, minify = true) {

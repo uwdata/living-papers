@@ -1,0 +1,15 @@
+.cross-ref.sec.full::before {
+  content: var(--section-prefix);
+}
+
+.cross-ref.fig.full::before {
+  content: var(--figure-prefix);
+}
+
+.cross-ref.tbl.full::before {
+  content: var(--table-prefix);
+}
+
+.cross-ref.eqn.full::before {
+  content: var(--equation-prefix);
+}
