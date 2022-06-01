@@ -11,6 +11,8 @@ export default function(options = {}) {
 
   return async (ast, context) => {
 
+    const { outputPath } = context;
+
     const {
       plan = [],
       htmlOptions = {}
@@ -54,9 +56,11 @@ export default function(options = {}) {
     // });
 
     // Execute the plan:
-    const replaceNodes = new Set();
-
+    
     for (const action of plan) {
+      const replaceNodes = new Set();
+  
+      const outputFileExtension = output === 'pdf' ? 'png' : output;
       const { input, output } = action;
 
       // Identify all the targets based on the input type
@@ -79,27 +83,29 @@ export default function(options = {}) {
         const astId = await getAstId(astNode);
         
         // TODO - figure out what the correct place is to put these iamges
-        await element.screenshot({path: `lpub-static-transform-${astId}.${output}`});
+        await element.screenshot({path: path.join(outputPath, `lpub-static-transform-${astId}.${outputFileExtension}`)});
         replaceNodes.add(+astId);
       }
+
+      visitNodes(ast, node => {
+        const nodeId = getProperty(node, 'data-ast-id').value;
+        if (replaceNodes.has(nodeId)) {
+          node.name = 'img';
+          node.children = undefined;
+          clearProperties(node);
+          setProperties(node, {
+            src: {
+              type: 'value',
+              value: path.join(outputPath, `lpub-static-transform-${nodeId}.${outputFileExtension}`)
+            }
+          });
+        }
+      });
     }
 
     await page.close();
-  
-    visitNodes(ast, node => {
-      const nodeId = getProperty(node, 'data-ast-id').value;
-      if (replaceNodes.has(nodeId)) {
-        node.name = 'img';
-        node.children = undefined;
-        clearProperties(node);
-        setProperties(node, {
-          src: {
-            type: 'value',
-            value: `lpub-static-transform-${nodeId}.png`
-          }
-        });
-      }
 
+    visitNodes(ast, node => {
       removeProperty(node, 'data-ast-id');
     });
   
