@@ -1,0 +1,67 @@
+article {
+  --section-prefix: "§";
+  --equation-prefix: "Equation ";
+  --figure-prefix: "Figure ";
+  --table-prefix: "Table ";
+  --cite-list-start: "[";
+  --cite-list-end: "]";
+  --double-quote-start: "“";
+  --double-quote-end: "”";
+  --single-quote-start: "‘";
+  --single-quote-end: "’";
+}
+
+article > p {
+  line-height: 1.3em;
+}
+
+sub,
+sup {
+  line-height: 0;
+}
+
+q {
+  quotes: var(--double-quote-start) var(--double-quote-end);
+}
+
+q.single {
+  quotes: var(--single-quote-start) var(--single-quote-end);
+}
+
+header .author-org {
+	font-style: italic;
+}
+
+header .author-org::before {
+  content: " · "
+}
+
+h1[data-counter]::before,
+h2[data-counter]::before,
+h3[data-counter]::before {
+  content: attr(data-counter) " ";
+}
+
+figure > figcaption {
+  font-size: 0.9em;
+}
+
+figure.figure > figcaption[data-counter]::before {
+  content: var(--figure-prefix) attr(data-counter) ". ";
+}
+
+figure.table > figcaption[data-counter]::before {
+  content: var(--table-prefix) attr(data-counter) ". ";
+}
+
+.note {
+  counter-increment: notes;
+}
+
+.note > sup::before {
+  content: counter(notes);
+}
+
+.note-content::before {
+  content: counter(notes) ". ";
+}
