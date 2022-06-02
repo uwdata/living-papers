@@ -53,11 +53,10 @@ export default async function(ast, context, options) {
   // bundle style sheets
   const stylePaths = [
     path.join(styleDir, 'span.css'),
+    path.join(styleDir, 'common.css'),
     path.join(styleDir, 'layout.css'),
-    path.join(styleDir, 'article.css'),
     ...componentCSSPaths(activeComponents)
   ];
-  console.log('STYLE PATHS', stylePaths);
   const css = await bundleCSS(stylePaths, rollupOptions.minify);
 
   // write javascript and css files
