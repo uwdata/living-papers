@@ -9,14 +9,14 @@ export class ScrollManager extends ArticleElement {
       sticky,
       inMargin: sticky.classList.contains('margin'),
       end:
-        document.querySelector(sticky.getAttribute('sticky-until-bottom')) ||
-        document.querySelector(sticky.getAttribute('sticky-until-top')),
-      untilBottom: sticky.getAttribute('sticky-until-bottom') != null,
+        document.querySelector(sticky.getAttribute('sticky-through')) ||
+        document.querySelector(sticky.getAttribute('sticky-until')),
+      untilBottom: sticky.getAttribute('sticky-through') != null,
     }));
 
     // Remove sticky elements where anchors don't exist
     for (const { sticky } of stickys.filter(({ end }) => !end)) {
-      console.log(sticky, 'could not find sticky anchor ' + (sticky.getAttribute('sticky-until-bottom') || sticky.getAttribute('sticky-until-top')));
+      console.log(sticky, 'could not find sticky anchor ' + (sticky.getAttribute('sticky-through') || sticky.getAttribute('sticky-until')));
       sticky.classList.remove('sticky');
     }
     stickys = stickys.filter(({ end }) => end);

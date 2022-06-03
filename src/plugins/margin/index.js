@@ -6,12 +6,12 @@ export default function (ast, { logger }) {
   queryNodes(ast, node => {
     const hasMarginProp = getPropertyValue(node, 'layout') === 'margin';
     const isAsideNote = node.name === 'aside' && hasClass(node, 'note');
-    const isSticky = hasProperty(node, 'sticky-until-top') || hasProperty(node, 'sticky-until-bottom');
+    const isSticky = hasProperty(node, 'sticky-until') || hasProperty(node, 'sticky-through');
     return hasMarginProp || isAsideNote || isSticky;
   }).forEach(node => {
     const hasMarginProp = getPropertyValue(node, 'layout') === 'margin';
     const isAsideNote = node.name === 'aside' && hasClass(node, 'note');
-    const isSticky = hasProperty(node, 'sticky-until-top') || hasProperty(node, 'sticky-until-bottom');
+    const isSticky = hasProperty(node, 'sticky-until') || hasProperty(node, 'sticky-through');
 
     let classes = [];
     if (hasMarginProp || isAsideNote) {
@@ -28,13 +28,13 @@ export default function (ast, { logger }) {
       }
     } else {
       const properties = createProperties({ class: classes.join(' ') });
-      if (hasProperty(node, 'sticky-until-top')) {
-        properties['sticky-until-top'] = getProperty(node, 'sticky-until-top');
-        removeProperty(node, 'sticky-until-top');
+      if (hasProperty(node, 'sticky-until')) {
+        properties['sticky-until'] = getProperty(node, 'sticky-until');
+        removeProperty(node, 'sticky-until');
       }
-      if (hasProperty(node, 'sticky-until-bottom')) {
-        properties['sticky-until-bottom'] = getProperty(node, 'sticky-until-bottom');
-        removeProperty(node, 'sticky-until-bottom');
+      if (hasProperty(node, 'sticky-through')) {
+        properties['sticky-through'] = getProperty(node, 'sticky-through');
+        removeProperty(node, 'sticky-through');
       }
 
       const parent = createComponentNode('div',

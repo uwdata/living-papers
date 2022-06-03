@@ -31,7 +31,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 [^1]: Here's my first inline note
 [^2]: Here's another inline note that spans many lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis tristique sollicitudin nibh sit amet commodo nulla.  
 
-::: figure {layout=margin sticky-until-top="#the-next-section"}
+::: figure {layout=margin sticky-until="#the-next-section"}
 | A lonely sticky quill in the margin.
 
 ![](https://idyll-lang.org/static/images/quill.svg)
@@ -55,7 +55,7 @@ Feugiat pretium nibh ipsum consequat nisl. Nulla porttitor massa id neque aliqua
 
 Quis eleifend quam adipiscing vitae. Malesuada fames ac turpis egestas maecenas pharetra convallis posuere. Tempus egestas sed sed risus pretium quam. Sit amet cursus sit amet dictum. Tristique risus nec feugiat in fermentum posuere urna nec. Eu augue ut lectus arcu.^[A short note that will get covered by a sticky figure.] Convallis tellus id interdum velit laoreet id donec. Dui nunc mattis enim ut tellus elementum sagittis. Est velit egestas dui id ornare arcu odio. Nulla pharetra diam sit amet nisl suscipit adipiscing. Ante metus dictum at tempor commodo ullamcorper a lacus vestibulum. Orci eu lobortis elementum nibh tellus molestie nunc non. Mattis pellentesque id nibh tortor id aliquet lectus proin. Eu feugiat pretium nibh ipsum. Mauris pharetra et ultrices neque.
 
-::: figure {layout=margin sticky-until-top="#the-sub-section"}
+::: figure {layout=margin sticky-until="#the-sub-section"}
 | A second sticky quill in the margin.
 
 ![](https://idyll-lang.org/static/images/quill.svg)
@@ -82,7 +82,7 @@ Vehicula ipsum a arcu cursus vitae congue mauris. Volutpat odio facilisis mauris
 ![](https://idyll-lang.org/static/images/quill.svg) ![](https://idyll-lang.org/static/images/quill.svg)
 :::
 
-::: figure {#stickyfig sticky-until-top="#the-sub-section + p + p"}
+::: figure {#stickyfig sticky-until="#the-sub-section + p + p"}
 | Five sticky quills in a column.
 
 ![](https://idyll-lang.org/static/images/quill.svg) ![](https://idyll-lang.org/static/images/quill.svg) ![](https://idyll-lang.org/static/images/quill.svg) ![](https://idyll-lang.org/static/images/quill.svg) ![](https://idyll-lang.org/static/images/quill.svg)
@@ -100,13 +100,13 @@ Vehicula ipsum a arcu cursus vitae congue mauris. Volutpat odio facilisis mauris
 
 ### A Sub-Sub-Section
 
-::: figure {layout=margin sticky-until-bottom="#a-sub-sub-section ~ p ~ p ~ p ~ p"}
+::: figure {layout=margin sticky-through="#a-sub-sub-section ~ p ~ p ~ p ~ p"}
 This will be sticky for four paragraphs $(One \leq x \leq Four)$
 :::
 
 **One** Ac tortor vitae purus faucibus ornare suspendisse sed. Egestas pretium aenean pharetra magna. Quisque id diam vel quam elementum pulvinar etiam non. Ac felis donec et odio pellentesque diam volutpat commodo sed. Sodales ut etiam sit amet nisl purus. Id aliquet lectus proin nibh. Tortor at auctor urna nunc id cursus. Odio ut sem nulla pharetra diam. Nisl tincidunt eget nullam non nisi est sit amet facilisis. Tellus integer feugiat scelerisque varius morbi enim nunc faucibus a. Adipiscing elit ut aliquam purus sit.
 
-::: figure {layout=margin sticky-until-bottom="#a-sub-sub-section ~ p ~ p ~ p"}
+::: figure {layout=margin sticky-through="#a-sub-sub-section ~ p ~ p ~ p"}
 This will be sticky for two paragraphs $(Two \leq x \leq Three)$ If stacking sticky figures with contained intervals works, this should slide smoothly under the previous sticky.
 :::
 
