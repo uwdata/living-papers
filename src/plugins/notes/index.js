@@ -1,9 +1,8 @@
 import {
-  createComponentNode, createProperties, createTextNode, hasClass, queryNodes
+  hasClass, queryNodes
 } from '../../ast/index.js';
 
 export default function (ast, { logger }) {
-  let numNotes = 0;
   queryNodes(ast, node => {
     return node.name === 'inlinenote' || hasClass(node, 'note')
   }).forEach(node => {
@@ -11,18 +10,11 @@ export default function (ast, { logger }) {
 
     if (node.name === 'inlinenote') {
       if (children.length > 1) {
-        logger.warn('Dropping extraneous content from note.');
+        logger.warn('Dropping extraneous content from inline note.');
       }
 
-      node.properties = createProperties({ class: 'inlinenote' });
-      node.children = [
-        createComponentNode('sup', createProperties({ class: 'inlinenote-number' }), [createTextNode(`[${++numNotes}]`)]),
-        createComponentNode(
-          'span',
-          createProperties({ class: 'note margin', "data-number": numNotes }),
-          children?.[0]?.children
-        )
-      ];
+      node.name = 'inline-note';
+      node.children = children?.[0].children;
     } else { // aside note
       node.name = 'aside';
     }

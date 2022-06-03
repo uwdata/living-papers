@@ -6,6 +6,7 @@
       {"name": "cite-ref", "import": "CiteRef", "file": "cite-ref.js"},
       {"name": "code-block", "import": "CodeBlock", "file": "code-block.js"},
       {"name": "cross-ref", "import": "CrossRef", "file": "cross-ref.js"},
+      {"name": "inline-note", "import": "InlineNote", "file": "inline-note.js"},
       {"name": "range-text", "import": "RangeText", "file": "range-text.js"},
       {"name": "scroll-manager", "import": "ScrollManager", "file": "scroll-manager.js"},
       {"name": "tex-equation", "import": "TexEquation", "file": "tex-equation.js"},
