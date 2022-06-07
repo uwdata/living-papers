@@ -56,6 +56,10 @@ describe('compile', () => {
     return compileTest('article/math.md');
   });
 
+  it('an article with tables', () => {
+    return compileTest('article/table.md');
+  });
+
   it('an article with observable javascript code', () => {
     return compileTest('article/observable.md');
   });
