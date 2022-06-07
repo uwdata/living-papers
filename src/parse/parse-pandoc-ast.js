@@ -377,7 +377,7 @@ export class PandocASTParser {
 
     // create component, inject name as a class
     return createComponentNode(
-      name,
+      'figure',
       parseProperties([id, [name, ...classes], props]),
       children.flat()
     );
