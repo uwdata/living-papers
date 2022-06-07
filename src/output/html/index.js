@@ -10,7 +10,7 @@ import { rollup } from './rollup.js';
 import defaultTemplate from './template.js';
 
 export default async function(ast, context, options) {
-  const { metadata, outputDir, tempDir } = context;
+  const { metadata, inputDir, outputDir, tempDir } = context;
   const {
     components,
     selfContained = false,
@@ -20,6 +20,7 @@ export default async function(ast, context, options) {
     template = defaultTemplate(),
     lang = 'en',
     dir = 'ltr',
+    styles,
     ...rollupOptions
   } = options;
 
@@ -55,7 +56,8 @@ export default async function(ast, context, options) {
     path.join(styleDir, 'span.css'),
     path.join(styleDir, 'common.css'),
     path.join(styleDir, 'layout.css'),
-    ...componentCSSPaths(activeComponents)
+    ...componentCSSPaths(activeComponents),
+    ...userCSSPaths(inputDir, styles)
   ];
   const css = await bundleCSS(stylePaths, rollupOptions.minify);
 
@@ -100,6 +102,12 @@ function componentCSSPaths(components) {
   const set = new Set;
   components.forEach(entry => { if (entry.css) set.add(entry.css); });
   return Array.from(set);
+}
+
+function userCSSPaths(inputDir, styles) {
+  return [styles]
+    .flat()
+    .map(file => path.join(inputDir, file));
 }
 
 async function bundleCSS(styles, minify = true) {
