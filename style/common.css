@@ -54,6 +54,19 @@ figure.table > figcaption[data-counter]::before {
   content: var(--table-prefix) attr(data-counter) ". ";
 }
 
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+thead tr {
+  border-bottom: 1px solid #ccc;
+}
+
+tbody tr {
+  border-bottom: 1px solid #eee;
+}
+
 .note {
   counter-increment: notes;
 }
