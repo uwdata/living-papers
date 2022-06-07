@@ -105,8 +105,7 @@ function componentCSSPaths(components) {
 }
 
 function userCSSPaths(inputDir, styles) {
-  return [styles]
-    .flat()
+  return (styles ? [styles].flat() : [])
     .map(file => path.join(inputDir, file));
 }
 
