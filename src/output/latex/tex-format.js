@@ -124,7 +124,7 @@ export class TexFormat {
       case 'equation':
         return this.equation(ast);
       case 'figure':
-        return hasProperty(ast, 'teaser') ? '' : this.figure(ast);
+        return hasClass(ast, 'teaser') ? '' : this.figure(ast);
       case 'caption':
         return this.vspace(ast) + this.command(ast, 'caption');
       case 'raw':

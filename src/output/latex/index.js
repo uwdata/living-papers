@@ -2,7 +2,7 @@ import mustache from 'mustache';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  getChildren, getPropertyValue, hasProperty,
+  getChildren, getPropertyValue, hasClass,
   setValueProperty, visitNodes
 } from '../../ast/index.js';
 import { copy, mkdirp, readFile, writeFile } from '../../util/fs.js';
@@ -162,7 +162,7 @@ function extractAs(node) {
   const { name } = node;
   if (name === 'abstract' || name === 'acknowledgments') {
     return name;
-  } else if (name === 'figure' && hasProperty(node, 'teaser')) {
+  } else if (name === 'figure' && hasClass(node, 'teaser')) {
     return 'teaser';
   }
 }
