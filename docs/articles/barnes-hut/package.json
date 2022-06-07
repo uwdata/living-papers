@@ -1,0 +1,9 @@
+{
+  "living-papers": {
+    "components": [
+      {"name": "barnes-hut", "file": "src/barnes-hut.js"},
+      {"name": "error-plot", "file": "src/error-plot.js", "css": "src/vega-plot.css"},
+      {"name": "time-plot", "file": "src/time-plot.js", "css": "src/vega-plot.css"}
+    ]
+  }
+}

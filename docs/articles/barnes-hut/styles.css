@@ -1,0 +1,17 @@
+/* Colors for Barnes-Hut theta values. */
+.t00 {
+  color: rgb(59, 15, 112);
+  text-decoration: underline 1px dashed rgb(59, 15, 112);
+}
+.t05 {
+  color: rgb(140, 41, 129);
+  text-decoration: underline 1px dashed rgb(140, 41, 129);
+}
+.t10 {
+  color: rgb(222, 73, 104);
+  text-decoration: underline 1px dashed rgb(222, 73, 104);
+}
+.t15 {
+  color: rgb(254, 159, 109);
+  text-decoration: underline 1px dashed rgb(254, 159, 109);
+}
