@@ -1,14 +1,14 @@
 import { network } from './data-network.js';
 
-const quadColor = '#d5aaaa';
-const pointColor = 'firebrick';
-
 // helper function to map from d3.mouse array to x/y object
 function toPoint(xy) {
   return { x: xy[0], y: xy[1] };
 }
 
 export default function(d3, dom, opt) {
+  const quadColor = '#d5aaaa';
+  const pointColor = 'firebrick';
+
   const graph = network();
   const { nodes, links } = graph;
 
@@ -16,11 +16,7 @@ export default function(d3, dom, opt) {
   const w = 514;
   const h = 514;
   const el = d3.select(dom)
-    .style('padding', '15px 35px 0px 35px')
-    .style('margin', '-15px 0 0 -35px')
-    .style('background-color', 'white')
-    .style('text-align', 'center')
-    .style('border-bottom', '1px solid #ccc');
+    .attr('class', 'quadtree');
   const svg = el.append('svg')
     .attr('width', opt.width)
     .attr('height', opt.height)
