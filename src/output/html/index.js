@@ -46,7 +46,7 @@ export default async function(ast, context, options) {
   const entry = entryScript({
     root: 'article',
     bind,
-    metadata,
+    context,
     components: activeComponents,
     runtime: !!script,
   });
@@ -118,10 +118,10 @@ async function bundleCSS(styles, minify = true) {
     : css;
 }
 
-function entryScript({ root, bind, metadata, components, runtime }) {
+function entryScript({ root, bind, context, components, runtime }) {
   const src = fileURLToPath(new URL('../..', import.meta.url));
   const script = [];
-  const refdata = metadata.references;
+  const refdata = context.citations?.references;
   const hasRefs = refdata?.length > 0;
 
   components.forEach(entry => {

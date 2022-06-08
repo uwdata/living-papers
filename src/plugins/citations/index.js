@@ -38,8 +38,10 @@ export default async function(ast, context) {
 
   // collect citation data to embed in article
   const data = await citationData(citations, scholarAPI(cache, fetch), logger);
-  metadata.references = data;
-  metadata.bibtex = citations.bibtex();
+  context.citations = {
+    references: data,
+    bibtex: citations.bibtex()
+  };
 
   // add bibliography to AST
   if (nodes.length) {
