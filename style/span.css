@@ -67,32 +67,32 @@
 }
 
 .tiny {
-  font-size: 0.5em;
+  font-size: var(--tiny-size);
 }
 
 .scriptsize {
-  font-size: 0.7em;
+  font-size: var(--script-size);
 }
 
 .smaller,
 .footnotesize {
-  font-size: 0.8em;
+  font-size: var(--smaller-size);
 }
 
 .small {
-  font-size: 0.9em;
+  font-size: var(--small-size);
 }
 
 .large {
-  font-size: 1.2em;
+  font-size: var(--large-size);
 }
 
 .larger {
-  font-size: 1.4em;
+  font-size: var(--larger-size);
 }
 
 .huge {
-  font-size: 1.8em;
+  font-size: var(--huge-size);
 }
 
 .hide {

@@ -9,6 +9,13 @@ article {
   --double-quote-end: "”";
   --single-quote-start: "‘";
   --single-quote-end: "’";
+  --tiny-size: 0.5em;
+  --script-size: 0.7em;
+  --smaller-size: 0.8em;
+  --small-size: 0.9em;
+  --large-size: 1.2em;
+  --larger-size: 1.4em;
+  --huge-size: 1.8em;
 }
 
 article > p {
@@ -56,11 +63,20 @@ figure.table > figcaption[data-counter]::before {
 
 table {
   border-collapse: collapse;
-  width: 100%;
+  margin: 0;
+  margin-bottom: 2px;
 }
 
 thead tr {
   border-bottom: 1px solid #ccc;
+}
+
+thead th,
+tbody td {
+  font-size: var(--small-size);
+  padding: 1px 0.33em;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
 }
 
 tbody tr {
