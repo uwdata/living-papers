@@ -511,12 +511,13 @@ export class PandocASTParser {
     const code = isBacktickQuoted(link);
     const props = {
       onclick: code ? link : undefined,
-      href: code ? '#' : link,
+      href: code ? undefined : link,
       title: title || undefined
     };
+    const classes = code ? [ 'action' ] : undefined;
     return createComponentNode(
       'link',
-      parseProperties(attrs, props),
+      parseProperties(attrs, props, classes),
       this.parseInline(content)
     );
   }

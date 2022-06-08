@@ -78,3 +78,8 @@ tbody tr {
 .note-content::before {
   content: counter(notes) ". ";
 }
+
+.action {
+  cursor: pointer;
+  text-decoration: underline dashed 1px #444;
+}
