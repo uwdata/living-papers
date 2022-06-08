@@ -59,6 +59,7 @@ figure > figcaption {
   font-size: 0.9em;
 }
 
+figure.teaser > figcaption[data-counter]::before,
 figure.figure > figcaption[data-counter]::before {
   content: var(--figure-prefix) attr(data-counter) ". ";
 }
