@@ -23,7 +23,7 @@
 }
 
 .highlight {
-  background-color: #ff0;
+  background-color: var(--highlight-color);
 }
 
 .strike {

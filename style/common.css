@@ -9,6 +9,7 @@ article {
   --double-quote-end: "”";
   --single-quote-start: "‘";
   --single-quote-end: "’";
+  --highlight-color: #ff0;
   --tiny-size: 0.5em;
   --script-size: 0.7em;
   --smaller-size: 0.8em;
