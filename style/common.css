@@ -36,6 +36,11 @@ q.single {
   quotes: var(--single-quote-start) var(--single-quote-end);
 }
 
+.action {
+  cursor: pointer;
+  text-decoration: underline dashed 1px #444;
+}
+
 header .author-org {
 	font-style: italic;
 }
@@ -96,7 +101,11 @@ tbody tr {
   content: counter(notes) ". ";
 }
 
-.action {
-  cursor: pointer;
-  text-decoration: underline dashed 1px #444;
+ol.references {
+  padding-inline-start: 2em;
+}
+
+ol.references li {
+  font-size: var(--small-size);
+  margin-bottom: 6px;
 }

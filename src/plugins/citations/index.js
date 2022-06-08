@@ -1,7 +1,7 @@
 import path from 'node:path';
 import {
-  createComponentNode, createTextNode, getPropertyValue,
-  setValueProperty, queryNodes, visitNodes, removeChild
+  createComponentNode, createTextNode, createProperties, getPropertyValue,
+  setValueProperty, queryNodes, visitNodes, removeChild,
 } from '../../ast/index.js';
 import { readFile } from '../../util/fs.js';
 import { lookup } from './lookup.js';
@@ -203,7 +203,10 @@ function updateCitationLists(ast) {
 
 function createBibComponent(refs) {
   const lines = refs.bibliography();
-  const list = createComponentNode('ol');
+  const list = createComponentNode(
+    'ol',
+    createProperties({ class: 'references' })
+  );
   list.children = lines.map(text => {
     return createComponentNode('li', null, [ createTextNode(text) ]);
   });

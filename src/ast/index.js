@@ -290,7 +290,7 @@ export function removeChild(node, child) {
 }
 
 /**
- * Remove a child node from a parent node.
+ * Replace a child node for a parent node with new content.
  * @param {object} node The parent AST node.
  * @param {object} child The child AST node to replace.
  * @param {...(object|object[])} insert The new child AST nodes to insert.
