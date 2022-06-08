@@ -145,15 +145,16 @@ figure.table > figcaption[data-counter]::before {
 }
 
 .cit, .cit-err {
+  display: inline;
   position: absolute;
-  transform: translate(-15px, 20px);
+  transform: translate(10px, -10px);
   width: 300px;
-  background: whitesmoke;
+  background: white;
   font-size: small;
   font-weight: 300;
   color: black;
   filter: drop-shadow(1px 1px 3px lightgray);
-  border-radius: 10px 10px 10px 10px;
+  border-radius: 6px 6px 6px 6px;
   border: .1px solid black;
 }
 
@@ -166,9 +167,9 @@ figure.table > figcaption[data-counter]::before {
 .cit-head {
   display: flex;
   flex-direction: column;
-  background: rgb(230, 230, 230);
+  background: whitesmoke;
   padding: 5px 10px 5px 10px;
-  border-radius : 10px 10px 0 0;
+  border-radius : 6px 6px 0 0;
 }
 
 .cit-head-title {
@@ -177,17 +178,34 @@ figure.table > figcaption[data-counter]::before {
   font-size: medium;
 }
 
-.cit-head-info {
+.cit-head-subtitle {
   padding-top: 5px;
+  min-height: 18px;
+  line-height: 1;
+}
+
+.arrow-left {
+  position: absolute;
+  left: -10px;
+  top: 10px;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent; 
+  border-right:10px solid black; 
+}
+
+.cit-head-info {
   min-height: 18px;
   display: flex;
   justify-content: space-between;
-  font-weight: bold;
+}
+
+.cit-info-item {
+  padding: 0;
 }
 
 .cit-body {
   padding: 5px 10px 5px 10px;
-  border-radius : 0 0 10px 10px;
+  border-radius : 0 0 6px 6px;
   border-top: .1px solid black;
   line-height: 1.3;
 }
