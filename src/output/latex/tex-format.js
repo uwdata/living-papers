@@ -134,9 +134,7 @@ export class TexFormat {
       case 'equation':
         return this.equation(ast);
       case 'figure':
-        return hasClass(ast, 'teaser') ? ''
-          : hasClass(ast, 'table') ? this.figure(ast, 'table', 'tbl')
-          : this.figure(ast);
+        return hasClass(ast, 'teaser') ? '' : this.figureEnv(ast);
       case 'caption':
         return this.vspace(ast) + this.command(ast, 'caption');
       case 'raw':
@@ -292,14 +290,23 @@ export class TexFormat {
       + this.env(env + (nonum ? '*' : ''), code);
   }
 
-  figure(ast, name = 'figure', prefix = 'fig') {
+  figureEnv(ast) {
+    return hasClass(ast, 'teaser') ? ''
+      : hasClass(ast, 'table') ? this.figure(ast, 'table', 'tbl')
+      : this.figure(ast, 'figure', 'fig');
+  }
+
+  figureEnv(ast) {
     const id = getPropertyValue(ast, 'id');
     return this.options.places.has(id)
       ? '' // figure was re-positioned
-      : this._figure(ast, name, prefix);
+      : this._figureEnv(ast);
   }
 
-  _figure(ast, name, prefix) {
+  _figureEnv(ast) {
+    const isTable = hasClass(ast, 'table');
+    const name = isTable ? 'table' : 'figure';
+    const prefix = isTable ? 'tbl' : 'fig';
     const page = hasClass(ast, 'page');
     const env = name + (page ? '*' : '');
     return this.env(
@@ -344,7 +351,7 @@ export class TexFormat {
       return '';
     } else if (hasProperty(ast, 'place')) {
       const node = this.options.places.get(getPropertyValue(ast, 'place'));
-      return node ? this._figure(node) : '';
+      return node ? this._figureEnv(node) : '';
     } else {
       return ast.children[0].value;
     }
