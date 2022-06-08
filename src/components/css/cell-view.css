@@ -1,0 +1,7 @@
+.error-block {
+  display: block;
+  border: solid 1px red;
+  padding: 1em;
+  max-width: 800px;
+  font-size: 0.9em;
+}

@@ -1,0 +1,104 @@
+.cite-list::before {
+  content: var(--cite-list-start);
+}
+
+.cite-list::after {
+  content: var(--cite-list-end);
+}
+
+/* .cite-ref {
+  text-decoration: underline dotted #aaa;
+} */
+
+.citation, .citation-err {
+  font-weight: bold;
+}
+
+.citation:not(:hover) *, .citation-err:not(:hover) * {
+  display: none;
+}
+
+.citation-err:hover {
+  color: maroon;
+}
+
+.citation:hover {
+  color: steelblue;
+}
+
+.cit, .cit-err {
+  display: inline;
+  position: absolute;
+  transform: translate(10px, -10px);
+  width: 300px;
+  background: white;
+  font-size: small;
+  font-weight: 300;
+  color: black;
+  filter: drop-shadow(1px 1px 3px lightgray);
+  border-radius: 6px 6px 6px 6px;
+  border: .1px solid black;
+}
+
+.cit-err {
+  font-weight: bold;
+  text-align: center;
+  width: 100px;
+}
+
+.cit-head {
+  display: flex;
+  flex-direction: column;
+  background: whitesmoke;
+  padding: 5px 10px 5px 10px;
+  border-radius : 6px 6px 0 0;
+}
+
+.cit-head-title {
+  min-height: 24px;
+  line-height: 1;
+  font-size: medium;
+}
+
+.cit-head-subtitle {
+  padding-top: 5px;
+  min-height: 18px;
+  line-height: 1;
+}
+
+.arrow-left {
+  position: absolute;
+  left: -10px;
+  top: 10px;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent; 
+  border-right:10px solid black; 
+}
+
+.cit-head-info {
+  min-height: 18px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cit-info-item {
+  padding: 0;
+}
+
+.cit-body {
+  padding: 5px 10px 5px 10px;
+  border-radius : 0 0 6px 6px;
+  border-top: .1px solid black;
+  line-height: 1.3;
+}
+
+.cit-body-auth {
+  min-height: 18px;
+  padding-bottom: 5px;
+}
+
+.cit-body-abst {
+  min-height: 108px;
+  padding-top: 5px;
+  border-top: .1px solid black;
+}

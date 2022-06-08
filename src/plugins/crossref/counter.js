@@ -1,6 +1,5 @@
 import {
-  getChildren, getNodeName, getPropertyValue,
-  setValueProperty, visitNodes
+  getChildren, getPropertyValue, setValueProperty, visitNodes
 } from '../../ast/index.js';
 
 const ID = 'id';
@@ -8,9 +7,10 @@ const COUNTER = 'data-counter';
 const CAPTION = 'caption';
 const NONUMBER = 'nonumber';
 
-export default function(counts, lookup) {
+export default function(toKey, lookup) {
   return function(ast) {
     const sections = nestedCounter();
+    const counts = new Map;
 
     function set(node, value) {
       const id = getPropertyValue(node, ID);
@@ -24,14 +24,14 @@ export default function(counts, lookup) {
     visitNodes(ast, node => {
       if (hasNoNumber(node)) return;
 
-      const name = getNodeName(node);
-      if (counts.has(name)) {
-        const value = counts.get(name) + 1;
-        counts.set(name, set(node, value));
+      const key = toKey(node);
+      if (key) {
+        const value = (counts.get(key) || 0) + 1;
+        counts.set(key, set(node, value));
 
         // check immediate children, update caption elements
         for (const child of getChildren(node)) {
-          if (getNodeName(child) === CAPTION) {
+          if (child.name === CAPTION) {
             set(child, value);
           }
         }
@@ -55,11 +55,11 @@ function bool(value) {
 }
 
 function isHeader(node) {
-  return /^h\d$/.test(getNodeName(node));
+  return /^h\d$/.test(node.name);
 }
 
 function headerLevel(node) {
-  return +getNodeName(node).slice(1);
+  return +node.name.slice(1);
 }
 
 function nestedCounter() {

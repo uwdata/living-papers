@@ -10,7 +10,7 @@ import { rollup } from './rollup.js';
 import defaultTemplate from './template.js';
 
 export default async function(ast, context, options) {
-  const { metadata, outputDir, tempDir } = context;
+  const { metadata, inputDir, outputDir, tempDir } = context;
   const {
     components,
     selfContained = false,
@@ -20,6 +20,7 @@ export default async function(ast, context, options) {
     template = defaultTemplate(),
     lang = 'en',
     dir = 'ltr',
+    styles,
     ...rollupOptions
   } = options;
 
@@ -41,18 +42,22 @@ export default async function(ast, context, options) {
   // generate page content
   const { script } = astToScript(ast);
   const { html: content, tags, ...bind } = astToHTML(ast);
+  const activeComponents = components.filter(c => tags.has(c.name));
   const entry = entryScript({
     root: 'article',
     bind,
-    metadata,
-    components: components.filter(c => tags.has(c.name)),
+    context,
+    components: activeComponents,
     runtime: !!script,
   });
 
   // bundle style sheets
   const stylePaths = [
+    path.join(styleDir, 'span.css'),
+    path.join(styleDir, 'common.css'),
     path.join(styleDir, 'layout.css'),
-    path.join(styleDir, 'styles.css')
+    ...componentCSSPaths(activeComponents),
+    ...userCSSPaths(inputDir, styles)
   ];
   const css = await bundleCSS(stylePaths, rollupOptions.minify);
 
@@ -93,6 +98,17 @@ export default async function(ast, context, options) {
     : html;
 }
 
+function componentCSSPaths(components) {
+  const set = new Set;
+  components.forEach(entry => { if (entry.css) set.add(entry.css); });
+  return Array.from(set);
+}
+
+function userCSSPaths(inputDir, styles) {
+  return (styles ? [styles].flat() : [])
+    .map(file => path.join(inputDir, file));
+}
+
 async function bundleCSS(styles, minify = true) {
   const css = (
     await Promise.all(styles.map(f => readFile(f)))
@@ -102,10 +118,10 @@ async function bundleCSS(styles, minify = true) {
     : css;
 }
 
-function entryScript({ root, bind, metadata, components, runtime }) {
+function entryScript({ root, bind, context, components, runtime }) {
   const src = fileURLToPath(new URL('../..', import.meta.url));
   const script = [];
-  const refdata = metadata.references;
+  const refdata = context.citations?.references;
   const hasRefs = refdata?.length > 0;
 
   components.forEach(entry => {

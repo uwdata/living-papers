@@ -2,7 +2,7 @@ import {
   createComponentNode, createProperties, createTextNode, replaceChild, visitNodes
 } from '../../ast/index.js';
 
-// TODO pass in from context
+// TODO pass in from context?
 const aliases = new Map([
   ['abstract', 'Abstract'],
   ['acknowledgments', 'Acknowledgments'],
