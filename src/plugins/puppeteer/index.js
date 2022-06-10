@@ -11,13 +11,14 @@ import path from 'path';
 import { startServer, stopServer } from './file-proxy-server.js';
 
 const ALLOWED_OUTPUTS = ['pdf', 'png', 'jpg'];
+const PROXY_SERVER_PORT = '3002';
 
 let browser;
 
 const getBrowser = async () => {
   if (!browser) {
     // flags needed for pdf generation
-    browser = await puppeteer.launch({args: ['--allow-file-access-from-files', '--enable-local-file-accesses'], headless: true });
+    browser = await puppeteer.launch({ headless: true });
   }
   return browser;
 }
@@ -25,11 +26,6 @@ const getBrowser = async () => {
 const shutDownBrowser = async () => {
   await browser.close();
   browser = null;
-}
-
-const base64Encode = async (file) => {
-  var bitmap = await fs.readFile(file);
-  return Buffer.from(bitmap).toString('base64');
 }
 
 const htmlToPdf = async ({ html, outputPath, width, height }) => {
@@ -64,7 +60,7 @@ export default function(options = {}) {
       await fs.mkdir(generatedOutputDir);
     }
 
-    await startServer(inputDir);
+    await startServer(inputDir, PROXY_SERVER_PORT);
     
 
     const {
@@ -84,7 +80,7 @@ export default function(options = {}) {
         setProperty(node, 'original_src', getProperty(node, 'src'))
         setProperty(node, 'src', {
           type: 'value',
-          value: `http://localhost:3002/${getProperty(node, 'src').value}`
+          value: `http://localhost:${PROXY_SERVER_PORT}/${getProperty(node, 'src').value}`
         })
       }
     });

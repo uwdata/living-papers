@@ -4,9 +4,8 @@ import url from 'url';
 import path from 'path';
 import fs from 'fs';
 
-const port = '3002';
 let server;
-export const startServer = async (basePath) => {
+export const startServer = async (basePath, port) => {
   if (server) {
     await stopServer();
   }
@@ -17,6 +16,7 @@ export const startServer = async (basePath) => {
     // parse URL
     const parsedUrl = url.parse(req.url);
     // extract URL path
+
     let pathname = `${basePath}${parsedUrl.pathname}`;
     // based on the URL path, extract the file extension. e.g. .js, .doc, ...
     const ext = path.parse(pathname).ext;
