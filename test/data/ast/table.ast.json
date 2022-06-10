@@ -1,76 +1,368 @@
 {
-  "metadata": {},
+  "metadata": {
+    "title": "Table Test"
+  },
   "article": {
     "type": "component",
     "name": "article",
     "children": [
       {
         "type": "component",
-        "name": "table",
+        "name": "figure",
+        "properties": {
+          "class": {
+            "type": "value",
+            "value": "table"
+          }
+        },
         "children": [
           {
             "type": "component",
-            "name": "thead",
+            "name": "table",
             "children": [
               {
                 "type": "component",
-                "name": "tr",
+                "name": "thead",
                 "children": [
                   {
                     "type": "component",
-                    "name": "th",
-                    "properties": {
-                      "class": {
-                        "type": "value",
-                        "value": "left"
-                      }
-                    },
+                    "name": "tr",
                     "children": [
                       {
-                        "type": "textnode",
-                        "value": "ColA"
+                        "type": "component",
+                        "name": "th",
+                        "properties": {
+                          "class": {
+                            "type": "value",
+                            "value": "left"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "ColA"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "component",
+                        "name": "th",
+                        "properties": {
+                          "class": {
+                            "type": "value",
+                            "value": "right"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "ColB"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "component",
+                        "name": "th",
+                        "properties": {
+                          "class": {
+                            "type": "value",
+                            "value": "center"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "ColC"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "component",
+                        "name": "th",
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "ColD"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "component",
+                "name": "tbody",
+                "children": [
+                  {
+                    "type": "component",
+                    "name": "tr",
+                    "children": [
+                      {
+                        "type": "component",
+                        "name": "td",
+                        "properties": {
+                          "class": {
+                            "type": "value",
+                            "value": "left"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "aaa"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "component",
+                        "name": "td",
+                        "properties": {
+                          "class": {
+                            "type": "value",
+                            "value": "right"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "1.0"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "component",
+                        "name": "td",
+                        "properties": {
+                          "class": {
+                            "type": "value",
+                            "value": "center"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "foo"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "component",
+                        "name": "td",
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "??"
+                          }
+                        ]
                       }
                     ]
                   },
                   {
                     "type": "component",
-                    "name": "th",
-                    "properties": {
-                      "class": {
-                        "type": "value",
-                        "value": "right"
-                      }
-                    },
+                    "name": "tr",
                     "children": [
                       {
-                        "type": "textnode",
-                        "value": "ColB"
+                        "type": "component",
+                        "name": "td",
+                        "properties": {
+                          "class": {
+                            "type": "value",
+                            "value": "left"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "bbb"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "component",
+                        "name": "td",
+                        "properties": {
+                          "class": {
+                            "type": "value",
+                            "value": "right"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "2.3"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "component",
+                        "name": "td",
+                        "properties": {
+                          "class": {
+                            "type": "value",
+                            "value": "center"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "bar"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "component",
+                        "name": "td",
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "!!"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "figure",
+        "properties": {
+          "class": {
+            "type": "value",
+            "value": "table"
+          }
+        },
+        "children": [
+          {
+            "type": "component",
+            "name": "table",
+            "children": [
+              {
+                "type": "component",
+                "name": "thead",
+                "children": [
+                  {
+                    "type": "component",
+                    "name": "tr",
+                    "children": [
+                      {
+                        "type": "component",
+                        "name": "th",
+                        "properties": {
+                          "class": {
+                            "type": "value",
+                            "value": "right"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "x"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "component",
+                        "name": "th",
+                        "properties": {
+                          "class": {
+                            "type": "value",
+                            "value": "right"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "y"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "component",
+                "name": "tbody",
+                "children": [
+                  {
+                    "type": "component",
+                    "name": "tr",
+                    "children": [
+                      {
+                        "type": "component",
+                        "name": "td",
+                        "properties": {
+                          "class": {
+                            "type": "value",
+                            "value": "right"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "1"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "component",
+                        "name": "td",
+                        "properties": {
+                          "class": {
+                            "type": "value",
+                            "value": "right"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "1.4"
+                          }
+                        ]
                       }
                     ]
                   },
                   {
                     "type": "component",
-                    "name": "th",
-                    "properties": {
-                      "class": {
-                        "type": "value",
-                        "value": "center"
-                      }
-                    },
+                    "name": "tr",
                     "children": [
                       {
-                        "type": "textnode",
-                        "value": "ColC"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "component",
-                    "name": "th",
-                    "children": [
+                        "type": "component",
+                        "name": "td",
+                        "properties": {
+                          "class": {
+                            "type": "value",
+                            "value": "right"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "2"
+                          }
+                        ]
+                      },
                       {
-                        "type": "textnode",
-                        "value": "ColD"
+                        "type": "component",
+                        "name": "td",
+                        "properties": {
+                          "class": {
+                            "type": "value",
+                            "value": "right"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "textnode",
+                            "value": "3.7"
+                          }
+                        ]
                       }
                     ]
                   }
@@ -80,135 +372,11 @@
           },
           {
             "type": "component",
-            "name": "tbody",
+            "name": "caption",
             "children": [
               {
-                "type": "component",
-                "name": "tr",
-                "children": [
-                  {
-                    "type": "component",
-                    "name": "td",
-                    "properties": {
-                      "class": {
-                        "type": "value",
-                        "value": "left"
-                      }
-                    },
-                    "children": [
-                      {
-                        "type": "textnode",
-                        "value": "aaa"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "component",
-                    "name": "td",
-                    "properties": {
-                      "class": {
-                        "type": "value",
-                        "value": "right"
-                      }
-                    },
-                    "children": [
-                      {
-                        "type": "textnode",
-                        "value": "1.0"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "component",
-                    "name": "td",
-                    "properties": {
-                      "class": {
-                        "type": "value",
-                        "value": "center"
-                      }
-                    },
-                    "children": [
-                      {
-                        "type": "textnode",
-                        "value": "foo"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "component",
-                    "name": "td",
-                    "children": [
-                      {
-                        "type": "textnode",
-                        "value": "??"
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "type": "component",
-                "name": "tr",
-                "children": [
-                  {
-                    "type": "component",
-                    "name": "td",
-                    "properties": {
-                      "class": {
-                        "type": "value",
-                        "value": "left"
-                      }
-                    },
-                    "children": [
-                      {
-                        "type": "textnode",
-                        "value": "bbb"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "component",
-                    "name": "td",
-                    "properties": {
-                      "class": {
-                        "type": "value",
-                        "value": "right"
-                      }
-                    },
-                    "children": [
-                      {
-                        "type": "textnode",
-                        "value": "2.3"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "component",
-                    "name": "td",
-                    "properties": {
-                      "class": {
-                        "type": "value",
-                        "value": "center"
-                      }
-                    },
-                    "children": [
-                      {
-                        "type": "textnode",
-                        "value": "bar"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "component",
-                    "name": "td",
-                    "children": [
-                      {
-                        "type": "textnode",
-                        "value": "!!"
-                      }
-                    ]
-                  }
-                ]
+                "type": "textnode",
+                "value": "A table caption."
               }
             ]
           }

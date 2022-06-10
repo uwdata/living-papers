@@ -78,10 +78,20 @@ export class TexFormat {
       case 'blockquote':
         return this.env('quote', this.fragment(ast));
       case 'lineblock': // all children have type 'line'
-      case 'table':
       case 'code-block':
         // TODO implement
         throw new Error(`Not yet implemented: ${ast.name}`);
+      case 'table':
+        return this.table(ast);
+      case 'thead':
+        return this.tableHead(ast);
+      case 'tbody':
+        return this.tableBody(ast);
+      case 'tr':
+        return this.tableRow(ast);
+      case 'th':
+      case 'td':
+        return this.tableCell(ast);
       case 'ul':
         return this.list(ast, 'itemize');
       case 'ol':
@@ -124,7 +134,7 @@ export class TexFormat {
       case 'equation':
         return this.equation(ast);
       case 'figure':
-        return hasProperty(ast, 'teaser') ? '' : this.figure(ast);
+        return hasClass(ast, 'teaser') ? '' : this.figureEnv(ast);
       case 'caption':
         return this.vspace(ast) + this.command(ast, 'caption');
       case 'raw':
@@ -140,10 +150,10 @@ export class TexFormat {
     }
   }
 
-  fragment(ast) {
+  fragment(ast, sep = '') {
     return typeof ast === 'string'
       ? this.string(ast)
-      : getChildren(ast).map(n => this.tex(n)).join('');
+      : getChildren(ast).map(n => this.tex(n)).join(sep);
   }
 
   header(ast, level) {
@@ -178,8 +188,8 @@ export class TexFormat {
     );
   }
 
-  env(env, content, params) {
-    const arg = params ? `[${params}]` : '';
+  env(env, content, params, args) {
+    const arg = (params ? `[${params}]` : '') + (args ? `{${args}}` : '');
     return `\\begin{${env}}${arg}\n${content}\n\\end{${env}}\n\n`;
   }
 
@@ -280,24 +290,59 @@ export class TexFormat {
       + this.env(env + (nonum ? '*' : ''), code);
   }
 
-  figure(ast) {
+  figureEnv(ast) {
+    return hasClass(ast, 'teaser') ? ''
+      : hasClass(ast, 'table') ? this.figure(ast, 'table', 'tbl')
+      : this.figure(ast, 'figure', 'fig');
+  }
+
+  figureEnv(ast) {
     const id = getPropertyValue(ast, 'id');
     return this.options.places.has(id)
       ? '' // figure was re-positioned
-      : this._figure(ast);
+      : this._figureEnv(ast);
   }
 
-  _figure(ast) {
+  _figureEnv(ast) {
+    const isTable = hasClass(ast, 'table');
+    const name = isTable ? 'table' : 'figure';
+    const prefix = isTable ? 'tbl' : 'fig';
     const page = hasClass(ast, 'page');
-    const env = 'figure' + (page ? '*' : '');
+    const env = name + (page ? '*' : '');
     return this.env(
       env,
       '\\centering\n'
         + this.fragment(ast)
-        + this.label(ast, 'fig')
+        + this.label(ast, prefix)
         + this.vspace(ast),
       getPropertyValue(ast, 'position') || (page ? 't' : null)
     );
+  }
+
+  table(ast) {
+    return '\n' + this.env(
+      'tabular',
+      this.fragment(ast),
+      null,
+      tableAlignment(ast)
+    )
+  }
+
+  tableHead(ast) {
+    const row = ast.children[0];
+    return this.tableRow(row) + ' \\\\\n\\hline\n';
+  }
+
+  tableBody(ast) {
+    return this.fragment(ast, ' \\\\\n');
+  }
+
+  tableRow(ast) {
+    return this.fragment(ast, ' & ');
+  }
+
+  tableCell(ast) {
+    return this.fragment(ast);
   }
 
   raw(ast) {
@@ -306,7 +351,7 @@ export class TexFormat {
       return '';
     } else if (hasProperty(ast, 'place')) {
       const node = this.options.places.get(getPropertyValue(ast, 'place'));
-      return node ? this._figure(node) : '';
+      return node ? this._figureEnv(node) : '';
     } else {
       return ast.children[0].value;
     }
@@ -316,4 +361,14 @@ export class TexFormat {
     const vsp = this.options.vspace.get(ast.name);
     return vsp ? `\\vspace{${vsp}}\n` : '';
   }
+}
+
+function tableAlignment(ast) {
+  const cells = ast.children?.[0]?.children?.[0]?.children || [];
+  return cells.map(cell => {
+    const classes = new Set(getClasses(cell));
+    return classes.has('right') ? 'r'
+      : classes.has('center') ? 'c'
+      : 'l';
+  }).join('');
 }
