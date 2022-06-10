@@ -8,6 +8,7 @@
 
 .citation, .citation-err {
   font-weight: bold;
+  color: steelblue;
 }
 
 .citation-err:hover {
@@ -15,7 +16,7 @@
 }
 
 .citation:hover {
-  color: steelblue;
+  color: lightblue;
 }
 
 .cit, .cit-err {
