@@ -15,11 +15,13 @@ export const startServer = async (basePath, port) => {
 
     // parse URL
     const parsedUrl = url.parse(req.url);
-    // extract URL path
 
+    // extract URL path
     let pathname = `${basePath}${parsedUrl.pathname}`;
+
     // based on the URL path, extract the file extension. e.g. .js, .doc, ...
     const ext = path.parse(pathname).ext;
+
     // maps file extension to MIME typere
     const map = {
       '.ico': 'image/x-icon',

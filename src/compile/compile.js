@@ -61,13 +61,8 @@ export async function compile(inputFile, options = {}) {
     section
   ]);
 
-  // For some reason running outputHTML affects the 
-  // AST. So you can't run it twice...
-  //          await outputHTML(astHTML, ...)
-  //          await outputHTML(astHTML, ...)
-  // The puppeteer library needs to generate its own
-  // version of the HTML, so we just deep clone the ast
-  // here to make it work. 
+  // Running outputHTML affects the AST, so we
+  //  deep clone the ast here to make it work. 
   let astLatex = cloneNode(astHTML);
 
   if (output.html) {
