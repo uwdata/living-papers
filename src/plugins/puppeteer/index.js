@@ -1,5 +1,5 @@
 import {
-  setValueProperty, visitNodes, getProperty, setProperties, removeProperty, clearProperties
+  setValueProperty, visitNodes, getProperty, setProperties, removeProperty, clearProperties, hasProperty, setProperty
 } from '../../ast/index.js';
 
 import outputHTML from '../../output/html/index.js';
@@ -7,13 +7,14 @@ import outputHTML from '../../output/html/index.js';
 import puppeteer from 'puppeteer';
 import fs from 'fs/promises';
 import path from 'path';
+import { startServer, stopServer } from './file-proxy-server.js';
 
 let browser;
 
 const getBrowser = async () => {
   if (!browser) {
     // flags needed for pdf generation
-    browser = await puppeteer.launch({args: ['--allow-file-access-from-files', '--enable-local-file-accesses']});
+    browser = await puppeteer.launch({args: ['--allow-file-access-from-files', '--enable-local-file-accesses'], headless: true });
   }
   return browser;
 }
@@ -35,9 +36,9 @@ export default function(options = {}) {
 
   return async (ast, context) => {
 
-    console.log(context);
-    let { outputPath, outputDir } = context;
-    outputPath = outputDir;
+    let { outputDir, inputDir } = context;
+
+    await startServer(inputDir);
 
     const {
       plan = [],
@@ -52,8 +53,16 @@ export default function(options = {}) {
     let id = 0;
     visitNodes(ast, node => {
       setValueProperty(node, 'data-ast-id', id++);
+      if (hasProperty(node, 'src')) {
+        setProperty(node, 'original_src', getProperty(node, 'src'))
+        setProperty(node, 'src', {
+          type: 'value',
+          value: `http://localhost:3002/${getProperty(node, 'src').value}`
+        })
+      }
     });
   
+    console.log(JSON.stringify(ast, null, 2))
     // Create self contained HTML
     const html = await outputHTML(ast, context, {
       ...htmlOptions,
@@ -88,7 +97,7 @@ export default function(options = {}) {
       const outputFileExtension = output === 'pdf' ? 'png' : output;
 
       // Identify all the targets based on the input type
-      const targets = await page.$$(`[data-ast-id] ${input}, ${input}[data-ast-id]`);
+      const targets = await page.$$(`[data-ast-id] ${input}, ${input}[data-ast-id], [data-ast-id] img[src$=".${input}"], img[src$=".${input}"][data-ast-id]`);
 
       // Create a screenshot for each matching element and store the 
       // corresponding AST id. 
@@ -106,8 +115,8 @@ export default function(options = {}) {
         }
   
         const astId = await getAstId(astNode);
-        console.log(outputPath);
-        const outputFilePath = path.join(outputPath, `lpub-static-transform-${astId}.${outputFileExtension}`);
+        console.log(outputDir);
+        const outputFilePath = path.join(outputDir, `lpub-static-transform-${astId}.${outputFileExtension}`);
         
         await element.screenshot({ path: outputFilePath });
         replaceNodes.add(+astId);
@@ -125,8 +134,14 @@ export default function(options = {}) {
       visitNodes(ast, node => {
         const nodeId = getProperty(node, 'data-ast-id').value;
         
+        // Cleanup src mangling
+        if (hasProperty(node, 'original_src')) {
+          setProperty(node, 'src', getProperty(node, 'original_src'));
+        }
+
+        // Replace the nodes where relevant
         if (replaceNodes.has(nodeId)) {
-          const outputFilePath = path.join(outputPath, `lpub-static-transform-${nodeId}.${outputFileExtension}`);
+          const outputFilePath = path.join(outputDir, `lpub-static-transform-${nodeId}.${outputFileExtension}`);
           node.name = 'img';
           node.children = undefined;
           clearProperties(node);
@@ -141,11 +156,13 @@ export default function(options = {}) {
     }
 
     await page.close();
+    await stopServer();
 
     visitNodes(ast, node => {
       removeProperty(node, 'data-ast-id');
     });
-  
+    
+
     return ast;
   }
 }
