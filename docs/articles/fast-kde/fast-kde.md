@@ -23,6 +23,9 @@ output:
   latex:
     template: ieee-vgtc-conference
     vspace: { equation: -15pt, caption: -10pt, figure: -15pt, teaser: -15pt }
+    puppeteer:
+      - input: img[src$=\".svg\"]
+        output: pdf
 ---
 
 ::: teaser { #kde_impulse }

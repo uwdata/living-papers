@@ -75,10 +75,7 @@ export async function compile(inputFile, options = {}) {
   }
 
   if (output.latex) {
-    const plan = [{
-      input: 'svg',
-      output: 'pdf'
-    }];
+    const plan = output.latex.puppeteer;
 
     astLatex = await transformAST(astLatex, context, [
       puppeteer({plan, htmlOptions: output.html})

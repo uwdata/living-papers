@@ -108,7 +108,6 @@ export default function(options = {}) {
       }
     });
 
-    
     // Make sure that the runtime has initialized
     await page.waitForTimeout(2000);
     // await page.evaluate(async () => { 
@@ -118,15 +117,16 @@ export default function(options = {}) {
     // Execute the plan:
     for (const action of plan) {
       const replaceNodes = new Set();
-      const { input, output } = action;
+      let { input, output } = action;
+      input = input.replace(/\\"/g, "\"");
+      output = output.replace(/\\"/g, "\"");
   
-      
       if (!ALLOWED_OUTPUTS.includes(output)) {
         throw new Error('Output must be one of:', JSON.stringify(ALLOWED_OUTPUTS));
       }
 
       // Identify all the targets based on the input type
-      const targets = await page.$$(`[data-ast-id] ${input}, ${input}[data-ast-id], [data-ast-id] img[src$=".${input}"], img[src$=".${input}"][data-ast-id]`);
+      const targets = await page.$$(`[data-ast-id] ${input}, ${input}[data-ast-id]`);
 
       // Create a screenshot for each matching element and store the 
       // corresponding AST id. 
@@ -193,7 +193,6 @@ export default function(options = {}) {
     visitNodes(ast, node => {
       removeProperty(node, 'data-ast-id');
     });
-    
 
     return ast;
   }
