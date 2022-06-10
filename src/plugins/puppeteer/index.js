@@ -6,8 +6,11 @@ import outputHTML from '../../output/html/index.js';
 
 import puppeteer from 'puppeteer';
 import fs from 'fs/promises';
+import { existsSync } from 'fs';
 import path from 'path';
 import { startServer, stopServer } from './file-proxy-server.js';
+
+const ALLOWED_OUTPUTS = ['pdf', 'png', 'jpg'];
 
 let browser;
 
@@ -24,12 +27,22 @@ const base64Encode = async (file) => {
   return Buffer.from(bitmap).toString('base64');
 }
 
-const pngToPdf = async ({ pngPath, width, height }) => {
+const htmlToPdf = async ({ html, outputPath, width, height }) => {
   const browser = await getBrowser();
   const page = await browser.newPage();
-  const image = 'data:image/png;base64,' + base64Encode(png);
-  await page.goto(image, {waitUntil: 'networkidle0'});
-  await page.pdf({ path: 'output.pdf', width, height });
+  await page.setContent(`
+    <style>
+      @media print {
+        *, img, svg {
+          break-inside: avoid;
+          margin: 0;
+          padding: 0;
+        }
+      }
+    </style>
+    ${html}`
+  );
+  await page.pdf({ path: outputPath, width, height });
 }
 
 export default function(options = {}) {
@@ -38,7 +51,14 @@ export default function(options = {}) {
 
     let { outputDir, inputDir } = context;
 
+
+    const generatedOutputDir = path.join(outputDir, 'generated-figures');
+    if (!existsSync(generatedOutputDir)) {
+      await fs.mkdir(generatedOutputDir);
+    }
+
     await startServer(inputDir);
+    
 
     const {
       plan = [],
@@ -94,7 +114,10 @@ export default function(options = {}) {
       const replaceNodes = new Set();
       const { input, output } = action;
   
-      const outputFileExtension = output === 'pdf' ? 'png' : output;
+      
+      if (!ALLOWED_OUTPUTS.includes(output)) {
+        throw new Error('Output must be one of:', JSON.stringify(ALLOWED_OUTPUTS));
+      }
 
       // Identify all the targets based on the input type
       const targets = await page.$$(`[data-ast-id] ${input}, ${input}[data-ast-id], [data-ast-id] img[src$=".${input}"], img[src$=".${input}"][data-ast-id]`);
@@ -115,20 +138,22 @@ export default function(options = {}) {
         }
   
         const astId = await getAstId(astNode);
-        console.log(outputDir);
-        const outputFilePath = path.join(outputDir, `lpub-static-transform-${astId}.${outputFileExtension}`);
+        const outputFilePath = path.join(generatedOutputDir, `lpub-static-transform-${astId}.${output}`);
         
-        await element.screenshot({ path: outputFilePath });
-        replaceNodes.add(+astId);
-
-        if (output === 'pdf') {
-          const { width, height } = element.boundingBox();
-          await pngToPdf({
-            pngPath: outputFilePath, 
+        if (output !== 'pdf') {
+          await element.screenshot({ path: outputFilePath });
+        } else {
+          const { width, height } = await element.boundingBox();
+          const innerHtml = await page.evaluate(el => el.outerHTML, element); 
+          
+          await htmlToPdf({
+            html: innerHtml,
+            outputPath: outputFilePath, 
             width, 
             height
           });
         }
+        replaceNodes.add(+astId);
       }
 
       visitNodes(ast, node => {
@@ -141,7 +166,7 @@ export default function(options = {}) {
 
         // Replace the nodes where relevant
         if (replaceNodes.has(nodeId)) {
-          const outputFilePath = path.join(outputDir, `lpub-static-transform-${nodeId}.${outputFileExtension}`);
+          const outputFilePath = path.join(generatedOutputDir, `lpub-static-transform-${nodeId}.${output}`);
           node.name = 'img';
           node.children = undefined;
           clearProperties(node);

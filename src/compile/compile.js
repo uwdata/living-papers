@@ -77,7 +77,7 @@ export async function compile(inputFile, options = {}) {
   if (output.latex) {
     const plan = [{
       input: 'svg',
-      output: 'png'
+      output: 'pdf'
     }];
 
     astLatex = await transformAST(astLatex, context, [
