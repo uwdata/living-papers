@@ -6,6 +6,7 @@ import outputHTML from '../../output/html/index.js';
 
 import puppeteer from 'puppeteer';
 import fs from 'fs/promises';
+import path from 'path';
 
 let browser;
 
@@ -22,7 +23,7 @@ const base64Encode = async (file) => {
   return Buffer.from(bitmap).toString('base64');
 }
 
-const pngToPdf = ({ pngPath, width, height }) => {
+const pngToPdf = async ({ pngPath, width, height }) => {
   const browser = await getBrowser();
   const page = await browser.newPage();
   const image = 'data:image/png;base64,' + base64Encode(png);
@@ -34,7 +35,9 @@ export default function(options = {}) {
 
   return async (ast, context) => {
 
-    const { outputPath } = context;
+    console.log(context);
+    let { outputPath, outputDir } = context;
+    outputPath = outputDir;
 
     const {
       plan = [],
@@ -80,10 +83,9 @@ export default function(options = {}) {
     // Execute the plan:
     for (const action of plan) {
       const replaceNodes = new Set();
+      const { input, output } = action;
   
       const outputFileExtension = output === 'pdf' ? 'png' : output;
-      const outputFilePath = path.join(outputPath, `lpub-static-transform-${astId}.${outputFileExtension}`);
-      const { input, output } = action;
 
       // Identify all the targets based on the input type
       const targets = await page.$$(`[data-ast-id] ${input}, ${input}[data-ast-id]`);
@@ -96,6 +98,7 @@ export default function(options = {}) {
           el,
         );
       }
+
       for (const element of targets) {
         let astNode = element;
         while ((await getAstId(astNode)) === undefined) {
@@ -103,13 +106,15 @@ export default function(options = {}) {
         }
   
         const astId = await getAstId(astNode);
+        console.log(outputPath);
+        const outputFilePath = path.join(outputPath, `lpub-static-transform-${astId}.${outputFileExtension}`);
         
         await element.screenshot({ path: outputFilePath });
         replaceNodes.add(+astId);
 
         if (output === 'pdf') {
           const { width, height } = element.boundingBox();
-          pngToPdf({
+          await pngToPdf({
             pngPath: outputFilePath, 
             width, 
             height
@@ -119,7 +124,9 @@ export default function(options = {}) {
 
       visitNodes(ast, node => {
         const nodeId = getProperty(node, 'data-ast-id').value;
+        
         if (replaceNodes.has(nodeId)) {
+          const outputFilePath = path.join(outputPath, `lpub-static-transform-${nodeId}.${outputFileExtension}`);
           node.name = 'img';
           node.children = undefined;
           clearProperties(node);

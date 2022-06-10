@@ -7,6 +7,7 @@ import { cache } from '../util/cache.js';
 import {
   citations, code, crossref, header, notes, runtime, section, puppeteer
 } from '../plugins/index.js';
+import { cloneNode } from '../ast/index.js';
 import knitr from '../plugins/knitr/index.js';
 import pyodide from '../plugins/pyodide/index.js';
 
@@ -67,7 +68,7 @@ export async function compile(inputFile, options = {}) {
   // The puppeteer library needs to generate its own
   // version of the HTML, so we just deep clone the ast
   // here to make it work. 
-  let astLatex = JSON.parse(JSON.stringify(astHTML));
+  let astLatex = cloneNode(astHTML);
 
   if (output.html) {
     files.html = await outputHTML(astHTML, context, output.html);
