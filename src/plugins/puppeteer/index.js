@@ -22,6 +22,11 @@ const getBrowser = async () => {
   return browser;
 }
 
+const shutDownBrowser = async () => {
+  await browser.close();
+  browser = null;
+}
+
 const base64Encode = async (file) => {
   var bitmap = await fs.readFile(file);
   return Buffer.from(bitmap).toString('base64');
@@ -30,6 +35,9 @@ const base64Encode = async (file) => {
 const htmlToPdf = async ({ html, outputPath, width, height }) => {
   const browser = await getBrowser();
   const page = await browser.newPage();
+
+  // Additional styles to avoid the generated PDF
+  // breaking onto multiple pages. 
   await page.setContent(`
     <style>
       @media print {
@@ -43,14 +51,13 @@ const htmlToPdf = async ({ html, outputPath, width, height }) => {
     ${html}`
   );
   await page.pdf({ path: outputPath, width, height });
+  await page.close();
 }
 
 export default function(options = {}) {
 
   return async (ast, context) => {
-
     let { outputDir, inputDir } = context;
-
 
     const generatedOutputDir = path.join(outputDir, 'generated-figures');
     if (!existsSync(generatedOutputDir)) {
@@ -82,7 +89,6 @@ export default function(options = {}) {
       }
     });
   
-    console.log(JSON.stringify(ast, null, 2))
     // Create self contained HTML
     const html = await outputHTML(ast, context, {
       ...htmlOptions,
@@ -182,6 +188,7 @@ export default function(options = {}) {
 
     await page.close();
     await stopServer();
+    await shutDownBrowser();
 
     visitNodes(ast, node => {
       removeProperty(node, 'data-ast-id');
