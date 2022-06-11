@@ -1,7 +1,7 @@
 import path from 'node:path';
 
 import {
-  setValueProperty, visitNodes, getProperty, setProperties,
+  setValueProperty, visitNodes, getProperty, getPropertyValue,
   removeProperty, clearProperties, hasProperty, setProperty
 } from '../../ast/index.js';
 import outputHTML from '../../output/html/index.js';
@@ -23,7 +23,7 @@ function proxyURL(src) {
 export default function(options = {}) {
 
   return async (ast, context) => {
-    let { outputDir, inputDir } = context;
+    let { inputDir, outputDir, logger } = context;
 
     const generatedOutputDir = path.join(outputDir, 'generated-figures');
     await mkdirp(generatedOutputDir);
@@ -35,7 +35,7 @@ export default function(options = {}) {
     } = options;
 
     if (!plan.length) {
-      console.warn('Running puppeteer with no transformation plan.');
+      logger.warn('Running convert with no transformation plan.');
       return ast;
     }
 
@@ -63,7 +63,7 @@ export default function(options = {}) {
     page.on('console', async (msg) => {
       const msgArgs = msg.args();
       for (let i = 0; i < msgArgs.length; ++i) {
-        console.log(await msgArgs[i].jsonValue());
+        logger.debug(await msgArgs[i].jsonValue());
       }
     });
 
@@ -114,7 +114,7 @@ export default function(options = {}) {
           const { width, height } = await element.boundingBox();
           const outerHtml = await page.evaluate(el => el.outerHTML, element);
 
-          await htmlToPdf({
+          await browser.pdf({
             html: outerHtml,
             outputPath: outputFilePath,
             width,
@@ -136,7 +136,7 @@ export default function(options = {}) {
         // Replace the nodes where relevant
         if (replaceNodes.has(nodeId)) {
           const outputFilePath = path.join(generatedOutputDir, `${OUTPUT_FILENAME_PREFIX}${nodeId}.${output}`);
-          node.name = 'img';
+          node.name = 'image';
           node.children = undefined;
           clearProperties(node);
           setValueProperty(node, 'src', outputFilePath);
