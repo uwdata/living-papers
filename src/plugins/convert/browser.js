@@ -3,17 +3,21 @@ import puppeteer from 'puppeteer';
 let browser;
 
 export async function getBrowser() {
-  return browser || (browser = await launchBrowser(() => browser = null));
+  const onClose = () => browser = null;
+  return browser || (browser = await launchBrowser({
+    headless: true,
+    defaultViewport: { width: 1200, height: 900 }
+  }, onClose));
 }
 
-async function launchBrowser(onClose) {
-  const impl = await puppeteer.launch({ headless: true });
+async function launchBrowser(options, onClose) {
+  const impl = await puppeteer.launch(options);
   return {
     page() {
       return impl.newPage();
     },
     pdf(options) {
-      return htmlToPDF(impl, options);
+      return pdf(impl, options);
     },
     async close() {
       await onClose(impl);
@@ -22,24 +26,24 @@ async function launchBrowser(onClose) {
   };
 }
 
-async function htmlToPDF(impl, { html, outputPath, width, height }) {
+async function pdf(impl, { html, path }) {
   const page = await impl.newPage();
-
-  // Additional styles to avoid the generated PDF
-  // breaking onto multiple pages.
   await page.setContent(`
     <style>
       @media print {
-        *, img, svg {
-          break-inside: avoid;
-          margin: 0;
-          padding: 0;
-        }
+        body { break-inside: avoid; margin: 0; padding: 0; }
       }
     </style>
-    ${html}`
-  );
+    ${html}`);
 
-  await page.pdf({ path: outputPath, width, height });
+  const element = await page.$('body > *');
+  const { width, height } = await element.boundingBox();
+
+  await page.pdf({
+    path,
+    pageRanges: '1',
+    width: `${Math.ceil(width)}px`,
+    height: `${Math.ceil(height)}px`
+  });
   await page.close();
 }

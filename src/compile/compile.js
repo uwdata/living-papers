@@ -65,11 +65,11 @@ export async function compile(inputFile, options = {}) {
   }
 
   if (output.latex) {
+    // TODO: clean up, de-duplicate output dir determination
+    const { convert: plan, pdf = true } = output.latex;
+    const outputDir = path.join(pdf ? context.tempDir : context.outputDir, 'latex');
     const astLatex = await transformAST(cloneNode(ast), context, [
-      convert({
-        plan: output.latex.convert,
-        htmlOptions: output.html
-      })
+      convert({ plan, outputDir, htmlOptions: output.html })
     ]);
     files.latex = await outputLatex(astLatex, context, output.latex);
   }

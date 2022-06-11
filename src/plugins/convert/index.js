@@ -23,10 +23,11 @@ function proxyURL(src) {
 export default function(options = {}) {
 
   return async (ast, context) => {
-    let { inputDir, outputDir, logger } = context;
+    const { inputDir, logger } = context;
 
-    const generatedOutputDir = path.join(outputDir, 'generated-figures');
-    await mkdirp(generatedOutputDir);
+    const convertDir = 'convert';
+    const outputDir = path.join(options.outputDir, convertDir);
+    await mkdirp(outputDir);
     await startServer(inputDir, PROXY_SERVER_PORT);
 
     const {
@@ -106,19 +107,19 @@ export default function(options = {}) {
         }
 
         const astId = await getAstId(astNode);
-        const outputFilePath = path.join(generatedOutputDir, `${OUTPUT_FILENAME_PREFIX}${astId}.${output}`);
+        const outputPath = path.join(outputDir, `${OUTPUT_FILENAME_PREFIX}${astId}.${output}`);
 
         if (output !== 'pdf') {
-          await element.screenshot({ path: outputFilePath });
+          await element.screenshot({ path: outputPath });
         } else {
           const { width, height } = await element.boundingBox();
-          const outerHtml = await page.evaluate(el => el.outerHTML, element);
-
+          logger.debug('convert to pdf', width, height, outputPath);
           await browser.pdf({
-            html: outerHtml,
-            outputPath: outputFilePath,
-            width,
-            height
+            html: await page.evaluate(el => el.outerHTML, element),
+            path: outputPath,
+            pageRanges: '1',
+            // width: `${Math.ceil(width)}px`,
+            // height: `${Math.ceil(height)}px`,
           });
         }
         replaceNodes.add(+astId);
@@ -135,11 +136,11 @@ export default function(options = {}) {
 
         // Replace the nodes where relevant
         if (replaceNodes.has(nodeId)) {
-          const outputFilePath = path.join(generatedOutputDir, `${OUTPUT_FILENAME_PREFIX}${nodeId}.${output}`);
+          const outputPath = path.join(convertDir, `${OUTPUT_FILENAME_PREFIX}${nodeId}.${output}`);
           node.name = 'image';
           node.children = undefined;
           clearProperties(node);
-          setValueProperty(node, 'src', outputFilePath);
+          setValueProperty(node, 'src', outputPath);
         }
       });
     }

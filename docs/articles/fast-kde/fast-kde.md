@@ -210,7 +210,7 @@ The extended box method smooths these artifacts.
 Deriche approximation consistently produces the lowest error, and notably improves with the use of linear binning.
 
 ::: figure {#kde_penguins .margin .rowspan2 position="t"}
-![](figures/penguins_1d.svg){width=85%}
+![](figures/penguins_1d.svg)
 | KDE of Gentoo penguin body mass ($m$ = 512 bins, $\sigma$ = 50). Box filters tend to underestimate peaks and overestimate valleys, in some cases 'eroding' local peaks (e.g., around 4.9k & 5.7k grams). Deriche approximation instead produces a pixel-perfect result.
 \vspace{8pt}
 :::
