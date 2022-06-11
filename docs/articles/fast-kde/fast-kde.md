@@ -23,7 +23,7 @@ output:
   latex:
     template: ieee-vgtc-conference
     vspace: { equation: -15pt, caption: -10pt, figure: -15pt, teaser: -15pt }
-    puppeteer:
+    convert:
       - input: img[src$=\".svg\"]
         output: pdf
 ---

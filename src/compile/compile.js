@@ -5,7 +5,7 @@ import { parseMarkdown } from '../parse/parse-markdown.js';
 import { cache } from '../util/cache.js';
 
 import {
-  citations, code, crossref, header, notes, runtime, section, puppeteer
+  citations, code, convert, crossref, header, notes, runtime, section
 } from '../plugins/index.js';
 import { cloneNode } from '../ast/index.js';
 import knitr from '../plugins/knitr/index.js';
@@ -66,8 +66,8 @@ export async function compile(inputFile, options = {}) {
 
   if (output.latex) {
     const astLatex = await transformAST(cloneNode(ast), context, [
-      puppeteer({
-        plan: output.latex.puppeteer,
+      convert({
+        plan: output.latex.convert,
         htmlOptions: output.html
       })
     ]);
