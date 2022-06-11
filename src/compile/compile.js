@@ -54,31 +54,25 @@ export async function compile(inputFile, options = {}) {
   const output = await outputOptions(context);
   const files = {};
 
-  const astHTML = await transformAST(ast, context, [
-    crossref(numbered()),
-    notes,
-    header,
-    section
-  ]);
-
-  // Running outputHTML affects the AST, so we
-  //  deep clone the ast here to make it work. 
-  let astLatex = cloneNode(astHTML);
-
   if (output.html) {
+    const astHTML = await transformAST(cloneNode(ast), context, [
+      crossref(numbered()),
+      notes,
+      header,
+      section
+    ]);
     files.html = await outputHTML(astHTML, context, output.html);
   }
 
   if (output.latex) {
-    const plan = output.latex.puppeteer;
-
-    astLatex = await transformAST(astLatex, context, [
-      puppeteer({plan, htmlOptions: output.html})
+    const astLatex = await transformAST(cloneNode(ast), context, [
+      puppeteer({
+        plan: output.latex.puppeteer,
+        htmlOptions: output.html
+      })
     ]);
-  
     files.latex = await outputLatex(astLatex, context, output.latex);
   }
-
 
   return {
     elapsedTime: Date.now() - startTime,
