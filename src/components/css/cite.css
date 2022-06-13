@@ -24,7 +24,7 @@
   background-color: white;
   z-index: 1;
   position: absolute;
-  transform: translate(28px, -23px);
+  transform: translate(14px, -14px);
   width: 300px;
   font-size: small;
   font-weight: 300;
@@ -70,24 +70,15 @@
 
 .cit-head-arrow {
   position: absolute;
-  left: -24px;
-  top: 16px;
-  border-top: 18px solid transparent;
-  border-bottom: 18px solid transparent; 
-  border-right: 24px solid black; 
+  left: -14px;
+  top: 14px;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent; 
+  border-right: 14px solid black; 
 }
 
-.cit-head-arrow p {
-  position: absolute;
-  transform: translate(50%,-50%);
-  width: 16px;
-  font-weight: 400;
-  text-align: center;
-  color: white;
-}
-
-.cit-body:not(:hover) {
-  background-image: linear-gradient(transparent 85%,95%,steelblue 105%);
+.cit-head:hover {
+  background-image: linear-gradient(40deg, transparent 92%,97%,steelblue 105%);
   background-repeat: no-repeat;
   background-size: 100%;
 }
