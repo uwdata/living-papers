@@ -7,7 +7,6 @@ const aliasMap = new Map([
   ['equation', 'tex-equation'],
   ['image', 'img'],
   ['math', 'tex-math'],
-  ['inlinenote', 'span'],
   ['link', 'a'],
   ['quote', 'q'],
   ['teaser', 'figure'],

@@ -6,10 +6,10 @@ export function numbered() {
 
 export function parseContext() {
   return {
-    fence: ['abstract', 'acknowledgments', 'figure', 'table', 'teaser'],
+    fence: ['abstract', 'acknowledgments', 'aside', 'figure', 'table', 'teaser'],
     block: ['bibliography', 'equation', 'math'],
     xref: ['sec', 'fig', 'tbl', 'eqn'],
-    env: ['figure', 'table', 'teaser']
+    env: ['aside', 'figure', 'table', 'teaser']
   };
 }
 

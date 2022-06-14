@@ -75,11 +75,15 @@ article p {
 	text-align: justify;
 }
 
-pre, code {
+pre,
+code {
 	font-family: $monospace;
 }
 
-pre, ul, table, figure {
+pre,
+ul,
+table,
+figure {
 	margin: 2ex 0;
 }
 
@@ -87,9 +91,13 @@ li {
 	margin: 1ex 0 1ex 4ex;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
 	line-height: 1.25;
-	& + p {
+
+	&+p {
 		text-indent: unset;
 	}
 }
@@ -134,12 +142,15 @@ a {
 }
 
 .inlinenote:hover {
-	.inlinenote-number, .note {
+
+	.inlinenote-number,
+	.note {
 		background: #ff9;
 	}
 }
 
-.note p, .inlinenote {
+.note p,
+.inlinenote {
 	text-indent: 0;
 }
 

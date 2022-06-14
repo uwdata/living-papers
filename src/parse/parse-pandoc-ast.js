@@ -532,7 +532,7 @@ export class PandocASTParser {
 
   parseNote(content) {
     return createComponentNode(
-      'inlinenote',
+      'inline-note',
       null,
       this.parseBlocks(content)
     );
