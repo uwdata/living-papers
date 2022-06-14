@@ -1,0 +1,4 @@
+/* Animation for Vega plot elements. */
+svg.marks text, svg.marks path {
+  transition: opacity 0.5s;
+}

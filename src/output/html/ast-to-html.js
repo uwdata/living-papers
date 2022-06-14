@@ -54,7 +54,7 @@ function renderProps(props, ctx) {
     } else if (type === 'event') {
       ctx.events.push([_id(), key, value]);
     } else {
-      str += ` ${key}="${htmlEscape(value + '')}"`;
+      str += ` ${key}="${htmlEscape(value)}"`;
     }
   }
   if (id !== null) {

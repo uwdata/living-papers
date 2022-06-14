@@ -149,7 +149,7 @@ figure svg,
 figure canvas {
 	object-fit: contain;
 	max-width: 100%;
-	height: auto !important;
+	height: auto;
 }
 
 header {
@@ -178,6 +178,7 @@ footer {
 		width: min(var(--max-article-width), 100%);
 	}
 
+	.aside,
 	.margin {
 		float: none;
 		margin: 0;

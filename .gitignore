@@ -2,4 +2,5 @@
 /test/output/
 /dist/
 .cache
+.temp
 .DS_Store

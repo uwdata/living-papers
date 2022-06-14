@@ -1,15 +1,59 @@
 {
   "living-papers": {
     "components": [
-      {"name": "cell-view", "import": "CellView", "file": "cell-view.js"},
-      {"name": "cite-bib", "import": "CiteBib", "file": "cite-bib.js"},
-      {"name": "cite-ref", "import": "CiteRef", "file": "cite-ref.js"},
-      {"name": "code-block", "import": "CodeBlock", "file": "code-block.js"},
-      {"name": "cross-ref", "import": "CrossRef", "file": "cross-ref.js"},
-      {"name": "inline-note", "import": "InlineNote", "file": "inline-note.js"},
-      {"name": "range-text", "import": "RangeText", "file": "range-text.js"},
-      {"name": "tex-equation", "import": "TexEquation", "file": "tex-equation.js"},
-      {"name": "tex-math", "import": "TexMath", "file": "tex-math.js"}
+      {
+        "name": "cell-view",
+        "import": "CellView",
+        "file": "cell-view.js",
+        "css": "css/cell-view.css"
+      },
+      {
+        "name": "cite-bib",
+        "import": "CiteBib",
+        "file": "cite-bib.js",
+        "css": "css/cite.css"
+      },
+      {
+        "name": "cite-ref",
+        "import": "CiteRef",
+        "file": "cite-ref.js",
+        "css": "css/cite.css"
+      },
+      {
+        "name": "code-block",
+        "import": "CodeBlock",
+        "file": "code-block.js"
+      },
+      {
+        "name": "cross-ref",
+        "import": "CrossRef",
+        "file": "cross-ref.js",
+        "css": "css/cross-ref.css"
+      },
+      {
+        "name": "inline-note",
+        "import": "InlineNote",
+        "file": "inline-note.js",
+        "css": "css/inline-note.css"
+      },
+      {
+        "name": "range-text",
+        "import": "RangeText",
+        "file": "range-text.js",
+        "css": "css/range-text.css"
+      },
+      {
+        "name": "tex-equation",
+        "import": "TexEquation",
+        "file": "tex-equation.js",
+        "css": "css/tex-math.css"
+      },
+      {
+        "name": "tex-math",
+        "import": "TexMath",
+        "file": "tex-math.js",
+        "css": "css/tex-math.css"
+      }
     ]
   }
 }

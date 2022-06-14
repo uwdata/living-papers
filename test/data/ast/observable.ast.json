@@ -50,13 +50,13 @@
             "type": "component",
             "name": "link",
             "properties": {
+              "class": {
+                "type": "value",
+                "value": "action"
+              },
               "click": {
                 "type": "event",
                 "value": "init = (a + 1) % 256"
-              },
-              "href": {
-                "type": "value",
-                "value": "#"
               },
               "title": {
                 "type": "value",

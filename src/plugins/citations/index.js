@@ -1,7 +1,7 @@
 import path from 'node:path';
 import {
-  createComponentNode, createTextNode, getPropertyValue,
-  setValueProperty, queryNodes, visitNodes, removeChild
+  createComponentNode, createTextNode, createProperties, getPropertyValue,
+  setValueProperty, queryNodes, visitNodes, removeChild,
 } from '../../ast/index.js';
 import { readFile } from '../../util/fs.js';
 import { lookup } from './lookup.js';
@@ -38,8 +38,10 @@ export default async function(ast, context) {
 
   // collect citation data to embed in article
   const data = await citationData(citations, scholarAPI(cache, fetch), logger);
-  metadata.references = data;
-  metadata.bibtex = citations.bibtex();
+  context.citations = {
+    references: data,
+    bibtex: citations.bibtex()
+  };
 
   // add bibliography to AST
   if (nodes.length) {
@@ -203,7 +205,10 @@ function updateCitationLists(ast) {
 
 function createBibComponent(refs) {
   const lines = refs.bibliography();
-  const list = createComponentNode('ol');
+  const list = createComponentNode(
+    'ol',
+    createProperties({ class: 'references' })
+  );
   list.children = lines.map(text => {
     return createComponentNode('li', null, [ createTextNode(text) ]);
   });

@@ -2,7 +2,7 @@ import mustache from 'mustache';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  getChildren, getPropertyValue, hasProperty,
+  getChildren, getPropertyValue, hasClass,
   setValueProperty, visitNodes
 } from '../../ast/index.js';
 import { copy, mkdirp, readFile, writeFile } from '../../util/fs.js';
@@ -11,7 +11,7 @@ import { TexFormat } from './tex-format.js';
 import { pdflatex } from './pdflatex.js';
 
 export default async function(ast, context, options) {
-  const { metadata, inputFile, outputDir, tempDir, logger } = context;
+  const { citations, metadata, inputFile, outputDir, tempDir, logger } = context;
   const {
     template = 'article',
     tags = ['<<', '>>'],
@@ -20,7 +20,7 @@ export default async function(ast, context, options) {
   } = options;
 
   const articleName = path.parse(inputFile).name;
-  const bibtex = metadata.bibtex?.length > 0;
+  const bibtex = citations?.bibtex?.length > 0;
   const latexDir = path.join(pdf ? tempDir : outputDir, 'latex');
 
   // create directories
@@ -31,7 +31,7 @@ export default async function(ast, context, options) {
 
   // prepare LaTeX formatter
   const tex = new TexFormat({
-    references: metadata.references,
+    references: citations?.references,
     prefix: new Map([
       ['fig', 'Figure~'],
       ['tbl', 'Table~'],
@@ -92,7 +92,7 @@ export default async function(ast, context, options) {
     ...(bibtex ? [
       writeFile(
         path.join(latexDir, `${articleName}.bib`),
-        tex.string(metadata.bibtex.join('\n\n'))
+        tex.string(citations.bibtex.join('\n\n'))
       )
     ] : []),
     ...(pkg.files || []).map(f => copy(
@@ -162,7 +162,7 @@ function extractAs(node) {
   const { name } = node;
   if (name === 'abstract' || name === 'acknowledgments') {
     return name;
-  } else if (name === 'figure' && hasProperty(node, 'teaser')) {
+  } else if (name === 'figure' && hasClass(node, 'teaser')) {
     return 'teaser';
   }
 }

@@ -1,0 +1,11 @@
+.cite-list::before {
+  content: var(--cite-list-start);
+}
+
+.cite-list::after {
+  content: var(--cite-list-end);
+}
+
+.cite-ref {
+  text-decoration: underline dotted #aaa;
+}

@@ -1,0 +1,100 @@
+.normal {
+  font-weight: 400;
+}
+
+.demi {
+  font-weight: 600;
+}
+
+.bold,
+.strong {
+  font-weight: 700;
+}
+
+.mono,
+.code {
+  font-family: monospace;
+}
+
+.em,
+.emph,
+.italic {
+  font-style: italic;
+}
+
+.highlight {
+  background-color: var(--highlight-color);
+}
+
+.strike {
+  text-decoration: line-through;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.smallcaps {
+  font-variant: small-caps;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}
+
+.center {
+  text-align: center;
+}
+
+.justify {
+  text-align: justify;
+}
+
+.tiny {
+  font-size: var(--tiny-size);
+}
+
+.scriptsize {
+  font-size: var(--script-size);
+}
+
+.smaller,
+.footnotesize {
+  font-size: var(--smaller-size);
+}
+
+.small {
+  font-size: var(--small-size);
+}
+
+.large {
+  font-size: var(--large-size);
+}
+
+.larger {
+  font-size: var(--larger-size);
+}
+
+.huge {
+  font-size: var(--huge-size);
+}
+
+.hide {
+  display: none;
+}

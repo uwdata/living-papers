@@ -1,7 +1,11 @@
 import { components } from './components.js';
 
 export function numbered() {
-  return ['figure', 'table', 'equation'];
+  return [
+    ['figure', ['figure', 'teaser']],
+    ['figure', ['table']],
+    ['equation']
+  ];
 }
 
 export function parseContext() {
