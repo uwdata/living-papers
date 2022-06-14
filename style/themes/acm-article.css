@@ -1,0 +1,151 @@
+@font-face {
+	font-family: "Linux Libertine O";
+	src: url("./assets/LinLibertine_R.otf");
+}
+
+@font-face {
+	font-family: "Linux Libertine O";
+	src: url("./assets/LinLibertine_RB.otf");
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "Linux Libertine O";
+	src: url("./assets/LinLibertine_RI.otf");
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "Linux Biolinum O";
+	src: url("./assets/LinBiolinum_R.otf");
+}
+
+@font-face {
+	font-family: "Linux Biolinum O";
+	src: url("./assets/LinBiolinum_RB.otf");
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "Linux Biolinum O";
+	src: url("./assets/LinBiolinum_RI.otf");
+	font-style: italic;
+}
+
+body {
+	font: 18px/1.5rem "Linux Libertine O", serif;
+	background: #fff;
+	color: #000;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: "Linux Biolinum O", sans-serif;
+}
+
+h1,
+h2 {
+	padding: 1.5em 0 0.5em;
+}
+
+h3,
+h4 {
+	padding: 0.5em 0 0.25em;
+}
+
+h1 {
+	text-transform: uppercase;
+}
+
+article p {
+	margin: 1ex 0;
+	text-indent: 3ex;
+	text-align: justify;
+}
+
+pre,
+code {
+	font-family: "Inconsolata", monospace;
+}
+
+pre,
+ul,
+table,
+figure {
+	margin: 2ex 0;
+}
+
+li {
+	margin: 1ex 0 1ex 4ex;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	line-height: 1.25;
+}
+
+h1+p,
+h2+p,
+h3+p,
+h4+p {
+	text-indent: unset;
+}
+
+table {
+	border-top: 2px solid #000;
+	border-bottom: 2px solid #000;
+	width: 100%;
+}
+
+table th {
+	border-bottom: 2px solid #000;
+}
+
+figcaption {
+	font-family: "Linux Biolinum O", sans-serif;
+}
+
+header h1 {
+	padding: 1em 0;
+	text-transform: unset;
+}
+
+a {
+	text-decoration: inherit;
+}
+
+.author-name {
+	font-family: "Linux Biolinum O", sans-serif;
+	text-transform: uppercase;
+}
+
+.sticky {
+	background: #fff;
+	padding: 0 2ex;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+
+}
+
+.sticky:not(.margin) {
+	margin: 0 -2ex;
+}
+
+.inlinenote:hover .inlinenote-number,
+.inlinenote:hover .note {
+	background: #ff9;
+}
+
+.note p,
+.inlinenote {
+	text-indent: 0;
+}
+
+.note {
+	padding: 1ex;
+}

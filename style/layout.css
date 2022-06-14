@@ -1,4 +1,4 @@
-// Only handles layout, e.g. no color styles
+/* Only handles layout, e.g. no color styles */
 
 :root {
 	--max-article-width: 100ex;

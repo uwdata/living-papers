@@ -1,8 +1,8 @@
 body {
 	font: 16px/1.5 -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 
-	background: $bg;
-	color: $fg;
+	background: #fff;
+	color: #000;
 }
 
 h1,
@@ -18,7 +18,7 @@ h6 {
 
 h1,
 h2 {
-	border-bottom: 1px solid transparentize($fg, 0.9);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 	padding-bottom: 6px;
 	width: fit-content;
 }
@@ -29,42 +29,39 @@ article p {
 
 td,
 th {
-	border-bottom: 1px solid transparentize($fg, 0.8);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 	transition: 0.1s ease-out;
 }
 
 th,
 tr:hover td {
-	background: transparentize($fg, 0.9);
+	background: rgba(0, 0, 0, 0.1);
 }
 
 .sticky {
-	background: transparentize($bg, 0.2);
+	background: rgba(255, 255, 255, 0.8);
 	backdrop-filter: blur(4px);
 	padding: 2ex;
-	border: 1px solid transparentize($fg, 0.8);
+	border: 1px solid rgba(0, 0, 0, 0.2);
 	border-radius: 8px;
+}
 
-	&:not(.margin) {
-		margin: 0 -2ex;
-	}
+.sticky:not(.margin) {
+	margin: 0 -2ex;
 }
 
 .note {
 	padding: 2ex;
 	border-radius: 8px;
-	background: $bg;
+	background: #fff;
 	font-style: inherit;
 	transition: 0.1s ease-out;
 }
 
-.inlinenote:hover {
-
-	.inlinenote-number,
-	.note,
-	.note::before {
-		background: #cdc8f0;
-	}
+.inlinenote:hover .inlinenote-number,
+.inlinenote:hover .note,
+.inlinenote:hover .note::before {
+	background: #cdc8f0;
 }
 
 .inlinenote-number {
@@ -75,7 +72,7 @@ tr:hover td {
 
 .inlinenote .note::before {
 	left: -24px;
-	background: $bg;
+	background: #fff;
 	padding: 2ex;
 	margin: -2ex;
 	padding-right: 16px;
