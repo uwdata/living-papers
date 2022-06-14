@@ -8,7 +8,6 @@
       {"name": "cross-ref", "import": "CrossRef", "file": "cross-ref.js"},
       {"name": "inline-note", "import": "InlineNote", "file": "inline-note.js"},
       {"name": "range-text", "import": "RangeText", "file": "range-text.js"},
-      {"name": "scroll-manager", "import": "ScrollManager", "file": "scroll-manager.js"},
       {"name": "tex-equation", "import": "TexEquation", "file": "tex-equation.js"},
       {"name": "tex-math", "import": "TexMath", "file": "tex-math.js"}
     ]

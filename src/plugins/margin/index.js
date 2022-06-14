@@ -1,7 +1,8 @@
-import { appendChildren, createComponentNode, createProperties, getProperty, hasClass, hasProperty, queryNodes, removeClass, removeProperty, } from '../../ast/index.js';
+import { createComponentNode, createProperties, getProperty, hasClass, hasProperty, queryNodes, removeClass, removeProperty, } from '../../ast/index.js';
 
-export default function (ast, { logger }) {
-  queryNodes(ast, node => hasProperty(node, 'sticky-until') || hasProperty(node, 'sticky-through')).forEach(node => {
+export default function (ast, { metadata, logger }) {
+  const stickyNodes = queryNodes(ast, node => hasProperty(node, 'sticky-until') || hasProperty(node, 'sticky-through'));
+  stickyNodes.forEach(node => {
     // move margin class, and sticky-until/sticky-through properties to containing parent node
     let classes = ['sticky'];
     if (hasClass(node, 'margin')) {
@@ -31,7 +32,7 @@ export default function (ast, { logger }) {
     node.children = parent.children;
   });
 
-  appendChildren(ast, createComponentNode('scroll-manager'));
+  metadata.hasStickyElements = stickyNodes.length > 0;
 
   return ast;
 }

@@ -114,6 +114,7 @@ function entryScript({ root, bind, metadata, components, runtime }) {
   const script = [];
   const refdata = metadata.references;
   const hasRefs = refdata?.length > 0;
+  const hasStickys = metadata.hasStickyElements;
 
   components.forEach(entry => {
     const spec = entry.default ? entry.import : `{ ${entry.import} }`;
@@ -128,12 +129,15 @@ import * as module from './runtime.js';`);
   if (hasRefs) {
     script.push(`import { reference } from '${src}output/html/reference.js';`);
   }
+  if (hasStickys) {
+    script.push(`import { scrollManager } from '${src}output/html/scroll-manager.js';`);
+  }
 
   components.forEach(entry => {
     script.push(`window.customElements.define('${entry.name}', ${entry.import});`);
   });
 
-  if (runtime || hasRefs) {
+  if (runtime || hasRefs || hasStickys) {
     script.push(`
 window.addEventListener('DOMContentLoaded', () => {
   const root = document.querySelector('${root}');`);
@@ -144,7 +148,10 @@ window.addEventListener('DOMContentLoaded', () => {
   if (runtime) {
     script.push(`  hydrate(new ObservableRuntime, root, module, ${JSON.stringify(bind)});`);
   }
-  if (runtime || hasRefs) {
+  if (hasStickys) {
+    script.push('  scrollManager(root);');
+  }
+  if (runtime || hasRefs || hasStickys) {
     script.push(`});`);
   }
 
