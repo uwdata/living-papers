@@ -1,8 +1,7 @@
-
-import http from 'http';
-import url from 'url';
-import path from 'path';
-import fs from 'fs';
+import http from 'node:http';
+import url from 'node:url';
+import path from 'node:path';
+import fs from 'node:fs';
 
 let server;
 export const startServer = async (basePath, port) => {
