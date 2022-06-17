@@ -18,6 +18,7 @@ export class CiteRef extends ArticleElement {
 
     let active = null; 
     let citeref = this; 
+    let hoverDelay = 300;
 
     // On hover, open the citation after a certain amount of time
     this.addEventListener('mouseenter', function(){
@@ -31,7 +32,7 @@ export class CiteRef extends ArticleElement {
                     citeref.querySelector('.cit').style.display = 'inline'
                   } else {
                     citeref.querySelector('.cit-err').style.display = 'inline';
-                  }}, 300);
+                  }}, hoverDelay);
                 });
 
     // On hover off, close the citation after a certain amount of time
@@ -46,7 +47,7 @@ export class CiteRef extends ArticleElement {
                     citeref.querySelector('.cit').style.display = 'none'
                   } else {
                     citeref.querySelector('.cit-err').style.display = 'none';
-                  }}, 300);
+                  }}, hoverDelay);
                 });
   }
 
@@ -56,19 +57,23 @@ export class CiteRef extends ArticleElement {
   }
 
   render() {
-    const { key, data, index, mode } = this;
+    const { key, data, index, mode} = this;
 
-    if (key == null || data == null) { return unresolvedCitation() } // Missing data, or key
-
-    // Missing minimum of title, year, and author data
-    if (data.title == null || data.year == null || data.author == null) { return unresolvedCitation() }
+    // Unresolved citation
+    if (data == null) { 
+      return html`<span class ='citation-err'>??<div class='cit-err'>
+                      <div class='cit-err-arrow'></div>
+                      <b>Unresolved citation</b><br>"${key}"
+                    </div>
+                  </span>`; 
+    }
 
     // Citation contents
     const arrow = html`<div class='cit-head-arrow'></div>`;
     const title = html`<div class='cit-head-title'>${data.title}</div>`;
     const subtitle = data.venue ? html`<div class='cit-head-subtitle'>${data.venue}</div>` : null;
     const info = infoBody(data);
-    const desc = descBody(data, 300);
+    const desc = descBody(data);
 
     // Inline content
     const body = mode === 'inline-author' ? inlineContent(data, index) : index;
@@ -101,77 +106,57 @@ function inlineContent(data, index, etal=2) {
   return authors + ' [' + index + ']';
 }
 
-// Returns an unresolved citation
-function unresolvedCitation() {
-  return html`<span class ='citation-err'>
-                ??
-                <div class='cit-err'>
-                  <div class='cit-err-arrow'></div>
-                  Unresolved citation
-                </div>
-              </span>`;
-}
-
 // Returns the info portion of the body, with authors and year,
 // if more than max authors add the option to expand/collapse section
 function infoBody(data, max=2) {
   const { author, year } =  data;
 
   const aMap = author.map(({ given, family }) => `${given.includes('.') ? given:given[0] + '.'} ${family}`);   // List all authors as F.M. Last
-  const aMapMax = aMap.slice(0, max); // List all up to etal authors
-  const authNum = '+' + (aMap.length - aMapMax.length); // Representation of authors past max
-  const shortInfo = '' + year + ' \u2022 ' + aMapMax.join(', '); // Shortened info section
   const info = '' + year + ' \u2022 ' + aMap.join(', '); // Full info section
+  let shortInfo = info; // Shortened info section
+  let button = null; // Expand/collapse button, null if unneeded
 
-  // Button event, update button info, rotate arrow, swap to the corresponding text
-  const onClick = "let x=event.target.parentElement.querySelector('span')||event.target;let y=x.parentElement;let z=y.parentElement;"+
-                  "(x.style.transform==='rotate(0deg)')"+
-                  "?(x.style.transform='rotate(-90deg)',z.childNodes[1].nodeValue=z.getAttribute('shortinfo'),y.childNodes[1].textContent=z.getAttribute('authnum'))"+
-                  ":(x.style.transform='rotate(0deg)',z.childNodes[1].nodeValue=z.getAttribute('info'),y.childNodes[1].textContent='\u00A0')";
-  const style = "display: inline; border: none; background: none;";
-  const arrow = html`<span style='position: absolute; transform: rotate(-90deg);'>&#9660;</span>`;
+  if (aMap.length > max) {
+    const authNum = '+' + (aMap.length - max); // Representation of authors past max
+    shortInfo = '' + year + ' \u2022 ' + aMap.slice(0, max).join(', '); // Shortened info section
 
-  // Expand/collapse button, null if unneeded
-  const button = aMap.length !== aMapMax.length ? html`<button style=${style} onclick=${onClick}>${authNum}${arrow}</button>` : null; 
+    // Button event, update button info, rotate arrow, swap to the corresponding text
+    const onClick = "let x=event.target.parentElement.querySelector('span')||event.target;let y=x.parentElement;let z=y.parentElement;"+
+                    "(x.style.transform==='rotate(0deg)')"+
+                    "?(x.style.transform='rotate(-90deg)',z.childNodes[1].nodeValue=y.getAttribute('shortinfo'),y.childNodes[1].textContent=y.getAttribute('authnum'))"+
+                    ":(x.style.transform='rotate(0deg)',z.childNodes[1].nodeValue=y.getAttribute('info'),y.childNodes[1].textContent='\u00A0')";
+    const style = "display: inline; border: none; background: none;";
+    const arrow = html`<span style='position: absolute; transform: rotate(-90deg);'>&#9660;</span>`;
 
-  return html`<div class='cit-body-auth' info=${info} shortinfo=${shortInfo} authnum=${authNum}>
-                ${shortInfo}${button}
-              </div>`;
+    button = html`<button style=${style} onclick=${onClick} info=${info} shortinfo=${shortInfo} authnum=${authNum}>${authNum}${arrow}</button>`;
+  } 
+
+  return html`<div class='cit-body-auth'>${shortInfo}${button}</div>`;
 }
 
 // Returns the description portion of the body, limits the description by tokens if over char limit
-function descBody(data, charLimit) {
+function descBody(data, charLimit=300) {
   const { abstract, tldr } = data;
 
   // Prioritize tldr, then abstract, if none use error message.
   let shortDesc = tldr || abstract || 'No description is available for this article.';
-  shortDesc = limitTokens(shortDesc, charLimit);
 
-  // Button event, rotate arrow, swap to the corresponding text
-  const onClick = "let parent=event.target.parentElement;"+
-                  "(event.target.style.transform==='rotate(0deg)')"+
-                  "?(event.target.style.transform='rotate(-90deg)',parent.childNodes[1].textContent=parent.getAttribute('shortdesc'))"+
-                  ":(event.target.style.transform='rotate(0deg)',parent.childNodes[1].textContent=parent.getAttribute('abstract'))";
-  const style = "position: absolute; left: calc(50% - 16px); bottom: 0; border: none; background: none; transform: rotate(-90deg); font-size: 16px;";
-
-  // Expand/collapse button, null if unneeded
-  const button = abstract ? html`<button style=${style} onclick=${onClick} >&#9660;</button>` : null;
-
-  return html`<div class='cit-body-desc' abstract=${abstract} shortdesc=${shortDesc}>
-                ${shortDesc}${button}
-              </div>`;
-}
-
-// Returns tokens with the sum of characters less than the character limit
-function limitTokens(input, charLimit) {
-  let tokens = input.split(' ');
-  let text = '';
-  for (let i = 0; i < tokens.length; i++) {
-    if ((text + tokens[i]).length > charLimit) { // If it is longer than the char limit, stop and add ellipses
-      text += '... ';
-      break;
-    }
-    text += ' ' + tokens[i];
+  // Limit the token characters to under the character limit
+  if (shortDesc.length > charLimit) {
+     shortDesc = shortDesc.substring(0, shortDesc.substring(0, charLimit).lastIndexOf(' ')) + '... ';
   }
-  return text;
+
+  let button = null; // Expand/collapse button, null if unneeded
+
+  if (abstract != null) {
+    // Button event, rotate arrow, swap to the corresponding text
+    const onClick = "(event.target.style.transform==='rotate(0deg)')"+
+                    "?(event.target.style.transform='rotate(-90deg)',event.target.parentElement.childNodes[1].textContent=event.target.getAttribute('shortdesc'))"+
+                    ":(event.target.style.transform='rotate(0deg)',event.target.parentElement.childNodes[1].textContent=event.target.getAttribute('abstract'))";
+    const style = "position: absolute; left: calc(50% - 16px); bottom: 0; border: none; background: none; transform: rotate(-90deg); font-size: 16px;";
+
+    button = html`<button style=${style} onclick=${onClick} abstract=${abstract} shortdesc=${shortDesc}>&#9660;</button>`;
+  }
+
+  return html`<div class='cit-body-desc'>${shortDesc}${button}</div>`;
 }
