@@ -18,7 +18,6 @@ keywords:
 venue: IEEE Visualization
 year: 2021
 doi: 10.1109/VIS49827.2021.9623323
-theme: acm-article
 output:
   html: true
   latex:
