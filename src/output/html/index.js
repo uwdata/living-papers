@@ -97,7 +97,9 @@ export default async function(ast, context, options) {
   }
 
   // copy all assets in style/assets over
-  copy(styleAssetsDir, assetsPath);
+  try {
+    await copy(styleAssetsDir, assetsPath);
+  } catch (err) { }
 
   // write html file or return html text
   return htmlFile
