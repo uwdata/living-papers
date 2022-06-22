@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import { compile } from '../src/compile/compile.js';
 
 const inputFile = process.argv[2];
-const outputDir = process.argv[3] || path.dirname(inputFile);
+const outputDir = path.dirname(inputFile);
 const debug = false;
 
 const logger = {
@@ -35,5 +35,4 @@ compile(inputFile, { outputDir, logger, debug })
     }
     const sec = (elapsedTime / 1000).toFixed(2);
     console.log(`Processed article ${chalk.cyan(inputFile)}: ${chalk.green(`${sec} sec`)}`);
-    console.log(`Output to ${chalk.cyan(outputDir)}`);
   });

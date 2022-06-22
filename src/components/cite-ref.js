@@ -1,4 +1,4 @@
-import { html, _$LE } from 'lit';
+import { html } from 'lit';
 import { ArticleElement } from './article-element.js';
 
 export class CiteRef extends ArticleElement {
@@ -16,39 +16,32 @@ export class CiteRef extends ArticleElement {
     super();
     this.mode = 'citation';
 
-    let active = null; 
-    let citeref = this; 
-    let hoverDelay = 300;
+    const hoverDelay = 300;
+    let active = null;
 
     // On hover, open the citation after a certain amount of time
-    this.addEventListener('mouseenter', function(){
-      if(active !== null) {
+    this.addEventListener('mouseenter', () => {
+      if (active !== null) {
         clearTimeout(active);
         active = null;
       }
-
-      active =  setTimeout(function() {
-                  if (citeref.querySelector('.cit')) {
-                    citeref.querySelector('.cit').style.display = 'inline'
-                  } else {
-                    citeref.querySelector('.cit-err').style.display = 'inline';
-                  }}, hoverDelay);
-                });
+      active = setTimeout(
+        () => this.querySelector('.cite-info').style.display = 'inline',
+        hoverDelay
+      );
+    });
 
     // On hover off, close the citation after a certain amount of time
-    this.addEventListener('mouseleave', function() {
-      if(active !== null) {
+    this.addEventListener('mouseleave', () => {
+      if (active !== null) {
         clearTimeout(active);
         active = null;
       }
-
-      active =  setTimeout(function() {
-                  if (citeref.querySelector('.cit')) {
-                    citeref.querySelector('.cit').style.display = 'none'
-                  } else {
-                    citeref.querySelector('.cit-err').style.display = 'none';
-                  }}, hoverDelay);
-                });
+      active =  setTimeout(
+        () => this.querySelector('.cite-info').style.display = 'none',
+        hoverDelay
+      );
+    });
   }
 
   initialChildNodes(nodes) {
@@ -60,35 +53,29 @@ export class CiteRef extends ArticleElement {
     const { key, data, index, mode} = this;
 
     // Unresolved citation
-    if (data == null) { 
-      return html`<span class ='citation-err'>??<div class='cit-err'>
-                      <div class='cit-err-arrow'></div>
-                      <b>Unresolved citation</b><br>"${key}"
-                    </div>
-                  </span>`; 
+    if (data == null) {
+      return html`<span class='cite-ref unresolved'>??<div class='cite-info'>
+<div class='cite-info-arrow'></div><b>Unresolved citation</b><br>"${key}"</div></span>`;
     }
 
     // Citation contents
-    const arrow = html`<div class='cit-head-arrow'></div>`;
-    const title = html`<div class='cit-head-title'>${data.title}</div>`;
-    const subtitle = data.venue ? html`<div class='cit-head-subtitle'>${data.venue}</div>` : null;
+    const arrow = html`<div class='cite-head-arrow'></div>`;
+    const title = html`<div class='cite-head-title'>${data.title}</div>`;
+    const subtitle = data.venue ? html`<div class='cite-head-subtitle'>${data.venue}</div>` : null;
     const info = infoBody(data);
     const desc = descBody(data);
 
     // Inline content
     const body = mode === 'inline-author' ? inlineContent(data, index) : index;
 
-    return html`<span class='citation'>
-                  ${body}
-                  <div class='cit'>
-                    <a class='cit-head' href=${data.url} target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
-                      ${arrow}${title}${subtitle}
-                    </a>
-                    <div class='cit-body'>
-                      ${info}${desc}
-                    </div>
-                  </div>
-                </span>`;
+    return html`<span class='cite-ref'>${body}<div class='cite-info'>
+      <a class='cite-head' href=${data.url} target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
+        ${arrow}${title}${subtitle}
+      </a>
+      <div class='cite-body'>
+        ${info}${desc}
+      </div>
+    </div></span>`;
   }
 }
 
@@ -129,9 +116,9 @@ function infoBody(data, max=2) {
     const arrow = html`<span style='position: absolute; transform: rotate(-90deg);'>&#9660;</span>`;
 
     button = html`<button style=${style} onclick=${onClick} info=${info} shortinfo=${shortInfo} authnum=${authNum}>${authNum}${arrow}</button>`;
-  } 
+  }
 
-  return html`<div class='cit-body-auth'>${shortInfo}${button}</div>`;
+  return html`<div class='cite-body-auth'>${shortInfo}${button}</div>`;
 }
 
 // Returns the description portion of the body, limits the description by tokens if over char limit
@@ -158,5 +145,5 @@ function descBody(data, charLimit=300) {
     button = html`<button style=${style} onclick=${onClick} abstract=${abstract} shortdesc=${shortDesc}>&#9660;</button>`;
   }
 
-  return html`<div class='cit-body-desc'>${shortDesc}${button}</div>`;
+  return html`<div class='cite-body-desc'>${shortDesc}${button}</div>`;
 }
