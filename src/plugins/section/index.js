@@ -9,6 +9,7 @@ const aliases = new Map([
   ['references', 'References']
 ]);
 
+// TODO maintain one-to-one top-level AST mapping (div.name)?
 export default function(ast) {
   visitNodes(ast, (node, parent) => {
     if (aliases.has(node.name)) {

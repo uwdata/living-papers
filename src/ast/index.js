@@ -315,7 +315,10 @@ export function removeChild(node, child) {
 export function cloneNode(node) {
   const clone = { ...node };
   if (clone.properties) {
-    clone.properties = { ...clone.properties };
+    clone.properties = {};
+    for (const key in node.properties) {
+      clone.properties[key] = { ...node.properties[key] };
+    }
   }
   if (clone.children) {
     clone.children = clone.children.map(child => cloneNode(child));

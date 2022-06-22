@@ -5,8 +5,9 @@ import { parseMarkdown } from '../parse/parse-markdown.js';
 import { cache } from '../util/cache.js';
 
 import {
-  citations, code, crossref, header, notes, runtime, section, sticky
+  citations, code, convert, crossref, header, notes, runtime, section, sticky
 } from '../plugins/index.js';
+import { cloneNode } from '../ast/index.js';
 import knitr from '../plugins/knitr/index.js';
 import pyodide from '../plugins/pyodide/index.js';
 
@@ -53,12 +54,8 @@ export async function compile(inputFile, options = {}) {
   const output = await outputOptions(context);
   const files = {};
 
-  if (output.latex) {
-    files.latex = await outputLatex(ast, context, output.latex);
-  }
-
   if (output.html) {
-    const astHTML = await transformAST(ast, context, [
+    const astHTML = await transformAST(cloneNode(ast), context, [
       crossref(numbered()),
       notes,
       sticky,
@@ -66,6 +63,16 @@ export async function compile(inputFile, options = {}) {
       section
     ]);
     files.html = await outputHTML(astHTML, context, output.html);
+  }
+
+  if (output.latex) {
+    // TODO: clean up, de-duplicate output dir determination
+    const { convert: plan, pdf = true } = output.latex;
+    const outputDir = path.join(pdf ? context.tempDir : context.outputDir, 'latex');
+    const astLatex = await transformAST(cloneNode(ast), context, [
+      convert({ plan, outputDir, htmlOptions: output.html })
+    ]);
+    files.latex = await outputLatex(astLatex, context, output.latex);
   }
 
   return {

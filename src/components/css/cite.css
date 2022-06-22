@@ -7,5 +7,94 @@
 }
 
 .cite-ref {
-  text-decoration: underline dotted #aaa;
+  font-weight: bold;
+  color: steelblue;
+}
+
+.cite-ref:hover {
+  color: lightblue;
+}
+
+.cite-ref.unresolved:hover {
+  color: maroon;
+}
+
+.cite-info {
+  display: none;
+  background-color: white;
+  z-index: 1;
+  position: absolute;
+  transform: translate(14px, -14px);
+  width: 300px;
+  font-size: small;
+  font-weight: 300;
+  color: black;
+  filter: drop-shadow(1px 1px 3px lightgray);
+  border-radius: 6px 6px 6px 6px;
+  border: .1px solid black;
+}
+
+.unresolved .cite-info {
+  text-align: center;
+  padding: 4px;
+  width: auto;
+  transform: translate(16px, -3px);
+}
+
+.cite-info-arrow {
+  position: absolute;
+  left: -12px;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 12px solid black;
+}
+
+.cite-head {
+  display: flex;
+  flex-direction: column;
+  background-color: whitesmoke;
+  padding: 4px 8px 4px 8px;
+  border-radius : 6px 6px 0 0;
+  line-height: 1;
+}
+
+.cite-head-title {
+  font-size: medium;
+  font-weight: 400;
+}
+
+.cite-head-subtitle {
+  padding-top: 4px;
+}
+
+.cite-head-arrow {
+  position: absolute;
+  left: -14px;
+  top: 14px;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 14px solid black;
+}
+
+.cite-head:hover {
+  background-image: linear-gradient(40deg, transparent 92%,97%,steelblue 105%);
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+.cite-body {
+  padding: 4px 8px 16px 8px;
+  border-radius : 0 0 6px 6px;
+  border-top: .1px solid black;
+  line-height: 1.3;
+}
+
+.cite-body-auth {
+  padding-bottom: 4px;
+}
+
+.cite-body-desc {
+  min-height: 108px;
+  padding-top: 4px;
+  border-top: .1px solid black;
 }
