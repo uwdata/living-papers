@@ -112,14 +112,9 @@ export default function(options = {}) {
         if (output !== 'pdf') {
           await element.screenshot({ path: outputPath });
         } else {
-          const { width, height } = await element.boundingBox();
-          logger.debug('convert to pdf', width, height, outputPath);
           await browser.pdf({
             html: await page.evaluate(el => el.outerHTML, element),
             path: outputPath,
-            pageRanges: '1',
-            // width: `${Math.ceil(width)}px`,
-            // height: `${Math.ceil(height)}px`,
           });
         }
         replaceNodes.add(+astId);
