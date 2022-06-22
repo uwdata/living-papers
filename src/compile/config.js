@@ -10,18 +10,24 @@ export function numbered() {
 
 export function parseContext() {
   return {
-    fence: ['abstract', 'acknowledgments', 'figure', 'table', 'teaser'],
+    fence: ['abstract', 'acknowledgments', 'aside', 'figure', 'table', 'teaser'],
     block: ['bibliography', 'equation', 'math'],
     xref: ['sec', 'fig', 'tbl', 'eqn'],
-    env: ['figure', 'table', 'teaser']
+    env: ['aside', 'figure', 'table', 'teaser']
   };
 }
 
 export async function outputOptions(context) {
-  const options = {
-    ...context.metadata.output,
-    ...context.output
-  };
+  const options = context.metadata.output || {};
+
+  // merge passed-in options with metadata options
+  for (const key in context.output) {
+    if (options[key]) {
+      options[key] = { ...options[key], ...context.output[key] };
+    } else {
+      options[key] = context.output[key];
+    }
+  }
 
   // include html output by default
   if (Object.keys(options).length === 0) {

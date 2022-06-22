@@ -1,3 +1,7 @@
+:root {
+  --margin-width: 500px;
+}
+
 /* Colors for Barnes-Hut theta values. */
 .t00 {
   color: rgb(59, 15, 112);

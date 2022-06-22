@@ -71,4 +71,12 @@ describe('compile', () => {
   it('an article with R code', () => {
     return compileTest('article/knitr.md');
   });
+
+  it('an article with layout features', () => {
+    return compileTest('article/layout.md');
+  });
+
+  it('an article with an acm template', () => {
+    return compileTest('article/acm.md');
+  });
 });

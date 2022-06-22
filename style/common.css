@@ -1,44 +1,63 @@
+/* Styles common to every theme */
 article {
-  --section-prefix: "§";
-  --equation-prefix: "Equation ";
-  --figure-prefix: "Figure ";
-  --table-prefix: "Table ";
-  --cite-list-start: "[";
-  --cite-list-end: "]";
-  --double-quote-start: "“";
-  --double-quote-end: "”";
-  --single-quote-start: "‘";
-  --single-quote-end: "’";
-  --highlight-color: #ff0;
-  --tiny-size: 0.5em;
-  --script-size: 0.7em;
-  --smaller-size: 0.8em;
-  --small-size: 0.9em;
-  --large-size: 1.2em;
-  --larger-size: 1.4em;
-  --huge-size: 1.8em;
+	--section-prefix: "§";
+	--equation-prefix: "Equation ";
+	--figure-prefix: "Figure ";
+	--table-prefix: "Table ";
+	--cite-list-start: "[";
+	--cite-list-end: "]";
+	--double-quote-start: "“";
+	--double-quote-end: "”";
+	--single-quote-start: "‘";
+	--single-quote-end: "’";
+	--highlight-color: #ff0;
+	--tiny-size: 0.5em;
+	--script-size: 0.7em;
+	--smaller-size: 0.8em;
+	--small-size: 0.9em;
+	--large-size: 1.2em;
+	--larger-size: 1.4em;
+	--huge-size: 1.8em;
+}
+
+h1 {
+	font-size: 2rem;
+}
+
+h2 {
+	font-size: 1.4rem;
+}
+
+h3 {
+	font-size: 1.15rem;
+}
+
+h4,
+h5,
+h6 {
+	font-size: 1rem;
 }
 
 article > p {
-  line-height: 1.3em;
+	line-height: 1.3em;
 }
 
 sub,
 sup {
-  line-height: 0;
+	line-height: 0;
 }
 
 q {
-  quotes: var(--double-quote-start) var(--double-quote-end);
+	quotes: var(--double-quote-start) var(--double-quote-end);
 }
 
 q.single {
-  quotes: var(--single-quote-start) var(--single-quote-end);
+	quotes: var(--single-quote-start) var(--single-quote-end);
 }
 
 .action {
-  cursor: pointer;
-  text-decoration: underline dashed 1px #444;
+	cursor: pointer;
+	text-decoration: underline dashed 1px #444;
 }
 
 header .author-org {
@@ -46,67 +65,57 @@ header .author-org {
 }
 
 header .author-org::before {
-  content: " · "
+	content: " · "
 }
 
-h1[data-counter]::before,
+main h1[data-counter]::before,
 h2[data-counter]::before,
 h3[data-counter]::before {
-  content: attr(data-counter) " ";
+	content: attr(data-counter) " ";
 }
 
 figure > figcaption {
-  font-size: 0.9em;
+	font-size: 0.9em;
+	padding-bottom: 1ex;
 }
 
 figure.teaser > figcaption[data-counter]::before,
 figure.figure > figcaption[data-counter]::before {
-  content: var(--figure-prefix) attr(data-counter) ". ";
+	content: var(--figure-prefix) attr(data-counter) ". ";
 }
 
 figure.table > figcaption[data-counter]::before {
-  content: var(--table-prefix) attr(data-counter) ". ";
+	content: var(--table-prefix) attr(data-counter) ". ";
 }
 
 table {
-  border-collapse: collapse;
-  margin: 0;
-  margin-bottom: 2px;
+	border-spacing: 0;
+	border-collapse: collapse;
+	margin: 0;
+	margin-bottom: 2px;
 }
 
 thead tr {
-  border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
 }
 
 thead th,
 tbody td {
-  font-size: var(--small-size);
-  padding: 1px 0.33em;
-  text-align: left;
-  font-variant-numeric: tabular-nums;
+	font-size: var(--small-size);
+	padding: 1px 0.33em;
+	text-align: left;
+	font-variant-numeric: tabular-nums;
 }
 
 tbody tr {
-  border-bottom: 1px solid #eee;
-}
-
-.note {
-  counter-increment: notes;
-}
-
-.note > sup::before {
-  content: counter(notes);
-}
-
-.note-content::before {
-  content: counter(notes) ". ";
+	border-bottom: 1px solid #eee;
 }
 
 ol.references {
-  padding-inline-start: 2em;
+	padding-inline-start: 2em;
 }
 
 ol.references li {
-  font-size: var(--small-size);
-  margin-bottom: 6px;
+	font-size: var(--small-size);
+	margin-bottom: 6px;
 }

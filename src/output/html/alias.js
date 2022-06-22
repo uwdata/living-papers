@@ -7,9 +7,9 @@ const aliasMap = new Map([
   ['equation', 'tex-equation'],
   ['image', 'img'],
   ['math', 'tex-math'],
-  ['note', 'span'],
   ['link', 'a'],
   ['quote', 'q'],
+  ['sticky', 'div'],
   ['teaser', 'figure'],
   ['raw', null]
 ]);

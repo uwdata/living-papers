@@ -25,10 +25,10 @@ layout = true
 estimate = false
 ~~~
 
-::: figure { .sticky }
+::: aside {.margin .sticky }
 [:barnes-hut:]{
-  width=400
-  height=400
+  width=500
+  height=500
   size=`step`
   theta=`theta`
   charge=`charge`

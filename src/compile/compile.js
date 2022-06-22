@@ -5,7 +5,7 @@ import { parseMarkdown } from '../parse/parse-markdown.js';
 import { cache } from '../util/cache.js';
 
 import {
-  citations, code, convert, crossref, header, notes, runtime, section
+  citations, code, convert, crossref, header, notes, runtime, section, sticky
 } from '../plugins/index.js';
 import { cloneNode } from '../ast/index.js';
 import knitr from '../plugins/knitr/index.js';
@@ -58,6 +58,7 @@ export async function compile(inputFile, options = {}) {
     const astHTML = await transformAST(cloneNode(ast), context, [
       crossref(numbered()),
       notes,
+      sticky,
       header,
       section
     ]);

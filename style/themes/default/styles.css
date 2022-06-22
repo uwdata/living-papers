@@ -1,0 +1,81 @@
+body {
+	font: 16px/1.5 -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	background: #fff;
+	color: #000;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: 600;
+	line-height: 1.25;
+	margin: 24px 0 16px;
+}
+
+h1,
+h2 {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	padding-bottom: 6px;
+	width: fit-content;
+}
+
+article p,
+article > ul,
+article > ol,
+article > table {
+	margin: 12px 0;
+}
+
+td,
+th {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+	transition: 0.1s ease-out;
+}
+
+th,
+tr:hover td {
+	background: rgba(0, 0, 0, 0.1);
+}
+
+.sticky {
+	background: rgba(255, 255, 255, 0.8);
+	backdrop-filter: blur(4px);
+	padding: 2ex;
+}
+
+.sticky:not(.margin) {
+	margin: 0 -2ex;
+}
+
+.note {
+	padding: 2ex;
+	border-radius: 8px;
+	background: #fff;
+	font-style: inherit;
+	transition: 0.1s ease-out;
+}
+
+.inlinenote:hover .inlinenote-number,
+.inlinenote:hover .note,
+.inlinenote:hover .note::before {
+	background: #cdc8f0;
+}
+
+.inlinenote-number {
+	border-radius: 4px;
+	margin: -3px;
+	padding: 1px 3px 3px;
+}
+
+.inlinenote .note::before {
+	left: -24px;
+	background: #fff;
+	padding: 2ex;
+	margin: -2ex;
+	padding-right: 16px;
+	border-radius: 8px 0 0 8px;
+	transition: 0.1s ease-out;
+}

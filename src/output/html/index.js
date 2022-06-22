@@ -18,6 +18,7 @@ export default async function(ast, context, options) {
     cssFile = 'bundle.css',
     jsFile = 'bundle.js',
     template = defaultTemplate(),
+    theme = 'default',
     lang = 'en',
     dir = 'ltr',
     styles,
@@ -29,6 +30,8 @@ export default async function(ast, context, options) {
   const styleDir = path.join(libDir, 'style');
   const runtimePath = path.join(tempDir, 'runtime.js');
   const entryPath = path.join(tempDir, 'entry.js');
+  const styleAssetsDir = path.join(styleDir, 'themes', theme, 'assets');
+  const assetsPath = path.join(outputDir, 'assets');
   const htmlPath = path.join(outputDir, htmlFile);
   const cssPath = path.join(outputDir, cssFile);
   const jsPath = path.join(tempDir, jsFile);
@@ -57,6 +60,7 @@ export default async function(ast, context, options) {
     path.join(styleDir, 'common.css'),
     path.join(styleDir, 'layout.css'),
     ...componentCSSPaths(activeComponents),
+    path.join(styleDir, 'themes', theme, 'styles.css'),
     ...userCSSPaths(inputDir, styles)
   ];
   const css = await bundleCSS(stylePaths, rollupOptions.minify);
@@ -92,6 +96,9 @@ export default async function(ast, context, options) {
     copy(jsPath, path.join(outputDir, jsFile));
   }
 
+  // copy all assets in style/assets over
+  copy(styleAssetsDir, assetsPath);
+
   // write html file or return html text
   return htmlFile
     ? (await writeFile(htmlPath, html), htmlPath)
@@ -123,6 +130,8 @@ function entryScript({ root, bind, context, components, runtime }) {
   const script = [];
   const refdata = context.citations?.references;
   const hasRefs = refdata?.length > 0;
+  const hasSticky = context.sticky;
+  const hasOnload = runtime || hasRefs || hasSticky;
 
   components.forEach(entry => {
     const spec = entry.default ? entry.import : `{ ${entry.import} }`;
@@ -137,23 +146,27 @@ import * as module from './runtime.js';`);
   if (hasRefs) {
     script.push(`import { reference } from '${src}output/html/reference.js';`);
   }
+  if (hasSticky) {
+    script.push(`import { scrollManager } from '${src}output/html/scroll-manager.js';`);
+  }
 
   components.forEach(entry => {
     script.push(`window.customElements.define('${entry.name}', ${entry.import});`);
   });
 
-  if (runtime || hasRefs) {
+  if (hasOnload) {
     script.push(`
 window.addEventListener('DOMContentLoaded', () => {
   const root = document.querySelector('${root}');`);
-  }
-  if (hasRefs) {
-    script.push(`  reference(root, ${JSON.stringify(refdata)});`);
-  }
-  if (runtime) {
-    script.push(`  hydrate(new ObservableRuntime, root, module, ${JSON.stringify(bind)});`);
-  }
-  if (runtime || hasRefs) {
+    if (hasRefs) {
+      script.push(`  reference(root, ${JSON.stringify(refdata)});`);
+    }
+    if (runtime) {
+      script.push(`  hydrate(new ObservableRuntime, root, module, ${JSON.stringify(bind)});`);
+    }
+    if (hasSticky) {
+      script.push('  scrollManager(root);');
+    }
     script.push(`});`);
   }
 

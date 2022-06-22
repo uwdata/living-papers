@@ -31,6 +31,12 @@
         "css": "css/cross-ref.css"
       },
       {
+        "name": "inline-note",
+        "import": "InlineNote",
+        "file": "inline-note.js",
+        "css": "css/inline-note.css"
+      },
+      {
         "name": "range-text",
         "import": "RangeText",
         "file": "range-text.js",

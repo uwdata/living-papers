@@ -1,0 +1,9 @@
+.note {
+	font-style: italic;
+}
+
+.inlinenote .note::before {
+	content: "[" attr(data-number) "]";
+	position: absolute;
+	left: -32px;
+}
