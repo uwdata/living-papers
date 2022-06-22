@@ -17,18 +17,18 @@ export default function() {
     <meta property="description" content="{{description}}" />
 {{/description}}
 {{#selfContained}}
-    <style>\n{{css}}\n    </style>
+    <style>\n{{{css}}}\n    </style>
 {{/selfContained}}
 {{^selfContained}}
     <link rel="stylesheet" href="{{css}}" />
 {{/selfContained}}
   </head>
   <body>
-    {{content}}
+    {{{content}}}
 {{#script}}
 {{#selfContained}}
     <script type="module">
-{{script}}
+{{{script}}}
     </script>
 {{/selfContained}}
 {{^selfContained}}
