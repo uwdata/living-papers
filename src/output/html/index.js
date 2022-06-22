@@ -51,11 +51,8 @@ export default async function(ast, context, options) {
     bind,
     context,
     components: activeComponents,
-    metadata,
     runtime: !!script,
   });
-
-
 
   // bundle style sheets
   const stylePaths = [
@@ -128,7 +125,7 @@ async function bundleCSS(styles, minify = true) {
     : css;
 }
 
-function entryScript({ root, bind, context, components, metadata, runtime }) {
+function entryScript({ root, bind, context, components, runtime }) {
   const src = fileURLToPath(new URL('../..', import.meta.url));
   const script = [];
   const refdata = context.citations?.references;
