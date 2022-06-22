@@ -58,11 +58,16 @@ table {
 	margin: 0;
 }
 
-section>p {
+ul,
+ol {
+	padding-left: 1.5em;
+}
+
+section > p {
 	margin-bottom: 16px;
 }
 
-section>p:last-child {
+section > p:last-child {
 	margin-bottom: 0;
 }
 

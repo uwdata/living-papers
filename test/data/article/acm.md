@@ -18,7 +18,9 @@ author:
   - name: Julius P. Kumquat
     org: The Kumquat Consortium, USA
 bibliography: references.bib
-theme: acm-article
+output:
+  html:
+    theme: acm
 version: 1.0
 ---
 

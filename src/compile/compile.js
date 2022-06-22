@@ -5,7 +5,7 @@ import { parseMarkdown } from '../parse/parse-markdown.js';
 import { cache } from '../util/cache.js';
 
 import {
-  citations, code, crossref, header, margin, notes, runtime, section
+  citations, code, crossref, header, notes, runtime, section, sticky
 } from '../plugins/index.js';
 import knitr from '../plugins/knitr/index.js';
 import pyodide from '../plugins/pyodide/index.js';
@@ -61,7 +61,7 @@ export async function compile(inputFile, options = {}) {
     const astHTML = await transformAST(ast, context, [
       crossref(numbered()),
       notes,
-      margin,
+      sticky,
       header,
       section
     ]);

@@ -38,7 +38,7 @@ h6 {
 	font-size: 1rem;
 }
 
-article>p {
+article > p {
 	line-height: 1.3em;
 }
 
@@ -74,17 +74,17 @@ h3[data-counter]::before {
 	content: attr(data-counter) " ";
 }
 
-figure>figcaption {
+figure > figcaption {
 	font-size: 0.9em;
 	padding-bottom: 1ex;
 }
 
-figure.teaser>figcaption[data-counter]::before,
-figure.figure>figcaption[data-counter]::before {
+figure.teaser > figcaption[data-counter]::before,
+figure.figure > figcaption[data-counter]::before {
 	content: var(--figure-prefix) attr(data-counter) ". ";
 }
 
-figure.table>figcaption[data-counter]::before {
+figure.table > figcaption[data-counter]::before {
 	content: var(--table-prefix) attr(data-counter) ". ";
 }
 

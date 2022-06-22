@@ -158,7 +158,7 @@
           },
           {
             "type": "component",
-            "name": "note",
+            "name": "inline-note",
             "children": [
               {
                 "type": "component",

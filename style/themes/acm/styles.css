@@ -128,8 +128,6 @@ a {
 .sticky {
 	background: #fff;
 	padding: 0 2ex;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-
 }
 
 .sticky:not(.margin) {

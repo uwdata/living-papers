@@ -1,6 +1,5 @@
 body {
 	font: 16px/1.5 -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-
 	background: #fff;
 	color: #000;
 }
@@ -23,7 +22,10 @@ h2 {
 	width: fit-content;
 }
 
-article p {
+article p,
+article > ul,
+article > ol,
+article > table {
 	margin: 12px 0;
 }
 
@@ -42,8 +44,6 @@ tr:hover td {
 	background: rgba(255, 255, 255, 0.8);
 	backdrop-filter: blur(4px);
 	padding: 2ex;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	border-radius: 8px;
 }
 
 .sticky:not(.margin) {

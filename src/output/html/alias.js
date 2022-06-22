@@ -9,6 +9,7 @@ const aliasMap = new Map([
   ['math', 'tex-math'],
   ['link', 'a'],
   ['quote', 'q'],
+  ['sticky', 'div'],
   ['teaser', 'figure'],
   ['raw', null]
 ]);

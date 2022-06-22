@@ -18,6 +18,7 @@ export default async function(ast, context, options) {
     cssFile = 'bundle.css',
     jsFile = 'bundle.js',
     template = defaultTemplate(),
+    theme = 'default',
     lang = 'en',
     dir = 'ltr',
     styles,
@@ -29,7 +30,7 @@ export default async function(ast, context, options) {
   const styleDir = path.join(libDir, 'style');
   const runtimePath = path.join(tempDir, 'runtime.js');
   const entryPath = path.join(tempDir, 'entry.js');
-  const styleAssetsDir = path.join(styleDir, 'assets');
+  const styleAssetsDir = path.join(styleDir, 'themes', theme, 'assets');
   const assetsPath = path.join(outputDir, 'assets');
   const htmlPath = path.join(outputDir, htmlFile);
   const cssPath = path.join(outputDir, cssFile);
@@ -54,7 +55,7 @@ export default async function(ast, context, options) {
     runtime: !!script,
   });
 
-  const theme = metadata?.theme || 'normal'; // default theme is normal
+
 
   // bundle style sheets
   const stylePaths = [
@@ -62,7 +63,7 @@ export default async function(ast, context, options) {
     path.join(styleDir, 'common.css'),
     path.join(styleDir, 'layout.css'),
     ...componentCSSPaths(activeComponents),
-    path.join(styleDir, `themes/${theme}.css`),
+    path.join(styleDir, 'themes', theme, 'styles.css'),
     ...userCSSPaths(inputDir, styles)
   ];
   const css = await bundleCSS(stylePaths, rollupOptions.minify);
@@ -132,7 +133,8 @@ function entryScript({ root, bind, context, components, metadata, runtime }) {
   const script = [];
   const refdata = context.citations?.references;
   const hasRefs = refdata?.length > 0;
-  const hasStickys = metadata.hasStickyElements;
+  const hasSticky = context.sticky;
+  const hasOnload = runtime || hasRefs || hasSticky;
 
   components.forEach(entry => {
     const spec = entry.default ? entry.import : `{ ${entry.import} }`;
@@ -147,7 +149,7 @@ import * as module from './runtime.js';`);
   if (hasRefs) {
     script.push(`import { reference } from '${src}output/html/reference.js';`);
   }
-  if (hasStickys) {
+  if (hasSticky) {
     script.push(`import { scrollManager } from '${src}output/html/scroll-manager.js';`);
   }
 
@@ -155,21 +157,19 @@ import * as module from './runtime.js';`);
     script.push(`window.customElements.define('${entry.name}', ${entry.import});`);
   });
 
-  if (runtime || hasRefs || hasStickys) {
+  if (hasOnload) {
     script.push(`
 window.addEventListener('DOMContentLoaded', () => {
   const root = document.querySelector('${root}');`);
-  }
-  if (hasRefs) {
-    script.push(`  reference(root, ${JSON.stringify(refdata)});`);
-  }
-  if (runtime) {
-    script.push(`  hydrate(new ObservableRuntime, root, module, ${JSON.stringify(bind)});`);
-  }
-  if (hasStickys) {
-    script.push('  scrollManager(root);');
-  }
-  if (runtime || hasRefs || hasStickys) {
+    if (hasRefs) {
+      script.push(`  reference(root, ${JSON.stringify(refdata)});`);
+    }
+    if (runtime) {
+      script.push(`  hydrate(new ObservableRuntime, root, module, ${JSON.stringify(bind)});`);
+    }
+    if (hasSticky) {
+      script.push('  scrollManager(root);');
+    }
     script.push(`});`);
   }
 

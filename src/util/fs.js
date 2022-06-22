@@ -9,9 +9,7 @@ export function ls(path) {
 }
 
 export function copy(source, target) {
-  fs.cp(source, target, {
-    recursive: true,
-  });
+  return fs.cp(source, target, { recursive: true });
 }
 
 export function rmrf(path) {

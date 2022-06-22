@@ -27,7 +27,9 @@ export function scrollManager(root) {
       // getBoundingClientRect has sub-pixel precision unlike offsetTop
       const stickyRect = sticky.getBoundingClientRect();
       // un-account for existing translation and scroll
-      const stickyOffsetTop = stickyRect.top + window.scrollY - +sticky.style.transform.slice('translateY('.length, -'px)'.length);
+      const stickyOffsetTop = stickyRect.top
+        + window.scrollY
+        - +sticky.style.transform.slice('translateY('.length, -'px)'.length);
 
       let endY = end.offsetTop;
       if (untilBottom) {
