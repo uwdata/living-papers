@@ -36,6 +36,10 @@ describe('compile', () => {
     return compileTest('article/basic.md');
   });
 
+  it('an article with layout features', () => {
+    return compileTest('article/layout.md');
+  });
+
   it('an article with input bindings', () => {
     return compileTest('article/binding.md');
   });
@@ -72,11 +76,7 @@ describe('compile', () => {
     return compileTest('article/knitr.md');
   });
 
-  it('an article with layout features', () => {
-    return compileTest('article/layout.md');
-  });
-
-  it('an article with an acm template', () => {
+  it('an article with an acm theme', () => {
     return compileTest('article/acm.md');
   });
 });
