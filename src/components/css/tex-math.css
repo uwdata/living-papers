@@ -1,4 +1,4 @@
-.katex {
+:not(.katex-display) > .katex {
   font-size: 1em !important;
 }
 
