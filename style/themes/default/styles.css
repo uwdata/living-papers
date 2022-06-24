@@ -11,7 +11,7 @@ h4,
 h5,
 h6 {
 	font-weight: 600;
-	line-height: 1.25;
+	line-height: 1.25em;
 	margin: 24px 0 16px;
 }
 
@@ -40,42 +40,38 @@ tr:hover td {
 	background: rgba(0, 0, 0, 0.1);
 }
 
+figure > figcaption {
+	font-weight: 600;
+	font-size: var(--small-size);
+	line-height: 1.4em;
+	padding-bottom: 1ex;
+}
+
 .sticky {
 	background: rgba(255, 255, 255, 0.8);
 	backdrop-filter: blur(4px);
-	padding: 2ex;
 }
 
-.sticky:not(.margin) {
-	margin: 0 -2ex;
+.aside,
+.note {
+	font-style: inherit;
+	font-size: var(--small-size);
 }
 
 .note {
-	padding: 2ex;
-	border-radius: 8px;
 	background: #fff;
-	font-style: inherit;
 	transition: 0.1s ease-out;
 }
 
-.inlinenote:hover .inlinenote-number,
-.inlinenote:hover .note,
-.inlinenote:hover .note::before {
+.inline-note:hover .inline-note-number,
+.inline-note:hover .note {
 	background: #cdc8f0;
 }
 
-.inlinenote-number {
-	border-radius: 4px;
-	margin: -3px;
-	padding: 1px 3px 3px;
+.inline-note-number {
+	padding: 1px;
 }
 
-.inlinenote .note::before {
-	left: -24px;
-	background: #fff;
-	padding: 2ex;
-	margin: -2ex;
-	padding-right: 16px;
-	border-radius: 8px 0 0 8px;
-	transition: 0.1s ease-out;
+.inline-note .note::before {
+	font-size: var(--smaller-size);
 }

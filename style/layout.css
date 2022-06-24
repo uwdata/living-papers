@@ -1,11 +1,9 @@
 /* Only handles layout, e.g. no color styles */
-
 :root {
 	--max-article-width: 100ex;
 	--article-padding: 32px;
 	--margin-width: 400px;
 	--gap-width: 100px;
-
 	--article-width: min(var(--max-article-width), calc(100vw - var(--article-padding) * 2 - var(--gap-width) - var(--margin-width)));
 	--article-margin-left: max(0px, calc(((100vw - var(--article-width) - var(--gap-width) - var(--margin-width)) / 2)));
 }
@@ -145,10 +143,6 @@ figure {
 	padding: 5px 0;
 }
 
-figcaption {
-	font-weight: 600;
-}
-
 figure img,
 figure svg,
 figure canvas {
@@ -167,7 +161,7 @@ footer {
 
 @media (max-width: 1100px) {
 	:root {
-		--article-padding: 8px;
+		--article-padding: 16px;
 	}
 
 	article {
@@ -190,12 +184,12 @@ footer {
 		width: auto;
 	}
 
-	.inlinenote-number {
+	.inline-note-number {
 		cursor: pointer;
 	}
 
-	.inlinenote:not(.open) .note,
-	.inlinenote .note::before {
+	.inline-note:not(.open) .note,
+	.inline-note .note::before {
 		display: none;
 	}
 }

@@ -20,28 +20,6 @@ article {
 	--huge-size: 1.8em;
 }
 
-h1 {
-	font-size: 2rem;
-}
-
-h2 {
-	font-size: 1.4rem;
-}
-
-h3 {
-	font-size: 1.15rem;
-}
-
-h4,
-h5,
-h6 {
-	font-size: 1rem;
-}
-
-article > p {
-	line-height: 1.3em;
-}
-
 sub,
 sup {
 	line-height: 0;
@@ -60,6 +38,10 @@ q.single {
 	text-decoration: underline dashed 1px #444;
 }
 
+header h1 {
+	font-size: var(--huge-size);
+}
+
 header .author-org {
 	font-style: italic;
 }
@@ -68,15 +50,28 @@ header .author-org::before {
 	content: " · "
 }
 
-main h1[data-counter]::before,
+h1 {
+	font-size: 1.4rem;
+}
+
+h2 {
+	font-size: 1.2rem;
+}
+
+h3 {
+	font-size: 1.1rem;
+}
+
+h4,
+h5,
+h6 {
+	font-size: 1rem;
+}
+
+h1[data-counter]::before,
 h2[data-counter]::before,
 h3[data-counter]::before {
 	content: attr(data-counter) " ";
-}
-
-figure > figcaption {
-	font-size: 0.9em;
-	padding-bottom: 1ex;
 }
 
 figure.teaser > figcaption[data-counter]::before,

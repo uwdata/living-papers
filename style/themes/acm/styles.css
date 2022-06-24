@@ -90,10 +90,10 @@ h4 {
 	line-height: 1.25;
 }
 
-h1+p,
-h2+p,
-h3+p,
-h4+p {
+h1 + p,
+h2 + p,
+h3 + p,
+h4 + p {
 	text-indent: unset;
 }
 
@@ -134,13 +134,13 @@ a {
 	margin: 0 -2ex;
 }
 
-.inlinenote:hover .inlinenote-number,
-.inlinenote:hover .note {
+.inline-note:hover .inline-note-number,
+.inline-note:hover .note {
 	background: #ff9;
 }
 
 .note p,
-.inlinenote {
+.inline-note {
 	text-indent: 0;
 }
 
