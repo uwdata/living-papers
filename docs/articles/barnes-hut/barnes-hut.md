@@ -2,6 +2,7 @@
 title: "The Barnes-Hut Approximation: Efficient computation of N-body forces"
 author:
   - name: Jeffrey Heer
+    org: University of Washington
 section-numbers: false
 output:
   html:
@@ -25,7 +26,7 @@ layout = true
 estimate = false
 ~~~
 
-::: aside {.margin .sticky }
+::: aside { .margin .sticky }
 [:barnes-hut:]{
   width=500
   height=500
