@@ -4,12 +4,13 @@ import { ArticleElement } from './article-element.js';
 let numNotes = 0; // incrementing counter of notes
 
 export class InlineNote extends ArticleElement {
+  constructor() {
+    super();
+    this.number = ++numNotes;
+  }
+
   render() {
-    let noteNumber = ++numNotes;
-    return html`
-    <span class="inlinenote">
-        <sup class="inlinenote-number">[${noteNumber}]</sup>
-        <span class="note margin" data-number="${noteNumber}">${this.__children}</span>
-    </span>`;
+    const num = this.number;
+    return html`<span class="inline-note"><sup class="inline-note-number">${num}</sup><span class="note margin" data-number="${num}">${this.__children}</span></span>`;
   }
 }
