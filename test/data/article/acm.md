@@ -24,7 +24,7 @@ output:
 version: 1.0
 ---
 
-::: figure
+::: teaser
 ![Idyll teaser image](https://idl.cs.washington.edu/static/images/figures/idyll.png)
 | Seattle Mariners at Spring Training, 2010.
 :::
@@ -53,7 +53,7 @@ The "`acmart`" document class can be used to prepare articles for any ACM public
 
 As noted in the introduction, the "`acmart`" document class can be used to prepare many different kinds of documentation --- a double-blind initial submission of a full-length technical paper, a two-page SIGGRAPH Emerging Technologies abstract, a "camera-ready" journal article, a SIGCHI Extended Abstract, and more --- all by selecting the appropriate *template style* and *template parameters*.
 
-This document will explain the major features of the document class. For further information, the *$\LaTeX$ User's Guide* is available from [https://www.acm.org/publications/proceedings-template](https://www.acm.org/publications/proceedings-template). ^[The "justified text" on this line looks strange because the link is so large.]
+This document will explain the major features of the document class. For further information, the *$\LaTeX$ User's Guide* is available from [https://www.acm.org/publications/proceedings-template](https://www.acm.org/publications/proceedings-template).^[The "justified text" on this line looks strange because the link is so large.]
 
 ## Template Styles
 
@@ -101,7 +101,7 @@ Modifying the template --- including but not limited to: adjusting margins, type
 **Your document will be returned to you for revision if modifications are discovered.**
 
 ::: figure
-For any Living Papers theme, you can override the default column sizes and margins simply by setting CSS variables in `style.scss`:
+For any Living Papers theme, you can override the default column sizes and margins simply by setting CSS variables in `style.css`:
 
 ```scss {style="font-style:normal"}
 :root {
@@ -136,7 +136,7 @@ If your title is lengthy, you must define a short version to be used in the page
 
 # Authors and Affiliations
 
-Each author must be defined separately for accurate metadata identification. Multiple authors may share one affiliation. Authors' names should not be abbreviated; use full first names wherever possible. Include authors' e-mail addresses whenever possible ^[TODO: support email addresses].
+Each author must be defined separately for accurate metadata identification. Multiple authors may share one affiliation. Authors' names should not be abbreviated; use full first names wherever possible. Include authors' e-mail addresses whenever possible^[TODO: support email addresses].
 
 Grouping authors’ names or e-mail addresses, or providing an "e-mail alias," as shown below, is not acceptable:
 
@@ -186,7 +186,7 @@ CCS concepts and user-defined keywords are required for for all articles over tw
 
 # Sectioning Commands
 
-Your work should use standard $\LaTeX$ sectioning commands: `section`, `subsection`, `subsubsection`, and `paragraph`. They should be numbered; do not remove the numbering from the commands. ^[Your work should use standard Markdown sectioning commands:
+Your work should use standard $\LaTeX$ sectioning commands: `section`, `subsection`, `subsubsection`, and `paragraph`. They should be numbered; do not remove the numbering from the commands.^[Your work should use standard Markdown sectioning commands:
 `# Top level header`, `## Second level`, `### Third level`. They should *not* be numbered.]
 
 Simulating a sectioning command by setting the first word or words of a paragraph in boldface or italicized text is **not allowed.**
@@ -201,7 +201,7 @@ Because tables cannot be split across pages, the best placement for them is typi
 
 Immediately following this sentence is the point at which @fig:freq is included in the input file; compare the placement of the table here with the table in the printed output of this document.
 
-::: figure {#freq}
+::: table {#freq}
 | Frequency of Special Characters
 
 | Non-English or Math | Frequency   | Comments          |
@@ -217,7 +217,7 @@ To set a wider table [^2], which takes up the whole width of the page's live are
 [^1]: In the HTML output format, tables should be placed where they are most logically relevant.
 [^2]: In this ACM theme, tables take up the whole main column width by default.
 
-::: figure {#commands}
+::: table {#commands}
 | Some Typical Commands
 
 | Command   | A Number | Comments         |
@@ -227,4 +227,4 @@ To set a wider table [^2], which takes up the whole width of the page's live are
 | `\table`  |      400 | For wider tables |
 :::
 
-Always use midrule to separate table header rows from data rows, and use it only for this purpose. This enables assistive technologies to recognise table headers and support their users in navigating tables more easily. ^[Living Papers tables are even better for screenreaders and accessibility!]
+Always use midrule to separate table header rows from data rows, and use it only for this purpose. This enables assistive technologies to recognise table headers and support their users in navigating tables more easily.^[Living Papers tables are even better for screenreaders and accessibility!]
