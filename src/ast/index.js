@@ -1,12 +1,14 @@
 const VALUE = 'value';
 const EVENT = 'event';
 const EXPRESSION = 'expression';
+const TEXTNODE = 'textnode';
+const COMPONENT = 'component';
 
 // -- AST Nodes ----
 
 export function createTextNode(text = '') {
 	return {
-		type: 'textnode',
+		type: TEXTNODE,
 		value: String(text)
 	};
 }
@@ -15,7 +17,7 @@ export function createComponentNode(name, properties, children) {
   const hasProps = properties && Object.keys(properties).length;
   const hasKids = children && children.length;
 	return {
-		type: 'component',
+		type: COMPONENT,
     name: name.toLowerCase(),
 		properties: hasProps ? properties : undefined,
 		children: hasKids ? children : undefined
@@ -23,15 +25,19 @@ export function createComponentNode(name, properties, children) {
 }
 
 export function isTextNode(ast) {
-	return ast.type === 'textnode';
+	return ast.type === TEXTNODE;
 }
 
 export function isComponentNode(ast) {
-	return ast.type === 'component';
+	return ast.type === COMPONENT;
 }
 
-export function getNodeName(node) {
-  return node?.name;
+export function isCustomComponentNode(ast) {
+  return isComponentNode(ast) && ast.name?.includes('-');
+}
+
+export function getNodeName(ast) {
+  return ast?.name;
 }
 
 // -- AST Node Properties ----
@@ -154,6 +160,20 @@ export function getPropertyValue(node, key) {
  */
 export function hasProperty(node, key) {
   return node.properties?.hasOwnProperty(key) || false;
+}
+
+/**
+ * Test if a node has one or more expression-typed properties.
+ * @param {object} node The AST node.
+ * @return {boolean} True if the node has an expression-typed property, else false.
+ */
+export function hasExpressionProperty(node) {
+  for (const key of getPropertyKeys(node)) {
+    if (getPropertyType(node, key) === EXPRESSION) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /**
