@@ -45,7 +45,6 @@ function observeAttrs(resolve, attrs) {
         console.error(value.error);
       }
     });
-    node.setAttribute('data-observer', true);
     node.observers = node.observers || new Map;
     node.observers.set(name, observer);
     return observer;

@@ -57,7 +57,7 @@ export default function({ html = {}, ...options } = {}) {
     for (const id of prop) {
       const node = nodes.get(id);
       await convertProperties(await get(id), node);
-      if (isSVGImage(node)) {
+      if (isSVGImageNode(node)) {
         svg.add(id); // svg may have been determined dynamically
       }
     }
