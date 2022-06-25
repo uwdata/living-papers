@@ -26,7 +26,7 @@ export class Observer {
   update(status, value) {
     this.status = status;
     if (status !== PENDING) this.value = value;
-    this.callback(status, value);
+    this.callback(this.status, this.value);
   }
 
   pending() {
