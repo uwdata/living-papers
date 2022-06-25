@@ -1,9 +1,6 @@
 import { html } from 'lit';
+import { Observer, PENDING, FULFILLED, ERROR } from '../runtime/observer';
 import { ArticleElement } from './article-element';
-
-const PENDING = 'pending';
-const FULFILLED = 'fulfilled';
-const ERROR = 'error';
 
 export class CellView extends ArticleElement {
   static get properties() {
@@ -16,19 +13,13 @@ export class CellView extends ArticleElement {
   constructor() {
     super();
     this.status = PENDING;
-    this.value = undefined;
-    this.observer = {
-      fulfilled: (value) => {
-        this.status = FULFILLED;
+    this.observer = new Observer((status, value) => {
+      this.status = status;
+      if (status !== PENDING) {
         this.value = value;
         this.dispatchEvent(new Event('change'));
-      },
-      rejected: (error, name) => {
-        this.status = ERROR;
-        this.value = { error, name };
-        this.dispatchEvent(new Event('change'));
       }
-    };
+    });
   }
 
   render() {

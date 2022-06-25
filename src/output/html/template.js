@@ -7,6 +7,9 @@ export default function() {
 {{#favicon}}
     <link rel="shortcut icon" type="image/x-icon" href="{{.}}" />
 {{/favicon}}
+{{#baseURL}}
+    <base href="{{.}}" />
+{{/baseURL}}
 {{#title}}
     <title>{{title}}</title>
     <meta property="og:title" content="{{title}}" />

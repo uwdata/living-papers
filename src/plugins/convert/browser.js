@@ -26,7 +26,7 @@ async function launchBrowser(options, onClose) {
   };
 }
 
-async function pdf(impl, { html, path }) {
+async function pdf(impl, { html, path, baseURL }) {
   const page = await impl.newPage();
   await page.setContent(`
     <style>
@@ -34,6 +34,7 @@ async function pdf(impl, { html, path }) {
         body { break-inside: avoid; margin: 0; padding: 0; }
       }
     </style>
+    ${baseURL ? `<base href="${baseURL}" />` : ''}
     ${html}`);
 
   const element = await page.$('body > *');

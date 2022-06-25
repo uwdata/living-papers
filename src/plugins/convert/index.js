@@ -1,66 +1,50 @@
-import path from 'node:path';
-
 import {
-  setValueProperty, visitNodes, getProperty, getPropertyValue,
-  removeProperty, clearProperties, hasProperty, setProperty
+  setValueProperty, visitNodes, removeProperty, getPropertyValue
 } from '../../ast/index.js';
 import outputHTML from '../../output/html/index.js';
-import { mkdirp } from '../../util/fs.js';
 
 import { getBrowser } from './browser.js';
 import { startServer, stopServer } from './file-proxy-server.js';
+import convertAttributes from './convert-attributes.js';
+import convertImages from './convert-images.js';
+import convertComponents from './convert-components.js';
 
-const ALLOWED_OUTPUTS = ['pdf', 'png', 'jpg'];
 const PROXY_SERVER_PORT = '3002';
-const OUTPUT_FILENAME_PREFIX = 'lpub-static-transform-';
 const AST_ID_KEY = 'data-ast-id';
 
-function proxyURL(src) {
-  // TODO: do not proxy absolute URLs
-  return `http://localhost:${PROXY_SERVER_PORT}/${src}`;
-}
-
-export default function(options = {}) {
+export default function({ html = {}, ...options } = {}) {
+  const baseURL = `http://localhost:${PROXY_SERVER_PORT}/`;
+  const htmlOptions = {
+    ...html,
+    baseURL,
+    selfContained: true,
+    htmlFile: null
+  };
 
   return async (ast, context) => {
     const { inputDir, logger } = context;
-
-    const convertDir = 'convert';
-    const outputDir = path.join(options.outputDir, convertDir);
-    await mkdirp(outputDir);
     await startServer(inputDir, PROXY_SERVER_PORT);
 
-    const {
-      plan = [],
-      htmlOptions = {}
-    } = options;
-
-    if (!plan.length) {
-      logger.warn('Running convert with no transformation plan.');
-      return ast;
-    }
-
-    let id = 0;
+    // add unique ids to all AST nodes
+    let idCounter = 0;
+    const astMap = new Map;
     visitNodes(ast, node => {
-      setValueProperty(node, AST_ID_KEY, id++);
-      if (hasProperty(node, 'src')) {
-        setProperty(node, 'original_src', getProperty(node, 'src'));
-        setValueProperty(node, 'src', proxyURL(getPropertyValue(node, 'src')));
+      const id = String(++idCounter);
+      astMap.set(id, node);
+      setValueProperty(node, AST_ID_KEY, id);
+
+      // hide nodes from latex
+      if (getPropertyValue(node, 'hide') === 'latex') {
+        setValueProperty(node, 'hide', 'true');
       }
     });
 
-    // Create self contained HTML
-    const html = await outputHTML(ast, context, {
-      ...htmlOptions,
-      selfContained: true,
-      htmlFile: ''
-    });
-
+    // load self-contained HTML
     const browser = await getBrowser();
     const page = await browser.page();
-    await page.setContent(html);
+    await page.setContent(await outputHTML(ast, context, htmlOptions));
 
-    // Enable debugging from the browser in the node console
+    // enable debugging from the browser in the node console
     page.on('console', async (msg) => {
       const msgArgs = msg.args();
       for (let i = 0; i < msgArgs.length; ++i) {
@@ -68,88 +52,22 @@ export default function(options = {}) {
       }
     });
 
-    // Make sure that the runtime has initialized
-    // TODO - Make this wait for a runtime response
-    //        instead of sleeping for an arbitrary
-    //        duration.
-    await page.waitForTimeout(2000);
-    // await page.evaluate(async () => {
-    //   console.log(await window.runtime.value('a'));
-    // });
+    const convertOptions = { ...options, baseURL, format: 'pdf', browser };
 
-    // Execute the plan:
-    for (const action of plan) {
-      const replaceNodes = new Set();
-      let { input, output } = action;
-      input = input.replace(/\\"/g, "\"");
-      output = output.replace(/\\"/g, "\"");
+    // convert dynamic attributes
+    await convertAttributes(astMap, page, 'tex-math, tex-equation');
 
-      if (!ALLOWED_OUTPUTS.includes(output)) {
-        throw new Error('Output must be one of:', JSON.stringify(ALLOWED_OUTPUTS));
-      }
+    // convert svg images to pdfs
+    // `[${AST_ID_KEY}] img[src$=".svg"], img[src$=".svg"][${AST_ID_KEY}]`,
+    await convertImages(astMap, page, `img[src$=".svg"][${AST_ID_KEY}]`, convertOptions);
 
-      // Identify all the targets based on the input type
-      const targets = await page.$$(`[${AST_ID_KEY}] ${input}, ${input}[${AST_ID_KEY}]`);
-
-      const getAstId = async (el) => {
-        return await page.evaluate(
-          e => e.dataset.astId,
-          el,
-        );
-      }
-
-      // For each element, create a screenshot and store the
-      // corresponding AST id.
-      for (const element of targets) {
-        let astNode = element;
-        while ((await getAstId(astNode)) === undefined) {
-          astNode = await astNode.getProperty('parentNode');
-        }
-
-        const astId = await getAstId(astNode);
-        const outputPath = path.join(outputDir, `${OUTPUT_FILENAME_PREFIX}${astId}.${output}`);
-
-        if (output !== 'pdf') {
-          await element.screenshot({ path: outputPath });
-        } else {
-          await browser.pdf({
-            html: await page.evaluate(el => el.outerHTML, element),
-            path: outputPath,
-          });
-        }
-        replaceNodes.add(+astId);
-      }
-
-      visitNodes(ast, node => {
-        const nodeId = getPropertyValue(node, AST_ID_KEY);
-
-        // Cleanup src mangling
-        if (hasProperty(node, 'original_src')) {
-          setProperty(node, 'src', getProperty(node, 'original_src'));
-          removeProperty(node, 'original_src')
-        }
-
-        // Replace the nodes where relevant
-        if (replaceNodes.has(nodeId)) {
-          const outputPath = path.join(convertDir, `${OUTPUT_FILENAME_PREFIX}${nodeId}.${output}`);
-          node.name = 'image';
-          node.children = undefined;
-          clearProperties(node);
-          setValueProperty(node, 'src', outputPath);
-        }
-      });
-    }
+    // convert components
+    await convertComponents(astMap, page, 'cell-view', convertOptions);
 
     await page.close();
-    await Promise.all([
-      stopServer(),
-      browser.close()
-    ]);
+    await Promise.all([ stopServer(), browser.close() ]);
 
-    visitNodes(ast, node => {
-      removeProperty(node, AST_ID_KEY);
-    });
-
+    visitNodes(ast, node => removeProperty(node, AST_ID_KEY));
     return ast;
   }
 }
