@@ -8,12 +8,6 @@
         "css": "css/cell-view.css"
       },
       {
-        "name": "cite-bib",
-        "import": "CiteBib",
-        "file": "cite-bib.js",
-        "css": "css/cite.css"
-      },
-      {
         "name": "cite-ref",
         "import": "CiteRef",
         "file": "cite-ref.js",
