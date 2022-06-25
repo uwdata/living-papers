@@ -73,48 +73,6 @@
         "properties": {
           "class": {
             "type": "value",
-            "value": "figure"
-          }
-        },
-        "children": [
-          {
-            "type": "component",
-            "name": "codeblock",
-            "properties": {
-              "class": {
-                "type": "value",
-                "value": "r"
-              },
-              "asp": {
-                "type": "value",
-                "value": "0.5"
-              }
-            },
-            "children": [
-              {
-                "type": "textnode",
-                "value": "ggplot(faithfuld, aes(waiting, eruptions, z = density)) +\n  geom_contour_filled()"
-              }
-            ]
-          },
-          {
-            "type": "component",
-            "name": "caption",
-            "children": [
-              {
-                "type": "textnode",
-                "value": "Density plot of Old Faithful"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "type": "component",
-        "name": "figure",
-        "properties": {
-          "class": {
-            "type": "value",
             "value": "figure margin"
           }
         },
@@ -150,6 +108,48 @@
               {
                 "type": "textnode",
                 "value": "Histogram of random variates."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "figure",
+        "properties": {
+          "class": {
+            "type": "value",
+            "value": "figure"
+          }
+        },
+        "children": [
+          {
+            "type": "component",
+            "name": "codeblock",
+            "properties": {
+              "class": {
+                "type": "value",
+                "value": "r"
+              },
+              "asp": {
+                "type": "value",
+                "value": "0.5"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "ggplot(faithfuld, aes(waiting, eruptions, z = density)) +\n  geom_contour_filled()"
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "caption",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "Density plot of Old Faithful"
               }
             ]
           }
