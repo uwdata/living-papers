@@ -55,7 +55,7 @@ export async function compile(inputFile, options = {}) {
   const files = {};
 
   if (output.html) {
-    const astHTML = await transformAST(cloneNode(ast), context, [
+    const astHTML = await transformAST(ast, context, [
       crossref(numbered()),
       notes,
       sticky,
@@ -67,10 +67,10 @@ export async function compile(inputFile, options = {}) {
 
   if (output.latex) {
     // TODO: clean up, de-duplicate output dir determination
-    const { convert: plan, pdf = true } = output.latex;
+    const { pdf = true } = output.latex;
     const outputDir = path.join(pdf ? context.tempDir : context.outputDir, 'latex');
-    const astLatex = await transformAST(cloneNode(ast), context, [
-      convert({ plan, outputDir, htmlOptions: output.html })
+    const astLatex = await transformAST(ast, context, [
+      convert({ outputDir, html: output.html })
     ]);
     files.latex = await outputLatex(astLatex, context, output.latex);
   }
@@ -103,6 +103,7 @@ function resolvePlugin(name) {
 }
 
 async function transformAST(ast, context, plugins) {
+  ast = cloneNode(ast);
   for (const plugin of plugins) {
     ast = await plugin(ast, context);
   }

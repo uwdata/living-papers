@@ -19,6 +19,7 @@ export default async function(ast, context, options) {
     jsFile = 'bundle.js',
     template = defaultTemplate(),
     theme = 'default',
+    baseURL = null,
     lang = 'en',
     dir = 'ltr',
     styles,
@@ -32,7 +33,7 @@ export default async function(ast, context, options) {
   const entryPath = path.join(tempDir, 'entry.js');
   const styleAssetsDir = path.join(styleDir, 'themes', theme, 'assets');
   const assetsPath = path.join(outputDir, 'assets');
-  const htmlPath = path.join(outputDir, htmlFile);
+  const htmlPath = path.join(outputDir, htmlFile || '');
   const cssPath = path.join(outputDir, cssFile);
   const jsPath = path.join(tempDir, jsFile);
 
@@ -86,6 +87,7 @@ export default async function(ast, context, options) {
     favicon: metadata.favicon,
     selfContained,
     content,
+    baseURL,
     lang,
     dir,
     css: selfContained ? css : `./${cssFile}`,

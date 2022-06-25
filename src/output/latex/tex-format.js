@@ -277,13 +277,13 @@ export class TexFormat {
     // TODO throw error if interpolated?
     const mode = getPropertyValue(ast, 'mode');
     const displayMode = mode === 'display' || mode == null;
-    const code = getPropertyValue(ast, 'code') || ast.children[0].value;
+    const code = getPropertyValue(ast, 'code') ?? ast.children[0].value;
     return displayMode ? `\\[${code}\\]` : `$${code}$`;
   }
 
   equation(ast) {
     // TODO throw error if interpolated?
-    const code = getPropertyValue(ast, 'code') || ast.children[0].value;
+    const code = getPropertyValue(ast, 'code') ?? ast.children[0].value;
     const env = getPropertyValue(ast, 'type') || 'align';
     const nonum = bool(getPropertyValue(ast, 'nonumber'));
     return this.vspace(ast)
