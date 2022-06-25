@@ -57,7 +57,7 @@ export default async function(ast, context) {
 }
 
 function isRCode(node, lang) {
-  if (node.name === 'code-block') {
+  if (node.name === 'codeblock') {
     return getClasses(node).indexOf(lang) >= 0;
   } else if (node.name === 'code') {
     return node.children[0].value.startsWith(`${lang} `);
@@ -72,7 +72,7 @@ function bool(v) {
 function updateAST(rnodes, output, lang, logger) {
   // log messages, return output blocks
   const blocks = output.filter(block => {
-    if (block.name === 'code-block') {
+    if (block.name === 'codeblock') {
       if (hasProperty(block, 'type')) {
         const type = getPropertyValue(block, 'type');
         if (type === 'output') {
@@ -99,11 +99,11 @@ function updateAST(rnodes, output, lang, logger) {
   // update visible nodes
   nodes.forEach(([node, parent], i) => {
       const block = blocks[i];
-      if (node.name === 'code-block') {
+      if (node.name === 'codeblock') {
         // we show output, not code, so strip r language class
         removeClass(node, lang);
 
-        if (block.name !== 'code-block') {
+        if (block.name !== 'codeblock') {
           // transfer relevant properties to image nodes
           transferChildProperties(node, block);
         } else if (hasProperty(node, BIND)) {
@@ -115,7 +115,7 @@ function updateAST(rnodes, output, lang, logger) {
           return;
         }
 
-        if (block.name !== 'code-block' && parent.name !== 'article') {
+        if (block.name !== 'codeblock' && parent.name !== 'article') {
           // output is not a code block and is not top-level
           // extract children from unneeded paragraph container
           parent.children = parent.children

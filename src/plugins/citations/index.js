@@ -10,15 +10,15 @@ import { scholarAPI } from './scholar-api.js';
 
 const BIBLIOGRAPHY = 'bibliography';
 const REFERENCES = 'references';
-const CITE_REF = 'cite-ref';
-const CITE_LIST = 'cite-list';
+const CITEREF = 'citeref';
+const CITELIST = 'citelist';
 const KEYS = new Set(['doi', 's2id']);
 
 export default async function(ast, context) {
   const { cache, fetch, inputDir, metadata, logger } = context;
 
   // extract all citation nodes in the AST
-  const nodes = queryNodes(ast, node => node.name === CITE_REF);
+  const nodes = queryNodes(ast, node => node.name === CITEREF);
   if (nodes.length === 0) return ast;
 
   // load bibliographic data for article
@@ -191,8 +191,8 @@ function scholarData(citations, api, logger) {
 
 function updateCitationLists(ast) {
   visitNodes(ast, node => {
-    if (node.name !== CITE_LIST) return;
-    setValueProperty(node, 'class', CITE_LIST);
+    if (node.name !== CITELIST) return;
+    setValueProperty(node, 'class', 'cite-list');
     node.children.sort(
       (a, b) => getPropertyValue(a, 'index') - getPropertyValue(b, 'index')
     );

@@ -39,7 +39,7 @@ export default async function(ast, context) {
         }
         break;
 
-      case 'code-block':
+      case 'codeblock':
         if (hasClass(node, lang) && !hasClass(node, 'code')) {
           const code = node.children[0].value;
           node.name = 'cell-view';

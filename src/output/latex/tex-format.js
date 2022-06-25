@@ -78,7 +78,7 @@ export class TexFormat {
       case 'blockquote':
         return this.env('quote', this.fragment(ast));
       case 'lineblock': // all children have type 'line'
-      case 'code-block':
+      case 'codeblock':
         // TODO implement
         throw new Error(`Not yet implemented: ${ast.name}`);
       case 'table':
@@ -121,13 +121,13 @@ export class TexFormat {
         return this.quoted(ast);
       case 'note':
         return this.command(ast, 'footnote');
-      case 'cite-list':
+      case 'citelist':
         return this.citeList(ast);
-      case 'cite-ref':
+      case 'citeref':
         return this.cite(ast);
-      case 'cross-ref':
+      case 'crossref':
         return this.ref(ast);
-      case 'cross-list':
+      case 'crosslist':
         return this.fragment(ast);
       case 'math':
         return this.math(ast);

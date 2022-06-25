@@ -10,7 +10,7 @@ export default function(ast) {
   visitNodes(ast, node => {
     switch (node.name) {
       case 'code': return codeInline(node);
-      case 'code-block': return codeBlock(node);
+      case 'codeblock': return codeBlock(node);
     }
   });
   return ast;
@@ -37,7 +37,7 @@ function codeBlock(node) {
 
 function codeInline(node) {
   if (codeAttributes(node)) {
-    node.name = 'code-block';
+    node.name = 'codeblock';
     setValueProperty(node, 'inline', true);
   }
 }

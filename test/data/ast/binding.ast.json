@@ -92,7 +92,7 @@
       },
       {
         "type": "component",
-        "name": "code-block",
+        "name": "codeblock",
         "properties": {
           "class": {
             "type": "value",

@@ -158,7 +158,7 @@
           },
           {
             "type": "component",
-            "name": "inline-note",
+            "name": "note",
             "children": [
               {
                 "type": "component",
@@ -224,7 +224,7 @@
       },
       {
         "type": "component",
-        "name": "code-block",
+        "name": "codeblock",
         "properties": {
           "class": {
             "type": "value",
@@ -240,7 +240,7 @@
       },
       {
         "type": "component",
-        "name": "code-block",
+        "name": "codeblock",
         "properties": {
           "class": {
             "type": "value",
@@ -256,7 +256,7 @@
       },
       {
         "type": "component",
-        "name": "code-block",
+        "name": "codeblock",
         "children": [
           {
             "type": "textnode",

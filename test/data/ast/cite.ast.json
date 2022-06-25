@@ -23,7 +23,7 @@
           },
           {
             "type": "component",
-            "name": "cite-ref",
+            "name": "citeref",
             "properties": {
               "key": {
                 "type": "value",
@@ -41,11 +41,11 @@
           },
           {
             "type": "component",
-            "name": "cite-list",
+            "name": "citelist",
             "children": [
               {
                 "type": "component",
-                "name": "cite-ref",
+                "name": "citeref",
                 "properties": {
                   "key": {
                     "type": "value",
@@ -55,7 +55,7 @@
               },
               {
                 "type": "component",
-                "name": "cite-ref",
+                "name": "citeref",
                 "properties": {
                   "key": {
                     "type": "value",
@@ -65,7 +65,7 @@
               },
               {
                 "type": "component",
-                "name": "cite-ref",
+                "name": "citeref",
                 "properties": {
                   "key": {
                     "type": "value",
@@ -75,7 +75,7 @@
               },
               {
                 "type": "component",
-                "name": "cite-ref",
+                "name": "citeref",
                 "properties": {
                   "key": {
                     "type": "value",
@@ -85,7 +85,7 @@
               },
               {
                 "type": "component",
-                "name": "cite-ref",
+                "name": "citeref",
                 "properties": {
                   "key": {
                     "type": "value",
@@ -111,7 +111,7 @@
           },
           {
             "type": "component",
-            "name": "cite-ref",
+            "name": "citeref",
             "properties": {
               "key": {
                 "type": "value",
@@ -129,11 +129,11 @@
           },
           {
             "type": "component",
-            "name": "cite-list",
+            "name": "citelist",
             "children": [
               {
                 "type": "component",
-                "name": "cite-ref",
+                "name": "citeref",
                 "properties": {
                   "key": {
                     "type": "value",
@@ -149,11 +149,11 @@
           },
           {
             "type": "component",
-            "name": "cite-list",
+            "name": "citelist",
             "children": [
               {
                 "type": "component",
-                "name": "cite-ref",
+                "name": "citeref",
                 "properties": {
                   "key": {
                     "type": "value",
@@ -179,11 +179,11 @@
           },
           {
             "type": "component",
-            "name": "cite-list",
+            "name": "citelist",
             "children": [
               {
                 "type": "component",
-                "name": "cite-ref",
+                "name": "citeref",
                 "properties": {
                   "key": {
                     "type": "value",
