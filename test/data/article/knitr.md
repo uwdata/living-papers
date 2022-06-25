@@ -12,19 +12,19 @@ Version: `r R.version.string`{.bold}
 
 Let's make some plots.
 
+::: figure { .margin }
+``` r { figwidth=5 figheight=3 }
+hist(rnorm(1000))
+```
+| Histogram of random variates.
+:::
+
 ::: figure
 ``` r { asp=0.5 }
 ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
   geom_contour_filled()
 ```
 | Density plot of Old Faithful
-:::
-
-::: figure { .margin }
-``` r { figwidth=5 figheight=3 }
-hist(rnorm(1000))
-```
-| Histogram of random variates.
 :::
 
 # Linear Model
