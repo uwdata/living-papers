@@ -43,6 +43,6 @@ function updateStickyNode(node) {
 
   // replace node with parent, but keep reference the same
   node.children = [ { ...node } ]; // shallow copy
-  node.name = 'sticky';
+  node.name = STICKY;
   node.properties = properties;
 }

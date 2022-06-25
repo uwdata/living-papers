@@ -24,7 +24,7 @@
       },
       {
         "type": "component",
-        "name": "code-block",
+        "name": "codeblock",
         "properties": {
           "class": {
             "type": "value",
@@ -74,7 +74,7 @@
       },
       {
         "type": "component",
-        "name": "code-block",
+        "name": "codeblock",
         "properties": {
           "class": {
             "type": "value",
@@ -90,7 +90,7 @@
       },
       {
         "type": "component",
-        "name": "code-block",
+        "name": "codeblock",
         "properties": {
           "class": {
             "type": "value",
@@ -180,7 +180,7 @@
       },
       {
         "type": "component",
-        "name": "code-block",
+        "name": "codeblock",
         "properties": {
           "class": {
             "type": "value",
@@ -236,7 +236,7 @@
       },
       {
         "type": "component",
-        "name": "code-block",
+        "name": "codeblock",
         "properties": {
           "class": {
             "type": "value",
@@ -272,7 +272,7 @@
       },
       {
         "type": "component",
-        "name": "code-block",
+        "name": "codeblock",
         "properties": {
           "class": {
             "type": "value",
@@ -288,7 +288,7 @@
       },
       {
         "type": "component",
-        "name": "code-block",
+        "name": "codeblock",
         "properties": {
           "class": {
             "type": "value",

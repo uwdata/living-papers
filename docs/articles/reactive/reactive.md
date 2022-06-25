@@ -11,7 +11,7 @@ output:
 init = 128
 ```
 
-``` js { hide=latex }
+``` js { hide=static }
 viewof a = Inputs.range([0, 255], {step: 1, value: init})
 ```
 

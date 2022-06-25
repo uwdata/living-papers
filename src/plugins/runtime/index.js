@@ -17,7 +17,7 @@ export default function(ast) {
         }
         break;
 
-      case 'code-block':
+      case 'codeblock':
         if (hasClass(node, lang) && !hasClass(node, 'code')) {
           node.name = 'cell-view';
         }

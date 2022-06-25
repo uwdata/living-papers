@@ -335,7 +335,7 @@ export class PandocASTParser {
   }
 
   parseCodeBlock(item) {
-    const [attrs, content, name = 'code-block'] = this.blockLookup(item);
+    const [attrs, content, name = 'codeblock'] = this.blockLookup(item);
     return createComponentNode(
       name,
       parseProperties(attrs),
@@ -533,7 +533,7 @@ export class PandocASTParser {
 
   parseNote(content) {
     return createComponentNode(
-      'inline-note',
+      'note',
       null,
       this.parseBlocks(content)
     );
@@ -581,7 +581,7 @@ export class PandocASTParser {
         short: mode === SuppressAuthor ? true : undefined
       };
 
-      nodes.push(createComponentNode('cross-ref', createProperties(attrs)));
+      nodes.push(createComponentNode('crossref', createProperties(attrs)));
 
       if (suffix) append(nodes, this.parseInline(suffix));
     });
@@ -592,7 +592,7 @@ export class PandocASTParser {
 
     return createComponentNode(
       'cross-list',
-      createProperties({ class: 'cross-list' }),
+      createProperties({ class: 'crosslist' }),
       nodes
     );
   }
@@ -629,7 +629,7 @@ export class PandocASTParser {
       }
 
       return createComponentNode(
-        'cite-ref',
+        'citeref',
         createProperties({ key, mode: getCiteMode(mode) }),
         children
       );
@@ -637,7 +637,7 @@ export class PandocASTParser {
 
     return nodes.length === 1 && cites[0].citationMode.t === AuthorInText
       ? nodes[0]
-      : createComponentNode('cite-list', null, nodes);
+      : createComponentNode('citelist', null, nodes);
   }
 
   isXrefKey(key) {

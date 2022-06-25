@@ -5,7 +5,7 @@ import {
   visitNodes
 } from '../../ast/index.js';
 
-const CROSSREF = 'cross-ref';
+const CROSSREF = 'crossref';
 const XREF = 'xref';
 const INDEX = 'index';
 
