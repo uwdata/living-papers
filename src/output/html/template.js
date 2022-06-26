@@ -20,7 +20,7 @@ export default function() {
     <meta property="description" content="{{description}}" />
 {{/description}}
 {{#selfContained}}
-    <style>\n{{{css}}}\n    </style>
+    <style id="lp-embedded-css">\n{{{css}}}\n    </style>
 {{/selfContained}}
 {{^selfContained}}
     <link rel="stylesheet" href="{{css}}" />

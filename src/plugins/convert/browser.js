@@ -26,10 +26,11 @@ async function launchBrowser(options, onClose) {
   };
 }
 
-async function pdf(impl, { html, path, baseURL }) {
+async function pdf(impl, { html, css, path, baseURL }) {
   const page = await impl.newPage();
   await page.setContent(`
     <style>
+      ${css ? css : ''}
       @media print {
         body { break-inside: avoid; margin: 0; padding: 0; }
       }
