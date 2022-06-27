@@ -178,7 +178,7 @@ export class TexFormat {
   }
 
   listItem(ast) {
-    return '\\item ' + this.tex(ast);
+    return '\\item ' + this.fragment(ast);
   }
 
   list(ast, env) {
