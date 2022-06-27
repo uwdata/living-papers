@@ -3,15 +3,18 @@ import url from 'node:url';
 import path from 'node:path';
 import fs from 'node:fs';
 
+const DEFAULT_PORT = 3002;
+const MAX_ATTEMPTS = 100;
+
 let server;
 
-export const startServer = async (basePath, port) => {
+export async function startServer(basePath, port = DEFAULT_PORT) {
   if (server) {
     await stopServer();
   }
 
   // Server largely based on https://stackoverflow.com/a/29046869
-  server = http.createServer(function (req, res) {
+  server = http.createServer(function(req, res) {
 
     // parse URL
     const parsedUrl = url.parse(req.url);
@@ -51,7 +54,7 @@ export const startServer = async (basePath, port) => {
 
       // read file from file system
       fs.readFile(pathname, function(err, data){
-        if(err){
+        if (err) {
           res.statusCode = 500;
           res.end(`Error getting the file: ${err}.`);
         } else {
@@ -64,23 +67,29 @@ export const startServer = async (basePath, port) => {
   });
 
   return new Promise((resolve, reject) => {
-    server.listen(parseInt(port), "localhost", (err) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve();
+    let attempts = 0;
+
+    server.on('listening', err => {
+      if (!err) resolve(port);
     });
-  })
+
+    server.on('error', err => {
+      if (err.code === 'EADDRINUSE' && ++attempts < MAX_ATTEMPTS) {
+        server.close();
+        server.listen(++port, 'localhost');
+      } else {
+        reject(err);
+      }
+    });
+
+    server.listen(port, 'localhost');
+  });
 }
 
-export const stopServer = async () => {
-  return new Promise((resolve, reject) => {
-    if (server) {
-      server.close(() => {
-        resolve();
-      })
-    } else {
-      resolve();
-    }
+export function stopServer() {
+  return new Promise(resolve => {
+    server
+      ? server.close(() => { resolve(); })
+      : resolve();
   });
 }

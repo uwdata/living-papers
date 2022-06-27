@@ -14,7 +14,6 @@ import { convertImage } from './convert-image.js';
 import { convertComponent } from './convert-component.js';
 import { convertProperties } from './convert-properties.js';
 
-const PROXY_SERVER_PORT = '3002';
 const AST_ID_KEY = 'data-ast-id';
 
 export default function({
@@ -24,14 +23,6 @@ export default function({
   format = 'pdf',
   outputDir,
 } = {}) {
-  const baseURL = `http://localhost:${PROXY_SERVER_PORT}/`;
-  const htmlOptions = {
-    ...html,
-    baseURL,
-    selfContained: true,
-    htmlFile: null
-  };
-
   return async (ast, context) => {
     const { inputDir, logger } = context;
     const { nodes, prop, svg, custom } = buildConversionPlan(ast);
@@ -43,16 +34,24 @@ export default function({
     logger.debug('Convert: map dynamic content to static output');
 
     // launch puppeteer and proxy server
-    const [browser] = await Promise.all([
+    const [browser, port] = await Promise.all([
       getBrowser(),
-      startServer(inputDir, PROXY_SERVER_PORT)
+      startServer(inputDir)
     ]);
+
+    // prepare html options
+    const baseURL = `http://localhost:${port}/`;
+    const htmlOptions = {
+      ...html,
+      baseURL,
+      selfContained: true,
+      htmlFile: null
+    };
 
     // load self-contained HTML
     const page = await browser.page();
-    const html = await outputHTML(ast, context, htmlOptions);
     await page.emulateMediaType('print');
-    await page.setContent(html);
+    await page.setContent(await outputHTML(ast, context, htmlOptions));
     if (+delay) {
       logger.debug(`Convert: waiting ${+delay} ms for article load`);
       await page.waitForTimeout(+delay);
