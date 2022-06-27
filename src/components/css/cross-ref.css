@@ -2,6 +2,7 @@
   color: var(--ref-color);
   font-weight: var(--ref-weight);
   text-decoration: var(--ref-decoration);
+  cursor: pointer;
 }
 
 .cross-ref:hover {
