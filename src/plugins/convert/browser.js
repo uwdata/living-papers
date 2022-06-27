@@ -26,7 +26,7 @@ async function launchBrowser(options, onClose) {
   };
 }
 
-async function pdf(impl, { html, css, path, baseURL }) {
+async function pdf(impl, { baseURL, css, html, path }) {
   const page = await impl.newPage();
   await page.setContent(`
     ${baseURL ? `<base href="${baseURL}" />` : ''}
