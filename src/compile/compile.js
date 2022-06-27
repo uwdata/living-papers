@@ -1,18 +1,15 @@
 import fetch from 'node-fetch';
 import path from 'node:path';
-import { parseContext, numbered, outputOptions } from './config.js';
+import { parseContext, outputOptions } from './config.js';
 import { parseMarkdown } from '../parse/parse-markdown.js';
 import { cache } from '../util/cache.js';
 
-import {
-  citations, code, convert, crossref, header, notes, runtime, section, sticky
-} from '../plugins/index.js';
-import { cloneNode } from '../ast/index.js';
+import { citations, code, runtime } from '../plugins/index.js';
 import knitr from '../plugins/knitr/index.js';
 import pyodide from '../plugins/pyodide/index.js';
 
-import outputHTML from '../output/html/index.js';
-import outputLatex from '../output/latex/index.js';
+import * as outputMethods from './output/index.js';
+import { transformAST } from './transform-ast.js';
 
 export async function compile(inputFile, options = {}) {
   const startTime = Date.now();
@@ -51,28 +48,18 @@ export async function compile(inputFile, options = {}) {
   }
 
   // Marshal output options
-  const output = await outputOptions(context);
+  const output = context.output = await outputOptions(context);
   const files = {};
 
-  if (output.html) {
-    const astHTML = await transformAST(ast, context, [
-      crossref(numbered()),
-      notes,
-      sticky,
-      header,
-      section
-    ]);
-    files.html = await outputHTML(astHTML, context, output.html);
-  }
-
-  if (output.latex) {
-    // TODO: clean up, de-duplicate output dir determination
-    const { pdf = true } = output.latex;
-    const outputDir = path.join(pdf ? context.tempDir : context.outputDir, 'latex');
-    const astLatex = await transformAST(ast, context, [
-      convert({ outputDir, html: output.html })
-    ]);
-    files.latex = await outputLatex(astLatex, context, output.latex);
+  // Produce output files
+  // TODO? gather, then run using Promise.all
+  for (const name in output) {
+    const method = outputMethods[name];
+    if (method == null) {
+      logger.error(`Unrecognized output type: ${name}`);
+    } else {
+      files[name] = await method(ast, context, output[name]);
+    }
   }
 
   return {
@@ -92,7 +79,7 @@ function plugins(plugins) {
 }
 
 function resolvePlugin(name) {
-  // TODO plugin resolution
+  // TODO more sophisticated plugin resolution
   if (name === 'knitr') {
     return knitr;
   }
@@ -100,12 +87,4 @@ function resolvePlugin(name) {
     return pyodide;
   }
   throw new Error(`Can not find plugin: ${name}`);
-}
-
-async function transformAST(ast, context, plugins) {
-  ast = cloneNode(ast);
-  for (const plugin of plugins) {
-    ast = await plugin(ast, context);
-  }
-  return ast;
 }

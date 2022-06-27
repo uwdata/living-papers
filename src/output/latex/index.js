@@ -16,12 +16,12 @@ export default async function(ast, context, options) {
     template = 'article',
     tags = ['<<', '>>'],
     pdf = true,
+    latexDir = path.join(pdf ? tempDir : outputDir, 'latex'),
     vspace = {}
   } = options;
 
   const articleName = path.parse(inputFile).name;
   const bibtex = citations?.bibtex?.length > 0;
-  const latexDir = path.join(pdf ? tempDir : outputDir, 'latex');
 
   // create directories
   await Promise.all([

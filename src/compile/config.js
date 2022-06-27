@@ -34,12 +34,14 @@ export async function outputOptions(context) {
     options.html = {};
   }
 
-  // include components for html output
+  // include components and numbering rules for html output
   if (options.html) {
     options.html = {
       ...options.html,
-      components: await components(context)
+      components: await components(context),
+      numbered: numbered()
     };
   }
+
   return options;
 }

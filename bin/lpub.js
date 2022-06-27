@@ -35,5 +35,5 @@ compile(inputFile, { outputDir, logger, debug })
     }
     const sec = (elapsedTime / 1000).toFixed(2);
     console.log(`Processed article ${chalk.cyan(inputFile)}: ${chalk.green(`${sec} sec`)}`);
-    console.log(`Output to ${chalk.cyan(outputDir)}`);
+    console.log(`Output folder ${chalk.cyan(outputDir)}`);
   });

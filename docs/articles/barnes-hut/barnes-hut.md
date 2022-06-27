@@ -5,6 +5,8 @@ author:
     org: University of Washington
 section-numbers: false
 output:
+  latex:
+    convert: { delay: 3000 }
   html:
     selfContained: true
     styles: styles.css

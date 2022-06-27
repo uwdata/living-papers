@@ -1,3 +1,6 @@
+import path from 'node:path';
+import { mkdirp } from '../../util/fs.js';
+
 import {
   getPropertyValue, hasExpressionProperty, isCustomComponentNode,
   setValueProperty, visitNodes
@@ -14,7 +17,13 @@ import { convertProperties } from './convert-properties.js';
 const PROXY_SERVER_PORT = '3002';
 const AST_ID_KEY = 'data-ast-id';
 
-export default function({ html = {}, ...options } = {}) {
+export default function({
+  html = {},
+  delay = 0,
+  convertDir = 'convert',
+  outputDir,
+  ...options
+} = {}) {
   const baseURL = `http://localhost:${PROXY_SERVER_PORT}/`;
   const htmlOptions = {
     ...html,
@@ -31,6 +40,7 @@ export default function({ html = {}, ...options } = {}) {
     if (nodes.size === 0) {
       return ast;
     }
+    logger.debug('Convert: map dynamic content to static output');
 
     // launch puppeteer and proxy server
     const [browser] = await Promise.all([
@@ -41,6 +51,10 @@ export default function({ html = {}, ...options } = {}) {
     // load self-contained HTML
     const page = await browser.page();
     await page.setContent(await outputHTML(ast, context, htmlOptions));
+    if (+delay) {
+      logger.debug(`Convert: waiting ${+delay} ms for article load`);
+      await page.waitForTimeout(+delay);
+    }
 
     // enable debugging from the browser in the node console
     page.on('console', async (msg) => {
@@ -52,11 +66,13 @@ export default function({ html = {}, ...options } = {}) {
 
     const get = id => page.$(`[${AST_ID_KEY}="${id}"]`);
     const convertOptions = {
-      ...options,
+      // ...options,
       baseURL,
       browser,
+      convertDir,
       css: await extractStyles(page),
-      format: 'pdf'
+      format: 'pdf',
+      outputDir: path.join(outputDir, convertDir)
     };
 
     // convert dynamic properties
@@ -66,6 +82,11 @@ export default function({ html = {}, ...options } = {}) {
       if (isSVGImageNode(node)) {
         svg.add(id); // svg may have been determined dynamically
       }
+    }
+
+    // ensure output directory exists
+    if (svg.size || custom.size) {
+      await mkdirp(convertOptions.outputDir);
     }
 
     // convert svg images
