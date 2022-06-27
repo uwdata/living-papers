@@ -1,6 +1,6 @@
 export const PENDING = 'pending';
 export const FULFILLED = 'fulfilled';
-export const ERROR = 'error';
+export const REJECTED = 'rejected';
 
 export class Observer {
   constructor(callback) {
@@ -13,7 +13,7 @@ export class Observer {
     switch (this.status) {
       case FULFILLED:
         return Promise.resolve(this.value);
-      case ERROR:
+      case REJECTED:
         return Promise.reject(this.value.error);
       case PENDING:
         return this._promise || (this._promise = new Promise((resolve, reject) => {
@@ -42,7 +42,7 @@ export class Observer {
   }
 
   rejected(error, name) {
-    this.update(ERROR, { error, name });
+    this.update(REJECTED, { error, name });
     if (this._promise) {
       this._reject(error);
       this._promise = this._resolve = this._reject = null;
