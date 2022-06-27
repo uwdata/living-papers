@@ -14,7 +14,7 @@ export class CrossRef extends ArticleElement {
   render() {
     // TODO? title tooltip
     const { type, xref, index = '?', short } = this;
-    const cls = `cross-ref ${type}${!short ? ' full' : ''}`;
+    const cls = `cross-ref ${type}${!short ? ' full' : ''}${index === '?' ? ' unresolved' : ''}`;
     return html`<a class=${cls} href=${`#${xref}`}>${index}</a>`;
   }
 }

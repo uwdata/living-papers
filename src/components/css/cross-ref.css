@@ -1,3 +1,18 @@
+.cross-ref {
+  color: var(--ref-color);
+  font-weight: var(--ref-weight);
+  text-decoration: var(--ref-decoration);
+}
+
+.cross-ref:hover {
+  color: var(--ref-color-hover);
+}
+
+.cross-ref.unresolved,
+.cross-ref.unresolved:hover {
+  color: var(--ref-color-error);
+}
+
 .cross-ref.sec.full::before {
   content: var(--section-prefix);
 }

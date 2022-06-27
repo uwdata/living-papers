@@ -19,6 +19,22 @@ article {
 	--larger-size: 1.4em;
 	--huge-size: 1.8em;
 	--inline-math-size: 1em;
+	--ref-color: steelblue;
+	--ref-color-light: #c8dae9;
+	--ref-color-hover: #90b4d2;
+	--ref-color-error: maroon;
+	--ref-weight: 500;
+	--ref-decoration: none;
+}
+
+a {
+	color: var(--ref-color);
+	font-weight: var(--ref-weight);
+	text-decoration: var(--ref-decoration);
+}
+
+a:hover {
+	color: var(--ref-color-hover);
 }
 
 sub,

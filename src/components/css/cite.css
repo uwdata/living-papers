@@ -7,16 +7,19 @@
 }
 
 .cite-ref {
-  font-weight: bold;
-  color: steelblue;
+  color: var(--ref-color);
+  font-weight: var(--ref-weight);
+  text-decoration: var(--ref-decoration);
+  cursor: pointer;
 }
 
 .cite-ref:hover {
-  color: lightblue;
+  color: var(--ref-color-hover);
 }
 
+.cite-ref.unresolved,
 .cite-ref.unresolved:hover {
-  color: maroon;
+  color: var(--ref-color-error);
 }
 
 .cite-info {

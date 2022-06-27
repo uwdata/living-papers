@@ -76,7 +76,7 @@ figure > figcaption {
 
 .inline-note:hover .inline-note-number,
 .inline-note:hover .note {
-	background: #cdc8f0;
+	background: var(--ref-color-light);
 }
 
 .inline-note-number {
