@@ -1,7 +1,17 @@
+article {
+	--inline-math-size: 1.14em;
+}
+
 body {
 	font: 16px/1.5 -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	background: #fff;
 	color: #000;
+}
+
+pre,
+:not(pre) > code {
+	font-family: monospace;
+	font-size: 15px;
 }
 
 h1,
@@ -25,7 +35,8 @@ h2 {
 article p,
 article > ul,
 article > ol,
-article > table {
+article > table,
+.katex-display {
 	margin: 12px 0;
 }
 

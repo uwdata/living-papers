@@ -68,14 +68,16 @@ article p {
 }
 
 pre,
-code {
+:not(pre) > code {
 	font-family: "Inconsolata", monospace;
+	font-size: 15px;
 }
 
 pre,
 ul,
 table,
-figure {
+figure,
+.katex-display {
 	margin: 2ex 0;
 }
 
