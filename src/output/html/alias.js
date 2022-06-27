@@ -6,6 +6,7 @@ const aliasMap = new Map([
   ['citeref', 'cite-ref'],
   ['codeblock', 'code-block'],
   ['crosslist', 'span'],
+  ['crossref', 'cross-ref'],
   ['equation', 'tex-equation'],
   ['image', 'img'],
   ['math', 'tex-math'],
