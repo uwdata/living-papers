@@ -215,9 +215,7 @@ export class TexFormat {
   }
 
   image(ast) {
-    // TODO provide svg to pdf conversion
-    const img = getPropertyValue(ast, 'src');
-    const src = img.endsWith('.svg') ? img.slice(0, -4) + '.pdf' : img;
+    const src = getPropertyValue(ast, 'src');
     const alt = getPropertyValue(ast, 'alt');
     const arg = 'width=\\linewidth';
     if (alt) {
