@@ -15,7 +15,7 @@ export async function convertComponent(handle, node, options) {
     }
   });
 
-  // TODO: handle HTML that can be converted to AST
+  // TODO? handle HTML that can be converted to AST
   if (isText) {
     node.type = 'textnode';
     node.value = await handle.evaluate(el => el.innerText);
@@ -23,6 +23,9 @@ export async function convertComponent(handle, node, options) {
     delete node.properties;
     delete node.children;
   } else {
-    return convertImage(handle, node, options);
+    return convertImage(handle, node, {
+      ...options,
+      inline: await handle.evaluate(el => el.style.display === 'inline')
+    });
   }
 }

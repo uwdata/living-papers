@@ -97,7 +97,7 @@ section > p:last-child {
 .sticky {
 	position: sticky;
 	top: 0;
-	z-index: 3;
+	z-index: 10;
 }
 
 .page {
@@ -109,10 +109,6 @@ pre,
 figure {
 	max-width: calc(100vw - 2 * var(--article-padding) - 2 * var(--article-margin-left));
 	overflow-x: auto;
-}
-
-.sticky {
-	z-index: 10;
 }
 
 .full {
@@ -191,5 +187,11 @@ footer {
 	.inline-note:not(.open) .note,
 	.inline-note .note::before {
 		display: none;
+	}
+}
+
+@media print {
+	.sticky {
+		position: relative;
 	}
 }

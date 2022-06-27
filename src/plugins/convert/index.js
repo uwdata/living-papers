@@ -21,8 +21,8 @@ export default function({
   html = {},
   delay = 0,
   convertDir = 'convert',
+  format = 'pdf',
   outputDir,
-  ...options
 } = {}) {
   const baseURL = `http://localhost:${PROXY_SERVER_PORT}/`;
   const htmlOptions = {
@@ -50,7 +50,9 @@ export default function({
 
     // load self-contained HTML
     const page = await browser.page();
-    await page.setContent(await outputHTML(ast, context, htmlOptions));
+    const html = await outputHTML(ast, context, htmlOptions);
+    await page.emulateMediaType('print');
+    await page.setContent(html);
     if (+delay) {
       logger.debug(`Convert: waiting ${+delay} ms for article load`);
       await page.waitForTimeout(+delay);
@@ -66,12 +68,11 @@ export default function({
 
     const get = id => page.$(`[${AST_ID_KEY}="${id}"]`);
     const convertOptions = {
-      // ...options,
       baseURL,
       browser,
       convertDir,
       css: await extractStyles(page),
-      format: 'pdf',
+      format,
       outputDir: path.join(outputDir, convertDir)
     };
 
