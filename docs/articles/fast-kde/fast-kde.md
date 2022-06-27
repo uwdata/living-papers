@@ -232,8 +232,6 @@ Each timing measurement is taken for $m$ = 512 bins and averages runs for five b
 For small $n$, box filtering is slightly faster as it involves fewer arithmetic operations.
 As $n$ increases, the $O(n)$ binning calculation dominates and all methods exhibit similar performance.
 
-
-
 \place{err2d_cars}
 
 \place{time2d_cars}
@@ -247,17 +245,17 @@ As $n$ increases, the $O(n)$ binning calculation dominates and all methods exhib
 | 2D estimation error for car data. Error (on a log scale) is measured as the maximum pixel error given a 100-pixel plot height. Dashed gray lines indicate the NRD $\sigma$ value. With 512 bins and linear binning, the Deriche method results in sub-pixel accuracy at all sampled bandwidths.
 :::
 
-To assess bivariate estimates, we use the classic cars dataset [@CarsData] and examine the relationship between mileage and horsepower.
-We use the same error measure.
-@fig:err2d_cars presents the error across binning and bandwidth choices (the same bandwidth is used for the x- and y-dimensions), with similar patterns as before.
-Deriche approximation with linear binning at $m$ = 512 bins produces notably low error rates.
-
 ::: figure {#contours .margin position="h!"}
 ![](figures/cars_2d_multiples.svg)
 ![](figures/cars_2d_overlap.svg)
 \vspace{-30pt}
-| Heatmaps and contour plots of car data (miles per gallon vs. horsepower). _Top:_ plots per density method. _Bottom:_ contour lines per method overlaid to facilitate comparison. Deriche's approximation matches the precise density estimate. Box filter methods result in additional and/or missing contour lines and distorted shapes.
+| Heatmaps and contour plots of car data (miles per gallon vs. horsepower). _Top:_ plots per density method. _Bottom:_ contour lines per method overlaid for comparison. Deriche's approximation matches the precise density estimate. Box filters result in extra or missing contour lines and distorted shapes.
 :::
+
+To assess bivariate estimates, we use the classic cars dataset [@CarsData] and examine the relationship between mileage and horsepower.
+We use the same error measure.
+@fig:err2d_cars presents the error across binning and bandwidth choices (the same bandwidth is used for the x- and y-dimensions), with similar patterns as before.
+Deriche approximation with linear binning at $m$ = 512 bins produces notably low error rates.
 
 @fig:contours shows heatmaps and contour plots for 2D density estimation, both as separate plots and as contours overlaid on a ground truth heatmap.
 We set $\sigma$ = 0.04 for both the x- and y-dimensions, near the NRD estimates (0.049, 0.048) for each variable.
