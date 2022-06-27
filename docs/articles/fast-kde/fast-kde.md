@@ -196,6 +196,12 @@ We used the `performance.now` method of the `perf_hooks` package to measure runn
 | 1D estimation error for Gentoo penguin body mass. Error (plotted on a log scale) is measured as the maximum pixel error given a 100-pixel plot height. Dashed gray lines indicate the normal reference density (NRD) heuristic for automatic bandwidth ($\sigma$) selection [@Scott:1992]. The combination of linear binning and Deriche approximation consistently produces the most accurate estimates.
 :::
 
+::: figure {#kde_penguins .margin position="t"}
+![](figures/penguins_1d.svg)
+| KDE of Gentoo penguin body mass ($m$ = 512 bins, $\sigma$ = 50). Box filters tend to underestimate peaks and overestimate valleys, in some cases 'eroding' local peaks (e.g., around 4.9k & 5.7k grams). Deriche approximation instead produces a pixel-perfect result.
+\vspace{8pt}
+:::
+
 We first evaluate the KDE methods relative to an impulse: we locate a single point at $x = 0$ and perform estimation over the domain $[-1, 1]$.
 The result should be a Gaussian distribution with mean 0 and standard deviation matching the kernel bandwidth $\sigma$.
 @fig:kde_impulse shows the result for $\sigma$ = 0.2 and $m$ = 512 bins (sans re-scaling).
@@ -206,10 +212,9 @@ Standard box filters produce oscillating errors due to bandwidth quantization.
 The extended box method smooths these artifacts.
 Deriche approximation consistently produces the lowest error, and notably improves with the use of linear binning.
 
-::: figure {#kde_penguins .margin .rowspan2 position="t"}
-![](figures/penguins_1d.svg)
-| KDE of Gentoo penguin body mass ($m$ = 512 bins, $\sigma$ = 50). Box filters tend to underestimate peaks and overestimate valleys, in some cases 'eroding' local peaks (e.g., around 4.9k & 5.7k grams). Deriche approximation instead produces a pixel-perfect result.
-\vspace{8pt}
+::: figure {#time1d_penguins .margin position="t"}
+![](figures/time_1d_penguins.svg)
+| Running time of 1D estimation on resampled penguin data ($m$ = 512 bins). As $n$ increases, the running time of the approximation methods is dominated by the $O(n)$ binning cost.
 :::
 
 We next examine real-world measurements from the Palmer Penguins dataset [@Horst:2020].
@@ -227,10 +232,7 @@ Each timing measurement is taken for $m$ = 512 bins and averages runs for five b
 For small $n$, box filtering is slightly faster as it involves fewer arithmetic operations.
 As $n$ increases, the $O(n)$ binning calculation dominates and all methods exhibit similar performance.
 
-::: figure {#time1d_penguins .margin position="t"}
-![](figures/time_1d_penguins.svg)
-| Running time of 1D estimation on resampled penguin data ($m$ = 512 bins). As $n$ increases, the running time of the approximation methods is dominated by the $O(n)$ binning cost.
-:::
+
 
 \place{err2d_cars}
 
@@ -250,7 +252,7 @@ We use the same error measure.
 @fig:err2d_cars presents the error across binning and bandwidth choices (the same bandwidth is used for the x- and y-dimensions), with similar patterns as before.
 Deriche approximation with linear binning at $m$ = 512 bins produces notably low error rates.
 
-::: figure {#contours .margin .rowspan4 position="h!"}
+::: figure {#contours .margin position="h!"}
 ![](figures/cars_2d_multiples.svg)
 ![](figures/cars_2d_overlap.svg)
 \vspace{-30pt}
