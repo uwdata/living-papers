@@ -8,7 +8,14 @@ const OUTPUT_PREFIX = 'lpub-convert-';
 const getAstId = handle => handle.evaluate(el => el.dataset.astId);
 
 export async function convertImage(handle, node, options) {
-  const { baseURL, browser, format = 'pdf', outer = false, css = '' } = options;
+  const {
+    baseURL,
+    browser,
+    css,
+    format = 'pdf',
+    outer = false
+  } = options;
+
   if (!ALLOWED_FORMATS.includes(format)) {
     throw new Error('Format must be one of:', JSON.stringify(ALLOWED_FORMATS));
   }
@@ -25,11 +32,12 @@ export async function convertImage(handle, node, options) {
   if (format !== 'pdf') {
     await handle.screenshot({ path: outputPath });
   } else {
+    const getHTML = outer ? el => el.outerHTML : el => el.innerHTML;
     await browser.pdf({
-      html: await handle.evaluate(outer ? el => el.outerHTML : el => el.innerHTML),
-      css: css,
-      path: outputPath,
-      baseURL
+      baseURL,
+      css,
+      html: await handle.evaluate(getHTML),
+      path: outputPath
     });
   }
 

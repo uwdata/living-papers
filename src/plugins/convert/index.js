@@ -41,7 +41,6 @@ export default function({ html = {}, ...options } = {}) {
     // load self-contained HTML
     const page = await browser.page();
     await page.setContent(await outputHTML(ast, context, htmlOptions));
-    const css = await page.$eval('style#lp-embedded-css', element => element.innerHTML);
 
     // enable debugging from the browser in the node console
     page.on('console', async (msg) => {
@@ -52,7 +51,13 @@ export default function({ html = {}, ...options } = {}) {
     });
 
     const get = id => page.$(`[${AST_ID_KEY}="${id}"]`);
-    const convertOptions = { ...options, baseURL, format: 'pdf', browser, css };
+    const convertOptions = {
+      ...options,
+      baseURL,
+      browser,
+      css: await extractStyles(page),
+      format: 'pdf'
+    };
 
     // convert dynamic properties
     for (const id of prop) {
@@ -132,4 +137,11 @@ function isSVGImageNode(node) {
     return src.endsWith('.svg') || src.startsWith('data:image/svg+xml;');
   }
   return false;
+}
+
+async function extractStyles(page) {
+  return (await page.$$eval(
+    'head style, head link[rel="stylesheet"]',
+    elements => elements.map(el => el.outerHTML)
+  )).join('\n');
 }
