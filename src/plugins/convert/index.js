@@ -51,7 +51,13 @@ export default function({ html = {}, ...options } = {}) {
     });
 
     const get = id => page.$(`[${AST_ID_KEY}="${id}"]`);
-    const convertOptions = { ...options, baseURL, format: 'pdf', browser };
+    const convertOptions = {
+      ...options,
+      baseURL,
+      browser,
+      css: await extractStyles(page),
+      format: 'pdf'
+    };
 
     // convert dynamic properties
     for (const id of prop) {
@@ -63,7 +69,10 @@ export default function({ html = {}, ...options } = {}) {
     }
 
     // convert svg images
-    const imageOptions = { ...convertOptions, outer: true };
+    const imageOptions = {
+      ...convertOptions,
+      extract: el => el.outerHTML
+    };
     for (const id of svg) {
       await convertImage(await get(id), nodes.get(id), imageOptions);
     }
@@ -131,4 +140,11 @@ function isSVGImageNode(node) {
     return src.endsWith('.svg') || src.startsWith('data:image/svg+xml;');
   }
   return false;
+}
+
+async function extractStyles(page) {
+  return (await page.$$eval(
+    'head style, head link[rel="stylesheet"]',
+    elements => elements.map(el => el.outerHTML)
+  )).join('\n');
 }

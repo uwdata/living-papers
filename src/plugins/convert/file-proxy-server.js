@@ -4,6 +4,7 @@ import path from 'node:path';
 import fs from 'node:fs';
 
 let server;
+
 export const startServer = async (basePath, port) => {
   if (server) {
     await stopServer();
@@ -21,7 +22,7 @@ export const startServer = async (basePath, port) => {
     // based on the URL path, extract the file extension. e.g. .js, .doc, ...
     const ext = path.parse(pathname).ext;
 
-    // maps file extension to MIME typere
+    // maps file extension to MIME type
     const map = {
       '.ico': 'image/x-icon',
       '.html': 'text/html',
@@ -36,7 +37,7 @@ export const startServer = async (basePath, port) => {
       '.pdf': 'application/pdf',
       '.doc': 'application/msword'
     };
-  
+
     fs.exists(pathname, function (exist) {
       if(!exist) {
         // if the file is not found, return 404
@@ -44,10 +45,10 @@ export const startServer = async (basePath, port) => {
         res.end(`File ${pathname} not found!`);
         return;
       }
-  
+
       // if is a directory search for index file matching the extension
       if (fs.statSync(pathname).isDirectory()) pathname += '/index' + ext;
-  
+
       // read file from file system
       fs.readFile(pathname, function(err, data){
         if(err){
@@ -60,10 +61,8 @@ export const startServer = async (basePath, port) => {
         }
       });
     });
-  
-  
   });
-  
+
   return new Promise((resolve, reject) => {
     server.listen(parseInt(port), "localhost", (err) => {
       if (err) {
