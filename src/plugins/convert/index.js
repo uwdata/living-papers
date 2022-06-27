@@ -69,7 +69,10 @@ export default function({ html = {}, ...options } = {}) {
     }
 
     // convert svg images
-    const imageOptions = { ...convertOptions, outer: true };
+    const imageOptions = {
+      ...convertOptions,
+      extract: el => el.outerHTML
+    };
     for (const id of svg) {
       await convertImage(await get(id), nodes.get(id), imageOptions);
     }

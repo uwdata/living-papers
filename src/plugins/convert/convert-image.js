@@ -13,7 +13,7 @@ export async function convertImage(handle, node, options) {
     browser,
     css,
     format = 'pdf',
-    outer = false
+    extract = el => el.innerHTML
   } = options;
 
   if (!ALLOWED_FORMATS.includes(format)) {
@@ -32,11 +32,10 @@ export async function convertImage(handle, node, options) {
   if (format !== 'pdf') {
     await handle.screenshot({ path: outputPath });
   } else {
-    const getHTML = outer ? el => el.outerHTML : el => el.innerHTML;
     await browser.pdf({
       baseURL,
       css,
-      html: await handle.evaluate(getHTML),
+      html: await handle.evaluate(extract),
       path: outputPath
     });
   }
