@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { Observer, PENDING, FULFILLED, ERROR } from '../runtime/observer';
+import { Observer, PENDING, FULFILLED, REJECTED } from '../runtime/observer';
 import { ArticleElement } from './article-element';
 
 export class CellView extends ArticleElement {
@@ -27,7 +27,7 @@ export class CellView extends ArticleElement {
       case PENDING:
       case FULFILLED:
         return this.value;
-      case ERROR:
+      case REJECTED:
         return error(this.value.error);
       default:
         return error(`Unrecognized status: ${this.status}.`);

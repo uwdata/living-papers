@@ -1,4 +1,4 @@
-import { Observer, FULFILLED, ERROR } from '../../runtime/observer.js';
+import { Observer, FULFILLED, REJECTED } from '../../runtime/observer.js';
 import { binding } from './binding.js';
 import {
   CELL_VIEW, DATA_ATTR, DATA_BIND, DATA_BIND_SET, DATA_CELL
@@ -41,7 +41,7 @@ function observeAttrs(resolve, attrs) {
     const observer = new Observer((status, value) => {
       if (status === FULFILLED) {
         node.setAttribute(name, value);
-      } else if (status === ERROR) {
+      } else if (status === REJECTED) {
         console.error(value.error);
       }
     });
