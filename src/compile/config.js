@@ -18,7 +18,7 @@ export function parseContext() {
 }
 
 export async function outputOptions(context) {
-  const options = context.metadata.output || {};
+  const options = { ...context.metadata.output };
 
   // merge passed-in options with metadata options
   for (const key in context.output) {
