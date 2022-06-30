@@ -94,11 +94,11 @@
 }
 
 .cite-body summary::after {
-  content: '►';
+  content: '\25BA';
 }
 
 .cite-body details[open] summary::after {
-  content: ' ▼';
+  content: ' \25BC';
 }
 
 .cite-body-desc {
