@@ -15,25 +15,34 @@ export class CiteRef extends ArticleElement {
   constructor() {
     super();
     this.mode = 'citation';
-    this.addEventListener('keypress', this.toggleCitation);
-    this.addEventListener('mousedown', this.toggleCitation);
+    this.addEventListener('keydown', this.keyDown);
+    this.addEventListener('mousedown', this.openCitation);
+    this.addEventListener('focusout', this.focusOut);
   }
 
-  // Open and close citation
-  toggleCitation(event) {
-    const children = this.querySelector('.cite-ref').children;
-   
-    if (this.hasAttribute('open') 
-      && (event.target.className=='cite-ref' || event.target.className=='cite-overlay')) {
-      for (const child of children) {
-        child.style.display = 'none';
-      }
-      this.removeAttribute('open');
-    } else {
-      for (const child of children) {
-        child.style.display = 'inline-block';
-      }
-      this.setAttribute('open', '');
+  focusOut(event) {
+    if (!this.contains(event.relatedTarget)) {
+      this.closeCitation();
+    }
+  }
+
+  keyDown(event) {
+    if (event.key == 'Enter') {
+      this.openCitation();
+    } else if (event.key != 'Tab') {
+      this.closeCitation();
+    }
+  }
+
+  closeCitation() {
+    for (const child of this.querySelector('.cite-ref').children) {
+      child.style.display = 'none';
+    }
+  }
+
+  openCitation() {
+    for (const child of this.querySelector('.cite-ref').children) {
+      child.style.display = 'inline-block';
     }
   }
 
@@ -52,13 +61,12 @@ export class CiteRef extends ArticleElement {
 
   render() {
     const { key, data, index, mode} = this;
-    const overlay = html`<div class='cite-overlay' @click=${this.toggleCitation}></div>`;
     const wrapper = html`<div class='cite-info-wrapper'></div>`;
 
     // Unresolved citation
     if (data == null) {
       return html`<span class='cite-ref unresolved'>??${wrapper}<div class='cite-info'>
-        <b>Unresolved citation</b><br>"${key}"</div>${overlay}</span>`;
+        <b>Unresolved citation</b><br>"${key}"</div></span>`;
     }
 
     const { fullInfo, shortInfo } = infoBody(data);
@@ -87,7 +95,7 @@ export class CiteRef extends ArticleElement {
       <div class='cite-body'>
         ${info}${desc}
       </div>
-    </div>${overlay}</span>`;
+    </div></span>`;
   }
 }
 

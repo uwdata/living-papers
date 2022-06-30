@@ -101,17 +101,6 @@
   content: ' ▼';
 }
 
-.cite-overlay {
-  display: none;
-  cursor: auto;
-  position: fixed;
-  color: transparent;
-  left: 0;
-  top: 0;
-  height: 100vh;
-  width: 100vw;
-}
-
 .cite-body-desc {
   min-height: 108px;
   padding-top: 4px;
