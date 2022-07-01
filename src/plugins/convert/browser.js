@@ -4,7 +4,7 @@ let browser;
 export async function getBrowser() {
   const onClose = () => browser = null;
   return browser || (browser = await launchBrowser({
-    headless: true,
+    headless: false,
     // defaultViewport: { width: 1200, height: 900 }
     defaultViewport: { width: 800, height: 600 }
   }, onClose));
@@ -27,19 +27,16 @@ async function launchBrowser(options, onClose) {
 }
 
 async function pdf(impl, { page, baseURL, path, element }) {
+  // Prepare the page
   await page.emulateMediaType('print');
+  if (baseURL) {
+    await page.evaluate((baseURL) => {
+      let head = document.querySelector('head');
+      head.innerHTML += `<base id="lp-base-url" href="${baseURL}" />`;
+   }, baseURL);
+  }
 
-  /**
-   * This seems to cause an error, so I'm removing it for now.
-   * There is likely a better way to set the base URL.
-   */
-  // if (baseURL) {
-  //   await page.evaluate((baseURL) => {
-  //     let body = document.querySelector('body');
-  //     body.innerHTML += `<base id="lp-base-url" href="${baseURL}" />`;
-  //  }, baseURL);
-  // }
-
+  // Take the screenshot
   const { width, height } = await element.boundingBox();
   await page.pdf({
     path,
@@ -48,11 +45,10 @@ async function pdf(impl, { page, baseURL, path, element }) {
     height: `${Math.ceil(height)}px`
   });
 
+  // Cleanup
   await page.emulateMediaType('screen');
-
-  // See comment above
-  //   await page.evaluate(() => {
-  //     let baseUrlNode = document.querySelector('#lp-base-url');
-  //     baseUrlNode.remove();
-  //  });
+  await page.evaluate(() => {
+    let baseUrlNode = document.querySelector('#lp-base-url');
+    baseUrlNode.remove();
+  });
 }
