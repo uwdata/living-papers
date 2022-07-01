@@ -1,5 +1,4 @@
 import puppeteer from 'puppeteer';
-
 let browser;
 
 export async function getBrowser() {
@@ -27,32 +26,33 @@ async function launchBrowser(options, onClose) {
   };
 }
 
-async function pdf(impl, { baseURL, css, html, path }) {
-  const page = await impl.newPage();
+async function pdf(impl, { page, baseURL, path, element }) {
   await page.emulateMediaType('print');
-  await page.setContent(`
-    ${baseURL ? `<base href="${baseURL}" />` : ''}
-    ${css || ''}
-    <style>
-      body > div,
-      body > form {
-        display: inline-block;
-        margin: 0px !important;
-      }
-      @media print {
-        body { break-inside: avoid; margin: 0; padding: 0; }
-      }
-    </style>
-    ${html}`);
 
-  const element = await page.$('body > *');
+  /**
+   * This seems to cause an error, so I'm removing it for now.
+   * There is likely a better way to set the base URL.
+   */
+  // if (baseURL) {
+  //   await page.evaluate((baseURL) => {
+  //     let body = document.querySelector('body');
+  //     body.innerHTML += `<base id="lp-base-url" href="${baseURL}" />`;
+  //  }, baseURL);
+  // }
+
   const { width, height } = await element.boundingBox();
-
   await page.pdf({
     path,
     pageRanges: '1',
     width: `${Math.ceil(width)}px`,
     height: `${Math.ceil(height)}px`
   });
-  await page.close();
+
+  await page.emulateMediaType('screen');
+
+  // See comment above
+  //   await page.evaluate(() => {
+  //     let baseUrlNode = document.querySelector('#lp-base-url');
+  //     baseUrlNode.remove();
+  //  });
 }

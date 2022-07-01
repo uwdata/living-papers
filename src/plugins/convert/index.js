@@ -14,7 +14,7 @@ import { convertImage } from './convert-image.js';
 import { convertComponent } from './convert-component.js';
 import { convertProperties } from './convert-properties.js';
 
-const AST_ID_KEY = 'data-ast-id';
+import { AST_ID_KEY } from './constants.js';
 
 export default function({
   html = {},
@@ -69,6 +69,7 @@ export default function({
     const convertOptions = {
       baseURL,
       browser,
+      page,
       convertDir,
       css: await extractStyles(page),
       format,
