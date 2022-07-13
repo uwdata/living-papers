@@ -69,7 +69,7 @@ section > p:last-child {
 	margin-bottom: 0;
 }
 
-.aside,
+aside,
 .margin {
 	position: relative;
 	float: right;
@@ -78,6 +78,19 @@ section > p:last-child {
 	margin-right: calc(-1 * var(--gap-width) - var(--margin-width));
 	margin-bottom: 1em;
 	vertical-align: unset;
+}
+
+aside {
+	margin-left: 0;
+	margin-top: 0;
+}
+
+aside > :first-child {
+	margin-top: 0;
+}
+
+aside > :last-child {
+	margin-bottom: 0;
 }
 
 .inlinenote-number {
@@ -141,7 +154,10 @@ figure {
 
 figure img,
 figure svg,
-figure canvas {
+figure canvas,
+aside img,
+aside svg,
+aside canvas {
 	object-fit: contain;
 	max-width: 100%;
 	height: auto;
@@ -173,7 +189,7 @@ footer {
 		width: min(var(--max-article-width), 100%);
 	}
 
-	.aside,
+	aside,
 	.margin {
 		float: none;
 		margin: 0;

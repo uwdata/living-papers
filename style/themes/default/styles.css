@@ -63,7 +63,7 @@ figure > figcaption {
 	backdrop-filter: blur(4px);
 }
 
-.aside,
+aside,
 .note {
 	font-style: inherit;
 	font-size: var(--small-size);

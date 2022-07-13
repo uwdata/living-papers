@@ -13,7 +13,7 @@ export function parseContext() {
     fence: ['abstract', 'acknowledgments', 'aside', 'figure', 'table', 'teaser'],
     block: ['bibliography', 'equation', 'math'],
     xref: ['sec', 'fig', 'tbl', 'eqn'],
-    env: ['aside', 'figure', 'table', 'teaser']
+    env: ['figure', 'table', 'teaser']
   };
 }
 
