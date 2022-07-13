@@ -47,6 +47,18 @@ function context(input, out) {
       }
       return true;
     },
+    until(i, s) {
+      const c = s[0];
+      let j = i;
+      for (; j < n; ++j) {
+        if (input[j] === c) {
+          if (this.peek(j, s)) {
+            return j + s.length;
+          }
+        }
+      }
+      return n;
+    },
     consume(i, c) {
       for (; input[i] === c; ++i) {}
       return i;
@@ -205,6 +217,11 @@ function scan(_) {
           }
         }
         ++i;
+        break;
+      case '<':
+        if (_.peek(++i, '!--') && !attrs.length && !backs.length) {
+          i = _.until(i + 3, '-->');
+        }
         break;
       default:
         ++i;

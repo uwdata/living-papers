@@ -39,6 +39,12 @@ describe('preprocess', () => {
       '[:time-plot:]{\n theta=`focus`\n oninput=`theta = event.target.value`\n}',
       '[:time-plot:]{\n theta="`focus`"\n oninput="`theta = event.target.value`"\n}'
     );
+
+    // don't get fooled by comments
+    test(
+      '::: foo {.bar}\n<!--\n:::\n-->\n::: baz {.bop}',
+      '::: {.foo .bar}\n<!--\n:::\n-->\n::: baz {.bop}'
+    );
   });
 
   it('handles pipes', () => {
