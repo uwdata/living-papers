@@ -35,13 +35,15 @@ export class TexFormat {
         case '_':
         case '^':
         case '%': p = `\\${c}`; break;
+        case 'Θ': p = '$\\Theta$'; break;
+        // TODO: better handle unicode in latex
       }
       if (p) {
         if (i > h) {
           b.push(str.slice(h, i));
-          h = i + 1;
         }
         b.push(p);
+        h = i + 1;
       }
     }
     if (h === 0) {
@@ -211,7 +213,9 @@ export class TexFormat {
         return `\\url{${href}}`;
       }
     }
-    return `\\href{${href}}{${this.fragment(ast)}}`;
+    return href
+      ? `\\href{${href}}{${this.fragment(ast)}}`
+      : this.fragment(ast);
   }
 
   image(ast) {
