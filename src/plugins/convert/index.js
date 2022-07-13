@@ -67,10 +67,8 @@ export default function({
 
     const get = id => page.$(`[${AST_ID_KEY}="${id}"]`);
     const convertOptions = {
-      baseURL,
-      browser,
       convertDir,
-      css: await extractStyles(page),
+      page,
       format,
       outputDir: path.join(outputDir, convertDir)
     };
@@ -161,11 +159,4 @@ function isSVGImageNode(node) {
     return src.endsWith('.svg') || src.startsWith('data:image/svg+xml;');
   }
   return false;
-}
-
-async function extractStyles(page) {
-  return (await page.$$eval(
-    'head style, head link[rel="stylesheet"]',
-    elements => elements.map(el => el.outerHTML)
-  )).join('\n');
 }

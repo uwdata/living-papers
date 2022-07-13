@@ -1,20 +1,18 @@
 import path from 'node:path';
 import { clearProperties, createComponentNode, setValueProperty } from '../../ast/index.js';
+import { screenshot } from './screenshot.js';
 
 const ALLOWED_FORMATS = ['pdf', 'png', 'jpg'];
 const getAstId = handle => handle.evaluate(el => el.dataset.astId);
 
 export async function convertImage(handle, node, options) {
   const {
-    baseURL,
-    browser,
     convertDir,
-    css,
-    extract = el => el.innerHTML,
     format = 'pdf',
     inline = true,
     outputDir,
-    outputFilePrefix = 'lpub-convert-'
+    outputFilePrefix = 'lpub-convert-',
+    page
   } = options;
 
   if (!ALLOWED_FORMATS.includes(format)) {
@@ -26,16 +24,7 @@ export async function convertImage(handle, node, options) {
   const outputPath = path.join(outputDir, outputFile);
 
   // generate and store snapshot image
-  if (format === 'pdf') {
-    await browser.pdf({
-      baseURL,
-      css,
-      html: await handle.evaluate(extract),
-      path: outputPath
-    });
-  } else {
-    await handle.screenshot({ path: outputPath });
-  }
+  await screenshot(handle, { format, page, path: outputPath });
 
   // rewrite AST node
   const img = createComponentNode('image');

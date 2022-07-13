@@ -6,7 +6,6 @@ export async function getBrowser() {
   const onClose = () => browser = null;
   return browser || (browser = await launchBrowser({
     headless: true,
-    // defaultViewport: { width: 1200, height: 900 }
     defaultViewport: { width: 800, height: 600 }
   }, onClose));
 }
@@ -17,42 +16,9 @@ async function launchBrowser(options, onClose) {
     page() {
       return impl.newPage();
     },
-    pdf(options) {
-      return pdf(impl, options);
-    },
     async close() {
       await onClose(impl);
       await impl.close();
     }
   };
-}
-
-async function pdf(impl, { baseURL, css, html, path }) {
-  const page = await impl.newPage();
-  await page.emulateMediaType('print');
-  await page.setContent(`
-    ${baseURL ? `<base href="${baseURL}" />` : ''}
-    ${css || ''}
-    <style>
-      body > div,
-      body > form {
-        display: inline-block;
-        margin: 0px !important;
-      }
-      @media print {
-        body { break-inside: avoid; margin: 0; padding: 0; }
-      }
-    </style>
-    ${html}`);
-
-  const element = await page.$('body > *');
-  const { width, height } = await element.boundingBox();
-
-  await page.pdf({
-    path,
-    pageRanges: '1',
-    width: `${Math.ceil(width)}px`,
-    height: `${Math.ceil(height)}px`
-  });
-  await page.close();
 }
