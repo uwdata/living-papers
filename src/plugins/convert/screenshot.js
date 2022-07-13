@@ -9,6 +9,21 @@
  * @param {string} options.path The file path for the output PDF
  */
 export async function screenshot(handle, { format, page, path }) {
+  // handle inline content by injecting spans to ensure CSS is applied
+  // TODO: find a better solution to this issue?
+  await handle.evaluate(el => {
+    const p = el.parentElement;
+    if (p.tagName === 'P' && el.previousSibling) {
+      const span = document.createElement('span');
+      const sibs = [];
+      for (let s = el.previousSibling; s; s = s.previousSibling) {
+        sibs.push(s);
+      };
+      sibs.reverse().forEach(s => span.appendChild(s));
+      p.insertBefore(span, el);
+    }
+  });
+
   // annotate target element and parents
   await handle.evaluate(el => {
     el.classList.add('lpub-screenshot-target');
