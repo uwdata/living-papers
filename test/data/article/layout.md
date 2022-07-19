@@ -3,7 +3,7 @@ title: Layout Test
 author:
   name: Dr. Victor F. Funkenstein
   org: University of Geneva
-theme: normal
+theme: default
 ---
 
 ::: figure {.page}

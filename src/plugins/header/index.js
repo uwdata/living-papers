@@ -14,7 +14,7 @@ export default function(ast, context) {
   // TODO: what set of author attributes are supported?
   // TODO: should author normalization be done elsewhere?
   if (author) {
-    [ author ].flat().forEach(entry => {
+    const authorNodes = [ author ].flat().map(entry => {
       const content = [];
       if (typeof entry === 'string') {
         content.push(createTextNode(entry));
@@ -26,8 +26,9 @@ export default function(ast, context) {
           content.push(create('span', { class: 'author-org' }, entry.org));
         }
       }
-      entries.push(create('div', { class: 'author' }, content));
+      return create('div', { class: 'author' }, content);
     });
+    entries.push(create('div', { class: 'authors' }, authorNodes));
   }
 
   if (entries.length) {

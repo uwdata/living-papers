@@ -37,6 +37,18 @@
         "css": "css/range-text.css"
       },
       {
+        "name": "tangle-adjustable-option",
+        "import": "TangleAdjustableOption",
+        "file": "tangle-adjustable-option.js",
+        "css": "css/range-text.css"
+      },
+      {
+        "name": "tangle-toggle",
+        "import": "TangleToggle",
+        "file": "tangle-toggle.js",
+        "css": "css/tangle-toggle.css"
+      },
+      {
         "name": "tex-equation",
         "import": "TexEquation",
         "file": "tex-equation.js",

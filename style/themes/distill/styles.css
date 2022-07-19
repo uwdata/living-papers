@@ -1,0 +1,179 @@
+/* See https://github.com/distillpub/template/tree/master/src/styles */
+
+:root {
+	--max-article-width: 90ex;
+	--article-padding: 32px;
+	--margin-width: 1px;
+	--gap-width: 1px;
+}
+
+body {
+	font: 14px/1.6em -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+	background: #fff;
+	color: rgba(0, 0, 0, 0.8);
+}
+
+@media(min-width: 768px) {
+	body {
+		font-size: 16px;
+	}
+}
+
+@media(min-width: 1024px) {
+	body {
+		font-size: 1.06rem;
+		line-height: 1.7em;
+	}
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: 600;
+	line-height: 1.25em;
+	margin: 24px 0 16px;
+}
+
+h1[data-counter]::before, h2[data-counter]::before, h3[data-counter]::before {
+	content: none;
+}
+
+header h1 {
+	font-size: 40px;
+	line-height: 1.1em;
+	font-weight: 700;
+	color: #000;
+	border: none;
+	padding: 2rem 0 1.5rem;
+}
+
+@media(min-width: 768px) {
+	header h1 {
+		font-size: 50px;
+	}
+}
+
+header .authors {
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-left: 0;
+	border-right: 0;
+	padding: 1.5rem 0;
+
+	font-size: var(--smaller-size);
+	line-height: normal;
+}
+
+header .author {
+	margin: 0.5em 0;
+}
+
+header .author-name {
+	display: inline-block;
+	width: 200px;
+	font-weight: bold;
+}
+
+header .author-org {
+	font-style: inherit;
+}
+
+header .author-org::before {
+	content: none;
+}
+
+h1 {
+	font-weight: 600;
+	font-size: 24px;
+	line-height: 1.25em;
+	margin: 2rem 0 1.5rem 0;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	padding-bottom: 1rem;
+}
+
+@media(min-width: 1024px) {
+	h1 {
+		font-size: 36px;
+	}
+}
+
+h2 {
+	font-weight: 700;
+	font-size: 18px;
+	line-height: 1.4em;
+	margin-bottom: 1em;
+	margin-top: 2em;
+}
+
+@media(min-width: 1024px) {
+	h2 {
+		font-size: 20px;
+	}
+}
+
+h3 {
+	font-weight: 600;
+	text-transform: uppercase;
+	font-size: 14px;
+	line-height: 1.4em;
+}
+
+article p,
+article>ul,
+article>ol,
+article>table {
+	margin-bottom: 1em;
+}
+
+td,
+th {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+	transition: 0.1s ease-out;
+}
+
+th,
+tr:hover td {
+	background: rgba(0, 0, 0, 0.1);
+}
+
+figure {
+	margin: 1.5em 0 1em;
+}
+
+figure>figcaption {
+	font-weight: 600;
+	font-size: var(--small-size);
+	line-height: 1.4em;
+	padding: 1em 0;
+}
+
+.sticky {
+	background: rgba(255, 255, 255, 0.8);
+	backdrop-filter: blur(4px);
+}
+
+aside,
+.note {
+	font-style: inherit;
+	font-size: var(--small-size);
+}
+
+.note {
+	background: #fff;
+	transition: 0.1s ease-out;
+}
+
+.inline-note:hover .inline-note-number,
+.inline-note:hover .note {
+	background: #cdc8f0;
+}
+
+.inline-note-number {
+	padding: 1px;
+}
+
+.inline-note .note::before {
+	font-size: var(--smaller-size);
+}

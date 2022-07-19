@@ -18,13 +18,13 @@ export default async function(ast, context, options) {
     cssFile = 'bundle.css',
     jsFile = 'bundle.js',
     template = defaultTemplate(),
-    theme = 'default',
     baseURL = null,
     lang = 'en',
     dir = 'ltr',
     styles,
     ...rollupOptions
   } = options;
+  const { theme = 'default' } = metadata;
 
   // set up path variables
   const libDir = fileURLToPath(new URL('../../..', import.meta.url));
