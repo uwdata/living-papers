@@ -4,6 +4,7 @@ export { default as convert } from './convert/index.js';
 export { default as crossref } from './crossref/index.js';
 export { default as header } from './header/index.js';
 export { default as notes } from './notes/index.js';
+export { default as pathid } from './pathid/index.js';
 export { default as runtime } from './runtime/index.js';
 export { default as section } from './section/index.js';
 export { default as sticky } from './sticky/index.js';
