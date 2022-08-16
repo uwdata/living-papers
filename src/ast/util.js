@@ -415,7 +415,14 @@ export function mergeTextNodes(nodes) {
 }
 
 export function extractText(ast) {
-  return ast == null ? ''
-    : typeof ast === 'string' ? ast
-    : getChildren(ast).map(node => extractText(node)).join('');
+  if (ast == null) {
+    return '';
+  } else if (typeof ast === 'string') {
+    return ast;
+  } else if (isTextNode(ast)) {
+    return ast.value;
+  } else {
+    const inner = getChildren(ast).map(node => extractText(node)).join('');
+    return inner + (getNodeName(ast) === 'p' ? '\n\n' : '');
+  }
 }
