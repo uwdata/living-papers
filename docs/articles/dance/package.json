@@ -1,0 +1,10 @@
+{
+  "living-papers": {
+    "components": [
+      {
+        "name": "active-key",
+        "file": "src/active-key.js"
+      }
+    ]
+  }
+}
