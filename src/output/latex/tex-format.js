@@ -264,7 +264,7 @@ export class TexFormat {
   citeList(ast) {
     // TODO handle prefix/suffix
     const keys = getChildren(ast)
-      .filter(n => n.name === 'cite-ref')
+      .filter(n => n.name === 'citeref')
       .map(n => getPropertyValue(n, 'key'));
     return `\\cite{${keys.join(', ')}}`;
   }
