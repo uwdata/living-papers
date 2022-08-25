@@ -80,9 +80,11 @@ export class TexFormat {
       case 'blockquote':
         return this.env('quote', this.fragment(ast));
       case 'lineblock': // all children have type 'line'
-      case 'codeblock':
         // TODO implement
         throw new Error(`Not yet implemented: ${ast.name}`);
+      case 'codeblock':
+        // TODO provisional formatting
+        return this.env('verbatim', this.fragment(ast));
       case 'table':
         return this.table(ast);
       case 'thead':
