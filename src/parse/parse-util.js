@@ -14,6 +14,7 @@ export function append(array, items) {
 }
 
 export function extractText(blocks) {
+  if (!blocks) { return ''; }
   return blocks.map(block => {
     const { t: type, c: content } = block;
     switch (type) {
