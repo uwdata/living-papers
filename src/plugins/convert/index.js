@@ -156,7 +156,8 @@ function buildConversionPlan(ast) {
 function isSVGImageNode(node) {
   if (node.name === 'image') {
     const src = getPropertyValue(node, 'src') || '';
-    return src.endsWith('.svg') || src.startsWith('data:image/svg+xml;');
+    return src.endsWith('.svg') || src.startsWith('data:image/svg+xml;')
+                                || src.endsWith('.png');  // TODO provisional png support by pretending they're svgs
   }
   return false;
 }
