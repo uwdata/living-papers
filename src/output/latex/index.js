@@ -120,7 +120,17 @@ export default async function(ast, context, options) {
 
 async function resolveTemplate(id) {
   // TODO generalize further
-  const dir = fileURLToPath(new URL(`../../../latex-templates/${id}/`, import.meta.url));
+  try {
+    // try to resolve relative to the current directory
+    return await resolveTemplateFromDir(id);
+  } catch {
+    // resolve with a built-in template
+    const dir = fileURLToPath(new URL(`../../../latex-templates/${id}/`, import.meta.url));
+    return await resolveTemplateFromDir(dir);
+  }
+}
+
+async function resolveTemplateFromDir(dir) {
   const pkg = JSON.parse(await readFile(path.join(dir, 'package.json')));
   pkg.dir = dir;
   return pkg;
