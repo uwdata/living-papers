@@ -136,6 +136,7 @@ async function getCitations(nodes, bib, lookup, logger) {
 }
 
 function getCiteKey(key) {
+  key = decodeURI(key);
   const [type, ...rest] = key.split(':');
   return rest.length && KEYS.has(type)
     ? [type, rest.join(':')]
