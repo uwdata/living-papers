@@ -10,7 +10,8 @@
   },
   "env": {
     "browser": true,
-    "mocha": true
+    "mocha": true,
+    "es6": true
   },
   "rules": {
     "no-unexpected-multiline": "off"
