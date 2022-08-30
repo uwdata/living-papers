@@ -80,9 +80,9 @@ export class TexFormat {
       case 'blockquote':
         return this.env('quote', this.fragment(ast));
       case 'lineblock': // all children have type 'line'
-      case 'codeblock':
-        // TODO implement
         throw new Error(`Not yet implemented: ${ast.name}`);
+      case 'codeblock':
+        return this.codeblock(ast);
       case 'table':
         return this.table(ast);
       case 'thead':
@@ -139,6 +139,9 @@ export class TexFormat {
         return hasClass(ast, 'teaser') ? '' : this.figureEnv(ast);
       case 'caption':
         return this.vspace(ast) + this.command(ast, 'caption');
+      case 'pre':
+        // <pre><code>...</code></pre>
+        return this.env('verbatim', this.fragment(ast.children[0]));
       case 'raw':
         return this.raw(ast);
       case 'bibliography':
@@ -292,10 +295,15 @@ export class TexFormat {
       + this.env(env + (nonum ? '*' : ''), code);
   }
 
-  figureEnv(ast) {
-    return hasClass(ast, 'teaser') ? ''
-      : hasClass(ast, 'table') ? this.figure(ast, 'table', 'tbl')
-      : this.figure(ast, 'figure', 'fig');
+  codeblock(ast) {
+    const inline = getPropertyValue(ast, 'inline');
+    const lang = getPropertyValue(ast, 'language');
+    const code = this.fragment(ast);
+    if (inline) {
+      return `\\mintinline{${lang}}{${code}}`;
+    } else {
+      return this.env('minted', code, null, lang);
+    }
   }
 
   figureEnv(ast) {
