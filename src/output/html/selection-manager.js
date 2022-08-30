@@ -1,5 +1,7 @@
 import { DATA_AST, DELIM_AST } from './constants.js';
 
+const TEXT_NODE = 3;
+
 export function astRange(domRange) {
   let startPath = resolveNode(domRange.startContainer);
   const startOffset = startPath ? domRange.startOffset : 0;
@@ -31,7 +33,7 @@ function findPath(node, next) {
 }
 
 function resolveNode(node) {
-  if (node.nodeType === node.TEXT_NODE && hasPath(node.parentNode)) {
+  if (node.nodeType === TEXT_NODE && hasPath(node.parentNode)) {
     return [ ...extractPath(node.parentNode), childIndex(node) ];
   } else if (hasPath(node)) {
     return extractPath(node);
@@ -56,4 +58,65 @@ function childIndex(node) {
     }
   }
   return -1;
+}
+
+// TODO: map AST range to DOM range?
+
+function visitRangeNodes(domRange, visitor) {
+  const ancestor = domRange.commonAncestorContainer;
+  const start = domRange.startContainer;
+  const end = domRange.endContainer;
+
+	let stack = [];
+	for (let node = start; node !== ancestor; node = node.parentNode) {
+	  stack.push(node);
+	}
+	stack.push(ancestor);
+  stack.reverse();
+	for (let i = 0; i < stack.length - 1; ++i) {
+		visitor(stack[i]);
+	}
+
+	handleStart(start, domRange.startOffset, visitor);
+
+	while (stack.length) {
+		let curr = stack.pop();
+		while (curr = curr.nextSibling) {
+		  if (curr === end) {
+		    stack = [];
+		    break;
+		  }
+		  visitor(curr);
+		  if (curr.hasChildNodes()) {
+        stack.push(curr);
+        curr = curr.firstChild;
+        if (curr == end) {
+          stack = [];
+        } else {
+          visitor(curr);
+          stack.push(curr);
+        }
+        break;
+		  }
+		}
+	}
+
+	handleEnd(end, domRange.endOffset, visitor);
+}
+
+function handleStart(node, offset, visitor) {
+  if (node.nodeType === TEXT_NODE && offset > 0) {
+    visitor(node.splitText(offset));
+  } else {
+	  visitor(node);
+  }
+}
+
+function handleEnd(node, offset, visitor) {
+	if (node.nodeType === TEXT_NODE && offset < node.nodeValue.length) {
+    node.splitText(offset);
+    visitor(node);
+  } else {
+	  visitor(node);
+  }
 }
