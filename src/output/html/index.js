@@ -23,6 +23,7 @@ export default async function(ast, context, options) {
     lang = 'en',
     dir = 'ltr',
     styles,
+    live = false,
     ...rollupOptions
   } = options;
 
@@ -45,7 +46,7 @@ export default async function(ast, context, options) {
 
   // generate page content
   const { script } = astToScript(ast);
-  const { html: content, tags, ...bind } = astToHTML(ast);
+  let { html: content, tags, ...bind } = astToHTML(ast);
   const activeComponents = components.filter(c => tags.has(c.name));
   const entry = entryScript({
     root: 'article',
@@ -54,6 +55,11 @@ export default async function(ast, context, options) {
     components: activeComponents,
     runtime: !!script,
   });
+
+  // joshhack
+  if (live) {
+    content += '\n<script src="live.js"></script>';
+  }
 
   // bundle style sheets
   const stylePaths = [
