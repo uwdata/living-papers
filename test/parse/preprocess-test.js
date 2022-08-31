@@ -35,10 +35,10 @@ describe('preprocess', () => {
 
     test('```foo {.bar}\ncode\n```', '```{.foo .bar}\ncode\n```');
 
-    test(
-      '[:time-plot:]{\n theta=`focus`\n oninput=`theta = event.target.value`\n}',
-      '[:time-plot:]{\n theta="`focus`"\n oninput="`theta = event.target.value`"\n}'
-    );
+    // handles dash in component/class names
+    test('```foo-bar {.bar-baz}', '```{.foo-bar .bar-baz}');
+    test('~~~foo-bar {.bar-baz}', '~~~{.foo-bar .bar-baz}');
+    test(':::foo-bar {.bar-baz}', ':::{.foo-bar .bar-baz}');
 
     // don't get fooled by comments
     test(
@@ -89,6 +89,10 @@ describe('preprocess', () => {
     test(
       '[span]{foo=`a = "1"` baz=`alert({2})}`}',
       '[span]{foo="`a = \\"1\\"`" baz="`alert({2})}`"}',
+    );
+    test(
+      '[:time-plot:]{\n theta=`focus`\n oninput=`theta = event.target.value`\n}',
+      '[:time-plot:]{\n theta="`focus`"\n oninput="`theta = event.target.value`"\n}'
     );
   });
 });
