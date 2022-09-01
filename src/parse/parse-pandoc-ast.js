@@ -630,7 +630,10 @@ export class PandocASTParser {
 
       return createComponentNode(
         'citeref',
-        createProperties({ key, mode: getCiteMode(mode) }),
+        createProperties({
+          key: decodeURIComponent(key), // support URI-encoded DOIs
+          mode: getCiteMode(mode)
+        }),
         children
       );
     });
