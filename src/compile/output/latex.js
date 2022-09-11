@@ -12,7 +12,8 @@ export default async function(ast, context, options) {
     convert({
       ...(options.convert || {}),
       html: output.html,
-      outputDir: latexDir
+      outputDir: latexDir,
+      assertNoConvertNeeded: options['no-convert-needed'],
     })
   ]);
 

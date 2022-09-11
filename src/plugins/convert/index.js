@@ -22,6 +22,7 @@ export default function({
   convertDir = 'convert',
   format = 'pdf',
   outputDir,
+  assertNoConvertNeeded = false,
 } = {}) {
   return async (ast, context) => {
     const { inputDir, logger } = context;
@@ -31,6 +32,10 @@ export default function({
     if (nodes.size === 0) {
       return ast;
     }
+    if (assertNoConvertNeeded) {
+      throw new Error(`${nodes.size} nodes need conversion, but assertNoConvertNeeded is true`);
+    }
+
     logger.debug('Convert: map dynamic content to static output');
 
     // launch puppeteer and proxy server
