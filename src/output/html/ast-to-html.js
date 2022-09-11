@@ -1,7 +1,7 @@
 import { aliasComponent, aliasProperty } from './alias.js';
 import { htmlEscape } from '../../util/html-escape.js';
 import { DATA_ATTR } from './constants.js';
-import { getPropertyValue } from '../../ast/index.js';
+import { getPropertyValue, hasClass } from '../../ast/index.js';
 
 export function astMountHTML(ast) {
   const { html, attrs, events } = astToHTML(ast);
@@ -34,6 +34,11 @@ function renderNode(node, ctx) {
     } else {
       return node.children[0].value;
     }
+  }
+
+  // joshhack
+  if (hasClass(node, 'tex-only') || hasClass(node, 'latex-only')) {
+    return '';
   }
 
   const name = aliasComponent(node.name);

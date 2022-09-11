@@ -64,7 +64,12 @@ export class TexFormat {
     }
 
     // joshhack
-    if (getClasses(ast).includes('tk')) {
+    if (hasClass(ast, 'tk')) {
+      return undefined;
+    }
+
+    // joshhack
+    if (hasClass(ast, 'html-only')) {
       return undefined;
     }
 
