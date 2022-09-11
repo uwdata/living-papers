@@ -2,12 +2,13 @@ import { spawn } from 'child_process';
 
 export async function pdflatex(path, name, bibtex = true, showOutput = false) {
   const args = ['-interaction=nonstopmode', name];
-  await exec('pdflatex', args, path, showOutput);
   if (bibtex) {
+    const draftArgs = ['-draftmode', ...args];
+    await exec('pdflatex', draftArgs, path, showOutput);
     await exec('bibtex', [name], path, showOutput);
-    await exec('pdflatex', args, path, showOutput);
-    await exec('pdflatex', args, path, showOutput);
+    await exec('pdflatex', draftArgs, path, showOutput);
   }
+  await exec('pdflatex', args, path, showOutput);
 }
 
 function exec(cmd, args, cwd, showOutput) {
