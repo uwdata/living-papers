@@ -305,12 +305,6 @@ export class TexFormat {
   }
 
   figureEnv(ast) {
-    return hasClass(ast, 'teaser') ? ''
-      : hasClass(ast, 'table') ? this.figure(ast, 'table', 'tbl')
-      : this.figure(ast, 'figure', 'fig');
-  }
-
-  figureEnv(ast) {
     const id = getPropertyValue(ast, 'id');
     return this.options.places.has(id)
       ? '' // figure was re-positioned
