@@ -360,7 +360,7 @@ export class TexFormat {
 
   raw(ast) {
     const format = getPropertyValue(ast, 'format');
-    if (format !== 'tex') {
+    if (format !== 'tex' && format !== 'latex') {
       return '';
     } else if (hasProperty(ast, 'place')) {
       const node = this.options.places.get(getPropertyValue(ast, 'place'));
