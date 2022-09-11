@@ -63,6 +63,11 @@ export class TexFormat {
       return this.string(ast.value);
     }
 
+    // joshhack
+    if (getClasses(ast).includes('tk')) {
+      return undefined;
+    }
+
     switch (ast.name) {
       case 'article':
         return this.fragment(ast);
