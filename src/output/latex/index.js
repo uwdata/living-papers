@@ -104,7 +104,7 @@ export default async function(ast, context, options) {
   if (pdf) {
     try {
       logger.debug(`Running pdflatex for ${articleName}.tex`);
-      await pdflatex(latexDir, articleName, bibtex);
+      await pdflatex(latexDir, articleName, bibtex, options['show-output']);
       await copy(
         path.join(latexDir, `${articleName}.pdf`),
         path.join(outputDir, `${articleName}.pdf`)
