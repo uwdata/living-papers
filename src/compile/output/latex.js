@@ -27,7 +27,7 @@ export default async function(ast, context, options) {
 async function rewriteImagePaths(ast) {
   visitNodes(ast, node => {
     if (node.name === 'image') {
-      setValueProperty(node, 'src', '../../' + getPropertyValue(node, 'src'));
+      setValueProperty(node, 'src', '../../' + getPropertyValue(node, 'src').replace(/%20/g, ' '));
     }
   });
   return ast;
