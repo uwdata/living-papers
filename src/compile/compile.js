@@ -35,7 +35,7 @@ export async function compile(inputFile, options = {}) {
 
   // Apply AST transform plugins
   const ast = await transformAST(article, context, [
-    ...plugins(metadata.plugins),
+    ...pluginsFromKeys(metadata.plugins),
     runtime,
     code,
     notes,
@@ -69,7 +69,7 @@ export async function compile(inputFile, options = {}) {
   };
 }
 
-function plugins(plugins) {
+function pluginsFromKeys(plugins) {
   const list = [];
   for (const key in plugins) {
     if (plugins[key]) {
