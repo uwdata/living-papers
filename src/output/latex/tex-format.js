@@ -338,8 +338,12 @@ export class TexFormat {
   }
 
   tableHead(ast) {
-    const row = ast.children[0];
-    return this.tableRow(row) + ' \\\\\n\\hline\n';
+    if (!ast.children || ast.children.length === 0) {
+      return '';
+    } else {
+      const row = ast.children[0];
+      return this.tableRow(row) + ' \\\\\n\\hline\n';
+    }
   }
 
   tableBody(ast) {
