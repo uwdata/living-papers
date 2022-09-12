@@ -237,7 +237,8 @@ export class TexFormat {
   image(ast) {
     const src = getPropertyValue(ast, 'src');
     const alt = getPropertyValue(ast, 'alt');
-    const arg = 'width=\\linewidth';
+    const width = getPropertyValue(ast, 'latex_width') || '\\linewidth';
+    const arg = `width=${width}`;
     if (alt) {
       return `\\begin{figure}[h]
   \\centering
