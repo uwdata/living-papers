@@ -100,6 +100,33 @@ figure.table > figcaption[data-counter]::before {
 	content: var(--table-prefix) attr(data-counter) ". ";
 }
 
+figure {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+figure > figcaption {
+	flex-basis: 100%;
+}
+
+figure {
+	counter-reset: subfigcounter;
+}
+
+subfigure {
+	counter-increment: subfigcounter;
+	align-self: flex-end;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 15px;
+}
+
+subcaption::before {
+  content: "(" counter(subfigcounter, lower-alpha) ") ";
+}
+
 table {
 	border-spacing: 0;
 	border-collapse: collapse;
