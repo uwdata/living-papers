@@ -25,7 +25,7 @@ export function process(input, out) {
 function context(input, out) {
   const NOTSPACE = /\S/;
   const SPACE = /\s/;
-  const WORD = /\w/;
+  const WORD = /\w|-/;
   const n = input.length;
   let a = 0;
 
