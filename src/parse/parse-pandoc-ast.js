@@ -36,7 +36,7 @@ export class PandocASTParser {
       fence: new Set(options.fence || []),
       block: new Set(options.block || []),
       xref: new Set(options.xref || []),
-      env: new Set(options.env || [])
+      figureLike: options.figureLike || {},
     };
   }
 
@@ -346,8 +346,9 @@ export class PandocASTParser {
   parseDiv(item) {
     item = this.fenceLookup(item);
     const [attrs, content, name = 'div'] = item;
-    return this.ctx.env.has(name)
-      ? this.parseEnv(item)
+    const figureLikeSpec = this.ctx.figureLike[name];
+    return figureLikeSpec
+      ? this.parseFigureLike(item, figureLikeSpec)
       : createComponentNode(
           name,
           parseProperties(attrs),
@@ -355,7 +356,7 @@ export class PandocASTParser {
         );
   }
 
-  parseEnv(item) {
+  parseFigureLike(item, figureLikeSpec) {
     const [attrs, content, name] = item;
     const [id, classes, props] = attrs;
 
@@ -367,7 +368,7 @@ export class PandocASTParser {
           if (i > 0) cap.push({ t: SoftBreak });
           l.forEach(({ t, c }) => cap.push({ t, c: t === Str ? c.trim() : c }));
         });
-        return createComponentNode('caption', null, this.parseInline(cap))
+        return createComponentNode(figureLikeSpec.captionComponent, null, this.parseInline(cap))
       } else {
         // flatten internal paragraphs
         const parsed = this.parseBlocks([block])[0];
@@ -377,7 +378,7 @@ export class PandocASTParser {
 
     // create component, inject name as a class
     return createComponentNode(
-      'figure',
+      figureLikeSpec.component,
       parseProperties([id, [name, ...classes], props]),
       children.flat()
     );

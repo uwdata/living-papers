@@ -10,10 +10,15 @@ export function numbered() {
 
 export function parseContext() {
   return {
-    fence: ['abstract', 'acknowledgments', 'aside', 'figure', 'table', 'teaser'],
+    fence: ['abstract', 'acknowledgments', 'aside', 'figure', 'subfigure', 'table', 'teaser'],
     block: ['bibliography', 'equation', 'math'],
     xref: ['sec', 'fig', 'tbl', 'eqn'],
-    env: ['figure', 'table', 'teaser']
+    figureLike: {
+      figure: {component: 'figure', captionComponent: 'caption'},
+      table: {component: 'figure', captionComponent: 'caption'},
+      teaser: {component: 'figure', captionComponent: 'caption'},
+      subfigure: {component: 'subfigure', captionComponent: 'subcaption'}
+    }
   };
 }
 

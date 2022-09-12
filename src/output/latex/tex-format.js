@@ -149,8 +149,12 @@ export class TexFormat {
         return this.equation(ast);
       case 'figure':
         return hasClass(ast, 'teaser') ? '' : this.figureEnv(ast);
+      case 'subfigure':
+        return this.subfigureEnv(ast);
       case 'caption':
         return this.vspace(ast) + this.command(ast, 'caption');
+      case 'subcaption':
+        return this.vspace(ast) + this.command(ast, 'subcaption');
       case 'raw':
         return this.raw(ast);
       case 'bibliography':
@@ -325,6 +329,17 @@ export class TexFormat {
         + this.vspace(ast),
       getPropertyValue(ast, 'position') || (page ? 't' : null)
     );
+  }
+
+  subfigureEnv(ast) {
+    return this.env(
+      'subfigure',
+      this.fragment(ast)
+        + this.label(ast, 'fig')
+        + this.vspace(ast),
+      'b',
+      getPropertyValue(ast, 'latex_width') || '\\textwidth'
+    ).replace(/\n*$/, '\n') + "\\hfill\n";
   }
 
   table(ast) {
