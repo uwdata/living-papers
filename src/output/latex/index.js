@@ -11,7 +11,7 @@ import { TexFormat } from './tex-format.js';
 import { pdflatex } from './pdflatex.js';
 
 export default async function(ast, context, options) {
-  const { citations, metadata, inputFile, outputDir, tempDir, logger } = context;
+  const { citations, metadata, inputDir, inputFile, outputDir, tempDir, logger } = context;
   const {
     template = 'article',
     tags = ['<<', '>>'],
@@ -65,6 +65,7 @@ export default async function(ast, context, options) {
     author_short: tex.tex(metadata.author_short),
     bibtex: bibtex ? `${articleName}.bib` : undefined,
     keywords: metadata.keywords?.join(', '),
+    preamble: `\\graphicspath{{${path.relative(latexDir, inputDir)}}}\n`,
     content: tex.tex(ast).trim()
   };
 
@@ -74,7 +75,7 @@ export default async function(ast, context, options) {
     if (name) {
       data[name] = tex.vspace({ name })
         + tex.fragment(node).trim()
-        + tex.label(node, 'fig')
+        + tex.label(node, 'fig');
     }
   });
 
@@ -120,7 +121,18 @@ export default async function(ast, context, options) {
 
 async function resolveTemplate(id) {
   // TODO generalize further
-  const dir = fileURLToPath(new URL(`../../../latex-templates/${id}/`, import.meta.url));
+  try {
+    // try to resolve relative to the current directory
+    return await resolveTemplateFromDir(id);
+  } catch {
+    // resolve with a built-in template
+    const dir = fileURLToPath(new URL(`../../../latex-templates/${id}/`, import.meta.url));
+    return await resolveTemplateFromDir(dir);
+  }
+}
+
+async function resolveTemplateFromDir(dir) {
+  // const dir = fileURLToPath(new URL(`../../../latex-templates/${id}/`, import.meta.url));
   const pkg = JSON.parse(await readFile(path.join(dir, 'package.json')));
   pkg.dir = dir;
   return pkg;
@@ -160,9 +172,12 @@ function places(ast) {
 
 function extractAs(node) {
   const { name } = node;
-  if (name === 'abstract' || name === 'acknowledgments') {
-    return name;
-  } else if (name === 'figure' && hasClass(node, 'teaser')) {
-    return 'teaser';
+  switch (name) {
+    case 'abstract':
+    case 'acknowledgments':
+      return name;
+    case 'figure':
+      if (hasClass(node, 'teaser'))
+        return 'teaser';
   }
 }

@@ -83,6 +83,9 @@ export class TexFormat {
         throw new Error(`Not yet implemented: ${ast.name}`);
       case 'codeblock':
         return this.codeblock(ast);
+      case 'pre':
+        // <pre><code>...</code></pre>
+        return this.env('verbatim', this.fragment(ast.children[0]));
       case 'table':
         return this.table(ast);
       case 'thead':
@@ -139,9 +142,6 @@ export class TexFormat {
         return hasClass(ast, 'teaser') ? '' : this.figureEnv(ast);
       case 'caption':
         return this.vspace(ast) + this.command(ast, 'caption');
-      case 'pre':
-        // <pre><code>...</code></pre>
-        return this.env('verbatim', this.fragment(ast.children[0]));
       case 'raw':
         return this.raw(ast);
       case 'bibliography':
