@@ -16,7 +16,8 @@ export function pandoc(options = {}) {
         '-t', `${opt.target}${opt.targetExtensions.join('')}`,
         ...(opt.inputFile ? [opt.inputFile] : [])
       ];
-      const pandoc = spawn('pandoc', args);
+      const cmd = 'pandoc';
+      const pandoc = spawn(cmd, args);
       const chunks = [];
 
       // if given input stream, pipe standard input
@@ -24,6 +25,7 @@ export function pandoc(options = {}) {
         opt.stdin.pipe(pandoc.stdin);
       }
 
+      // process pandoc outpur
       pandoc.stdout.on('data', chunk => {
         chunks.push(chunk.toString());
       });
@@ -32,8 +34,12 @@ export function pandoc(options = {}) {
       //   chunk.toString();
       // });
 
-      pandoc.on('exit', () => {
-        resolve(JSON.parse(chunks.join('')));
+      pandoc.on('exit', code => {
+        if (code === 0) {
+          resolve(JSON.parse(chunks.join('')));
+        } else {
+          reject(new Error(`Command ${cmd} exited with code ${code}`));
+        }
       });
     } catch (err) {
       reject(err);
