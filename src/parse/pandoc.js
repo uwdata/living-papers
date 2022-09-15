@@ -1,4 +1,5 @@
-import { spawn } from 'child_process';
+import { Buffer } from 'node:buffer';
+import { spawn } from 'node:child_process';
 
 export function pandoc(options = {}) {
   const opt = {
@@ -27,7 +28,7 @@ export function pandoc(options = {}) {
 
       // process pandoc outpur
       pandoc.stdout.on('data', chunk => {
-        chunks.push(chunk.toString());
+        chunks.push(chunk);
       });
 
       // pandoc.stderr.on('data', chunk => {
@@ -36,7 +37,8 @@ export function pandoc(options = {}) {
 
       pandoc.on('exit', code => {
         if (code === 0) {
-          resolve(JSON.parse(chunks.join('')));
+          const text = Buffer.concat(chunks).toString('utf8');
+          resolve(JSON.parse(text));
         } else {
           reject(new Error(`Command ${cmd} exited with code ${code}`));
         }
