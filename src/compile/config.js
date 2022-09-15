@@ -10,7 +10,7 @@ export function numbered() {
 
 export function parseContext() {
   return {
-    fence: ['abstract', 'acknowledgments', 'aside', 'figure', 'subfigure', 'table', 'teaser'],
+    fence: ['abstract', 'acknowledgments', 'appendix', 'aside', 'figure', 'subfigure', 'table', 'teaser'],
     block: ['bibliography', 'equation', 'math'],
     xref: ['sec', 'fig', 'tbl', 'eqn'],
     figureLike: {

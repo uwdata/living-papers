@@ -163,6 +163,7 @@ export class TexFormat {
       case 'teaser':
       case 'references':
       case 'acknowledgments':
+      case 'appendix':
         return '';
       default:
         return `\\textbf{${ast.name}?}\n\n`;

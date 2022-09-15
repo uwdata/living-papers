@@ -170,7 +170,7 @@ function places(ast) {
 
 function extractAs(node) {
   const { name } = node;
-  if (name === 'abstract' || name === 'acknowledgments') {
+  if (['abstract', 'acknowledgments', 'appendix'].includes(name)) {
     return name;
   } else if (name === 'figure' && hasClass(node, 'teaser')) {
     return 'teaser';
