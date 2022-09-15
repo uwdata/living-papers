@@ -73,7 +73,7 @@ export default async function(ast, context, options) {
   getChildren(ast).forEach(node => {
     const name = extractAs(node);
     if (name) {
-      data[name] = tex.vspace({ name })
+      data[name] = (data[name] || '') + tex.vspace({ name })
         + tex.fragment(node).trim()
         + tex.label(node, 'fig');
     }
@@ -86,16 +86,19 @@ export default async function(ast, context, options) {
 
   // write output LaTeX files to target directory
   await Promise.all([
+    // write tex source file
     writeFile(
       path.join(latexDir, `${articleName}.tex`),
       content
     ),
+    // write bibtex file as needed
     ...(bibtex ? [
       writeFile(
         path.join(latexDir, `${articleName}.bib`),
         tex.string(citations.bibtex.join('\n\n'))
       )
     ] : []),
+    // copy additional template files as needed
     ...(pkg.files || []).map(f => copy(
       path.join(pkg.dir, f),
       path.join(latexDir, path.parse(f).base)
@@ -120,22 +123,20 @@ export default async function(ast, context, options) {
 }
 
 async function resolveTemplate(id) {
-  // TODO generalize further
   try {
     // try to resolve relative to the current directory
-    return await resolveTemplateFromDir(id);
+    return await loadTemplate(id);
   } catch {
-    // resolve with a built-in template
+    // fall back to a built-in template
+    // TODO: generalize to support templates available as node-modules
     const dir = fileURLToPath(new URL(`../../../latex-templates/${id}/`, import.meta.url));
-    return await resolveTemplateFromDir(dir);
+    return await loadTemplate(dir);
   }
 }
 
-async function resolveTemplateFromDir(dir) {
-  // const dir = fileURLToPath(new URL(`../../../latex-templates/${id}/`, import.meta.url));
-  const pkg = JSON.parse(await readFile(path.join(dir, 'package.json')));
-  pkg.dir = dir;
-  return pkg;
+async function loadTemplate(templateDir) {
+  const pkg = JSON.parse(await readFile(path.join(templateDir, 'package.json')));
+  return { ...pkg, dir: templateDir };
 }
 
 function getDate() {
