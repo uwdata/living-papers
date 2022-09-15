@@ -1,13 +1,20 @@
 import { spawn } from 'child_process';
 
 export async function pdflatex(path, name, bibtex = true) {
-  const args = ['-shell-escape', '-interaction=nonstopmode', name];
-  await exec('pdflatex', args, path);
+  const args = [
+    '-draftmode',
+    '-shell-escape',
+    '-interaction=nonstopmode',
+    name
+  ];
+
   if (bibtex) {
+    await exec('pdflatex', args, path);
     await exec('bibtex', [name], path);
     await exec('pdflatex', args, path);
-    await exec('pdflatex', args, path);
   }
+
+  await exec('pdflatex', args.slice(1), path);
 }
 
 function exec(cmd, args, cwd) {
