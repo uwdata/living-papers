@@ -14,7 +14,7 @@ export function append(array, items) {
 }
 
 export function extractText(blocks) {
-  return blocks.map(block => {
+  return (blocks || []).map(block => {
     const { t: type, c: content } = block;
     switch (type) {
       case Str: return content;
