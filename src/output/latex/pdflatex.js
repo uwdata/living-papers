@@ -13,6 +13,13 @@ export async function pdflatex(path, name, bibtex = true) {
 function exec(cmd, args, cwd) {
   return new Promise(function(resolve, reject) {
     const process = spawn(cmd, args, { cwd });
+    process.on('exit', code => {
+      if (code === 0) {
+        resolve(code);
+      } else {
+        reject(new Error(`Command ${cmd} exited with code ${code}`));
+      }
+    });
     process.on('exit', code => resolve(code));
     process.on('error', err => reject(err));
   });
