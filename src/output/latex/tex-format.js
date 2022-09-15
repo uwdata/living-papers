@@ -339,8 +339,9 @@ export class TexFormat {
   }
 
   tableHead(ast) {
-    const row = ast.children[0];
-    return this.tableRow(row) + ' \\\\\n\\hline\n';
+    const row = ast.children?.[0];
+    return row ? this.tableRow(row) + ' \\\\\n\\hline\n'
+      : ''; // no table header
   }
 
   tableBody(ast) {
