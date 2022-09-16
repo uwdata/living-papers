@@ -29,12 +29,24 @@ export class TexFormat {
       const c = str[i];
       switch (c) {
         case '’': p = '\''; break;
+        case '”': p = '\'\''; break;
         case '–': p = '--'; break;
         case '—': p = '---'; break;
+        case '{':
+        case '}':
+        case '#':
         case '&':
         case '_':
-        case '^':
         case '%': p = `\\${c}`; break;
+        case '…': p = '\\ldots{}'; break;
+        case '[':
+        case ']': p = `{${c}}`; break;
+        case '^': p = `\\^{}`; break;
+        case '<': p = `\\textless{}`; break;
+        case '>': p = `\\textgreater{}`; break;
+        case '|': p = `\\textbar{}`; break;
+        case '~': p = `\\textasciitilde{}`; break;
+        case '\\': p = `\\textbackslash{}`; break;
         case 'Θ': p = '$\\Theta$'; break;
         // TODO: better handle unicode in latex
       }
