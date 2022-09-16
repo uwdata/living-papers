@@ -15,6 +15,7 @@ const aliasMap = new Map([
   ['quote', 'q'],
   ['sticky', 'div'],
   ['teaser', 'figure'],
+  ['latex:preamble', null], // TODO? filter all non-html prefixed elements
   ['raw', null]
 ]);
 

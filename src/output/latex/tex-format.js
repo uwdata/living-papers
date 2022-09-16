@@ -149,6 +149,7 @@ export class TexFormat {
       case 'teaser':
       case 'references':
       case 'acknowledgments':
+      case 'latex:preamble':
         return '';
       default:
         return `\\textbf{${ast.name}?}\n\n`;

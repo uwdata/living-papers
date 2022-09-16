@@ -11,7 +11,7 @@ export function numbered() {
 export function parseContext() {
   return {
     fence: ['abstract', 'acknowledgments', 'aside', 'figure', 'table', 'teaser'],
-    block: ['bibliography', 'equation', 'math'],
+    block: ['bibliography', 'equation', 'math', 'latex:preamble'],
     xref: ['sec', 'fig', 'tbl', 'eqn'],
     env: ['figure', 'table', 'teaser']
   };

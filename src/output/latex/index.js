@@ -71,11 +71,10 @@ export default async function(ast, context, options) {
 
   // Extract special sections: abstract, acknowledgments, teaser
   getChildren(ast).forEach(node => {
-    const name = extractAs(node);
-    if (name) {
-      data[name] = (data[name] || '') + tex.vspace({ name })
-        + tex.fragment(node).trim()
-        + tex.label(node, 'fig');
+    const extract = extractNode(node, tex);
+    if (extract) {
+      const { name, content } = extract;
+      data[name] = (data[name] || '') + content;
     }
   });
 
@@ -171,14 +170,27 @@ function places(ast) {
   return places;
 }
 
-function extractAs(node) {
-  const { name } = node;
+function extractNode(node, tex) {
+  let { name } = node;
   switch (name) {
     case 'abstract':
     case 'acknowledgments':
-      return name;
+      break;
+    case 'latex:preamble':
+      return { name: 'preamble', content: node.children[0].value };
     case 'figure':
-      if (hasClass(node, 'teaser'))
-        return 'teaser';
+      name = hasClass(node, 'teaser') ? 'teaser' : null;
+      break;
+    default:
+      name = null;
   }
+  if (name) {
+    return { name, content: extractContent(name, node, tex) };
+  }
+}
+
+function extractContent(name, node, tex) {
+  return tex.vspace({ name })
+        + tex.fragment(node).trim()
+        + tex.label(node, 'fig');
 }
