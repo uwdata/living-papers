@@ -1,4 +1,5 @@
 import { spawn } from 'child_process';
+import process from 'node:process';
 
 export async function pdflatex(path, name, bibtex = true) {
   const args = [
@@ -19,8 +20,9 @@ export async function pdflatex(path, name, bibtex = true) {
 
 function exec(cmd, args, cwd) {
   return new Promise(function(resolve, reject) {
-    const process = spawn(cmd, args, { cwd });
-    process.on('exit', code => resolve(code));
-    process.on('error', err => reject(err));
+    const child = spawn(cmd, args, { cwd });
+    child.stdout.on('data', data => process.stdout.write(data));
+    child.on('exit', code => resolve(code));
+    child.on('error', err => reject(err));
   });
 }
