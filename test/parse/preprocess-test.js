@@ -39,11 +39,20 @@ describe('preprocess', () => {
     test('```foo-bar {.bar-baz}', '```{.foo-bar .bar-baz}');
     test('~~~foo-bar {.bar-baz}', '~~~{.foo-bar .bar-baz}');
     test(':::foo-bar {.bar-baz}', ':::{.foo-bar .bar-baz}');
+  });
 
+  it('handles nested fenced blocks', () => {
+    test(
+      '::: foo {.fob}\n::: bar {.bob}\n:::\n:::\n',
+      '::: {.foo .fob}\n::: {.bar .bob}\n:::\n:::\n'
+    );
+  });
+
+  it('handles fenced blocks with comments', () => {
     // don't get fooled by comments
     test(
-      '::: foo {.bar}\n<!--\n:::\n-->\n::: baz {.bop}',
-      '::: {.foo .bar}\n<!--\n:::\n-->\n::: baz {.bop}'
+      '::: foo {.bar}\n<!--\n:::\n::: baz {.bop}\n-->\n:::',
+      '::: {.foo .bar}\n<!--\n:::\n::: baz {.bop}\n-->\n:::'
     );
   });
 

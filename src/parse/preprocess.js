@@ -122,19 +122,6 @@ function scan(_) {
         if (cc) {
           _.write(i = _.space(_.consume(i, cc)));
 
-          // early exit if fence closing
-          if (cc === '`' && codeq.length) {
-            codeq.pop();
-            break;
-          } else if (cc === `~` && codet.length) {
-            codet.pop();
-            break;
-          } else if (cc === ':' && fdivs.length) {
-            fdivs.pop();
-            pipe = false;
-            break;
-          }
-
           // otherwise process attributes and update state
           j = _.word(i);
           if (_.peek(k = _.space(j), '{')) {
@@ -143,6 +130,19 @@ function scan(_) {
             }
             i = k + 1;
             attrs.push(i);
+          } else {
+            // early exit if fence closing
+            if (cc === '`' && codeq.length) {
+              codeq.pop();
+              break;
+            } else if (cc === `~` && codet.length) {
+              codet.pop();
+              break;
+            } else if (cc === ':' && fdivs.length) {
+              fdivs.pop();
+              pipe = false;
+              break;
+            }
           }
           if (cc === '`') {
             codeq.push(i);
