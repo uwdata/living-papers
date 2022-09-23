@@ -5,6 +5,9 @@
   "main": "src/index.js",
   "module": "src/index..js",
   "type": "module",
+  "bin": {
+    "lpub": "bin/lpub.js"
+  },
   "scripts": {
     "build": "rollup -c",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
