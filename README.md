@@ -1,14 +1,17 @@
-# living-papers-testbed
+# Living Papers
 
-Testbed for Living Papers development
+Authoring tools for scholarly communication. Create interactive web pages or formal research papers from markdown source.
 
-- Experiment with WebComponents &amp; Lit as infrastructure.
-- Experiment using Observable as the sole reactive runtime.
+This repo is a prototyping testbed for Living Papers development.
 
-## Instructions
+## Setup Instructions
 
-- Run `npm install` to install dependencies.
-- Run `npm run serve` to launch development server and view test examples.
-- Run `npm run build` to produce an output bundle.
+1. Install [pandoc](https://pandoc.org/installing.html). You should be able to run `pandoc` from the command line.
+2. Install other software packages as needed:
+  - To use R code blocks, you must have R installed as well as any libraries you wish to use.
+  - To publish LaTeX / PDF output, you must install a TeX distribution, such as [TeX Live](https://www.tug.org/texlive/).
+3. Clone this repo, run `npm install` to install JavaScript dependencies.
 
-There are no formal test cases at this time (despite the boilerplate inherited from the Lit starter kit).
+Once installed,
+- Run `npm test` to run the test cases.
+- Run `{package-dir}/bin/lpub.js filename.md` to compile a source file in the current working directory.
