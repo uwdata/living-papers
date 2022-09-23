@@ -94,7 +94,7 @@ export default async function(ast, context, options) {
     ...(bibtex ? [
       writeFile(
         path.join(latexDir, `${articleName}.bib`),
-        tex.string(citations.bibtex.join('\n\n'))
+        citations.bibtex.join('\n\n')
       )
     ] : []),
     // copy additional template files as needed
