@@ -1,7 +1,7 @@
-import http from 'node:http';
+import fs from 'node:fs/promises';
 import url from 'node:url';
+import http from 'node:http';
 import path from 'node:path';
-import fs from 'node:fs';
 
 const DEFAULT_PORT = 3002;
 const MAX_ATTEMPTS = 100;
@@ -14,13 +14,13 @@ export async function startServer(basePath, port = DEFAULT_PORT) {
   }
 
   // Server largely based on https://stackoverflow.com/a/29046869
-  server = http.createServer(function(req, res) {
+  server = http.createServer(async (req, res) => {
 
     // parse URL
     const parsedUrl = url.parse(req.url);
 
     // extract URL path
-    let pathname = `${basePath}${parsedUrl.pathname}`;
+    let pathname = `${basePath}${decodeURIComponent(parsedUrl.pathname)}`;
 
     // based on the URL path, extract the file extension. e.g. .js, .doc, ...
     const ext = path.parse(pathname).ext;
@@ -41,29 +41,31 @@ export async function startServer(basePath, port = DEFAULT_PORT) {
       '.doc': 'application/msword'
     };
 
-    fs.exists(pathname, function (exist) {
-      if(!exist) {
-        // if the file is not found, return 404
-        res.statusCode = 404;
-        res.end(`File ${pathname} not found!`);
-        return;
-      }
+    let stats;
+    try {
+      stats = await fs.stat(pathname);
+    } catch (err) {
+      // if the file is not found, return 404
+      res.statusCode = 404;
+      res.end(`File ${pathname} not found!`);
+      return;
+    }
 
-      // if is a directory search for index file matching the extension
-      if (fs.statSync(pathname).isDirectory()) pathname += '/index' + ext;
+    // if is a directory search for index file matching the extension
+    if (stats.isDirectory()) {
+      pathname += '/index' + ext;
+    }
 
-      // read file from file system
-      fs.readFile(pathname, function(err, data){
-        if (err) {
-          res.statusCode = 500;
-          res.end(`Error getting the file: ${err}.`);
-        } else {
-          // if the file is found, set Content-type and send data
-          res.setHeader('Content-type', map[ext] || 'text/plain' );
-          res.end(data);
-        }
-      });
-    });
+    // read file from file system
+    try {
+      const data = await fs.readFile(pathname);
+      // if the file is found, set Content-type and send data
+      res.setHeader('Content-type', map[ext] || 'text/plain' );
+      res.end(data);
+    } catch (err) {
+      res.statusCode = 500;
+      res.end(`Error getting the file: ${err}.`);
+    }
   });
 
   return new Promise((resolve, reject) => {

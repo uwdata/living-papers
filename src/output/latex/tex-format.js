@@ -235,7 +235,7 @@ export class TexFormat {
   }
 
   image(ast) {
-    const src = getPropertyValue(ast, 'src');
+    const src = sanitizeFile(getPropertyValue(ast, 'src'));
     const alt = getPropertyValue(ast, 'alt');
     const arg = 'width=\\linewidth';
     if (alt) {
@@ -395,4 +395,10 @@ function tableAlignment(ast) {
       : classes.has('center') ? 'c'
       : 'l';
   }).join('');
+}
+
+function sanitizeFile(src) {
+  return src
+    ? decodeURIComponent(src).replace(/%/g, '\\%')
+    : '';
 }
