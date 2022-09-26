@@ -1,0 +1,15 @@
+{
+  "name": "@living-papers/ast",
+  "description": "Abstract syntax tree (AST) methods for Living Papers.",
+  "version": "0.0.1",
+  "license": "BSD-3-Clause",
+  "repository": "uwdata/living-papers",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint '**/*.js'",
+    "test": "mocha 'test/**/*-test.js'",
+    "prepublishOnly": "npm run test & npm run lint"
+  }
+}

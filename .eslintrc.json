@@ -1,7 +1,7 @@
 {
   "root": true,
   "extends": ["eslint:recommended"],
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "globals": {
     "chai": "readonly"
   },
@@ -18,7 +18,7 @@
   },
   "overrides": [
     {
-      "files": ["rollup.config.js", "web-test-runner.config.js"],
+      "files": ["rollup.config.js"],
       "env": {
         "node": true
       }
