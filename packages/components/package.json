@@ -1,0 +1,70 @@
+{
+  "name": "@living-papers/components",
+  "description": "Built-in Living Papers web components.",
+  "version": "0.0.1",
+  "license": "BSD-3-Clause",
+  "repository": "uwdata/living-papers",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint '**/*.js'",
+    "prepublishOnly": "npm run lint"
+  },
+  "dependencies": {
+    "@living-papers/runtime": "*",
+    "d3-require": "^1.3.0",
+    "lit": "^2.3.1"
+  },
+  "living-papers": {
+    "components": [
+      {
+        "name": "cell-view",
+        "import": "CellView",
+        "file": "src/cell-view.js",
+        "css": "css/cell-view.css"
+      },
+      {
+        "name": "cite-ref",
+        "import": "CiteRef",
+        "file": "src/cite-ref.js",
+        "css": "css/cite.css"
+      },
+      {
+        "name": "code-block",
+        "import": "CodeBlock",
+        "file": "src/code-block.js"
+      },
+      {
+        "name": "cross-ref",
+        "import": "CrossRef",
+        "file": "src/cross-ref.js",
+        "css": "css/cross-ref.css"
+      },
+      {
+        "name": "inline-note",
+        "import": "InlineNote",
+        "file": "src/inline-note.js",
+        "css": "css/inline-note.css"
+      },
+      {
+        "name": "range-text",
+        "import": "RangeText",
+        "file": "src/range-text.js",
+        "css": "css/range-text.css"
+      },
+      {
+        "name": "tex-equation",
+        "import": "TexEquation",
+        "file": "src/tex-equation.js",
+        "css": "css/tex-math.css"
+      },
+      {
+        "name": "tex-math",
+        "import": "TexMath",
+        "file": "src/tex-math.js",
+        "css": "css/tex-math.css"
+      }
+    ]
+  }
+}

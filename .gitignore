@@ -1,6 +1,8 @@
 /node_modules/
-/test/output/
-/dist/
+/packages/*/node_modules/
+/packages/*/test/output/
+/packages/*/.cache/
+dist/
 .cache
 .temp
 .DS_Store

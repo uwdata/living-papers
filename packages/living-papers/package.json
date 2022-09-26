@@ -1,0 +1,37 @@
+{
+  "name": "living-papers",
+  "description": "Authoring tools for scholarly communication.",
+  "version": "0.0.1",
+  "license": "BSD-3-Clause",
+  "repository": "uwdata/living-papers",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "type": "module",
+  "bin": {
+    "lpub": "bin/lpub.js"
+  },
+  "scripts": {
+    "lint": "eslint '**/*.js'",
+    "test": "mocha --timeout 10000 'test/**/*-test.js'",
+    "prepublishOnly": "npm run test & npm run lint"
+  },
+  "dependencies": {
+    "@living-papers/ast": "*",
+    "@living-papers/components": "*",
+    "@living-papers/runtime": "*",
+    "@living-papers/runtime-compiler": "*",
+    "@rollup/plugin-node-resolve": "^13.0.4",
+    "@rollup/plugin-replace": "^3.0.0",
+    "@uwdata/file-cache": "0.0.1",
+    "chalk": "^5.0.1",
+    "citation-js": "^0.5.7",
+    "clean-css": "^5.3.0",
+    "mustache": "^4.2.0",
+    "node-fetch": "^3.2.4",
+    "puppeteer": "^14.1.0",
+    "rollup": "^2.70.2",
+    "rollup-plugin-bundle-size": "^1.0.3",
+    "rollup-plugin-minify-html-literals": "^1.2.6",
+    "rollup-plugin-terser": "^7.0.2"
+  }
+}
