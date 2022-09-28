@@ -11,7 +11,7 @@ export class TexMath extends DependentElement {
         css: 'dist/katex.min.css'
       }
     ]
-  };
+  }
 
   static get properties() {
     return {

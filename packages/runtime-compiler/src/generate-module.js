@@ -83,7 +83,7 @@ function definition(v) {
   } else if (v.module) {
     const i = v.inject && v.inject
       .map(o => `{name:"${o.name}",alias:"${o.alias}"}`).join(',');
-    prop = `module:[${v.id}, ${v.module}${i ? `, ${i}` : ''}]`;
+    prop = `module:[${v.id}, ${v.module}${i ? `, [${i}]` : ''}]`;
   } else if (v.import) {
     const a = v.alias && v.alias !== v.import ? `, "${v.alias}"` : ''
     prop = `import:[${v.from}, "${v.import}"${a}]`;

@@ -10,7 +10,7 @@
   "scripts": {
     "lint": "eslint '**/*.js'",
     "test": "mocha 'test/**/*-test.js'",
-    "prepublishOnly": "npm run test & npm run lint"
+    "prepublishOnly": "npm run test && npm run lint"
   },
   "dependencies": {
     "@observablehq/parser": "^6.0.0",

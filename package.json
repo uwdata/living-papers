@@ -6,17 +6,18 @@
   "license": "BSD-3-Clause",
   "repository": "uwdata/living-papers",
   "scripts": {
-    "build": "",
-    "lint": "",
-    "test": "",
-    "prepublishOnly": ""
+    "build": "lerna run build",
+    "lint": "lerna run lint",
+    "test": "lerna run test",
+    "prepublishOnly": "npm run test && npm run lint"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.19.1",
-    "deepmerge": "^4.2.2",
+    "@rollup/plugin-node-resolve": "^14.1.0",
     "eslint": "^8.24.0",
+    "lerna": "^5.5.2",
     "mocha": "^10.0.0",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "rollup": "^2.79.1"
   },
   "workspaces": [
     "./packages/*",
