@@ -159,7 +159,7 @@ export function getPropertyValue(node, key) {
  * @return {boolean} True if the property is defined, else false.
  */
 export function hasProperty(node, key) {
-  return node.properties?.hasOwnProperty(key) || false;
+  return node.properties ? Object.hasOwn(node.properties, key) : false;
 }
 
 /**
@@ -218,6 +218,7 @@ export function setValueProperty(node, key, value) {
  */
 export function removeProperty(node, key) {
   if (hasProperty(node, key)) {
+    // eslint-disable-next-line no-unused-vars
     const { [key]: remove, ...props } = node.properties;
     if (hasKeys(props)) {
       node.properties = props;

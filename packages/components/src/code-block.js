@@ -10,7 +10,7 @@ export class CodeBlock extends DependentElement {
         css: 'dist/styles/github.css'
       }
     ]
-  };
+  }
 
   static get properties() {
     return {

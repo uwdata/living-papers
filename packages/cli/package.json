@@ -1,0 +1,25 @@
+{
+  "name": "@living-papers/cli",
+  "description": "Authoring tools for scholarly communication.",
+  "version": "0.0.1",
+  "license": "BSD-3-Clause",
+  "repository": "uwdata/living-papers",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "type": "module",
+  "bin": {
+    "lpub": "bin/lpub.js"
+  },
+  "scripts": {
+    "lint": "eslint '**/*.js'",
+    "prepublishOnly": "npm run lint"
+  },
+  "dependencies": {
+    "@living-papers/compiler": "*",
+    "@web/dev-server": "^0.1.34",
+    "chalk": "^5.0.1",
+    "chokidar": "^3.5.3",
+    "lodash.debounce": "^4.0.8",
+    "yargs": "^17.5.1"
+  }
+}

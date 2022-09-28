@@ -26,7 +26,7 @@ function getDependencyBase(object) {
   let ctor = typeof HTMLElement !== 'undefined' && object instanceof HTMLElement
     ? object.constructor
     : object;
-  while (ctor && !ctor.hasOwnProperty(SCHEMA)) {
+  while (ctor && !Object.hasOwn(ctor, SCHEMA)) {
     ctor = Object.getPrototypeOf(ctor);
     if (ctor && ctor.name === 'HTMLElement') return null;
   }

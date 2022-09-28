@@ -4,13 +4,16 @@
   "version": "0.0.1",
   "license": "BSD-3-Clause",
   "repository": "uwdata/living-papers",
-  "main": "src/index.js",
-  "module": "src/index.js",
+  "main": "dist/runtime.js",
+  "module": "dist/runtime.js",
   "type": "module",
   "scripts": {
-    "lint": "eslint '**/*.js'",
+    "prebuild": "rimraf dist",
+    "build": "rollup -c",
+    "lint": "eslint 'src/**/*.js' 'test/**/*.js'",
+    "pretest": "npm run build",
     "test": "mocha 'test/**/*-test.js'",
-    "prepublishOnly": "npm run test & npm run lint"
+    "prepublishOnly": "npm run test && npm run lint"
   },
   "dependencies": {
     "@observablehq/runtime": "^4.25.0"
