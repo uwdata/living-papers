@@ -1,14 +1,14 @@
 {
-  "name": "@living-papers/monorepo",
-  "description": "Living Papers monorepo.",
   "private": true,
-  "version": "0.0.1",
+  "name": "living-papers",
+  "description": "Living Papers monorepo.",
   "license": "BSD-3-Clause",
   "repository": "uwdata/living-papers",
   "scripts": {
     "build": "lerna run build",
     "lint": "lerna run lint",
     "test": "lerna run test",
+    "publish": "lerna publish",
     "prepublishOnly": "npm run test && npm run lint"
   },
   "devDependencies": {
