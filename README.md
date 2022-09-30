@@ -25,6 +25,6 @@ To use Living Papers for a new publishing project, install the `@living-papers/c
 Clone this monorepo, run `npm install` to install JavaScript dependencies.
 
 Once installed, you can:
-- Run `npm run test` to run test cases across all monorepo packages.
-- Run `npm run lint` to lint source code across all monorepo packages.
+- Run `npm run test` to run test cases across monorepo packages.
+- Run `npm run lint` to lint source code across monorepo packages.
 - Run `packages/cli/bin/lpub.js filename.md` to compile a source file in the current directory.
