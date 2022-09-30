@@ -79,10 +79,6 @@ aside,
 	background: var(--ref-color-light);
 }
 
-.inline-note-number {
-	padding: 1px;
-}
-
 .inline-note .note::before {
 	font-size: var(--smaller-size);
 }

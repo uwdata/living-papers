@@ -95,6 +95,7 @@ aside > :last-child {
 
 .inlinenote-number {
 	line-height: 1;
+	padding: 1px;
 }
 
 .float-left {
@@ -198,6 +199,7 @@ footer {
 
 	.inline-note-number {
 		cursor: pointer;
+		padding: 1px 4px;
 	}
 
 	.inline-note:not(.open) .note,
