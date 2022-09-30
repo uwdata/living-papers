@@ -11,6 +11,9 @@ export class InlineNote extends ArticleElement {
 
   render() {
     const num = this.number;
-    return html`<span class="inline-note"><sup class="inline-note-number">${num}</sup><span class="note margin" data-number="${num}">${this.__children}</span></span>`;
+    return html`<span class="inline-note" @click=${(evt) => evt.target.parentElement.classList.toggle('open')}>
+      <sup class="inline-note-number">${num}</sup>
+      <span class="note margin" data-number="${num}">${this.__children}</span>
+    </span>`;
   }
 }
