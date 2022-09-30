@@ -8,8 +8,7 @@
     "build": "lerna run build",
     "lint": "lerna run lint",
     "test": "lerna run test",
-    "publish": "lerna publish",
-    "prepublishOnly": "npm run test && npm run lint"
+    "release": "npm run test && npm run lint && lerna publish"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^14.1.0",
