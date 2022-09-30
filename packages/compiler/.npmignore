@@ -1,4 +1,6 @@
-**/.cache
-**/.temp
+.cache
+.temp
+.DS_Store
+node_modules/
 test/
 test-output/
