@@ -149,7 +149,6 @@ async function bundleCSS(styles, minify = true) {
 }
 
 function entryScript({ root, bind, context, components, runtime }) {
-  const src = fileURLToPath(new URL('./client', import.meta.url));
   const script = [];
   const refdata = context.citations?.references;
   const hasRefs = refdata?.length > 0;
