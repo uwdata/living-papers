@@ -1,7 +1,7 @@
 {
   "name": "@living-papers/compiler",
   "description": "Authoring tools for scholarly communication.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "BSD-3-Clause",
   "repository": "uwdata/living-papers",
   "main": "src/index.js",
@@ -13,12 +13,12 @@
     "prepublishOnly": "npm run test & npm run lint"
   },
   "dependencies": {
-    "@living-papers/ast": "*",
-    "@living-papers/components": "*",
-    "@living-papers/html-templates": "*",
-    "@living-papers/latex-templates": "*",
-    "@living-papers/runtime": "*",
-    "@living-papers/runtime-compiler": "*",
+    "@living-papers/ast": "^0.0.3",
+    "@living-papers/components": "^0.0.3",
+    "@living-papers/html-templates": "^0.0.3",
+    "@living-papers/latex-templates": "^0.0.3",
+    "@living-papers/runtime": "^0.0.3",
+    "@living-papers/runtime-compiler": "^0.0.3",
     "@rollup/plugin-node-resolve": "^14.1.0",
     "@rollup/plugin-replace": "^4.0.0",
     "@uwdata/file-cache": "0.0.1",
