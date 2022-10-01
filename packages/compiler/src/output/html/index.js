@@ -24,7 +24,7 @@ export default async function(ast, context, options) {
 }
 
 export async function outputHTML(ast, context, options) {
-  const { components, metadata, logger, inputDir, outputDir, tempDir } = context;
+  const { components, metadata, inputDir, outputDir, tempDir } = context;
   const {
     selfContained = false,
     htmlFile = 'index.html',
@@ -40,8 +40,7 @@ export async function outputHTML(ast, context, options) {
   } = options;
 
   // set up path variables
-  const libDir = fileURLToPath(new URL('../../..', import.meta.url));
-  const styleDir = path.join(libDir, 'style');
+  const styleDir = fileURLToPath(new URL('../../../style', import.meta.url));
   const runtimePath = path.join(tempDir, 'runtime.js');
   const entryPath = path.join(tempDir, 'entry.js');
   const styleAssetsDir = path.join(styleDir, 'themes', theme, 'assets');
@@ -119,7 +118,7 @@ export async function outputHTML(ast, context, options) {
   try {
     await copy(styleAssetsDir, assetsPath);
   } catch (err) {
-    logger.error(err);
+    // not all styles have assets, let this fail silently
   }
 
   // write html file or return html text
