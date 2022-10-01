@@ -15,6 +15,8 @@
   "dependencies": {
     "@living-papers/ast": "*",
     "@living-papers/components": "*",
+    "@living-papers/html-templates": "*",
+    "@living-papers/latex-templates": "*",
     "@living-papers/runtime": "*",
     "@living-papers/runtime-compiler": "*",
     "@rollup/plugin-node-resolve": "^14.1.0",
