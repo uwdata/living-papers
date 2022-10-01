@@ -7,7 +7,7 @@ export function getParams() {
   const inputFile = args._[0];
   const output = {};
   const options = {
-    outputDir: args.outputDir,
+    outputDir: args.outputDir || '.',
     output,
     logger: logger(),
     debug: args.debug
