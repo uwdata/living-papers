@@ -5,7 +5,7 @@
   "license": "BSD-3-Clause",
   "repository": "uwdata/living-papers",
   "main": "dist/runtime.js",
-  "module": "dist/runtime.js",
+  "module": "src/index.js",
   "type": "module",
   "scripts": {
     "prebuild": "rimraf dist",
