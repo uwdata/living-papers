@@ -1,6 +1,6 @@
+import { DATA_ATTR } from '@living-papers/runtime';
 import { aliasComponent, aliasProperty } from './alias.js';
 import { htmlEscape } from '../../util/html-escape.js';
-import { DATA_ATTR } from './constants.js';
 
 export function astMountHTML(ast) {
   const { html, attrs, events } = astToHTML(ast);

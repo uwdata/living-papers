@@ -161,16 +161,16 @@ function entryScript({ root, bind, context, components, runtime }) {
     script.push(`import ${spec} from '${entry.file}';`);
   });
 
+  const imports = [
+    ...(runtime ? ['ObservableRuntime', 'hydrate'] : []),
+    ...(hasRefs ? ['reference'] : []),
+    ...(hasSticky ? ['scrollManager'] : [])
+  ];
+  if (imports.length) {
+    script.push(`import { ${imports.join(', ')} } from '@living-papers/runtime';`);
+  }
   if (runtime) {
-    script.push(`import { ObservableRuntime } from '@living-papers/runtime';
-import { hydrate } from '${src}/hydrate.js';
-import * as module from './runtime.js';`);
-  }
-  if (hasRefs) {
-    script.push(`import { reference } from '${src}/reference.js';`);
-  }
-  if (hasSticky) {
-    script.push(`import { scrollManager } from '${src}/scroll-manager.js';`);
+    script.push(`import * as module from './runtime.js';`);
   }
 
   components.forEach(entry => {

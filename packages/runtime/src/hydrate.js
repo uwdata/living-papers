@@ -1,8 +1,6 @@
-import { Observer, FULFILLED, REJECTED } from '@living-papers/runtime';
 import { binding } from './binding.js';
-import {
-  CELL_VIEW, DATA_ATTR, DATA_BIND, DATA_BIND_SET, DATA_CELL
-} from '../constants.js';
+import { CELL_VIEW, DATA_ATTR, DATA_BIND, DATA_BIND_SET, DATA_CELL } from './constants.js';
+import { Observer, FULFILLED, REJECTED } from './observer.js';
 
 export function hydrate(runtime, root, module, bind = {}) {
   const {
