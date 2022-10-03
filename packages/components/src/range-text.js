@@ -44,7 +44,7 @@ export class RangeText extends ArticleElement {
       const value = Math.max(Math.min(mv + dx, max), min);
       if (this.value !== value) {
         this.value = value;
-        this.dispatchEvent(new Event('input'));
+        this.dispatchEvent(new CustomEvent('input'));
         this.requestUpdate();
       }
     };
@@ -63,6 +63,7 @@ export class RangeText extends ArticleElement {
   }
 
   render() {
-    return html`<span class="range-text" title=${this.title}>${this.value}</span>`;
+    const digits = Math.max(0, Math.ceil(-Math.log10(this.step)));
+    return html`<span class="range-text" title=${this.title}>${this.value.toFixed(digits)}</span>`;
   }
 }
