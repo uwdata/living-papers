@@ -30,7 +30,7 @@ export async function compile(inputFile, options = {}) {
     fetch,
     resolve: nodeResolver(),
     numbered: numbered(),
-    ...options,
+    ...options, // may overwrite earlier keys, this is intentional
     metadata,
     inputFile,
     inputDir
