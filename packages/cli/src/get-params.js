@@ -7,6 +7,7 @@ export function getParams() {
   const inputFile = args._[0];
   const output = {};
   const options = {
+    tempDir: args.tempDir || undefined,
     outputDir: args.outputDir || '.',
     output,
     logger: logger(),
@@ -49,6 +50,9 @@ export function parseArguments() {
     .alias('o', 'outputDir')
     .default('.')
     .describe('o', 'Directory to write output files');
+
+  args.string('tempDir')
+    .describe('tempDir', 'Directory to write temporary files');
 
   args.boolean('debug')
     .describe('debug', 'Enable debugging output');
