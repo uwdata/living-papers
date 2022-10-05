@@ -1,6 +1,10 @@
 # Living Papers
 
-Authoring tools for scholarly communication. Create interactive web pages or formal research papers from markdown source.
+Authoring tools for scholarly communication.
+Create interactive web pages or formal research papers from markdown source.
+Living Papers is intended to be a "language toolkit" for parsing, transforming, and rendering documents.
+
+To get up and running quickly, use the [Living Papers project template](https://github.com/uwdata/living-papers-template/).
 
 This repo is a research testbed for Living Papers development. There will be bugs. Contributions (issues, PRs, etc) are welcome!
 
@@ -14,11 +18,13 @@ Before working with Living Papers, set up your local environment:
 2. Install other software packages as needed:
   - To use R code blocks, install [R](https://cloud.r-project.org/) along with the `knitr` package and other libraries you wish to use. To run the Living Papers development test suite, install R then run the following within R:
     - `install.packages(c("knitr", "tidyverse", "svglite"))`
-  - To publish LaTeX / PDF output,  install a TeX distribution such as [TeX Live](https://www.tug.org/texlive/).
+  - To publish LaTeX / PDF output,  install a TeX distribution such as [TeX Live](https://www.tug.org/texlive/). You should be able to run `pdflatex` and `bibtex` from the command line.
 
 ### Usage Instructions
 
-To use Living Papers for a new publishing project, install the `@living-papers/cli` npm package, which provides the `lpub` utility to convert source to output documents.
+To use Living Papers for a new publishing project, you can install the `@living-papers/cli` npm package, which provides the `lpub` utility to convert source to output documents.
+
+That said, we recommend copying the [project template repo](https://github.com/uwdata/living-papers-template/) for a pre-configured authoring setup.
 
 ### Developer Instructions
 
