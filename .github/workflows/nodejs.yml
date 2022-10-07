@@ -29,7 +29,8 @@ jobs:
         with:
           packages: |
             any::knitr
-            any::tidyverse
+            any::ggplot2
+            any::jsonlite
             any::svglite
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
