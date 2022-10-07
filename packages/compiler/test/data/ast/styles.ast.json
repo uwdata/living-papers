@@ -378,7 +378,7 @@
                 "properties": {
                   "class": {
                     "type": "value",
-                    "value": "smallcaps em highlight underline"
+                    "value": "em highlight"
                   }
                 },
                 "children": [
@@ -806,7 +806,7 @@
                 "properties": {
                   "class": {
                     "type": "value",
-                    "value": "smallcaps em highlight underline"
+                    "value": "em highlight"
                   },
                   "href": {
                     "type": "value",
