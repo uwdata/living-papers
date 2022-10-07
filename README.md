@@ -33,4 +33,22 @@ Clone this monorepo, run `npm install` to install JavaScript dependencies.
 Once installed, you can:
 - Run `npm run test` to run test cases across monorepo packages.
 - Run `npm run lint` to lint source code across monorepo packages.
-- Run `packages/cli/bin/lpub.js filename.md` to compile a source file in the current directory.
+- Run `npx lpub filename.md` to compile a source file in the current directory.
+
+The [`examples`](https://github.com/uwdata/living-papers/tree/main/examples) folder contains example Living Papers articles. Within the folder for each example, run `npm run build` to produce compiled output article(s).
+
+## Package Overview
+
+This repository uses a [monorepo](https://en.wikipedia.org/wiki/Monorepo) organization. Here is an overview of the folder structure:
+
+- [`examples`](https://github.com/uwdata/living-papers/tree/main/examples): Example Living Papers articles
+- [`packages`](https://github.com/uwdata/living-papers/tree/main/packages): Primary Living Papers packages
+  - [`ast`](https://github.com/uwdata/living-papers/tree/main/packages/ast): Abstract Syntax Tree (AST) manipulation
+  - [`cli`](https://github.com/uwdata/living-papers/tree/main/packages/cli): Command line interface programs
+  - [`compiler`](https://github.com/uwdata/living-papers/tree/main/packages/compiler): Article parser and compiler
+  - [`components`](https://github.com/uwdata/living-papers/tree/main/packages/components): Web components for HTML output
+  - [`runtime`](https://github.com/uwdata/living-papers/tree/main/packages/runtime): Reactive runtime for HTML output
+  - [`runtime-compiler`](https://github.com/uwdata/living-papers/tree/main/packages/runtime-compiler): JavaScript parser/compiler for the reactive runtime
+- [`templates`](https://github.com/uwdata/living-papers/tree/main/templates): Article templates
+  - [`html`](https://github.com/uwdata/living-papers/tree/main/templates/html): Built-in templates for HTML output
+  - [`latex`](https://github.com/uwdata/living-papers/tree/main/templates/latex): Built-in templates for LaTeX output
