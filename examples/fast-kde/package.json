@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "@living-papers/example-fast-kde",
+  "description": "Fast KDE Living Papers example article.",
+  "repository": "uwdata/living-papers",
+  "scripts": {
+    "prebuild": "mkdirp build && cp -r figures build",
+    "build": "lpub -o build fast-kde.md"
+  },
+  "devDependencies": {
+    "@living-papers/cli": "*",
+    "mkdirp": "^1.0.4"
+  }
+}

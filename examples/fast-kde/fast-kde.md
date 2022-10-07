@@ -186,13 +186,13 @@ We used the `performance.now` method of the `perf_hooks` package to measure runn
 ## Results: 1D Estimation
 
 ::: figure {#err1d_impulse .page position="t"}
-![](figures/error_1d_impulse.svg)
+![](figures/error_1d_impulse.svg){width=100%}
 | 1D estimation error for a single impulse. Error (plotted on a log scale) is measured as the maximum pixel error given a 100-pixel plot height. Box filters exhibit an oscillating pattern due to bandwidth quantization; the extended box method smooths these artifacts. Deriche approximation consistently produces lower error, typically with sub-pixel accuracy. Linear binning further reduces the error rate.
 \vspace{4pt}
 :::
 
 ::: figure {#err1d_penguins .page position="t"}
-![](figures/error_1d_penguins.svg)
+![](figures/error_1d_penguins.svg){width=100%}
 | 1D estimation error for Gentoo penguin body mass. Error (plotted on a log scale) is measured as the maximum pixel error given a 100-pixel plot height. Dashed gray lines indicate the normal reference density (NRD) heuristic for automatic bandwidth ($\sigma$) selection [@Scott:1992]. The combination of linear binning and Deriche approximation consistently produces the most accurate estimates.
 :::
 
@@ -212,11 +212,6 @@ Standard box filters produce oscillating errors due to bandwidth quantization.
 The extended box method smooths these artifacts.
 Deriche approximation consistently produces the lowest error, and notably improves with the use of linear binning.
 
-::: figure {#time1d_penguins .margin position="t"}
-![](figures/time_1d_penguins.svg)
-| Running time of 1D estimation on resampled penguin data ($m$ = 512 bins). As $n$ increases, the running time of the approximation methods is dominated by the $O(n)$ binning cost.
-:::
-
 We next examine real-world measurements from the Palmer Penguins dataset [@Horst:2020].
 We estimate densities for penguin body mass (in grams) for $n$ = 123 Gentoo penguins on the domain $[0, 7000]$.
 @fig:err1d_penguins shows maximum estimation errors.
@@ -224,6 +219,11 @@ We again see that the combination of Deriche approximation and linear binning pr
 @fig:kde_penguins shows a subset of the visualized density.
 The box filter methods again produce perceptible deviations, which in multiple instances obscure local extrema.
 Deriche approximation produces a pixel-perfect result.
+
+::: figure {#time1d_penguins position="t"}
+![](figures/time_1d_penguins.svg){width=80%}
+| Running time of 1D estimation on resampled penguin data ($m$ = 512 bins). As $n$ increases, the running time of the approximation methods is dominated by the $O(n)$ binning cost.
+:::
 
 To assess scalability, we generate datasets of arbitrary size based on the Gentoo penguins data.
 We first fit a kernel density estimate using direct calculation ($\sigma$ = 200, based on the NRD value of 204.11), then sample from the resulting distribution to generate datasets ranging from $n$ = 100 to $n$ = 10M points.
@@ -241,7 +241,7 @@ As $n$ increases, the $O(n)$ binning calculation dominates and all methods exhib
 ## Results: 2D Estimation
 
 ::: figure {#err2d_cars .page position="t"}
-![](figures/error_2d_cars.svg)
+![](figures/error_2d_cars.svg){width=100%}
 | 2D estimation error for car data. Error (on a log scale) is measured as the maximum pixel error given a 100-pixel plot height. Dashed gray lines indicate the NRD $\sigma$ value. With 512 bins and linear binning, the Deriche method results in sub-pixel accuracy at all sampled bandwidths.
 :::
 
@@ -271,7 +271,7 @@ This overhead is exacerbated for 2D estimation, as the number of expanded cells 
 In contrast the Deriche method is stable across bandwidths as it does not require grid extensions, with performance matching or exceeding the other methods for bandwidths at or above the NRD bandwidth suggestion.
 
 ::: figure {#time2d_cars position="h!"}
-![](figures/time_2d_cars.svg)
+![](figures/time_2d_cars.svg){width=80%}
 | Running time of 2D estimation on car data, by bandwidth. At low bandwidths, Deriche's method is slightly slower due to more arithmetic operations. As the bandwidth increases, the box filters require larger grids, leading to longer running times.
 :::
 
