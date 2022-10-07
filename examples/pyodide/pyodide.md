@@ -1,9 +1,14 @@
 ---
 title: Python Pyodide Integration
+author:
+  - name: Living Papers Team
+    org: University of Washington
 plugins:
   pyodide:
     micropip: [altair, vega_datasets]
 ---
+
+_Warning: It may take a few seconds to load the Python interpreter and libraries._
 
 ``` py { hide=true }
 import sys

@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "@living-papers/example-knitr",
+  "description": "Living Papers example article with R code cells.",
+  "repository": "uwdata/living-papers",
+  "scripts": {
+    "build": "lpub -o build knitr.md"
+  },
+  "devDependencies": {
+    "@living-papers/cli": "*"
+  }
+}

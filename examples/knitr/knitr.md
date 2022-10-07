@@ -1,12 +1,15 @@
 ---
-title: R knitr Integration
+title: R Knitr Integration
+author:
+  - name: Living Papers Team
+    org: University of Washington
 plugins:
   knitr:
     import: [ggplot2, jsonlite]
     dev: svglite
 ---
 
-Version: `r R.version.string`{.bold}
+R version: `r R.version.string`{.bold}
 
 # Plots
 

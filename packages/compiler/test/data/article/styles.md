@@ -12,7 +12,7 @@
 - [lowercase]{.lowercase}
 - [uppercase]{.uppercase}
 - [capitalize]{.capitalize}
-- [mixed]{.smallcaps .em .highlight .underline}
+- [mixed]{.em .highlight}
 
 ## Styled links {.lowercase .smallcaps}
 
@@ -26,4 +26,4 @@
 - [lowercase](#){.lowercase}
 - [uppercase](#){.uppercase}
 - [capitalize](#){.capitalize}
-- [mixed](#){.smallcaps .em .highlight .underline}
+- [mixed](#){.em .highlight}
