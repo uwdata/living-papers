@@ -48,7 +48,7 @@ export class CiteRef extends ArticleElement {
 
   // Expand and collapse info content
   toggleContent(event) {
-    const summary = event.target.firstChild;
+    const summary = event.target.querySelector('summary');
     event.target.hasAttribute('open') 
       ? summary.textContent = summary.getAttribute('data-longtext') 
       : summary.textContent = summary.getAttribute('data-shorttext');
@@ -125,10 +125,10 @@ function infoBody(data, maxAuthors=2) {
   return {fullInfo, shortInfo};
 }
 
-function descBody(data, charLimit=300) {
+function descBody(data, charLimit=300, defaultDesc='No description is available for this article.') {
   const { abstract, tldr } = data;
 
-  const shortDesc = tldr || abstract || 'No description is available for this article.';
+  const shortDesc = tldr || abstract || defaultDesc;
   
   return shortDesc.length > charLimit 
     ? shortDesc.substring(0, shortDesc.substring(0, charLimit).lastIndexOf(' ')) + '... ' 
