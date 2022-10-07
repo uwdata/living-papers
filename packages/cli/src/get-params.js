@@ -7,7 +7,8 @@ export function getParams() {
   const inputFile = args._[0];
   const output = {};
   const options = {
-    tempDir: args.tempDir || undefined,
+    tempDir: args.tempDir,
+    cacheDir: args.cacheDir,
     outputDir: args.outputDir || '.',
     output,
     logger: logger(),
@@ -48,10 +49,18 @@ export function parseArguments() {
 
   args.string('o')
     .alias('o', 'outputDir')
-    .default('.')
+    .default('o', '.')
     .describe('o', 'Directory to write output files');
 
+  args.string('cacheDir')
+    .default('cacheDir', '.cache')
+    .describe('cacheDir', 'Directory to write cache files');
+
+  args.number('cacheTTL')
+    .describe('cacheTTL', 'Default cache time-to-live (TTL) in milliseconds');
+
   args.string('tempDir')
+    .default('tempDir', '.temp')
     .describe('tempDir', 'Directory to write temporary files');
 
   args.boolean('debug')

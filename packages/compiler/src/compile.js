@@ -26,7 +26,7 @@ export async function compile(inputFile, options = {}) {
   const context = {
     tempDir: path.join(options.outputDir || '.', '.temp'),
     logger: console,
-    cache: await fileCache(),
+    cache: await fileCache({ cacheDir: options.cacheDir, defaultTTL: options.cacheTTL }),
     fetch,
     resolve: nodeResolver(),
     numbered: numbered(),
