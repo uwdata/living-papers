@@ -2,5 +2,6 @@ node_modules
 .cache
 .temp
 .DS_Store
+/examples/*/build
 /packages/*/test-output/
 /packages/*/dist/
