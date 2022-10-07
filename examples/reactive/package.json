@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "@living-papers/example-reactive",
+  "description": "Living Papers example article with reactive updates.",
+  "repository": "uwdata/living-papers",
+  "scripts": {
+    "build": "lpub -o build reactive.md"
+  },
+  "devDependencies": {
+    "@living-papers/cli": "*"
+  }
+}

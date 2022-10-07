@@ -2,6 +2,7 @@
 title: Reactive Runtime Example
 author:
   - name: Living Papers Team
+    org: University of Washington
 output:
   html: true
   latex: true
@@ -30,9 +31,7 @@ Plot.plot({
   height: 300
 })
 ```
-| A plot of $$y = x^2$$
+| A plot of $$y = x^2$$ at $$x = ${a}$$, $$x^2 = ${a * a}$$.
 :::
-
-$$x^2 = ${a*a}$$
 
 The square of `js a` is `js format(a * a)`.
