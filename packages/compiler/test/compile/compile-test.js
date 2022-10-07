@@ -68,14 +68,6 @@ describe('compile', () => {
     return compileTest('article/observable.md');
   });
 
-  it('an article with python code', () => {
-    return compileTest('article/pyodide.md');
-  });
-
-  it('an article with R code', () => {
-    return compileTest('article/knitr.md');
-  });
-
   it('an article with an acm theme', () => {
     return compileTest('article/acm.md');
   });
