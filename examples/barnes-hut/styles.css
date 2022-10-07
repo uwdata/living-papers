@@ -1,21 +1,47 @@
+/* Redefine right margin width to accommodate figure */
 :root {
   --margin-width: 500px;
 }
 
+/* Ensure spacing between page top and figure */
+.quadtree {
+  padding-top: 20vh;
+}
+
+/* Counter-act spacing when figure is not "sticky" */
+.barnes-hut {
+  margin-top: -20vh;
+}
+
 /* Colors for Barnes-Hut theta values. */
-.t00 {
+.t00, .t00:hover {
   color: rgb(59, 15, 112);
   text-decoration: underline 1px dashed rgb(59, 15, 112);
 }
-.t05 {
+.t00:hover {
+  filter: brightness(1.8);
+}
+
+.t05, .t05:hover {
   color: rgb(140, 41, 129);
   text-decoration: underline 1px dashed rgb(140, 41, 129);
 }
-.t10 {
+.t05:hover {
+  filter: brightness(1.5);
+}
+
+.t10, .t10:hover {
   color: rgb(222, 73, 104);
   text-decoration: underline 1px dashed rgb(222, 73, 104);
 }
-.t15 {
+.t10:hover {
+  filter: brightness(1.5);
+}
+
+.t15, .t15:hover {
   color: rgb(254, 159, 109);
   text-decoration: underline 1px dashed rgb(254, 159, 109);
+}
+.t15:hover {
+  filter: brightness(1.2);
 }

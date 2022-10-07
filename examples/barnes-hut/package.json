@@ -1,4 +1,17 @@
 {
+  "private": true,
+  "name": "@living-papers/example-barnes-hut",
+  "description": "Barnes-Hut Approximation Living Papers example article.",
+  "repository": "uwdata/living-papers",
+  "scripts": {
+    "prebuild": "mkdirp build && cp probe.svg build",
+    "build": "lpub -o build barnes-hut.md"
+  },
+  "devDependencies": {
+    "@living-papers/cli": "*",
+    "@living-papers/components": "*",
+    "mkdirp": "^1.0.4"
+  },
   "living-papers": {
     "components": [
       {"name": "barnes-hut", "file": "src/barnes-hut.js", "css": "src/barnes-hut.css"},

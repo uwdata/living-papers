@@ -1,4 +1,4 @@
-import { DependentElement } from '../../../../src/components/dependent-element.js';
+import { DependentElement } from '@living-papers/components';
 import quadtree from './quadtree.js';
 
 export default class BarnesHut extends DependentElement {

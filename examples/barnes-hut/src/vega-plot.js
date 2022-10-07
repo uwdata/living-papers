@@ -1,4 +1,4 @@
-import { DependentElement } from '../../../../src/components/dependent-element.js';
+import { DependentElement } from '@living-papers/components';
 import perf_data from './data-performance.js';
 
 export default class VegaPlot extends DependentElement {
