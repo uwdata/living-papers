@@ -14,11 +14,12 @@ This repo is a research testbed for Living Papers development. There will be bug
 
 Before working with Living Papers, set up your local environment:
 
-1. Install [pandoc](https://pandoc.org/installing.html). You should be able to run `pandoc` from the command line.
-2. Install other software packages as needed:
+1. Install [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) if you don't have them already. We recommend using a node version manager like [nvm](https://github.com/nvm-sh/nvm). Node v16.17 or higher is recommended.
+2. Install [pandoc](https://pandoc.org/installing.html). You should be able to run `pandoc` from the command line. A recent version of Pandoc (v2.18 or higher) is recommended.
+3. Install other software packages as needed:
   - To use R code blocks, install [R](https://cloud.r-project.org/) along with the `knitr` package and other libraries you wish to use. To run the Living Papers development test suite, install R then run the following within R:
     - `install.packages(c("knitr", "tidyverse", "svglite"))`
-  - To publish LaTeX / PDF output,  install a TeX distribution such as [TeX Live](https://www.tug.org/texlive/). You should be able to run `pdflatex` and `bibtex` from the command line.
+  - To publish LaTeX / PDF output, install a TeX distribution such as [TeX Live](https://www.tug.org/texlive/). You should be able to run `pdflatex` and `bibtex` from the command line.
 
 ### Usage Instructions
 
