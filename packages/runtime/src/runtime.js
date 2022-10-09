@@ -1,4 +1,5 @@
-import { Runtime } from '@observablehq/runtime';
+import { Runtime, Library } from '@observablehq/runtime';
+import { FileAttachment } from './file-attachment.js';
 
 /**
  * Reactive runtime engine.
@@ -8,10 +9,16 @@ export class ObservableRuntime {
    * Create a new runtime instance.
    */
   constructor() {
+    // Prepare a standard library instance
+    const lib = Object.assign(new Library, {
+      FileAttachment: () => FileAttachment
+    });
+
     /**
-     * The Observable runtime.
+     * Instantiate an Observable runtime instance.
      */
-    this.runtime = new Runtime();
+    this.runtime = new Runtime(lib);
+
     /**
      * The main module (variable namespace).
      */
