@@ -50,6 +50,10 @@ q.single {
 	quotes: var(--single-quote-start) var(--single-quote-end);
 }
 
+blockquote {
+	margin-left: 2em;
+}
+
 .action {
 	cursor: pointer;
 	text-decoration: underline dashed 1px #444;
