@@ -156,7 +156,8 @@ function entryScript({ root, bind, context, components, runtime }) {
 
   components.forEach(entry => {
     const spec = entry.default ? entry.import : `{ ${entry.import} }`;
-    script.push(`import ${spec} from '${entry.file}';`);
+    const filePath = entry.file.replaceAll('\\', '/'); // escape Windows paths
+    script.push(`import ${spec} from '${filePath}';`);
   });
 
   const imports = [

@@ -4,7 +4,7 @@ export function nodeResolver(
   baseURL = new URL('../..', import.meta.url)
 ) {
   const { resolve } = createRequire(baseURL);
-  const localPattern = /^(?:\.\/|\.\.\/|\/)/;
+  const localPattern = /^(?:\.\/|\.\.\/|\/|[A-Za-z]:)/;
 
   return (id, prefix = '') => {
     const pkg = `${id}/package.json`;
