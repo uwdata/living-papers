@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "@living-papers/example-old-faithful",
+  "description": "Living Papers example analyzing Old Faithful data.",
+  "repository": "uwdata/living-papers",
+  "scripts": {
+    "prebuild": "mkdirp build && cp faithful.tsv build",
+    "build": "lpub -o build old-faithful.md",
+    "prewatch": "npm run prebuild",
+    "watch": "lpub -o build old-faithful.md --watch"
+  },
+  "devDependencies": {
+    "@living-papers/cli": "*",
+    "mkdirp": "^1.0.4"
+  }
+}
