@@ -1,7 +1,7 @@
 {
   "name": "@living-papers/html-templates",
   "description": "Living Papers HTML templates.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "BSD-3-Clause",
   "repository": "uwdata/living-papers"
 }
