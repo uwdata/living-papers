@@ -5,6 +5,7 @@ Create interactive web pages or formal research papers from markdown source.
 Living Papers is intended to be a "language toolkit" for parsing, transforming, and rendering documents.
 
 To get up and running quickly, use the [Living Papers project template](https://github.com/uwdata/living-papers-template/).
+Then take a look at other [example articles](https://github.com/uwdata/living-papers/tree/main/examples).
 
 This repo is a research testbed for Living Papers development. There will be bugs. Contributions (issues, PRs, etc) are welcome!
 
