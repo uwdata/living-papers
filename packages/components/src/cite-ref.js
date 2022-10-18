@@ -29,7 +29,7 @@ export class CiteRef extends ArticleElement {
   keyDown(event) {
     if (event.key == 'Enter') {
       this.openCitation();
-    } else if (event.key != 'Tab') {
+    } else if (event.key == 'Escape') {
       this.closeCitation();
     }
   }
@@ -48,10 +48,12 @@ export class CiteRef extends ArticleElement {
 
   // Expand and collapse info content
   toggleContent(event) {
-    const summary = event.target.querySelector('summary');
-    event.target.hasAttribute('open') 
-      ? summary.textContent = summary.getAttribute('data-longtext') 
-      : summary.textContent = summary.getAttribute('data-shorttext');
+    if (!window.getSelection().toString()) {
+      const summary = event.target.querySelector('summary');
+      event.target.open
+        ? summary.textContent = summary.getAttribute('data-longtext') 
+        : summary.textContent = summary.getAttribute('data-shorttext');
+      }
   }
 
   initialChildNodes(nodes) {
@@ -116,7 +118,9 @@ function inlineContent(data, index, etal=2) {
 function infoBody(data, maxAuthors=2) {
   const { author, year } =  data;
 
-  const aMap = author.map(({ given, family }) => `${given.includes('.') ? given:given[0] + '.'} ${family}`);
+  const aMap = author.map(({ given, family }) => given 
+    ? `${given.includes('.') ? given : given[0] + '.'} ${family}` 
+    : family);
   const fullInfo = `${year} \u2022 ${aMap.join(', ')}`;
   const shortInfo = aMap.length > maxAuthors 
     ? `${year} \u2022 ${aMap.slice(0, maxAuthors).join(', ')} +${aMap.length - maxAuthors}` 
