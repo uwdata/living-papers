@@ -119,7 +119,7 @@ function infoBody(data, maxAuthors=2) {
   const { author, year } =  data;
 
   const aMap = author.map(({ given, family }) => given 
-    ? `${given.includes('.') ? given:given[0] + '.'} ${family}` 
+    ? `${given.includes('.') ? given : given[0] + '.'} ${family}` 
     : family);
   const fullInfo = `${year} \u2022 ${aMap.join(', ')}`;
   const shortInfo = aMap.length > maxAuthors 
