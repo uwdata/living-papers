@@ -4,7 +4,7 @@ import { compile } from '../../src/index.js';
 
 const DEBUG = false;
 
-async function compileTest(input, msgcount = {}) {
+async function compileTest(input, expectedCounts = {}) {
   // setup logger
   const msg = { log: [], debug: [], info: [], warn: [], error: [] };
   const logger = Object.keys(msg)
@@ -26,8 +26,11 @@ async function compileTest(input, msgcount = {}) {
   });
 
   // check message counts
-  for (const key in msgcount) {
-    assert.strictEqual(msg[key].length, msgcount[key]);
+  for (const key in expectedCounts) {
+    if (msg[key].length !== expectedCounts[key]) {
+      console.error(inputFile, msg[key]);
+    }
+    assert.strictEqual(msg[key].length, expectedCounts[key]);
   }
 }
 

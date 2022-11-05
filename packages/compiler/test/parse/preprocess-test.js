@@ -1,5 +1,5 @@
 import assert from 'node:assert';
-import { process } from '../../src/parse/preprocess.js';
+import { process } from '../../src/parse/markdown/preprocess.js';
 
 function test(input, expected) {
   const buf = [];

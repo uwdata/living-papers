@@ -3,8 +3,8 @@ import path from 'node:path';
 import { fileCache } from '@uwdata/file-cache';
 import { transformAST } from '@living-papers/ast';
 
-import { parseContext, numbered, outputOptions } from './config.js';
-import { parseMarkdown } from './parse/parse-markdown.js';
+import { numbered, inputOptions, outputOptions } from './config.js';
+import parse from './parse/index.js';
 import { citations, code, notes, runtime } from './plugins/index.js';
 import { nodeResolver } from './resolve/node-resolver.js';
 import { resolveComponents } from './resolve/components.js';
@@ -16,12 +16,6 @@ export async function compile(inputFile, options = {}) {
   const startTime = Date.now();
   const inputDir = path.dirname(inputFile);
 
-  // Parse Markdown to initial AST
-  const { metadata, article } = await parseMarkdown({
-    inputFile,
-    parseContext: parseContext()
-  });
-
   // Prepare compiler context
   const context = {
     tempDir: path.join(options.outputDir || '.', '.temp'),
@@ -31,10 +25,17 @@ export async function compile(inputFile, options = {}) {
     resolve: nodeResolver(),
     numbered: numbered(),
     ...options, // may overwrite earlier keys, this is intentional
-    metadata,
+    metadata: null,
     inputFile,
     inputDir
   };
+
+  // Parse input to initial AST
+  const inputOpt = await inputOptions(context);
+  const { metadata, article } = await parse(inputOpt);
+
+  // Update compiler context
+  context.metadata = metadata;
   context.components = await resolveComponents(metadata.components, context);
 
   // Apply standard AST transform plugins
