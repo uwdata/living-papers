@@ -28,7 +28,7 @@ async function parseTest(inputFile, astFile, debug = DEBUG) {
 }
 
 describe('parseMarkdown', () => {
-  it('parses basic markdown format', async () => {
+  it('parses basic formatting', async () => {
     await parseTest('article/basic.md', 'ast/basic.ast.json');
   });
 
