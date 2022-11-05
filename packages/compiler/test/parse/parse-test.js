@@ -2,8 +2,7 @@ import assert from 'node:assert';
 import { URL } from 'node:url';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { parseContext } from '../../src/config.js';
-import { parseMarkdown } from '../../src/parse/parse-markdown.js';
+import { parseMarkdown } from '../../src/parse/markdown/index.js';
 
 const DEBUG = false;
 
@@ -13,8 +12,7 @@ function filePath(name) {
 
 async function parseTest(inputFile, astFile, debug = DEBUG) {
   const { doc, ...ast } = await parseMarkdown({
-    inputFile: filePath(inputFile),
-    parseContext: parseContext()
+    inputFile: filePath(inputFile)
   });
   const actual = JSON.stringify(ast, 0, 2);
 

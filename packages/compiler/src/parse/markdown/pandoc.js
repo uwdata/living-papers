@@ -26,7 +26,7 @@ export function pandoc(options = {}) {
         opt.stdin.pipe(pandoc.stdin);
       }
 
-      // process pandoc outpur
+      // process pandoc output
       pandoc.stdout.on('data', chunk => {
         chunks.push(chunk);
       });

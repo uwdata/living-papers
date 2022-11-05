@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 export function numbered() {
   return [
     ['figure', ['figure', 'teaser']],
@@ -6,13 +8,27 @@ export function numbered() {
   ];
 }
 
-export function parseContext() {
+export async function inputOptions(context) {
+  const { inputFile, inputType, logger, parse = {} } = context;
   return {
-    fence: ['abstract', 'acknowledgments', 'aside', 'figure', 'table', 'teaser'],
-    block: ['bibliography', 'equation', 'math', 'latex:preamble'],
-    xref: ['sec', 'fig', 'tbl', 'eqn'],
-    env: ['figure', 'table', 'teaser']
-  };
+    inputFile,
+    inputType: inputType || inferInputType(inputFile, logger),
+    fetch,
+    logger,
+    ...parse
+  }
+}
+
+function inferInputType(inputFile, logger) {
+  // later this can be extended to additional input formats
+  const ext = path.extname(inputFile);
+  if (ext === '.json') {
+    return 'ast';
+  }
+  if (ext !== '.md' && ext !== '.lmd') {
+    logger.warn('Unrecognized input type, assuming markdown.');
+  }
+  return 'markdown';
 }
 
 export async function outputOptions(context) {

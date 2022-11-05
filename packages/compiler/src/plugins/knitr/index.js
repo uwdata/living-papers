@@ -3,8 +3,8 @@ import {
   createProperties, hasProperty, getClasses, getPropertyValue,
   removeClass, removeProperty, setValueProperty, visitNodes
 } from '@living-papers/ast';
-import { pandoc } from '../../parse/pandoc.js';
-import { parsePandocAST } from '../../parse/parse-pandoc-ast.js';
+import { pandoc } from '../../parse/markdown/pandoc.js';
+import { parsePandocAST } from '../../parse/markdown/parse-pandoc-ast.js';
 import { copy, mkdirp, writeFile } from '../../util/fs.js';
 import { generateChunk, generateRMarkdown, generateRScript } from './codegen.js';
 import { rscript } from './rscript.js';
