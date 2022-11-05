@@ -13,7 +13,6 @@ export async function inputOptions(context) {
   return {
     inputFile,
     inputType: inputType || inferInputType(inputFile, logger),
-    fetch,
     logger,
     ...parse
   }
