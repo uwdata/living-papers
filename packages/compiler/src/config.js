@@ -8,17 +8,7 @@ export function numbered() {
   ];
 }
 
-export async function inputOptions(context) {
-  const { inputFile, inputType, logger, parse = {} } = context;
-  return {
-    inputFile,
-    inputType: inputType || inferInputType(inputFile, logger),
-    logger,
-    ...parse
-  }
-}
-
-function inferInputType(inputFile, logger) {
+export function inferInputType(inputFile, logger) {
   // later this can be extended to additional input formats
   const ext = path.extname(inputFile);
   if (ext === '.json') {

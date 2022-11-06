@@ -2,7 +2,7 @@ import CleanCSS from 'clean-css';
 import mustache from 'mustache';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { extractText, transformAST } from '@living-papers/ast';
+import { cloneNode, extractText, transformAST } from '@living-papers/ast';
 
 import { copy, mkdirp, readFile, writeFile } from '../../util/fs.js';
 import { crossref, header, section, sticky } from '../../plugins/index.js';
@@ -13,7 +13,7 @@ import { astToScript } from './ast-to-script.js';
 import { rollup } from './rollup.js';
 
 export default async function(ast, context, options) {
-  const astHTML = await transformAST(ast, context, [
+  const astHTML = await transformAST(cloneNode(ast), context, [
     crossref(context.numbered),
     sticky,
     header,

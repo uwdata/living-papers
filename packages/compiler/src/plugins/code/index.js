@@ -28,6 +28,7 @@ function codeAttributes(node) {
   return getPropertyValue(node, LANGUAGE);
 }
 
+// TODO remove from here, make part of HTML output
 function codeBlock(node) {
   if (!codeAttributes(node)) {
     node.name = 'pre';

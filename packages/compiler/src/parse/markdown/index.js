@@ -1,3 +1,5 @@
+import { transformAST } from '@living-papers/ast';
+import { runtime, citations, code, notes } from '../../plugins/index.js';
 import { pandoc } from './pandoc.js';
 import { parsePandocAST } from './parse-pandoc-ast.js';
 import { preprocess } from './preprocess.js';
@@ -32,7 +34,7 @@ function defaultParseContext() {
   };
 }
 
-export async function parseMarkdown(options) {
+export async function parsePandoc(options) {
   const {
     inputFile,
     parseContext = defaultParseContext()
@@ -45,11 +47,22 @@ export async function parseMarkdown(options) {
     stdin: await preprocess(inputFile)
   });
 
-  const { metadata, article } = parsePandocAST(doc, parseContext);
+  return parsePandocAST(doc, parseContext);
+}
+
+export async function parseMarkdown(context) {
+  const { metadata, article: ast } = await parsePandoc(context);
+  context.metadata = metadata; // TODO refactor AST handling
+
+  const article = await transformAST(ast, context, [
+    runtime,
+    code,
+    notes,
+    citations
+  ]);
 
   return {
     metadata,
-    article,
-    doc
+    article
   };
 }
