@@ -6,11 +6,15 @@ const parsers = {
   markdown
 };
 
-export default async function parse(options) {
-  const { inputType } = options;
-  const parse = parsers[inputType];
+export default async function parse(context) {
+  const { inputType, parser } = context;
+
+  // use custom parser if provided, otherwise lookup by type
+  const parse = parser || parsers[inputType];
+
+  // parse and return resulting AST
   if (parse) {
-    return parse(options);
+    return parse(context);
   } else {
     throw new Error(`Unrecognized parser: ${inputType}`);
   }
