@@ -7,7 +7,7 @@ import { languages } from './languages.js';
 const LANGUAGE = 'language';
 
 export default function(ast) {
-  visitNodes(ast, node => {
+  visitNodes(ast.article, node => {
     switch (node.name) {
       case 'code': return codeInline(node);
       case 'codeblock': return codeBlock(node);

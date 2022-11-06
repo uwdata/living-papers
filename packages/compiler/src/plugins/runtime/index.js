@@ -4,7 +4,7 @@ import {
 
 export default function(ast) {
   const lang = 'js';
-  visitNodes(ast, node => {
+  visitNodes(ast.article, node => {
     let code;
     switch (node.name) {
       case 'code':

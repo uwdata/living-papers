@@ -21,7 +21,7 @@ export default function(toKey, lookup) {
       return value;
     }
 
-    visitNodes(ast, node => {
+    visitNodes(ast.article, node => {
       if (hasNoNumber(node)) return;
 
       const key = toKey(node);

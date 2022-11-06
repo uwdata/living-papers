@@ -11,7 +11,7 @@ const INDEX = 'index';
 
 export default function(lookup) {
   return function(ast, { logger }) {
-    visitNodes(ast, node => {
+    visitNodes(ast.article, node => {
       const name = getNodeName(node);
       if (name === CROSSREF) {
         const key = getPropertyValue(node, XREF);

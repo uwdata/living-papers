@@ -3,8 +3,8 @@ import {
   isComponentNode, prependChildren
 } from '@living-papers/ast';
 
-export default function(ast, context) {
-  const { metadata: { title, author } } = context;
+export default function(ast) {
+  const { metadata: { title, author } } = ast;
   const entries = [];
 
   if (title) {
@@ -31,7 +31,7 @@ export default function(ast, context) {
   }
 
   if (entries.length) {
-    prependChildren(ast, create('header', null, entries));
+    prependChildren(ast.article, create('header', null, entries));
   }
 
   return ast;

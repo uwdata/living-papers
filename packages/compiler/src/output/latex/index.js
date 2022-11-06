@@ -1,7 +1,7 @@
 import mustache from 'mustache';
 import path from 'node:path';
 import {
-  cloneNode, getChildren, getPropertyValue, hasClass,
+  cloneAST, getChildren, getPropertyValue, hasClass,
   setValueProperty, transformAST, visitNodes
 } from '@living-papers/ast';
 
@@ -17,19 +17,24 @@ export default async function(ast, context, options) {
   const { tempDir, output, outputDir } = context;
   const latexDir = path.join(pdf ? tempDir : outputDir, 'latex');
 
-  const astLatex = await transformAST(cloneNode(ast), context, [
-    convert({
-      ...(options.convert || {}),
-      html: output.html,
-      outputDir: latexDir
-    })
-  ]);
+  ast = await transformAST(
+    cloneAST(ast),
+    context,
+    [
+      convert({
+        ...(options.convert || {}),
+        html: output.html,
+        outputDir: latexDir
+      })
+    ]
+  );
 
-  return outputLatex(astLatex, context, { ...options, latexDir });
+  return outputLatex(ast, context, { ...options, latexDir });
 }
 
 export async function outputLatex(ast, context, options) {
-  const { citations, metadata, inputDir, inputFile, outputDir, tempDir, logger } = context;
+  const { metadata, article } = ast;
+  const { citations, inputDir, inputFile, outputDir, tempDir, logger } = context;
   const {
     template,
     tags = ['<<', '>>'],
@@ -67,7 +72,7 @@ export async function outputLatex(ast, context, options) {
       ['demi', 'textbf'],
       ['underline', 'uline']
     ]),
-    places: places(ast),
+    places: places(article),
     vspace: new Map(Object.entries(vspace))
   });
 
@@ -85,11 +90,11 @@ export async function outputLatex(ast, context, options) {
     bibtex: bibtex ? `${articleName}.bib` : undefined,
     keywords: metadata.keywords?.join(', '),
     preamble: `\\graphicspath{{${path.relative(latexDir, inputDir)}}}\n`,
-    content: tex.tex(ast).trim()
+    content: tex.tex(article).trim()
   };
 
   // Extract special sections: abstract, acknowledgments, teaser, ...
-  getChildren(ast).forEach(node => {
+  getChildren(article).forEach(node => {
     const extract = extractNode(node, tex);
     if (extract) {
       const { name, content } = extract;
@@ -144,10 +149,10 @@ function getDate() {
   return new Intl.DateTimeFormat([], { dateStyle: 'long' }).format(new Date);
 }
 
-function places(ast) {
+function places(root) {
   const places = new Map;
 
-  visitNodes(ast, node => {
+  visitNodes(root, node => {
     if (node.name !== 'raw' || getPropertyValue(node, 'format') !== 'tex') return;
     const text = node.children[0].value;
     const cmd = '\\place{';
@@ -159,7 +164,7 @@ function places(ast) {
   });
 
   if (places.size) {
-    visitNodes(ast, node => {
+    visitNodes(root, node => {
       if (node.name === 'figure') {
         const id = getPropertyValue(node, 'id');
         if (id && places.has(id)) {

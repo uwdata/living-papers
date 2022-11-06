@@ -9,8 +9,8 @@ import {
 } from '@living-papers/ast';
 import { splitCodeCells, joinCodeCells } from '../../util/code-cells.js';
 
-export default async function(ast, context) {
-  const { metadata } = context;
+export default async function(ast) {
+  const { metadata, article } = ast;
   const options = {
     lang: 'py',    // language class in AST
     tag: '__py__', // template tag to add to runtime
@@ -19,14 +19,14 @@ export default async function(ast, context) {
   const { tag, lang } = options;
 
   // load pyodide, imports, and py template tag
-  prependChildren(ast, createComponentNode(
+  prependChildren(article, createComponentNode(
     'cell-view',
     createProperties({ hide: true }),
     [ createTextNode(init(options)) ]
   ));
 
   // gather and transform Python code nodes
-  visitNodes(ast, node => {
+  visitNodes(article, node => {
     let code;
     switch (node.name) {
       case 'code':

@@ -2,7 +2,7 @@ import CleanCSS from 'clean-css';
 import mustache from 'mustache';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { cloneNode, extractText, transformAST } from '@living-papers/ast';
+import { cloneAST, extractText, transformAST } from '@living-papers/ast';
 
 import { copy, mkdirp, readFile, writeFile } from '../../util/fs.js';
 import { crossref, header, section, sticky } from '../../plugins/index.js';
@@ -13,18 +13,22 @@ import { astToScript } from './ast-to-script.js';
 import { rollup } from './rollup.js';
 
 export default async function(ast, context, options) {
-  const astHTML = await transformAST(cloneNode(ast), context, [
-    crossref(context.numbered),
-    sticky,
-    header,
-    section
-  ]);
-
-  return outputHTML(astHTML, context, options);
+  ast = await transformAST(
+    cloneAST(ast),
+    context,
+    [
+      crossref(context.numbered),
+      sticky,
+      header,
+      section
+    ]
+  );
+  return outputHTML(ast, context, options);
 }
 
 export async function outputHTML(ast, context, options) {
-  const { components, metadata, inputDir, outputDir, tempDir } = context;
+  const { metadata, article } = ast;
+  const { components, inputDir, outputDir, tempDir } = context;
   const {
     selfContained = false,
     htmlFile = 'index.html',
@@ -56,8 +60,8 @@ export async function outputHTML(ast, context, options) {
   ]);
 
   // generate page content
-  const { script } = astToScript(ast);
-  const { html: content, tags, ...bind } = astToHTML(ast);
+  const { script } = astToScript(article);
+  const { html: content, tags, ...bind } = astToHTML(article);
   const activeComponents = components.filter(c => tags.has(c.name));
   const entry = entryScript({
     root: 'article',

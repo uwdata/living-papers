@@ -11,7 +11,7 @@ const aliases = new Map([
 
 // TODO maintain one-to-one top-level AST mapping (div.name)?
 export default function(ast) {
-  visitNodes(ast, (node, parent) => {
+  visitNodes(ast.article, (node, parent) => {
     if (aliases.has(node.name)) {
       const alias = aliases.get(node.name);
       replaceChild(parent, node, [
