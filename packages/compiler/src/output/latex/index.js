@@ -1,7 +1,7 @@
 import mustache from 'mustache';
 import path from 'node:path';
 import {
-  getChildren, getPropertyValue, hasClass,
+  cloneNode, getChildren, getPropertyValue, hasClass,
   setValueProperty, transformAST, visitNodes
 } from '@living-papers/ast';
 
@@ -17,7 +17,7 @@ export default async function(ast, context, options) {
   const { tempDir, output, outputDir } = context;
   const latexDir = path.join(pdf ? tempDir : outputDir, 'latex');
 
-  const astLatex = await transformAST(ast, context, [
+  const astLatex = await transformAST(cloneNode(ast), context, [
     convert({
       ...(options.convert || {}),
       html: output.html,
