@@ -20,8 +20,7 @@ export function inferInputType(inputFile, logger) {
   return 'markdown';
 }
 
-export async function outputOptions(context) {
-  const { metadata } = context;
+export async function outputOptions(context, metadata) {
   const options = { ...metadata.output };
 
   // include html output by default

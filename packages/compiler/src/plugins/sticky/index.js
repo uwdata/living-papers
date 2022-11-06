@@ -10,7 +10,7 @@ const MARGIN = 'margin';
 
 export default function (ast, context) {
   const stickyNodes = queryNodes(
-    ast,
+    ast.article,
     node => hasProperty(node, STICKY_UNTIL) || hasProperty(node, STICKY_THROUGH)
   );
 

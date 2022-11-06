@@ -38,6 +38,10 @@ export {
 } from './util.js';
 
 export {
+  cloneAST
+} from './clone-ast.js';
+
+export {
   transformAST
 } from './transform-ast.js';
 

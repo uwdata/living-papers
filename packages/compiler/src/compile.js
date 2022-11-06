@@ -13,15 +13,15 @@ export async function compile(inputFile, options = {}) {
   const context = await createContext(inputFile, options);
 
   // Parse input to initial AST
-  const { metadata, article } = await parse(context);
+  let ast = await parse(context);
+  const { metadata } = ast;
 
   // Update compiler context
-  context.metadata = metadata;
   context.components = await resolveComponents(metadata.components, context);
 
   // Apply AST transform plugins
   const plugins = resolvePlugins(metadata.plugins, context);
-  const ast = await transformAST(article, context, plugins);
+  ast = await transformAST(ast, context, plugins);
 
   if (context.debug) {
     console.log('---------------');
@@ -30,7 +30,7 @@ export async function compile(inputFile, options = {}) {
   }
 
   // Marshal output options
-  const output = context.output = await outputOptions(context);
+  const output = context.output = await outputOptions(context, metadata);
   const files = {};
 
   // Produce output files

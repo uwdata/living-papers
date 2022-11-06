@@ -15,14 +15,15 @@ const CITELIST = 'citelist';
 const KEYS = new Set(['doi', 's2id']);
 
 export default async function(ast, context) {
-  const { cache, fetch, inputDir, metadata, logger } = context;
+  const { metadata, article } = ast;
+  const { cache, fetch, inputDir, logger } = context;
 
   // extract all citation nodes in the AST
-  const nodes = queryNodes(ast, node => node.name === CITEREF);
+  const nodes = queryNodes(article, node => node.name === CITEREF);
   if (nodes.length === 0) return ast;
 
   // load bibliographic data for article
-  const bib = await getBibliography(ast, metadata, inputDir);
+  const bib = await getBibliography(article, metadata, inputDir);
 
   // collect citations used in article
   const citations = await getCitations(nodes, bib, lookup(cache, fetch), logger);
@@ -45,11 +46,11 @@ export default async function(ast, context) {
 
   // add bibliography to AST
   if (nodes.length) {
-    ast.children.push(createBibComponent(citations));
+    article.children.push(createBibComponent(citations));
   }
 
   // sort citation lists in AST by ascending index
-  updateCitationLists(ast);
+  updateCitationLists(article);
 
   return ast;
 }

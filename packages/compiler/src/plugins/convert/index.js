@@ -25,7 +25,7 @@ export default function({
 } = {}) {
   return async (ast, context) => {
     const { inputDir, logger } = context;
-    const { nodes, prop, svg, custom } = buildConversionPlan(ast);
+    const { nodes, prop, svg, custom } = buildConversionPlan(ast.article);
 
     // exit early if no conversion is needed
     if (nodes.size === 0) {
@@ -112,7 +112,7 @@ export default function({
   }
 }
 
-function buildConversionPlan(ast) {
+function buildConversionPlan(article) {
   const nodes = new Map;
   const prop = new Set;
   const svg = new Set;
@@ -129,7 +129,7 @@ function buildConversionPlan(ast) {
     list.add(id);
   }
 
-  visitNodes(ast, node => {
+  visitNodes(article, node => {
     // hide node from conversion?
     const hide = getPropertyValue(node, 'hide');
     if (hide === 'static' || hide === 'true') {

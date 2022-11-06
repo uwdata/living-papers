@@ -12,7 +12,8 @@ import { rscript } from './rscript.js';
 const BIND = 'bind';
 
 export default async function(ast, context) {
-  const { outputDir, tempDir, logger, metadata } = context;
+  const { metadata, article } = ast;
+  const { outputDir, tempDir, logger } = context;
   const options = {
     figpath: 'knitr/',
     lang: 'r', // language class in AST
@@ -23,7 +24,7 @@ export default async function(ast, context) {
   // gather R code nodes, generate Rmd chunks
   const rnodes = [];
   const chunks = [];
-  visitNodes(ast, (node, parent) => {
+  visitNodes(article, (node, parent) => {
     if (isRCode(node, lang)) {
       rnodes.push([node, parent]);
       chunks.push(generateChunk(node, chunks.length));

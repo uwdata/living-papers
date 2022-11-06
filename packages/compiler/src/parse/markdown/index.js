@@ -51,18 +51,14 @@ export async function parsePandoc(options) {
 }
 
 export async function parseMarkdown(context) {
-  const { metadata, article: ast } = await parsePandoc(context);
-  context.metadata = metadata; // TODO refactor AST handling
-
-  const article = await transformAST(ast, context, [
-    runtime,
-    code,
-    notes,
-    citations
-  ]);
-
-  return {
-    metadata,
-    article
-  };
+  return transformAST(
+    await parsePandoc(context),
+    context,
+    [
+      runtime,
+      code,
+      notes,
+      citations
+    ]
+  );
 }
