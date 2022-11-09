@@ -95,9 +95,6 @@ export class TexFormat {
         throw new Error(`Not yet implemented: ${ast.name}`);
       case 'codeblock':
         return this.codeblock(ast);
-      case 'pre':
-        // <pre><code>...</code></pre>
-        return this.env('verbatim', this.fragment(ast.children[0]));
       case 'table':
         return this.table(ast);
       case 'thead':
@@ -132,8 +129,7 @@ export class TexFormat {
       case 'image':
         return this.image(ast);
       case 'code':
-        // TODO syntax highlighting
-        return this.command(ast, 'texttt');
+        return this.code(ast);
       case 'quote':
         return this.quoted(ast);
       case 'note':
@@ -211,8 +207,8 @@ export class TexFormat {
     return `\\begin{${env}}${arg}\n${content}\n\\end{${env}}\n\n`;
   }
 
-  command(ast, cmd) {
-    return `\\${cmd}{${this.fragment(ast)}}`;
+  command(ast, cmd, param) {
+    return `\\${cmd}${param ? `{${param}}` : ''}{${this.fragment(ast)}}`;
   }
 
   span(ast) {
@@ -308,15 +304,18 @@ export class TexFormat {
       + this.env(env + (nonum ? '*' : ''), code);
   }
 
+  code(ast) {
+    const lang = getPropertyValue(ast, 'language');
+    const cmd = lang ? 'mintinline' : 'texttt';
+    return this.command(ast, cmd, lang);
+  }
+
   codeblock(ast) {
-    const inline = getPropertyValue(ast, 'inline');
     const lang = getPropertyValue(ast, 'language');
     const code = this.fragment(ast);
-    if (inline) {
-      return `\\mintinline{${lang}}{${code}}`;
-    } else {
-      return this.env('minted', code, null, lang);
-    }
+    return lang
+      ? this.env('minted', code, null, lang)
+      : this.env('verbatim', code);
   }
 
   figureEnv(ast) {

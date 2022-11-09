@@ -2,6 +2,7 @@ import {
   createComponentNode,
   createProperties,
   createTextNode,
+  getPropertyValue,
   hasClass,
   prependChildren,
   setValueProperty,
@@ -41,7 +42,7 @@ export default async function(ast) {
         break;
 
       case 'codeblock':
-        if (hasClass(node, lang) && !hasClass(node, 'code')) {
+        if (getPropertyValue(node, 'language') === lang && !hasClass(node, 'code')) {
           code = node.children[0].value;
           node.name = 'cell-view';
           node.children = [

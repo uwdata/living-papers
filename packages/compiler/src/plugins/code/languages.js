@@ -1,3 +1,5 @@
+export const LANGUAGE = 'language';
+
 export const languages = new Set([
   'xml', 'html', 'xhtml', 'rss', 'atom', 'xjb', 'xsd', 'xsl', 'plist', 'wsf', 'svg',
   'bash', 'sh',
