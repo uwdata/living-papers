@@ -1,6 +1,6 @@
 import path from 'node:path';
 import {
-  createProperties, hasProperty, getClasses, getPropertyValue,
+  createProperties, hasProperty, getPropertyValue,
   removeClass, removeProperty, setValueProperty, visitNodes
 } from '@living-papers/ast';
 import { pandoc } from '../../parse/markdown/pandoc.js';
@@ -59,7 +59,7 @@ export default async function(ast, context) {
 
 function isRCode(node, lang) {
   if (node.name === 'codeblock') {
-    return getClasses(node).indexOf(lang) >= 0;
+    return getPropertyValue(node, 'language') === lang;
   } else if (node.name === 'code') {
     return node.children[0].value.startsWith(`${lang} `);
   }
@@ -102,7 +102,7 @@ function updateAST(rnodes, output, lang, logger) {
       const block = blocks[i];
       if (node.name === 'codeblock') {
         // we show output, not code, so strip r language class
-        removeClass(node, lang);
+        removeProperty(node, 'language');
 
         if (block.name !== 'codeblock') {
           // transfer relevant properties to image nodes
