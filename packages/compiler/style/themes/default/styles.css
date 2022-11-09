@@ -36,6 +36,8 @@ article p,
 article > ul,
 article > ol,
 article > table,
+article > pre,
+article > code-block > pre,
 .katex-display {
 	margin: 12px 0;
 }
