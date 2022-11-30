@@ -116,7 +116,10 @@ function inlineContent(data, index, etal=2) {
 function infoBody(data, maxAuthors=2) {
   const { author, year } =  data;
 
-  const aMap = author.map(({ given, family }) => `${given.includes('.') ? given:given[0] + '.'} ${family}`);
+  const aMap = author.map(({ given, family }) => {
+    if (!given) { return family; }
+    return `${given.includes('.') ? given:given[0] + '.'} ${family}`;
+  });
   const fullInfo = `${year} \u2022 ${aMap.join(', ')}`;
   const shortInfo = aMap.length > maxAuthors 
     ? `${year} \u2022 ${aMap.slice(0, maxAuthors).join(', ')} +${aMap.length - maxAuthors}` 
