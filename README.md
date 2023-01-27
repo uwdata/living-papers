@@ -32,11 +32,12 @@ That said, we recommend copying the [project template repo](https://github.com/u
 Clone this monorepo, run `npm install` to install JavaScript dependencies.
 
 Once installed, you can:
+- Run `npm run build` to build the monorepo package exports.
 - Run `npm run test` to run test cases across monorepo packages.
 - Run `npm run lint` to lint source code across monorepo packages.
 - Run `npx lpub filename.md` to compile a source file in the current directory.
 
-The [`examples`](https://github.com/uwdata/living-papers/tree/main/examples) folder contains example Living Papers articles. Within the folder for each example, run `npm run build` to produce compiled output article(s).
+The [`examples`](https://github.com/uwdata/living-papers/tree/main/examples) folder contains example Living Papers articles. Within the folder for each example, run `npm run build` to produce compiled output article(s). Be sure to run `npm run build` at the monorepo level before trying to build examples.
 
 ## Package Overview
 
