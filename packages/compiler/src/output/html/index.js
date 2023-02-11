@@ -115,7 +115,7 @@ export async function outputHTML(ast, context, options) {
   const tmpl = await readFile(path.join(pkg.dir, pkg.template));
   const html = mustache.render(tmpl, data, {}, { escape: x => x });
 
-  if (!selfContained) {
+  if (entry && !selfContained) {
     copy(jsPath, path.join(outputDir, jsFile));
   }
 
