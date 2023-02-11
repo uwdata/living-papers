@@ -1,7 +1,7 @@
 import path from 'node:path';
 import {
   createProperties, hasProperty, getPropertyValue,
-  removeClass, removeProperty, setValueProperty, visitNodes
+  removeProperty, setValueProperty, visitNodes
 } from '@living-papers/ast';
 import { pandoc } from '../../parse/markdown/pandoc.js';
 import { parsePandocAST } from '../../parse/markdown/parse-pandoc-ast.js';

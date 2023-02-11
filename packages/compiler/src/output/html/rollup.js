@@ -1,10 +1,7 @@
 import resolve from '@rollup/plugin-node-resolve';
 import bundleSize from 'rollup-plugin-bundle-size';
-import _minifyHTML from 'rollup-plugin-minify-html-literals';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 import { rollup as _rollup } from 'rollup';
-
-const minifyHTML = _minifyHTML.default;
 
 function onwarn(warning) {
   if (warning.code !== 'CIRCULAR_DEPENDENCY' &&
@@ -18,7 +15,6 @@ const plugins = (checksize, minify) => {
     resolve(),
     ...(checksize ? [bundleSize()] : []),
     ...(minify ? [
-      minifyHTML(),
       terser({ ecma: 2020, module: true, warnings: true })
     ]: [])
   ];
