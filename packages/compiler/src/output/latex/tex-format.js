@@ -170,6 +170,12 @@ export class TexFormat {
       : getChildren(ast).map(n => this.tex(n)).join(sep);
   }
 
+  textContent(ast) {
+    return typeof ast === 'string' ? ast
+      : ast.type === 'textnode' ? ast.value
+      : getChildren(ast).map(n => this.textContent(n)).join('');
+  }
+
   header(ast, level) {
     // TODO: nonumber?
     return `\\${repeat('sub', level)}section{${this.fragment(ast)}}`
@@ -307,12 +313,12 @@ export class TexFormat {
   code(ast) {
     const lang = getPropertyValue(ast, 'language');
     const cmd = lang ? 'mintinline' : 'texttt';
-    return this.command(ast, cmd, lang);
+    return this.command(this.textContent(ast), cmd, lang);
   }
 
   codeblock(ast) {
     const lang = getPropertyValue(ast, 'language');
-    const code = this.fragment(ast);
+    const code = this.textContent(ast);
     return lang
       ? this.env('minted', code, null, lang)
       : this.env('verbatim', code);
