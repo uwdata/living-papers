@@ -217,11 +217,18 @@ export class TexFormat {
     return `\\${cmd}${param ? `{${param}}` : ''}{${this.fragment(ast)}}`;
   }
 
-  span(ast) {
+  size(ast, content) {
     return getClasses(ast)
+      .map(cls => this.options.sizes.get(cls))
+      .filter(x => x)
+      .reduce((s, c) => `{\\${c} ${s}}`, content);
+  }
+
+  span(ast) {
+    return this.size(ast, getClasses(ast)
       .map(cls => this.options.classes.get(cls))
       .filter(x => x)
-      .reduce((s, c) => this.command(s, c), this.fragment(ast));
+      .reduce((s, c) => this.command(s, c), this.fragment(ast)));
   }
 
   link(ast) {
@@ -313,15 +320,15 @@ export class TexFormat {
   code(ast) {
     const lang = getPropertyValue(ast, 'language');
     const cmd = lang ? 'mintinline' : 'texttt';
-    return this.command(this.textContent(ast), cmd, lang);
+    return this.size(ast, this.command(this.textContent(ast), cmd, lang));
   }
 
   codeblock(ast) {
     const lang = getPropertyValue(ast, 'language');
     const code = this.textContent(ast);
-    return lang
+    return this.size(ast, lang
       ? this.env('minted', code, null, lang)
-      : this.env('verbatim', code);
+      : this.env('verbatim', code));
   }
 
   figureEnv(ast) {

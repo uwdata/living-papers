@@ -62,7 +62,7 @@ export async function outputLatex(ast, context, options) {
       ['eqn', 'Equation~'],
       ['sec', '\\S']
     ]),
-    // TODO handle sizes, colors?
+    // TODO handle colors?
     classes: new Map([
       ['smallcaps', 'textsc'],
       ['italic', 'textit'],
@@ -71,6 +71,16 @@ export async function outputLatex(ast, context, options) {
       ['strong', 'textbf'],
       ['demi', 'textbf'],
       ['underline', 'uline']
+    ]),
+    sizes: new Map([
+      ['tiny', 'tiny'],
+      ['scriptsize', 'scriptsize'],
+      ['footnotesize', 'footnotesize'],
+      ['smaller', 'footnotesize'],
+      ['small', 'small'],
+      ['large', 'large'],
+      ['larger', 'Large'],
+      ['huge', 'huge']
     ]),
     places: places(article),
     vspace: new Map(Object.entries(vspace))
