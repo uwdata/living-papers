@@ -37,6 +37,7 @@ export class TexFormat {
         case '#':
         case '&':
         case '_':
+        case '$':
         case '%': p = `\\${c}`; break;
         case '…': p = '\\ldots{}'; break;
         case '[':
@@ -320,7 +321,8 @@ export class TexFormat {
   code(ast) {
     const lang = getPropertyValue(ast, 'language');
     const cmd = lang ? 'mintinline' : 'texttt';
-    return this.size(ast, this.command(this.textContent(ast), cmd, lang));
+    const code = lang ? this.textContent(ast) : ast;
+    return this.size(ast, this.command(code, cmd, lang));
   }
 
   codeblock(ast) {
