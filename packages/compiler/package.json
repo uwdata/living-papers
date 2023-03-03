@@ -23,12 +23,12 @@
     "@rollup/plugin-replace": "^5.0.2",
     "@rollup/plugin-terser": "^0.4.0",
     "@uwdata/file-cache": "0.0.1",
-    "citation-js": "^0.6.6",
+    "citation-js": "^0.6.7",
     "clean-css": "^5.3.2",
     "mustache": "^4.2.0",
     "node-fetch": "^3.3.0",
-    "puppeteer": "^19.6.3",
-    "rollup": "^3.15.0",
+    "puppeteer": "^19.7.2",
+    "rollup": "^3.18.0",
     "rollup-plugin-bundle-size": "^1.0.3"
   }
 }
