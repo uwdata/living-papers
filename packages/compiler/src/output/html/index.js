@@ -18,10 +18,10 @@ export default async function(ast, context, options) {
     context,
     [
       htmlCode,
+      section,
       crossref(context.numbered),
       sticky,
-      header,
-      section
+      header
     ]
   );
   return outputHTML(ast, context, options);

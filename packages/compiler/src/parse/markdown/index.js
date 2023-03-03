@@ -9,6 +9,7 @@ function defaultParseContext() {
     fence: [
       'abstract',
       'acknowledgments',
+      'appendix',
       'aside',
       'figure',
       'table',

@@ -153,12 +153,13 @@ export class TexFormat {
         return this.vspace(ast) + this.command(ast, 'caption');
       case 'raw':
         return this.raw(ast);
-      case 'bibliography':
       case 'abstract':
-      case 'teaser':
-      case 'references':
       case 'acknowledgments':
+      case 'appendix':
+      case 'bibliography':
       case 'latex:preamble':
+      case 'references':
+      case 'teaser':
         return '';
       default:
         return `\\textbf{${ast.name}?}\n\n`;
@@ -178,8 +179,8 @@ export class TexFormat {
   }
 
   header(ast, level) {
-    // TODO: nonumber?
-    return `\\${repeat('sub', level)}section{${this.fragment(ast)}}`
+    const nonum = bool(getPropertyValue(ast, 'nonumber')) ? '*' : '';
+    return `\\${repeat('sub', level)}section${nonum}{${this.fragment(ast)}}`
       + this.label(ast, 'sec')
       + '\n\n';
   }

@@ -192,13 +192,18 @@ function extractNode(node, tex) {
   switch (name) {
     case 'abstract':
     case 'acknowledgments':
+    case 'appendix':
+      // extract as-is below
       break;
     case 'latex:preamble':
+      // extract as new preamble node
       return { name: 'preamble', content: node.children[0].value };
     case 'figure':
+      // extract if the figure is a teaser
       name = hasClass(node, 'teaser') ? 'teaser' : null;
       break;
     default:
+      // do not extract
       name = null;
   }
   if (name) {
