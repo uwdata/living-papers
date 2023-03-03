@@ -85,12 +85,13 @@ export class Citations {
 
   bibtex(ids = null) {
     // format bibtex, work around citation-js id mangling
-    return this.refs(ids).map(
-      ref => new Cite(ref)
+    return this.refs(ids).map(ref => {
+      return new Cite(ref)
         .format('bibtex')
         .replace(/^(@\w+\{)\w+,/, `$1${ref.id},`)
-        .trim()
-    );
+        .replace(/&amp;/, '\\&')
+        .trim();
+    });
   }
 }
 
