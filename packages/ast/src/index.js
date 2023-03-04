@@ -21,6 +21,7 @@ export {
   setProperty,
   setValueProperty,
   removeProperty,
+  extractProperties,
   hasClass,
   getClasses,
   removeClass,
