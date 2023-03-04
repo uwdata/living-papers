@@ -50,6 +50,7 @@ function renderProps(props, ctx) {
   for (const propKey in props) {
     const { type, value } = props[propKey];
     const key = aliasProperty(propKey);
+    if (!key) continue;
 
     if (type === 'variable' || type === 'expression') {
       ctx.attrs.push([_id(), key, value]);
