@@ -24,6 +24,10 @@ export function aliasComponent(name) {
 }
 
 export function aliasProperty(name) {
+  // drop properties that target other output formats
+  if (name.includes(':')) return null;
+
+  // map non-standard properties to the "data-" namespace
   switch (name) {
     case 'bind': return 'data-bind';
     case 'bind-set': return 'data-bind-set';
