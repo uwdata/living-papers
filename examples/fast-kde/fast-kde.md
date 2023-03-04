@@ -221,7 +221,7 @@ The box filter methods again produce perceptible deviations, which in multiple i
 Deriche approximation produces a pixel-perfect result.
 
 ::: figure {#time1d_penguins position="t"}
-![](figures/time_1d_penguins.svg){width=80%}
+![](figures/time_1d_penguins.svg){width=100%}
 | Running time of 1D estimation on resampled penguin data ($m$ = 512 bins). As $n$ increases, the running time of the approximation methods is dominated by the $O(n)$ binning cost.
 :::
 
@@ -271,7 +271,7 @@ This overhead is exacerbated for 2D estimation, as the number of expanded cells 
 In contrast the Deriche method is stable across bandwidths as it does not require grid extensions, with performance matching or exceeding the other methods for bandwidths at or above the NRD bandwidth suggestion.
 
 ::: figure {#time2d_cars position="h!"}
-![](figures/time_2d_cars.svg){width=80%}
+![](figures/time_2d_cars.svg){width=100%}
 | Running time of 2D estimation on car data, by bandwidth. At low bandwidths, Deriche's method is slightly slower due to more arithmetic operations. As the bandwidth increases, the box filters require larger grids, leading to longer running times.
 :::
 
