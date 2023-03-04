@@ -248,7 +248,7 @@ export class TexFormat {
   image(ast) {
     const src = sanitizeFile(getPropertyValue(ast, 'src'));
     const alt = getPropertyValue(ast, 'alt');
-    const arg = 'width=\\linewidth';
+    const arg = getImageParams(ast);
     if (alt) {
       return `\\begin{figure}[h]
   \\centering
@@ -400,6 +400,22 @@ export class TexFormat {
     const vsp = this.options.vspace.get(ast.name);
     return vsp ? `\\vspace{${vsp}}\n` : '';
   }
+}
+
+function getImageParams(ast) {
+  const w = getPropertyValue(ast, 'latex:width') ?? getPropertyValue(ast, 'width');
+  if (typeof w === 'string') {
+    if (w.endsWith('%')) {
+      // scale width by given percentage (if under 100%)
+      const v = +w.slice(0, -1);
+      if (v < 100) return `width=0.${v}\\linewidth`;
+    } else {
+      // pass custom width setting through as-is
+      return `width=${w}`;
+    }
+  }
+  // default image size to current line width
+  return 'width=\\linewidth';
 }
 
 function tableAlignment(ast) {
