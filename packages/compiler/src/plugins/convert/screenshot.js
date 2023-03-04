@@ -42,12 +42,16 @@ export async function screenshot(handle, { format, page, path }) {
       }
 
       .lpub-screenshot-parent {
+        position: static;
         margin: 0 !important;
         padding: 0 !important;
       }
 
       .lpub-screenshot-target {
         display: inline-block;
+        position: absolute;
+        left: 0;
+        top: 0;
         margin: 0 !important;
       }
 
