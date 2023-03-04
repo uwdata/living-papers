@@ -123,6 +123,22 @@ export function clearProperties(node) {
 }
 
 /**
+ * Extract properties from an AST node.
+ * @param {object} node The AST node.
+ * @param {(k: string) => boolean} test A predicate function to test is a key should be extracted.
+ * @returns {object} A new properties object with extracted properties.
+ */
+ export function extractProperties(node, test) {
+  const props = {};
+  for (const key of getPropertyKeys(node)) {
+    if (test(key)) {
+      props[key] = getProperty(node, key);
+    }
+  }
+  return props;
+}
+
+/**
  * Retrieves an array of property keys for a node.
  * @param {object} node The AST node.
  * @return {string[]} The property keys, or an empty array if none.
