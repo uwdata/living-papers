@@ -90,6 +90,7 @@ export default function({
     // convert svg images
     const imageOptions = {
       ...convertOptions,
+      resize: true,
       extract: el => el.outerHTML
     };
     for (const id of svg) {

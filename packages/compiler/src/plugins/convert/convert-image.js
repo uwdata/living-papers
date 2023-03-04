@@ -1,6 +1,6 @@
 import path from 'node:path';
 import {
-  clearProperties, createComponentNode, setValueProperty
+  clearProperties, createComponentNode, extractProperties, setProperties, setValueProperty
 } from '@living-papers/ast';
 import { screenshot } from './screenshot.js';
 
@@ -12,6 +12,7 @@ export async function convertImage(handle, node, options) {
     convertDir,
     format = 'pdf',
     inline = true,
+    resize = false,
     outputDir,
     outputFilePrefix = 'lpub-convert-',
     page
@@ -25,11 +26,20 @@ export async function convertImage(handle, node, options) {
   const outputFile = `${outputFilePrefix}${id}.${format}`;
   const outputPath = path.join(outputDir, outputFile);
 
+  if (resize) {
+    // strip size attributes to screenshot unaltered image size
+    await handle.evaluate(el => {
+      el.removeAttribute('width');
+      el.removeAttribute('height');
+    });
+  }
+
   // generate and store snapshot image
   await screenshot(handle, { format, page, path: outputPath });
 
   // rewrite AST node
   const img = createComponentNode('image');
+  setProperties(img, extractProperties(node, isImageProperty));
   setValueProperty(img, 'src', path.join(convertDir, outputFile));
   clearProperties(node);
   if (inline) {
@@ -41,4 +51,8 @@ export async function convertImage(handle, node, options) {
     node.name = 'p';
     node.children = [ img ];
   }
+}
+
+function isImageProperty(key) {
+  return key !== 'src' && key !== 'data-ast-id';
 }
