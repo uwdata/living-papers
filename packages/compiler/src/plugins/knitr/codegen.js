@@ -1,5 +1,6 @@
 import {
-  createComponentNode, createProperties, getPropertyValue, hasProperty
+  createComponentNode, createProperties, getPropertyValue,
+  getPropertyBoolean, hasProperty
 } from '@living-papers/ast';
 
 const Bool = v => v && (v+'').toLowerCase() !== 'false' ? 'TRUE' : 'FALSE';
@@ -20,7 +21,7 @@ const OPTIONS = new Map([
 function getChunkOptions(node, applyDefaults = false) {
   const opt = [];
 
-  if (Bool(getPropertyValue(node, 'hide')) === 'TRUE') {
+  if (getPropertyBoolean(node, 'hide')) {
     opt.push(`include = FALSE`);
   }
 

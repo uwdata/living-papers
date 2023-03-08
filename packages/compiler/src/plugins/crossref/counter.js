@@ -1,5 +1,5 @@
 import {
-  getChildren, getPropertyValue, setValueProperty, visitNodes
+  getChildren, getPropertyValue, getPropertyBoolean, setValueProperty, visitNodes
 } from '@living-papers/ast';
 
 const ID = 'id';
@@ -45,13 +45,7 @@ export default function(toKey, lookup) {
 }
 
 function hasNoNumber(node) {
-  return bool(getPropertyValue(node, NONUMBER));
-}
-
-function bool(value) {
-  return (typeof value === 'string')
-    ? value.toLowerCase() !== 'false'
-    : !!value;
+  return getPropertyBoolean(node, NONUMBER);
 }
 
 function isHeader(node) {

@@ -29,6 +29,7 @@ export {
   getPropertyKeys,
   getPropertyType,
   getPropertyValue,
+  getPropertyBoolean,
   hasProperty,
   hasExpressionProperty,
   getProperty,
