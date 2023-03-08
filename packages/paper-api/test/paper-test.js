@@ -38,7 +38,7 @@ describe('Paper', () => {
   it('extracts abstract', () => {
     const node = queryNode(ast.article, n => n.name === 'abstract');
     assert.ok(api.abstract);
-    assert.ok(api.abstract.startsWith(node.children[0].children[0].value));
+    assert.ok(api.abstract.startsWith(node.children[0].children[0].value)); // abstract -> p -> textnode
     assert.strictEqual(api.abstractNode, node);
   });
 });
