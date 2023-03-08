@@ -1,6 +1,6 @@
 import path from 'node:path';
 import {
-  createProperties, hasProperty, getPropertyValue,
+  createProperties, hasProperty, getPropertyValue, getPropertyBoolean,
   removeProperty, setValueProperty, visitNodes
 } from '@living-papers/ast';
 import { pandoc } from '../../parse/markdown/pandoc.js';
@@ -66,10 +66,6 @@ function isRCode(node, lang) {
   return false;
 }
 
-function bool(v) {
-  return v && String(v).toLowerCase() !== 'false';
-}
-
 function updateAST(rnodes, output, lang, logger) {
   // log messages, return output blocks
   const blocks = output.filter(block => {
@@ -90,7 +86,7 @@ function updateAST(rnodes, output, lang, logger) {
 
   // remove hidden nodes
   const nodes = rnodes.filter(([node, parent]) => {
-    const hide = bool(getPropertyValue(node, 'hide'));
+    const hide = getPropertyBoolean(node, 'hide');
     if (hide) {
       parent.children = parent.children.filter(n => n !== node);
     }

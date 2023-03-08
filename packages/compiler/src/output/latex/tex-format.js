@@ -1,5 +1,5 @@
 import {
-  getChildren, getClasses, getPropertyValue,
+  getChildren, getClasses, getPropertyValue, getPropertyBoolean,
   hasClass, hasProperty, isTextNode
 } from '@living-papers/ast';
 
@@ -8,10 +8,6 @@ function repeat(str, n) {
   let s = str;
   while (--n > 0) s += str;
   return s;
-}
-
-function bool(value) {
-  return String(value).toLowerCase() !== 'false';
 }
 
 export class TexFormat {
@@ -179,7 +175,7 @@ export class TexFormat {
   }
 
   header(ast, level) {
-    const nonum = bool(getPropertyValue(ast, 'nonumber')) ? '*' : '';
+    const nonum = getPropertyBoolean(ast, 'nonumber') ? '*' : '';
     return `\\${repeat('sub', level)}section${nonum}{${this.fragment(ast)}}`
       + this.label(ast, 'sec')
       + '\n\n';
@@ -314,7 +310,7 @@ export class TexFormat {
     // TODO throw error if interpolated?
     const code = getPropertyValue(ast, 'code') ?? ast.children[0].value;
     const env = getPropertyValue(ast, 'type') || 'align';
-    const nonum = bool(getPropertyValue(ast, 'nonumber'));
+    const nonum = getPropertyBoolean(ast, 'nonumber');
     return this.vspace(ast)
       + this.env(env + (nonum ? '*' : ''), code);
   }

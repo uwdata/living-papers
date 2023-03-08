@@ -129,6 +129,20 @@ export function getPropertyValue(node, key) {
 }
 
 /**
+ * Retrieves the value for a node property as a boolean. This method interprets
+ * string values: if a property value is undefined, null, false, 0, an empty
+ * string, or the string 'false' (ignoring case), the return value is false.
+ * Otherwise, this method returns true.
+ * @param {object} node The AST node.
+ * @param {string} key The property key.
+ * @return {boolean} The property value as an interpreted boolean.
+ */
+export function getPropertyBoolean(node, key) {
+  const value = node?.properties?.[key]?.value;
+  return !!value && String(value).toLowerCase() !== 'false';
+}
+
+/**
  * Test if a property with the given key is defined on a node.
  * @param {object} node The AST node.
  * @param {string} key The property key.
