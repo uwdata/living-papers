@@ -1,9 +1,23 @@
 import path from 'node:path';
+import { cloneAST, transformAST } from '@living-papers/ast';
+import { convertFigures } from '../../plugins/index.js';
 import { copy, mkdirp, writeFile } from '../../util/fs.js';
 import { bundleJS } from '../bundler.js';
 
-// TODO: include images of figures, tables, equations?
 export default async function(ast, context, options) {
+  const { output } = context;
+  const { figures = true, ...esmOptions } = options;
+  ast = await transformAST(
+    cloneAST(ast),
+    context,
+    figures ? [
+      convertFigures({...(options.convert || {}), html: output.html})
+    ] : []
+  );
+  return outputESM(ast, context, esmOptions);
+}
+
+export async function outputESM(ast, context, options) {
   const { inputFile, outputDir, tempDir } = context;
   const {
     jsFile = `${path.parse(inputFile).name}.mjs`,
