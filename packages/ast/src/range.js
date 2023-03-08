@@ -1,4 +1,5 @@
-import { cloneNode, getChildren, isTextNode } from './util.js';
+import { cloneNode, isTextNode } from './nodes.js';
+import { getChildren } from './children.js';
 
 /**
  * Create a range selection object indicating a subset of an AST.
