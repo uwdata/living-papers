@@ -39,9 +39,10 @@ export default async function(ast, context) {
 
   // collect citation data to embed in article
   const data = await citationData(citations, scholarAPI(cache, fetch), logger);
-  context.citations = {
-    references: data,
-    bibtex: citations.bibtex()
+  ast.citations = {
+    bibtex: citations.bibtex(),
+    csl: citations.refs(),
+    data
   };
 
   // add bibliography to AST

@@ -33,8 +33,8 @@ export default async function(ast, context, options) {
 }
 
 export async function outputLatex(ast, context, options) {
-  const { metadata, article } = ast;
-  const { citations, inputDir, inputFile, outputDir, tempDir, logger } = context;
+  const { metadata, article, citations } = ast;
+  const { inputDir, inputFile, outputDir, tempDir, logger } = context;
   const {
     template,
     tags = ['<<', '>>'],
@@ -55,7 +55,7 @@ export async function outputLatex(ast, context, options) {
 
   // prepare LaTeX formatter
   const tex = new TexFormat({
-    references: citations?.references,
+    references: citations?.data,
     prefix: new Map([
       ['fig', 'Figure~'],
       ['tbl', 'Table~'],

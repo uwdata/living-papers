@@ -17,6 +17,7 @@
     "@living-papers/components": "^0.0.8",
     "@living-papers/html-templates": "^0.0.8",
     "@living-papers/latex-templates": "^0.0.8",
+    "@living-papers/paper-api": "^0.0.8",
     "@living-papers/runtime": "^0.0.8",
     "@living-papers/runtime-compiler": "^0.0.8",
     "@rollup/plugin-node-resolve": "^15.0.1",

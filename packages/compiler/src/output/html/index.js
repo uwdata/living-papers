@@ -10,7 +10,7 @@ import { resolveTemplate } from '../../resolve/templates.js';
 
 import { astToHTML } from './ast-to-html.js';
 import { astToScript } from './ast-to-script.js';
-import { rollup } from './rollup.js';
+import { bundleJS } from '../bundler.js';
 
 export default async function(ast, context, options) {
   ast = await transformAST(
@@ -28,7 +28,7 @@ export default async function(ast, context, options) {
 }
 
 export async function outputHTML(ast, context, options) {
-  const { metadata, article } = ast;
+  const { metadata, article, citations } = ast;
   const { components, inputDir, outputDir, tempDir } = context;
   const {
     selfContained = false,
@@ -68,6 +68,7 @@ export async function outputHTML(ast, context, options) {
     root: 'article',
     bind,
     context,
+    citations,
     components: activeComponents,
     runtime: !!script,
   });
@@ -91,9 +92,9 @@ export async function outputHTML(ast, context, options) {
     ...(selfContained ? [] : [writeFile(cssPath, css)])
   ]);
 
-  // if we have javascript code, bundle it with rollup
+  // if we have javascript code, bundle it
   if (entry) {
-    await rollup({ ...rollupOptions, input: entryPath, output: jsPath });
+    await bundleJS({ ...rollupOptions, input: entryPath, output: jsPath });
   }
 
   // generate output html
@@ -152,9 +153,9 @@ async function bundleCSS(styles, minify = true) {
     : css;
 }
 
-function entryScript({ root, bind, context, components, runtime }) {
+function entryScript({ root, bind, context, citations, components, runtime }) {
   const script = [];
-  const refdata = context.citations?.references;
+  const refdata = citations?.data;
   const hasRefs = refdata?.length > 0;
   const hasSticky = context.sticky;
   const hasOnload = runtime || hasRefs || hasSticky;
