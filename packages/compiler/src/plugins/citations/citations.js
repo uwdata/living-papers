@@ -23,7 +23,7 @@ export class Citations {
   }
 
   refs(ids) {
-    return ids ? filterBy(this._refs, ids) : this._refs;
+    return ids ? filterBy(this._refs, ids) : this._refs.slice();
   }
 
   sort() {

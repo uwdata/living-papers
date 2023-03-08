@@ -20,7 +20,7 @@ const plugins = (checksize, minify) => {
   ];
 }
 
-export function rollup({
+export function bundleJS({
   input,
   output,
   checksize = true,
