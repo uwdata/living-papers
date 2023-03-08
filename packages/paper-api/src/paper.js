@@ -1,5 +1,5 @@
 import {
-  extractText, queryNode, queryNodes, setParentNodes
+  extractText, getPropertyValue, queryNode, queryNodes, setParentNodes
 } from '@living-papers/ast';
 
 const ABSTRACT = 'abstract';
@@ -108,5 +108,20 @@ export class Paper {
 
   get equationText() {
     return this.equationNodes.map(node => extractText(node));
+  }
+
+  figureImage(index) {
+    const node = this.figureNodes[index];
+    return node && getPropertyValue(node, 'data-url');
+  }
+
+  tableImage(index) {
+    const node = this.tableNodes[index];
+    return node && getPropertyValue(node, 'data-url');
+  }
+
+  equationImage(index) {
+    const node = this.equationNodes[index];
+    return node && getPropertyValue(node, 'data-url');
   }
 }

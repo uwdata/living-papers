@@ -8,7 +8,7 @@
  * @param {Page} options.page The active page containing the target element
  * @param {string} options.path The file path for the output PDF
  */
-export async function screenshot(handle, { format, page, path }) {
+export async function screenshot(handle, { format, page, path, encoding, css = '' }) {
   // handle inline content by injecting spans to ensure CSS is applied
   // TODO: find a better solution to this issue?
   await handle.evaluate(el => {
@@ -40,13 +40,11 @@ export async function screenshot(handle, { format, page, path }) {
       :not(.lpub-screenshot-parent, .lpub-screenshot-target, .lpub-screenshot-target *) {
         display: none;
       }
-
       .lpub-screenshot-parent {
         position: static;
         margin: 0 !important;
         padding: 0 !important;
       }
-
       .lpub-screenshot-target {
         display: inline-block;
         position: absolute;
@@ -54,18 +52,18 @@ export async function screenshot(handle, { format, page, path }) {
         top: 0;
         margin: 0 !important;
       }
-
       .lpub-screenshot-target > * {
         margin: 0 !important;
       }
-
       @media print {
         body { break-inside: avoid; margin: 0; padding: 0; }
       }
+      ${css}
     `
   });
 
   // take screenshot
+  let shot;
   if (format === 'pdf') {
     const { width, height } = await handle.boundingBox();
     await page.pdf({
@@ -75,7 +73,7 @@ export async function screenshot(handle, { format, page, path }) {
       height: `${Math.ceil(height)}px`
     });
   } else {
-    await handle.screenshot({ path });
+    shot = await handle.screenshot({ type: format, path, encoding });
   }
 
   // remove style tag
@@ -90,4 +88,6 @@ export async function screenshot(handle, { format, page, path }) {
       ancestor = ancestor.parentElement;
     }
   });
+
+  return shot;
 }

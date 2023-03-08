@@ -2,11 +2,14 @@ import puppeteer from 'puppeteer';
 
 let browser;
 
-export async function getBrowser() {
+export async function getBrowser({
+  headless = true,
+  viewport = { width: 800, height: 600 }
+} = {}) {
   const onClose = () => browser = null;
   return browser || (browser = await launchBrowser({
-    headless: true,
-    defaultViewport: { width: 800, height: 600 }
+    headless,
+    defaultViewport: viewport
   }, onClose));
 }
 

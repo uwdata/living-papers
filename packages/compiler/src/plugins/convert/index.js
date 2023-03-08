@@ -6,13 +6,10 @@ import {
   setValueProperty, visitNodes
 } from '@living-papers/ast';
 
-import { outputHTML } from '../../output/html/index.js';
-
-import { getBrowser } from './browser.js';
-import { startServer, stopServer } from './file-proxy-server.js';
 import { convertImage } from './convert-image.js';
 import { convertComponent } from './convert-component.js';
 import { convertProperties } from './convert-properties.js';
+import { renderPage } from './render-page.js';
 
 const AST_ID_KEY = 'data-ast-id';
 
@@ -24,48 +21,18 @@ export default function({
   outputDir,
 } = {}) {
   return async (ast, context) => {
-    const { inputDir, logger } = context;
+    const { logger } = context;
     const { nodes, prop, svg, custom } = buildConversionPlan(ast.article);
+    const get = id => page.$(`[${AST_ID_KEY}="${id}"]`);
 
     // exit early if no conversion is needed
-    if (nodes.size === 0) {
-      return ast;
-    }
+    if (nodes.size === 0) return ast;
+
     logger.debug('Convert: map dynamic content to static output');
 
-    // launch puppeteer and proxy server
-    const [browser, port] = await Promise.all([
-      getBrowser(),
-      startServer(inputDir)
-    ]);
+    const opts = { html, delay };
+    const { page, close } = await renderPage(ast, context, opts);
 
-    // prepare html options
-    const baseURL = `http://localhost:${port}/`;
-    const htmlOptions = {
-      ...html,
-      baseURL,
-      selfContained: true,
-      htmlFile: null
-    };
-
-    // load self-contained HTML
-    const page = await browser.page();
-    await page.emulateMediaType('print');
-    await page.setContent(await outputHTML(ast, context, htmlOptions));
-    if (+delay) {
-      logger.debug(`Convert: waiting ${+delay} ms for article load`);
-      await page.waitForTimeout(+delay);
-    }
-
-    // enable debugging from the browser in the node console
-    page.on('console', async (msg) => {
-      const msgArgs = msg.args();
-      for (let i = 0; i < msgArgs.length; ++i) {
-        logger.debug(await msgArgs[i].jsonValue());
-      }
-    });
-
-    const get = id => page.$(`[${AST_ID_KEY}="${id}"]`);
     const convertOptions = {
       convertDir,
       page,
@@ -102,12 +69,8 @@ export default function({
       await convertComponent(await get(id), nodes.get(id), convertOptions);
     }
 
-    // shutdown proxy server and puppeteer
-    await page.close();
-    await Promise.all([
-      stopServer(),
-      browser.close()
-    ]);
+    // shutdown puppeteer and proxy server
+    await close()
 
     return ast;
   }
