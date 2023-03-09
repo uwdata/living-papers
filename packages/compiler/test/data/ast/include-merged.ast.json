@@ -1,0 +1,175 @@
+{
+  "metadata": {},
+  "article": {
+    "type": "component",
+    "name": "article",
+    "children": [
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "header"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Header"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "And a paragraph."
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Are we "
+          },
+          {
+            "type": "component",
+            "name": "em",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "content"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": " with this "
+          },
+          {
+            "type": "component",
+            "name": "strong",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "content"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": " inline?"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "component",
+            "name": "em",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "content"
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": " with this "
+          },
+          {
+            "type": "component",
+            "name": "strong",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "content"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Uh oh "
+          },
+          {
+            "type": "textnode",
+            "value": " block!"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "figure",
+        "properties": {
+          "class": {
+            "type": "value",
+            "value": "figure"
+          }
+        },
+        "children": [
+          {
+            "type": "component",
+            "name": "h1",
+            "properties": {
+              "id": {
+                "type": "value",
+                "value": "header"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "Header"
+              }
+            ]
+          },
+          {
+            "type": "component",
+            "name": "p",
+            "children": [
+              {
+                "type": "textnode",
+                "value": "And a paragraph."
+              }
+            ]
+          },
+          {
+            "type": "textnode",
+            "value": "\n"
+          },
+          {
+            "type": "component",
+            "name": "raw",
+            "properties": {
+              "format": {
+                "type": "value",
+                "value": "tex"
+              }
+            },
+            "children": [
+              {
+                "type": "textnode",
+                "value": "\\vspace{-10pt}"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

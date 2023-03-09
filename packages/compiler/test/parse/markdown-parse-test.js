@@ -52,6 +52,10 @@ describe('parseMarkdown', () => {
     await parseTest('article/components.md', 'ast/components.ast.json');
   });
 
+  it('parses include component', async () => {
+    await parseTest('article/include.md', 'ast/include.ast.json');
+  });
+
   it('parses tex-formatted math', async () => {
     await parseTest('article/math.md', 'ast/math.ast.json');
   });
