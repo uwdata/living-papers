@@ -1,19 +1,14 @@
 import assert from 'node:assert';
 import path from 'node:path';
 import { compile } from '../../src/index.js';
+import { logger } from '../logger.js';
 
 const DEBUG = false;
 
 async function compileTest(input, expectedCounts = {}) {
-  // setup logger
-  const msg = { log: [], debug: [], info: [], warn: [], error: [] };
-  const logger = Object.keys(msg)
-    .reduce((obj, key) => (obj[key] = _ => msg[key].push(_), obj), {});
-
-  // compile
   const inputFile = path.join('test/data', input);
   const outputDir = path.join('test-output', path.parse(input).name);
-  await compile(inputFile, {
+  const ctx = {
     outputDir,
     output: {
       html: {
@@ -22,10 +17,12 @@ async function compileTest(input, expectedCounts = {}) {
       }
     },
     debug: DEBUG,
-    logger
-  });
+    logger: logger()
+  };
+  await compile(inputFile, ctx);
 
   // check message counts
+  const { msg } = ctx.logger;
   for (const key in expectedCounts) {
     if (msg[key].length !== expectedCounts[key]) {
       console.error(inputFile, msg[key]);
