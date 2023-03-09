@@ -3,7 +3,7 @@ import {
 } from './properties.js';
 
 export function hasClass(node, className) {
-  return getClasses(node).indexOf(className) >= 0;
+  return getClasses(node).includes(className);
 }
 
 export function getClasses(node) {
