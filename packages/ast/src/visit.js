@@ -8,15 +8,15 @@ import { getChildren } from './children.js';
  *  Traversal is aborted if the callback returns a truthy value.
  */
 export function visitNodes(node, callback) {
-  visitNodesHelper(node, null, callback);
+  visitNodesHelper(node, null, null, callback);
 }
 
-function visitNodesHelper(node, parent, callback) {
-  if (callback(node, parent)) {
+function visitNodesHelper(node, parent, grandparent, callback) {
+  if (callback(node, parent, grandparent)) {
     return true;
   }
   for (const child of getChildren(node)) {
-    if (visitNodesHelper(child, node, callback)) {
+    if (visitNodesHelper(child, node, parent, callback)) {
       return true;
     }
   }
