@@ -1,5 +1,5 @@
 import { transformAST } from '@living-papers/ast';
-import { runtime, citations, code, notes } from '../../plugins/index.js';
+import { include, runtime, citations, code, notes } from '../../plugins/index.js';
 import { pandoc } from './pandoc.js';
 import { parsePandocAST } from './parse-pandoc-ast.js';
 import { preprocess } from './preprocess.js';
@@ -56,6 +56,7 @@ export async function parseMarkdown(context) {
     await parsePandoc(context),
     context,
     [
+      include,
       runtime,
       code,
       notes,
