@@ -75,6 +75,11 @@ export {
 } from './set-parent-nodes.js';
 
 export {
+  namespace,
+  excludesNamespace
+} from './namespace.js';
+
+export {
   cloneAST
 } from './clone-ast.js';
 
