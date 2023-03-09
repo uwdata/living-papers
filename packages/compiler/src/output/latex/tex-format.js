@@ -1,6 +1,6 @@
 import {
   getChildren, getClasses, getPropertyValue, getPropertyBoolean,
-  hasClass, hasProperty, isTextNode
+  hasClass, hasProperty, isTextNode, excludesNamespace
 } from '@living-papers/ast';
 
 function repeat(str, n) {
@@ -65,11 +65,13 @@ export class TexFormat {
 
   tex(ast) {
     if (ast == null) {
-      return undefined;
+      return;
     } else if (typeof ast === 'string') {
       return this.string(ast);
     } else if (ast.type === 'textnode') {
       return this.string(ast.value);
+    } else if (excludesNamespace(ast, 'latex')) {
+      return; // skip on non-latex output namespace
     }
 
     switch (ast.name) {

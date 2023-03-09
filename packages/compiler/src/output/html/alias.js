@@ -1,3 +1,5 @@
+import { namespace } from '@living-papers/ast';
+
 const aliasMap = new Map([
   ['abstract', 'p'],
   ['acknowledgments', 'p'],
@@ -15,8 +17,7 @@ const aliasMap = new Map([
   ['quote', 'q'],
   ['sticky', 'div'],
   ['teaser', 'figure'],
-  ['latex:preamble', null], // TODO? filter all non-html prefixed elements
-  ['raw', null]
+  ['raw', null] // TODO pass through raw html?
 ]);
 
 export function aliasComponent(name) {
@@ -25,7 +26,7 @@ export function aliasComponent(name) {
 
 export function aliasProperty(name) {
   // drop properties that target other output formats
-  if (name.includes(':')) return null;
+  if (namespace(name, 'html') !== 'html') return null;
 
   // map non-standard properties to the "data-" namespace
   switch (name) {

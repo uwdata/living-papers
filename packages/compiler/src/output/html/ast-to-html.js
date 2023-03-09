@@ -1,3 +1,4 @@
+import { excludesNamespace } from '@living-papers/ast';
 import { DATA_ATTR } from '@living-papers/runtime';
 import { aliasComponent, aliasProperty } from './alias.js';
 import { htmlEscape } from '../../util/html-escape.js';
@@ -27,7 +28,7 @@ function renderNode(node, ctx) {
   }
 
   const name = aliasComponent(node.name);
-  if (name == null) {
+  if (name == null || excludesNamespace(node, 'html')) {
     return '';
   } else if (name === 'br') {
     return '<br/>';
