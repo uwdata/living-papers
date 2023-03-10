@@ -11,5 +11,8 @@
     "lint": "eslint '**/*.js'",
     "test": "mocha 'test/**/*-test.js'",
     "prepublishOnly": "npm run test & npm run lint"
+  },
+  "dependencies": {
+    "@living-papers/ast": "^0.0.8"
   }
 }

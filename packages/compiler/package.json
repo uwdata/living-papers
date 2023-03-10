@@ -28,8 +28,8 @@
     "clean-css": "^5.3.2",
     "mustache": "^4.2.0",
     "node-fetch": "^3.3.0",
-    "puppeteer": "^19.7.2",
-    "rollup": "^3.18.0",
+    "puppeteer": "^19.7.3",
+    "rollup": "^3.19.0",
     "rollup-plugin-bundle-size": "^1.0.3"
   }
 }
