@@ -47,13 +47,12 @@ export default async function(ast, context) {
 }
 
 async function getIncludedContent(node, context) {
-  const raw = getPropertyValue(node, 'raw');
+  const format = getPropertyValue(node, 'raw');
   const file = getPropertyValue(node, 'file');
   const inputFile = path.join(context.inputDir, file);
   try {
-    if (raw) {
+    if (format) {
       // include as raw format-specific content
-      const format = raw === 'latex' ? 'tex' : raw;
       return [
         createComponentNode(
           'raw',
