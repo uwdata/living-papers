@@ -1,7 +1,7 @@
 {
   "name": "@living-papers/ast",
   "description": "Abstract syntax tree (AST) methods for Living Papers.",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "license": "BSD-3-Clause",
   "repository": "uwdata/living-papers",
   "main": "src/index.js",

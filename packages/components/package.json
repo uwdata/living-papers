@@ -1,7 +1,7 @@
 {
   "name": "@living-papers/components",
   "description": "Built-in Living Papers web components.",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "license": "BSD-3-Clause",
   "repository": "uwdata/living-papers",
   "main": "src/index.js",
@@ -12,7 +12,7 @@
     "prepublishOnly": "npm run lint"
   },
   "dependencies": {
-    "@living-papers/runtime": "^0.0.8",
+    "@living-papers/runtime": "^0.0.9",
     "d3-require": "^1.3.0",
     "lit": "^2.6.1"
   },
