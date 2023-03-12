@@ -4,12 +4,17 @@ let browser;
 
 export async function getBrowser({
   headless = true,
-  viewport = { width: 800, height: 600 }
+  viewport = {}
 } = {}) {
+  const defaultViewport = {
+    width: 800,
+    height: 600,
+    ...viewport
+  };
   const onClose = () => browser = null;
   return browser || (browser = await launchBrowser({
     headless,
-    defaultViewport: viewport
+    defaultViewport
   }, onClose));
 }
 
