@@ -1,9 +1,8 @@
 import { transformAST } from '@living-papers/ast';
 import { outputOptions } from './config.js';
 import { createContext } from './context.js';
-import parse from './parse/index.js';
 import { resolveComponents } from './resolve/components.js';
-import { resolvePlugins } from './resolve/plugins.js';
+import { resolveTransforms } from './resolve/transforms.js';
 import * as outputMethods from './output/index.js';
 
 export async function compile(inputFile, options = {}) {
@@ -13,15 +12,15 @@ export async function compile(inputFile, options = {}) {
   const context = await createContext(inputFile, options);
 
   // Parse input to initial AST
-  let ast = await parse(context);
+  let ast = await context.parse(inputFile);
   const { metadata } = ast;
 
   // Update compiler context
   context.components = await resolveComponents(metadata.components, context);
 
   // Apply AST transform plugins
-  const plugins = resolvePlugins(metadata.plugins, context);
-  ast = await transformAST(ast, context, plugins);
+  const transforms = await resolveTransforms(metadata.transforms, context);
+  ast = await transformAST(ast, context, transforms);
 
   if (context.debug) {
     console.log('---------------');

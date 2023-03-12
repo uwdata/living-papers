@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { cloneAST, transformAST } from '@living-papers/ast';
-import { convertFigures } from '../../plugins/index.js';
+import { convertFigures } from '../../transforms/index.js';
 import { copy, mkdirp, writeFile } from '../../util/fs.js';
 import { bundleJS } from '../bundler.js';
 

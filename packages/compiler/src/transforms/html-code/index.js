@@ -2,7 +2,7 @@ import {
   createComponentNode, hasProperty, setValueProperty, visitNodes
 } from '@living-papers/ast';
 
-import { LANGUAGE } from './languages.js';
+import { LANGUAGE } from '../../util/languages.js';
 
 export default function(ast) {
   visitNodes(ast.article, node => {

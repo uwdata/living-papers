@@ -228,7 +228,11 @@
         "properties": {
           "class": {
             "type": "value",
-            "value": "js code"
+            "value": "code"
+          },
+          "language": {
+            "type": "value",
+            "value": "js"
           }
         },
         "children": [
@@ -242,7 +246,7 @@
         "type": "component",
         "name": "codeblock",
         "properties": {
-          "class": {
+          "language": {
             "type": "value",
             "value": "sql"
           }
@@ -276,7 +280,7 @@
             "type": "component",
             "name": "code",
             "properties": {
-              "class": {
+              "language": {
                 "type": "value",
                 "value": "python"
               }

@@ -1,0 +1,28 @@
+{
+  "name": "@living-papers/transforms",
+  "description": "Built-in Living Papers AST transforms.",
+  "version": "0.0.9",
+  "license": "BSD-3-Clause",
+  "repository": "uwdata/living-papers",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint '**/*.js'",
+    "prepublishOnly": "npm run lint"
+  },
+  "dependencies": {
+    "@living-papers/ast": "^0.0.9",
+    "@living-papers/runtime-compiler": "^0.0.9"
+  },
+  "living-papers": {
+    "transforms": [
+      {
+        "name": "knitr",
+        "file": "src/knitr/index.js"
+      },
+      {
+        "name": "pyodide",
+        "file": "src/pyodide/index.js"
+      }
+    ]
+  }
+}

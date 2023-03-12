@@ -20,6 +20,8 @@ import {
   Div, Span, Plain
 } from './pandoc-types.js';
 
+import { LANGUAGE, languages } from '../../util/languages.js';
+
 /**
  * Parse a Pandoc AST in JSON format to the internal AST format.
  * @param {object} doc Pandoc JSON AST
@@ -33,34 +35,34 @@ export function parsePandocAST(doc, options = {}) {
 export class PandocASTParser {
   constructor(options) {
     this.ctx = {
-      fence: new Set(options.fence || []),
-      block: new Set(options.block || []),
       xref: new Set(options.xref || []),
       env: new Set(options.env || [])
     };
   }
 
-  blockLookup(item) {
-    return this.componentLookup(item, this.ctx.block);
+  componentLookup(item, isCodeBlock) {
+    const [attrs, content] = item;
+    const [id, classes, props] = attrs;
+    const prop = props.find(p => p[0] === 'component');
+
+    if (prop) {
+      const [, name] = prop;
+      const filteredProps = props.filter(p => p !== prop);
+      return isCodeBlock && languages.has(name)
+        ? [[id, [name, ...classes], filteredProps], content]
+        : [[id, classes, filteredProps], content, name];
+    }
+
+    return item;
   }
 
   fenceLookup(item) {
-    return this.componentLookup(item, this.ctx.fence);
+    return this.componentLookup(item, false);
   }
 
-  componentLookup(item, lookup) {
-    const [attrs, content] = item;
-    const [id, classes, props] = attrs;
-    const cls = classes.find(c => lookup.has(c));
-
-    if (cls) {
-      item = [
-        [id, classes.filter(c => c !== cls), props],
-        content,
-        cls
-      ];
-    }
-    return item;
+  blockLookup(item) {
+    item = this.componentLookup(item, true);
+    return item[2] === undefined ? this.setCodeLanguage(item) : item;
   }
 
   spanLookup(item) {
@@ -74,6 +76,22 @@ export class PandocASTParser {
       }
     }
     return [attrs, span];
+  }
+
+  setCodeLanguage(item) {
+    const [attrs, content] = item;
+    const [id, classes, props] = attrs;
+
+    const hasLangProp = props.find(p => p[0] === LANGUAGE);
+    if (!hasLangProp) {
+      const lang = classes.find(c => languages.has(c));
+      item = [
+        [id, classes.filter(c => c !== lang), [[LANGUAGE, lang], ...props]],
+        content
+      ];
+    }
+
+    return item;
   }
 
   ///////////////////////////////////////
@@ -487,7 +505,7 @@ export class PandocASTParser {
   }
 
   parseCode(item) {
-    const [ attrs, content ] = item;
+    const [ attrs, content ] = this.setCodeLanguage(item);
     return createComponentNode(
       'code',
       parseProperties(attrs),

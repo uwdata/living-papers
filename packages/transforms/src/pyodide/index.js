@@ -8,14 +8,18 @@ import {
   setValueProperty,
   visitNodes
 } from '@living-papers/ast';
-import { splitCodeCells, joinCodeCells } from '../../util/code-cells.js';
+
+import {
+  splitCodeCells,
+  joinCodeCells
+} from '@living-papers/runtime-compiler';
 
 export default async function(ast) {
   const { metadata, article } = ast;
   const options = {
     lang: 'py',    // language class in AST
     tag: '__py__', // template tag to add to runtime
-    ...(metadata.plugins?.pyodide || {})
+    ...(metadata.transforms?.pyodide || {})
   };
   const { tag, lang } = options;
 

@@ -3,7 +3,7 @@ title: R Knitr Integration
 author:
   - name: Living Papers Team
     org: University of Washington
-plugins:
+transforms:
   knitr:
     import: [ggplot2, jsonlite]
     dev: svglite

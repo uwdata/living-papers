@@ -97,7 +97,7 @@ function scan(_) {
   const codet = [];
   const fdivs = [];
   let pipe = false;
-  let i = -1, j, k;
+  let i = -1, j, k, l;
   let c = '\n', cc;
 
   while (i < n) {
@@ -123,11 +123,21 @@ function scan(_) {
           _.write(i = _.space(_.consume(i, cc)));
 
           // otherwise process attributes and update state
-          j = _.word(i);
-          if (_.peek(k = _.space(j), '{')) {
-            if (j > i) {
-              _.write(i, `{.${_.sub(i, j)} `, k + 1);
+          l = _.peek(i, '.') || _.peek(i, '#');
+          j = _.word(l ? i + 1 : i);
+          l = _.peek(k = _.space(j), '{');
+          if (j > i) {
+            const name = _.sub(i, j);
+            const repl = name[0] === '.' || name[0] === '#' ? name : `component=${name}`;
+            if (l) {
+              _.write(i, `{${repl} `, k + 1);
+              i = k + 1;
+              attrs.push(i);
+            } else {
+              _.write(i, `{${repl}}`, k);
+              i = k;
             }
+          } else if (l) {
             i = k + 1;
             attrs.push(i);
           } else {

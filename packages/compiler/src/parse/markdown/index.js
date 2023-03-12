@@ -1,26 +1,11 @@
 import { transformAST } from '@living-papers/ast';
-import { include, runtime, citations, code, notes } from '../../plugins/index.js';
+import { include, runtime, citations, notes } from '../../transforms/index.js';
 import { pandoc } from './pandoc.js';
 import { parsePandocAST } from './parse-pandoc-ast.js';
 import { preprocess } from './preprocess.js';
 
 function defaultParseContext() {
   return {
-    fence: [
-      'abstract',
-      'acknowledgments',
-      'appendix',
-      'aside',
-      'figure',
-      'table',
-      'teaser'
-    ],
-    block: [
-      'bibliography',
-      'equation',
-      'math',
-      'latex:preamble'
-    ],
     xref: [
       'sec',
       'fig',
@@ -58,7 +43,6 @@ export async function parseMarkdown(context) {
     [
       include,
       runtime,
-      code,
       notes,
       citations
     ]

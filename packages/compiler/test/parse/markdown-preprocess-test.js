@@ -8,51 +8,87 @@ function test(input, expected) {
 }
 
 describe('preprocess', () => {
-  it('handles fenced blocks', () => {
-    test('```foo {.bar}', '```{.foo .bar}');
-    test('~~~foo {.bar}', '~~~{.foo .bar}');
-    test(':::foo {.bar}', ':::{.foo .bar}');
+  it('handles fenced blocks with component name', () => {
+    test('```foo', '```{component=foo}');
+    test('~~~foo', '~~~{component=foo}');
+    test(':::foo', ':::{component=foo}');
 
-    test('``` foo {.bar}', '``` {.foo .bar}');
-    test('~~~ foo {.bar}', '~~~ {.foo .bar}');
-    test('::: foo {.bar}', '::: {.foo .bar}');
+    test('```foo {.bar}', '```{component=foo .bar}');
+    test('~~~foo {.bar}', '~~~{component=foo .bar}');
+    test(':::foo {.bar}', ':::{component=foo .bar}');
 
-    test('\n``` foo {.bar}', '\n``` {.foo .bar}');
-    test('\n~~~ foo {.bar}', '\n~~~ {.foo .bar}');
-    test('\n::: foo {.bar}', '\n::: {.foo .bar}');
+    test('``` foo {.bar}', '``` {component=foo .bar}');
+    test('~~~ foo {.bar}', '~~~ {component=foo .bar}');
+    test('::: foo {.bar}', '::: {component=foo .bar}');
 
-    test('\n ``` foo {.bar}', '\n ``` {.foo .bar}');
-    test('\n ~~~ foo {.bar}', '\n ~~~ {.foo .bar}');
-    test('\n ::: foo {.bar}', '\n ::: {.foo .bar}');
+    test('\n``` foo {.bar}', '\n``` {component=foo .bar}');
+    test('\n~~~ foo {.bar}', '\n~~~ {component=foo .bar}');
+    test('\n::: foo {.bar}', '\n::: {component=foo .bar}');
 
-    test('```` foo {.bar}', '```` {.foo .bar}');
-    test('~~~~ foo {.bar}', '~~~~ {.foo .bar}');
-    test(':::: foo {.bar}', ':::: {.foo .bar}');
+    test('\n ``` foo {.bar}', '\n ``` {component=foo .bar}');
+    test('\n ~~~ foo {.bar}', '\n ~~~ {component=foo .bar}');
+    test('\n ::: foo {.bar}', '\n ::: {component=foo .bar}');
 
-    test('````` foo {.bar} ```', '````` {.foo .bar} ```');
-    test('~~~~~ foo {.bar} ~~~', '~~~~~ {.foo .bar} ~~~');
-    test('::::: foo {.bar} :::', '::::: {.foo .bar} :::');
+    test('```` foo {.bar}', '```` {component=foo .bar}');
+    test('~~~~ foo {.bar}', '~~~~ {component=foo .bar}');
+    test(':::: foo {.bar}', ':::: {component=foo .bar}');
 
-    test('```foo {.bar}\ncode\n```', '```{.foo .bar}\ncode\n```');
+    test('````` foo {.bar} ```', '````` {component=foo .bar} ```');
+    test('~~~~~ foo {.bar} ~~~', '~~~~~ {component=foo .bar} ~~~');
+    test('::::: foo {.bar} :::', '::::: {component=foo .bar} :::');
+
+    test('```foo {.bar}\ncode\n```', '```{component=foo .bar}\ncode\n```');
 
     // handles dash in component/class names
-    test('```foo-bar {.bar-baz}', '```{.foo-bar .bar-baz}');
-    test('~~~foo-bar {.bar-baz}', '~~~{.foo-bar .bar-baz}');
-    test(':::foo-bar {.bar-baz}', ':::{.foo-bar .bar-baz}');
+    test('```foo-bar {.bar-baz}', '```{component=foo-bar .bar-baz}');
+    test('~~~foo-bar {.bar-baz}', '~~~{component=foo-bar .bar-baz}');
+    test(':::foo-bar {.bar-baz}', ':::{component=foo-bar .bar-baz}');
+  });
+
+  it('handles fenced blocks with class name', () => {
+    test('```.foo', '```{.foo}');
+    test('~~~.foo', '~~~{.foo}');
+    test(':::.foo', ':::{.foo}');
+
+    test('``` .foo {.bar}', '``` {.foo .bar}');
+    test('~~~ .foo {.bar}', '~~~ {.foo .bar}');
+    test('::: .foo {.bar}', '::: {.foo .bar}');
+  });
+
+  it('handles fenced blocks with id name', () => {
+    test('```#foo', '```{#foo}');
+    test('~~~#foo', '~~~{#foo}');
+    test(':::#foo', ':::{#foo}');
+
+    test('``` #foo {.bar}', '``` {#foo .bar}');
+    test('~~~ #foo {.bar}', '~~~ {#foo .bar}');
+    test('::: #foo {.bar}', '::: {#foo .bar}');
   });
 
   it('handles nested fenced blocks', () => {
     test(
+      '::: foo\n::: bar\n:::\n:::\n',
+      '::: {component=foo}\n::: {component=bar}\n:::\n:::\n'
+    );
+    test(
       '::: foo {.fob}\n::: bar {.bob}\n:::\n:::\n',
-      '::: {.foo .fob}\n::: {.bar .bob}\n:::\n:::\n'
+      '::: {component=foo .fob}\n::: {component=bar .bob}\n:::\n:::\n'
+    );
+    test(
+      ':::: figure {#id}\n::: subfigure {latex:width=80%}\n:::\n::::\n',
+      ':::: {component=figure #id}\n::: {component=subfigure latex:width=80%}\n:::\n::::\n'
     );
   });
 
   it('handles fenced blocks with comments', () => {
     // don't get fooled by comments
     test(
+      '::: foo\n<!--\n:::\n::: baz\n-->\n:::',
+      '::: {component=foo}\n<!--\n:::\n::: baz\n-->\n:::'
+    );
+    test(
       '::: foo {.bar}\n<!--\n:::\n::: baz {.bop}\n-->\n:::',
-      '::: {.foo .bar}\n<!--\n:::\n::: baz {.bop}\n-->\n:::'
+      '::: {component=foo .bar}\n<!--\n:::\n::: baz {.bop}\n-->\n:::'
     );
   });
 
