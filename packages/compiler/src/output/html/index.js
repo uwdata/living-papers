@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { cloneAST, extractText, transformAST } from '@living-papers/ast';
 
 import { copy, mkdirp, readFile, writeFile } from '../../util/fs.js';
-import { crossref, header, htmlCode, section, sticky } from '../../plugins/index.js';
+import { crossref, header, htmlCode, section, sticky } from '../../transforms/index.js';
 import { resolveTemplate } from '../../resolve/templates.js';
 
 import { astToHTML } from './ast-to-html.js';

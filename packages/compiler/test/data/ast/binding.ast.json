@@ -94,7 +94,7 @@
         "type": "component",
         "name": "codeblock",
         "properties": {
-          "class": {
+          "language": {
             "type": "value",
             "value": "js"
           },

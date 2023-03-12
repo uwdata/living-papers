@@ -151,16 +151,8 @@ export class TexFormat {
         return this.vspace(ast) + this.command(ast, 'caption');
       case 'raw':
         return this.raw(ast);
-      case 'abstract':
-      case 'acknowledgments':
-      case 'appendix':
-      case 'bibliography':
-      case 'latex:preamble':
-      case 'references':
-      case 'teaser':
-        return '';
       default:
-        return `\\textbf{${ast.name}?}\n\n`;
+        return '';
     }
   }
 

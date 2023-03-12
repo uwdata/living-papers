@@ -2,7 +2,7 @@ import assert from 'node:assert';
 import { URL } from 'node:url';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { include } from '../../src/plugins/index.js';
+import { include } from '../../src/transforms/index.js';
 import { createContext } from '../../src/context.js';
 import { logger } from '../logger.js';
 

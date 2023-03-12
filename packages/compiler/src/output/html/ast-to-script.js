@@ -1,7 +1,6 @@
 import { setValueProperty } from '@living-papers/ast';
 import { CELL_VIEW, DATA_CELL } from '@living-papers/runtime';
-import { compile, generateModule, handler } from '@living-papers/runtime-compiler';
-import { splitCodeCells } from '../../util/code-cells.js';
+import { compile, generateModule, handler, splitCodeCells } from '@living-papers/runtime-compiler';
 
 const isTrue = b => String(b).toLowerCase() === 'true';
 

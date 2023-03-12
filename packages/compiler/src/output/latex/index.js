@@ -6,7 +6,7 @@ import {
 } from '@living-papers/ast';
 
 import { copy, mkdirp, readFile, writeFile } from '../../util/fs.js';
-import { convert } from '../../plugins/index.js';
+import { convert } from '../../transforms/index.js';
 import { resolveTemplate } from '../../resolve/templates.js';
 
 import { TexFormat } from './tex-format.js';

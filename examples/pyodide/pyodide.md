@@ -3,7 +3,7 @@ title: Python Pyodide Integration
 author:
   - name: Living Papers Team
     org: University of Washington
-plugins:
+transforms:
   pyodide:
     micropip: [altair, vega_datasets]
 ---

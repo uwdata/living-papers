@@ -1,11 +1,11 @@
+import { cp, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+
 import {
   createProperties, hasProperty, getPropertyValue, getPropertyBoolean,
   removeProperty, setValueProperty, visitNodes
 } from '@living-papers/ast';
-import { pandoc } from '../../parse/markdown/pandoc.js';
-import { parsePandocAST } from '../../parse/markdown/parse-pandoc-ast.js';
-import { copy, mkdirp, writeFile } from '../../util/fs.js';
+
 import { generateChunk, generateRMarkdown, generateRScript } from './codegen.js';
 import { rscript } from './rscript.js';
 
@@ -17,7 +17,7 @@ export default async function(ast, context) {
   const options = {
     figpath: 'knitr/',
     lang: 'r', // language class in AST
-    ...(metadata.plugins?.knitr || {})
+    ...(metadata.transforms?.knitr || {})
   };
   const { figpath, lang } = options;
 
@@ -41,7 +41,8 @@ export default async function(ast, context) {
   const rmdPath = path.join(knitDir, 'markdown.Rmd');
   const rPath = path.join(knitDir, 'knit.R');
   const mdPath = path.join(knitDir, 'markdown.md');
-  await mkdirp(knitDir);
+
+  await mkdir(knitDir, { recursive: true });
   await Promise.all([
     writeFile(rmdPath, generateRMarkdown(options, chunks)),
     writeFile(rPath, generateRScript())
@@ -49,8 +50,8 @@ export default async function(ast, context) {
   await rscript('knit.R', ['markdown.Rmd'], { cwd: knitDir });
 
   // parse knitr output, copy generated images, update AST
-  const mdAST = parsePandocAST(await pandoc({ inputFile: mdPath }));
-  await mkdirp(path.join(outputDir, figpath));
+  const mdAST = await context.parse(mdPath);
+  await mkdir(path.join(outputDir, figpath), { recursive: true });
   copyOutput(mdAST.article, knitDir, outputDir);
   updateAST(rnodes, mdAST.article.children, lang, logger);
 
@@ -136,9 +137,10 @@ function copyOutput(ast, inputDir, outputDir) {
       setValueProperty(node, 'alt', 'Plot generated in R');
       removeProperty(node, 'title');
       const src = getPropertyValue(node, 'src');
-      copy(
+      cp(
         path.join(inputDir, src),
-        path.join(outputDir, src)
+        path.join(outputDir, src),
+        { recursive: true }
       ).catch(err => console.error(err));
     }
   });
