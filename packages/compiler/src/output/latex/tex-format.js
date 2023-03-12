@@ -305,8 +305,9 @@ export class TexFormat {
     const code = getPropertyValue(ast, 'code') ?? ast.children[0].value;
     const env = getPropertyValue(ast, 'type') || 'align';
     const nonum = getPropertyBoolean(ast, 'nonumber');
+    const id = getPropertyValue(ast, 'id');
     return this.vspace(ast)
-      + this.env(env + (nonum ? '*' : ''), code);
+      + this.env(env + (nonum ? '*' : ''), (id ? `\\label{eqn:${id}}\n` : '') + code);
   }
 
   code(ast) {
