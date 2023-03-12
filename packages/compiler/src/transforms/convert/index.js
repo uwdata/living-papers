@@ -2,7 +2,8 @@ import path from 'node:path';
 import { mkdirp } from '../../util/fs.js';
 
 import {
-  getPropertyValue, hasExpressionProperty, isCustomComponentNode,
+  EVENT, isCustomComponentNode, extractProperties,
+  getPropertyValue, hasEventProperty, hasExpressionProperty,
   setValueProperty, visitNodes
 } from '@living-papers/ast';
 
@@ -16,13 +17,15 @@ const AST_ID_KEY = 'data-ast-id';
 export default function({
   html = {},
   delay = 0,
+  viewport,
   convertDir = 'convert',
   format = 'pdf',
+  svg = true,
   outputDir,
 } = {}) {
   return async (ast, context) => {
     const { logger } = context;
-    const { nodes, prop, svg, custom } = buildConversionPlan(ast.article);
+    const { nodes, prop, svgs, custom } = buildConversionPlan(ast.article, { svg });
     const get = id => page.$(`[${AST_ID_KEY}="${id}"]`);
 
     // exit early if no conversion is needed
@@ -30,7 +33,7 @@ export default function({
 
     logger.debug('Convert: map dynamic content to static output');
 
-    const opts = { html, delay };
+    const opts = { html, delay, viewport };
     const { page, close } = await renderPage(ast, context, opts);
 
     const convertOptions = {
@@ -44,13 +47,13 @@ export default function({
     for (const id of prop) {
       const node = nodes.get(id);
       await convertProperties(await get(id), node);
-      if (isSVGImageNode(node)) {
-        svg.add(id); // svg may have been determined dynamically
+      if (svg && isSVGImageNode(node)) {
+        svgs.add(id); // svg may have been determined dynamically
       }
     }
 
     // ensure output directory exists
-    if (svg.size || custom.size) {
+    if (svgs.size || custom.size) {
       await mkdirp(convertOptions.outputDir);
     }
 
@@ -60,7 +63,7 @@ export default function({
       resize: true,
       extract: el => el.outerHTML
     };
-    for (const id of svg) {
+    for (const id of svgs) {
       await convertImage(await get(id), nodes.get(id), imageOptions);
     }
 
@@ -76,10 +79,10 @@ export default function({
   }
 }
 
-function buildConversionPlan(article) {
+function buildConversionPlan(article, { svg: convertSVG }) {
   const nodes = new Map;
   const prop = new Set;
-  const svg = new Set;
+  const svgs = new Set;
   const custom = new Set;
   let _id = 0;
 
@@ -94,6 +97,9 @@ function buildConversionPlan(article) {
   }
 
   visitNodes(article, node => {
+    // remove all event-typed properties
+    filterEventProperties(node);
+
     // hide node from conversion?
     const hide = getPropertyValue(node, 'hide');
     if (hide === 'static' || hide === 'true') {
@@ -103,18 +109,21 @@ function buildConversionPlan(article) {
 
     const isCustom = isCustomComponentNode(node);
 
+    // convert properties of non-custom component
+    // custom components will be replaced separately
     if (!isCustom && hasExpressionProperty(node)) {
       add(node, prop);
     }
 
-    if (isSVGImageNode(node)) {
-      add(node, svg);
+    // add nodes to appropriate conversion queues
+    if (convertSVG && isSVGImageNode(node)) {
+      add(node, svgs);
     } else if (isCustom) {
       add(node, custom);
     }
   });
 
-  return { nodes, prop, svg, custom };
+  return { nodes, prop, svgs, custom };
 }
 
 function isSVGImageNode(node) {
@@ -123,4 +132,9 @@ function isSVGImageNode(node) {
     return src.endsWith('.svg') || src.startsWith('data:image/svg+xml;');
   }
   return false;
+}
+
+function filterEventProperties(node) {
+  if (!hasEventProperty(node)) return;
+  node.properties = extractProperties(node, (key, prop) => prop.type !== EVENT);
 }
