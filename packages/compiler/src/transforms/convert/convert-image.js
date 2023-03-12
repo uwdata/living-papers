@@ -54,5 +54,6 @@ export async function convertImage(handle, node, options) {
 }
 
 function isImageProperty(key) {
-  return key !== 'src' && key !== 'data-ast-id';
+  const k = key.toLowerCase();
+  return k === 'alt' || k.endsWith('width') || k.endsWith('height');
 }
