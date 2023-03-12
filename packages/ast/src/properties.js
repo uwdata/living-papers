@@ -85,14 +85,16 @@ export function clearProperties(node) {
 /**
  * Extract properties from an AST node.
  * @param {object} node The AST node.
- * @param {(k: string) => boolean} test A predicate function to test is a key should be extracted.
+ * @param {(k: string, p: object) => boolean} test A predicate function to test if
+ *  a property should be extracted. Takes a key and property entry as arguments.
  * @returns {object} A new properties object with extracted properties.
  */
  export function extractProperties(node, test) {
   const props = {};
   for (const key of getPropertyKeys(node)) {
-    if (test(key)) {
-      props[key] = getProperty(node, key);
+    const prop = getProperty(node, key);
+    if (test(key, prop)) {
+      props[key] = prop;
     }
   }
   return props;
@@ -160,6 +162,20 @@ export function hasProperty(node, key) {
 export function hasExpressionProperty(node) {
   for (const key of getPropertyKeys(node)) {
     if (getPropertyType(node, key) === EXPRESSION) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Test if a node has one or more event-typed properties.
+ * @param {object} node The AST node.
+ * @return {boolean} True if the node has an event-typed property, else false.
+ */
+ export function hasEventProperty(node) {
+  for (const key of getPropertyKeys(node)) {
+    if (getPropertyType(node, key) === EVENT) {
       return true;
     }
   }
