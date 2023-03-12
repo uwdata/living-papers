@@ -32,6 +32,7 @@ export {
   getPropertyBoolean,
   hasProperty,
   hasExpressionProperty,
+  hasEventProperty,
   getProperty,
   setProperty,
   setValueProperty,
