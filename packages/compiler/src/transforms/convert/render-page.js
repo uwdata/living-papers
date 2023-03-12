@@ -1,4 +1,4 @@
-import { outputHTML } from '../../output/html/index.js';
+import { outputHTML } from '../../output/html/output-html.js';
 import { getBrowser } from './browser.js';
 import { startServer, stopServer } from './file-proxy-server.js';
 
