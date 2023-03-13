@@ -12,12 +12,12 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.0.1",
-    "eslint": "^8.35.0",
+    "eslint": "^8.36.0",
     "lerna": "^6.5.1",
-    "mkdirp": "^2.1.4",
+    "mkdirp": "^2.1.5",
     "mocha": "^10.2.0",
-    "rimraf": "^4.2.0",
-    "rollup": "^3.18.0"
+    "rimraf": "^4.4.0",
+    "rollup": "^3.19.1"
   },
   "workspaces": [
     "packages/*",
