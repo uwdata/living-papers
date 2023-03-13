@@ -16,7 +16,8 @@ export class Paper {
 	constructor(ast) {
     this.metadata = ast.metadata;
     this.article = ast.article;
-    this.citations = ast.citations;
+    this.data = ast.data;
+    this.citations = this.data?.citations;
 
     // ensure all nodes have parentNode properties
     setParentNodes(this.article);

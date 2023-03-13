@@ -12,7 +12,7 @@ import { astToScript } from './ast-to-script.js';
 import { bundleJS } from '../bundler.js';
 
 export async function outputHTML(ast, context, options) {
-  const { metadata, article, citations } = ast;
+  const { metadata, article, data } = ast;
   const { components, inputDir, outputDir, tempDir } = context;
   const {
     selfContained = false,
@@ -50,9 +50,9 @@ export async function outputHTML(ast, context, options) {
   const activeComponents = components.filter(c => tags.has(c.name));
   const entry = entryScript({
     root: 'article',
+    data,
     bind,
     context,
-    citations,
     components: activeComponents,
     runtime: !!script,
   });
@@ -83,7 +83,7 @@ export async function outputHTML(ast, context, options) {
 
   // generate output html
   const title = extractText(metadata.title) || undefined;
-  const data = {
+  const templateData = {
     title: title || 'Untitled Article',
     description: extractText(metadata.description) || title,
     favicon: metadata.favicon,
@@ -98,7 +98,7 @@ export async function outputHTML(ast, context, options) {
 
   const pkg = await resolveTemplate(template, 'html', context);
   const tmpl = await readFile(path.join(pkg.dir, pkg.template));
-  const html = mustache.render(tmpl, data, {}, { escape: x => x });
+  const html = mustache.render(tmpl, templateData, {}, { escape: x => x });
 
   if (entry && !selfContained) {
     copy(jsPath, path.join(outputDir, jsFile));
@@ -137,23 +137,21 @@ async function bundleCSS(styles, minify = true) {
     : css;
 }
 
-function entryScript({ root, bind, context, citations, components, runtime }) {
+function entryScript({ root, data, bind, context, components, runtime }) {
   const script = [];
-  const refdata = citations?.data;
-  const hasRefs = refdata?.length > 0;
-  const hasSticky = context.sticky;
-  const hasOnload = runtime || hasRefs || hasSticky;
+  const rootNode = `document.querySelector('${root}')`;
 
+  // generate component imports
   components.forEach(entry => {
     const spec = entry.default ? entry.import : `{ ${entry.import} }`;
     const filePath = entry.file.replaceAll('\\', '/'); // escape Windows paths
     script.push(`import ${spec} from '${filePath}';`);
   });
 
+  // generate other imports
   const imports = [
     ...(runtime ? ['ObservableRuntime', 'hydrate'] : []),
-    ...(hasRefs ? ['reference'] : []),
-    ...(hasSticky ? ['scrollManager'] : [])
+    ...(context.sticky ? ['scrollManager'] : [])
   ];
   if (imports.length) {
     script.push(`import { ${imports.join(', ')} } from '@living-papers/runtime';`);
@@ -162,21 +160,24 @@ function entryScript({ root, bind, context, citations, components, runtime }) {
     script.push(`import * as module from './runtime.js';`);
   }
 
+  // set article data
+  if (data && Object.keys(data)) {
+    script.push(`${rootNode}.__data = ${JSON.stringify(data)};`);
+  }
+
+  // register custom component elements
   components.forEach(entry => {
     script.push(`window.customElements.define('${entry.name}', ${entry.import});`);
   });
 
-  if (hasOnload) {
-    script.push(`
-window.addEventListener('DOMContentLoaded', () => {
-  const root = document.querySelector('${root}');`);
-    if (hasRefs) {
-      script.push(`  reference(root, ${JSON.stringify(refdata)});`);
-    }
+  // initialize runtime, as needed
+  if (runtime || context.sticky) {
+    script.push(`window.addEventListener('DOMContentLoaded', () => {`);
+    script.push(`  const root = ${rootNode};`);
     if (runtime) {
       script.push(`  hydrate(new ObservableRuntime, root, module, ${JSON.stringify(bind)});`);
     }
-    if (hasSticky) {
+    if (context.sticky) {
       script.push('  scrollManager(root);');
     }
     script.push(`});`);

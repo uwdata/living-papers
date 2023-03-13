@@ -33,7 +33,7 @@ export default async function(ast, context, options) {
 }
 
 export async function outputLatex(ast, context, options) {
-  const { metadata, article, citations } = ast;
+  const { metadata, article, data: { citations } = {} } = ast;
   const { inputDir, inputFile, outputDir, tempDir, logger } = context;
   const {
     template,

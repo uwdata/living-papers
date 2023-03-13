@@ -1,7 +1,7 @@
 import path from 'node:path';
 import {
   createComponentNode, createTextNode, createProperties, getPropertyValue,
-  setValueProperty, queryNodes, visitNodes, removeChild,
+  setValueProperty, queryNodes, visitNodes, removeChild, setArticleDataProperty
 } from '@living-papers/ast';
 import { readFile } from '../../util/fs.js';
 import { lookup } from './lookup.js';
@@ -38,12 +38,11 @@ export default async function(ast, context) {
   });
 
   // collect citation data to embed in article
-  const data = await citationData(citations, scholarAPI(cache, fetch), logger);
-  ast.citations = {
+  setArticleDataProperty(ast, 'citations', {
     bibtex: citations.bibtex(),
     csl: citations.refs(),
-    data
-  };
+    data: await citationData(citations, scholarAPI(cache, fetch), logger)
+  });
 
   // add bibliography to AST
   if (nodes.length) {

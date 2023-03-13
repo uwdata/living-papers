@@ -26,7 +26,8 @@ describe('Paper', () => {
   });
 
   it('exposes references', () => {
-    const { citations: { bibtex, csl, data} } = ast;
+    const { data: { citations } } = ast;
+    const { bibtex, csl, data } = citations;
     assert.strictEqual(api.referencesBibtex.length, bibtex.length);
     assert.strictEqual(api.referencesCSL.length, csl.length);
     assert.strictEqual(api.references.length, data.length);
