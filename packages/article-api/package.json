@@ -1,7 +1,7 @@
 {
   "name": "@living-papers/article-api",
   "description": "JavaScript API to extract content from a Living Papers article.",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "license": "BSD-3-Clause",
   "repository": "uwdata/living-papers",
   "main": "src/index.js",
@@ -13,6 +13,6 @@
     "prepublishOnly": "npm run test & npm run lint"
   },
   "dependencies": {
-    "@living-papers/ast": "^0.0.9"
+    "@living-papers/ast": "^0.1.0"
   }
 }
