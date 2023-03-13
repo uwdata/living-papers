@@ -10,9 +10,9 @@ const TABLE = 'table';
 const EQUATION = 'equation';
 
 /**
- * Extract information from a paper.
+ * Extract information from a Living Papers article.
  */
-export class Paper {
+export class ArticleAPI {
 	constructor(ast) {
     this.metadata = ast.metadata;
     this.article = ast.article;

@@ -6,7 +6,7 @@ import { bundleJS } from '../bundler.js';
 
 export default async function(ast, context, options) {
   const { output } = context;
-  const { figures = true, ...esmOptions } = options;
+  const { figures = true, ...apiOptions } = options;
   ast = await transformAST(
     cloneAST(ast),
     context,
@@ -14,10 +14,10 @@ export default async function(ast, context, options) {
       convertFigures({...(options.convert || {}), html: output.html})
     ] : []
   );
-  return outputESM(ast, context, esmOptions);
+  return outputAPI(ast, context, apiOptions);
 }
 
-export async function outputESM(ast, context, options) {
+export async function outputAPI(ast, context, options) {
   const { inputFile, outputDir, tempDir } = context;
   const {
     jsFile = `${path.parse(inputFile).name}.mjs`,
@@ -26,7 +26,7 @@ export async function outputESM(ast, context, options) {
 
   // set up path variables
   const outputPath = path.join(outputDir, jsFile);
-  const entryPath = path.join(tempDir, 'entry-esm.js');
+  const entryPath = path.join(tempDir, 'entry-api.js');
   const jsPath = path.join(tempDir, jsFile);
 
   // create directories
@@ -51,7 +51,7 @@ export async function outputESM(ast, context, options) {
 
 function entryScript({ ast }) {
   const script = [];
-  script.push(`import { Paper } from '@living-papers/paper-api';`);
-  script.push(`export default new Paper(${JSON.stringify(ast)});`);
+  script.push(`import { ArticleAPI } from '@living-papers/article-api';`);
+  script.push(`export default new ArticleAPI(${JSON.stringify(ast)});`);
   return script.join('\n');
 }

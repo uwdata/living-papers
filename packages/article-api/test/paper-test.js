@@ -1,7 +1,7 @@
 import assert from 'node:assert';
 import { readFile } from 'node:fs/promises';
 import { queryNode } from '@living-papers/ast';
-import { Paper } from '../src/index.js';
+import { ArticleAPI } from '../src/index.js';
 
 let ast;
 let api;
@@ -9,7 +9,7 @@ let api;
 describe('Paper', () => {
   before(async () => {
     ast = JSON.parse(await readFile('test/data/fast-kde.ast.json'));
-    api = new Paper(ast);
+    api = new ArticleAPI(ast);
   });
 
   after(() => { ast = api = null; });
