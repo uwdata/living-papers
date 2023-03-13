@@ -43,6 +43,11 @@ describe('preprocess', () => {
     test('```foo-bar {.bar-baz}', '```{component=foo-bar .bar-baz}');
     test('~~~foo-bar {.bar-baz}', '~~~{component=foo-bar .bar-baz}');
     test(':::foo-bar {.bar-baz}', ':::{component=foo-bar .bar-baz}');
+
+    // handles colon in component/class names
+    test('```foo:bar {.bar-baz}', '```{component=foo:bar .bar-baz}');
+    test('~~~foo:bar {.bar-baz}', '~~~{component=foo:bar .bar-baz}');
+    test(':::foo:bar {.bar-baz}', ':::{component=foo:bar .bar-baz}');
   });
 
   it('handles fenced blocks with class name', () => {

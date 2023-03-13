@@ -25,7 +25,8 @@ export function process(input, out) {
 function context(input, out) {
   const NOTSPACE = /\S/;
   const SPACE = /\s/;
-  const WORD = /\w|-/;
+  const IDENTIFIER_1 = /\w/;
+  const IDENTIFIER_N = /\w|-|:/;
   const n = input.length;
   let a = 0;
 
@@ -75,8 +76,14 @@ function context(input, out) {
       for (; i < n && NOTSPACE.test(input[i]); ++i);
       return i;
     },
-    word(i) {
-      for (; i < n && WORD.test(input[i]); ++i);
+    identifier(i) {
+      if (i < n) {
+        const p = input[i] === '.' || input[i] === '#';
+        const j = i + (p ? 1 : 0);
+        if (j < n && IDENTIFIER_1.test(input[j])) {
+          for (i = j + 1; i < n && IDENTIFIER_N.test(input[i]); ++i);
+        }
+      }
       return i;
     },
     sub(i, j) {
@@ -123,8 +130,7 @@ function scan(_) {
           _.write(i = _.space(_.consume(i, cc)));
 
           // otherwise process attributes and update state
-          l = _.peek(i, '.') || _.peek(i, '#');
-          j = _.word(l ? i + 1 : i);
+          j = _.identifier(i);
           l = _.peek(k = _.space(j), '{');
           if (j > i) {
             const name = _.sub(i, j);
