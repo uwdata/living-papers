@@ -1,7 +1,7 @@
 {
   "name": "@living-papers/cli",
   "description": "Authoring tools for scholarly communication.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "BSD-3-Clause",
   "repository": "uwdata/living-papers",
   "main": "src/index.js",
@@ -15,7 +15,7 @@
     "prepublishOnly": "npm run lint"
   },
   "dependencies": {
-    "@living-papers/compiler": "^0.1.0",
+    "@living-papers/compiler": "^0.1.1",
     "@web/dev-server": "^0.1.35",
     "chalk": "^5.2.0",
     "chokidar": "^3.5.3",
