@@ -56,6 +56,12 @@ export {
 } from './children.js';
 
 export {
+  getArticleData,
+  setArticleDataProperty,
+  setArticleDataProperties
+} from './data.js';
+
+export {
   visitNodes,
   queryNodes,
   queryNode
