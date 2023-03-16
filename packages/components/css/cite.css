@@ -1,3 +1,13 @@
+/*
+TODO: Move tooltip CSS to dedicated file
+ */
+.tooltip {
+  color: #3366CC;
+  font-weight: var(--ref-weight);
+  text-decoration: var(--ref-decoration);
+  cursor: pointer;
+}
+
 .cite-list::before {
   content: var(--cite-list-start);
 }
