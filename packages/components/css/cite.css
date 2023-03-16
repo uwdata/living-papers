@@ -35,8 +35,11 @@
 }
 
 .cite-author, .cite-venue {
-  color: #666;
   margin-top: 0.25em;
+}
+
+.cite-year, .cite-author, .cite-venue {
+  color: #666;
 }
 
 .cite-title a {

@@ -34,7 +34,7 @@ export class Tooltip extends ArticleElement {
 
   renderWithTooltip(classes, body, tooltip) {
     // TODO: dynamic positioning
-    const style = 'transform: translate(calc(-14px + -1.6ex), calc(14px + 0.4em));';
+    const style = 'transform: translate(-1.5em, 1.4em);';
     const tip = html`<div class="tooltip" style=${style}>${tooltip}</div>`;
     return html`<span class=${classes} tabindex=0>${body}${tip}</span>`;
   }

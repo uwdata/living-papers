@@ -38,20 +38,6 @@ export class CiteRef extends Tooltip {
   }
 }
 
-/*
-
-<span class="cite-ref">
-  content
-  <div class="tooltip">
-    <div class="cite-title"></div>
-    <div class="cite-author"></div>
-    <div class="cite-venue"></div>
-    <div class="cite-detail"></div>
-    Link to bibliography...
-  </div>
-</span>
-*/
-
 function renderCiteInfo(key, data) {
   if (data) {
     return html`<div class="cite-info">
@@ -69,14 +55,14 @@ function renderCiteInfo(key, data) {
 
 function renderCiteTitle(data) {
   const { url, title, year } = data;
-  // TODO: is color inherit necessary? (removed for now...)
+  const date = year ? html`\u2022 <span class="cite-year">${year}</a>` : '';
   return html`<div class="cite-title">
     <a href=${url} target="_blank" rel="noopener noreferrer">${title}</a>
-    ${year ? `\u2022 ${year}` : ''}
+    ${date}
   </div>`;
 }
 
-function renderCiteAuthor(data, maxAuthors = 4) {
+function renderCiteAuthor(data, maxAuthors = 5) {
   const { author } = data;
   const authors = (author || []).map(({ given, family }) => {
     return given
@@ -95,10 +81,9 @@ function renderCiteAuthor(data, maxAuthors = 4) {
 
 function renderCiteVenue(data) {
   const { venue } = data;
-  if (!venue) return null;
-
-  // TODO: limit length, use target?
-  return html`<div class="cite-venue">${venue}</div>`;
+  return venue
+    ? html`<div class="cite-venue">${venue}</div>`
+    : null;
 }
 
 function renderCiteDetail(data, limit = 300) {
