@@ -22,87 +22,33 @@
   color: var(--ref-color-error);
 }
 
-.cite-info {
-  display: none;
-  background-color: white;
-  z-index: 1;
-  position: absolute;
-  transform: translate(calc(-14px + -1.6ex), calc(28px + 0.4em));
-  width: 350px;
+.cite-ref .tooltip {
+  width: 400px;
   font-weight: normal;
-  font-size: 14px;
   color: black;
-  filter: drop-shadow(3px 3px 3px rgba(0,0,0,0.2));
-  border-radius: 0px 0px 6px 6px;
-  border: solid black;
-  border-width: 4px .1px .1px .1px;
-  cursor: auto;
 }
 
-.unresolved .cite-info {
+.cite-ref.unresolved .tooltip {
   text-align: center;
   padding: 4px;
   width: auto;
 }
 
-.cite-head {
-  display: flex;
-  flex-direction: column;
-  background-color: whitesmoke;
-  padding: 4px 8px 4px 8px;
-  line-height: 1;
+.cite-author, .cite-venue {
+  color: #666;
+  margin-top: 0.25em;
 }
 
-.cite-head-title {
-  font-size: 1.1em;
+.cite-title a {
+  font-weight: bold;
 }
 
-.cite-head-subtitle {
-  font-weight: normal;
-  padding-top: 4px;
+.cite-venue {
+  font-style: italic;
 }
 
-.cite-info-wrapper {
-  display: none;
-  position: absolute;
-  transform: translate(-1.6ex, calc(14px + 0.4em));
-  border-left: 10px solid transparent;
-  border-bottom: 14px solid black;
-  border-right: 10px solid transparent;
-}
-
-.cite-head:hover {
-  background-image: linear-gradient(40deg, transparent 92%,97%,steelblue 105%);
-  background-repeat: no-repeat;
-  background-size: 100%;
-}
-
-.cite-body {
-  padding: 4px 8px 4px 8px;
-  border-radius : 0 0 6px 6px;
-  border-top: .1px solid black;
-  line-height: 1.3;
-}
-
-.cite-body-auth {
-  padding-bottom: 4px;
-}
-
-.cite-body details > summary {
-  list-style: none;
-  cursor: pointer;
-}
-
-.cite-body summary::after {
-  content: '\25BA';
-}
-
-.cite-body details[open] summary::after {
-  content: ' \25BC';
-}
-
-.cite-body-desc {
-  min-height: 108px;
-  padding-top: 4px;
-  border-top: .1px solid black;
+.cite-detail {
+  border-top: 1px solid #ccc;
+  padding-top: 0.5em;
+  margin-top: 0.5em;
 }
