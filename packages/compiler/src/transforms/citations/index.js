@@ -215,8 +215,24 @@ function createBibComponent(refs) {
     return createComponentNode(
       'li',
       createProperties({ id: `ref-${i}` }),
-      [ createTextNode(text) ]
+      createBibEntry(text)
     );
   });
   return createComponentNode(REFERENCES, null, [ list ]);
+}
+
+function createBibEntry(text) {
+  const parts = text.split(/ (https?:\/\/.*$)/);
+  if (parts.length > 1) {
+    return [
+      createTextNode(parts[0] + ' '),
+      createComponentNode(
+        'link',
+        createProperties({ href: parts[1] }),
+        [ createTextNode(parts[1]) ]
+      )
+    ];
+  } else {
+    return [ createTextNode(text) ];
+  }
 }
