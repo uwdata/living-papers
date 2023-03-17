@@ -211,8 +211,12 @@ function createBibComponent(refs) {
     'ol',
     createProperties({ class: 'references' })
   );
-  list.children = lines.map(text => {
-    return createComponentNode('li', null, [ createTextNode(text) ]);
+  list.children = lines.map((text, i) => {
+    return createComponentNode(
+      'li',
+      createProperties({ id: `ref-${i}` }),
+      [ createTextNode(text) ]
+    );
   });
   return createComponentNode(REFERENCES, null, [ list ]);
 }
