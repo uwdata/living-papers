@@ -72,14 +72,6 @@ function renderCiteAuthor(data, maxAuthors = 4) {
 
   const diff = authors.length - maxAuthors;
   if (diff > 1) { // ensure > 1, prevents case of +1 author only
-    function more() {
-      this.querySelector('.cite-author-expand').style.display = 'none';
-      this.querySelector('.cite-author-hidden').style.display = 'inline';
-    };
-    function less() {
-      this.querySelector('.cite-author-expand').style.display = 'inline';
-      this.querySelector('.cite-author-hidden').style.display = 'none';
-    };
     const authorsShow = authors.slice(0, maxAuthors).join(', ');
     const authorsHide = ', ' + authors.slice(maxAuthors).join(', ');
     const hiddenCount = html`<span class="cite-author-button" @click=${more}>+${diff}&nbsp;authors</span>`;
@@ -92,6 +84,16 @@ function renderCiteAuthor(data, maxAuthors = 4) {
       ? html`<div class="cite-author">${authors.join(', ')}</div>`
       : null;
   }
+}
+
+function more() {
+  this.querySelector('.cite-author-expand').style.display = 'none';
+  this.querySelector('.cite-author-hidden').style.display = 'inline';
+}
+
+function less() {
+  this.querySelector('.cite-author-expand').style.display = 'inline';
+  this.querySelector('.cite-author-hidden').style.display = 'none';
 }
 
 function renderCiteVenue(data) {
