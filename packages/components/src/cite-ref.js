@@ -94,8 +94,6 @@ function renderCiteAuthor(data, maxAuthors = 4) {
   }
 }
 
-
-
 function renderCiteVenue(data) {
   const { venue } = data;
   return venue
@@ -111,14 +109,17 @@ function renderCiteDetail(data, limit = 300) {
     ? detail.slice(0, detail.slice(0, limit).lastIndexOf(' ')) + '…'
     : detail;
 
-  // TODO: make shortened text expandable
+  // TODO: make shortened text expandable?
   return html`<div class="cite-detail">${desc}</div>`;
 }
 
 // Returns inline authors, or abbrev. if there are more than etal authors
 function inlineContent(data, index, etal = 2) {
   const { author, title } = data;
-  if (!author || !author.length) return `${title} [${index}]`;
+
+  if (!author || !author.length) {
+    return `${title} [${index}]`;
+  }
 
   let authors = author[0].family;
   if (author.length === 2) {
