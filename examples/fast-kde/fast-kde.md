@@ -343,7 +343,7 @@ The work was supported by a Moore Foundation software grant.
   author = {Ernesto Ramos and David Donoho},
   title = {{ASA} Data Exposition Dataset},
   year = {1983},
-  howpublished = {\url{http://stat-computing.org/dataexpo/1983.html}}
+  url = {http://stat-computing.org/dataexpo/1983.html}
 }
 
 @article{Getreuer:2013,
