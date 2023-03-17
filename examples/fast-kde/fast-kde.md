@@ -336,7 +336,7 @@ The work was supported by a Moore Foundation software grant.
   title = {Recursively implementing the {G}aussian and its derivatives},
   year = {1993},
   institution = {INRIA},
-  url = {http://hal.inria.fr/docs/00/07/47/78/PDF/RR-1893.svg}
+  url = {http://hal.inria.fr/docs/00/07/47/78/PDF/RR-1893.pdf}
 }
 
 @misc{CarsData,
