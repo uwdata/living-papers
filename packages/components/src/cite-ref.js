@@ -62,7 +62,7 @@ function renderCiteTitle(data) {
   </div>`;
 }
 
-function renderCiteAuthor(data, maxAuthors = 5) {
+function renderCiteAuthor(data, maxAuthors = 4) {
   const { author } = data;
   const authors = (author || []).map(({ given, family }) => {
     return given
@@ -70,14 +70,31 @@ function renderCiteAuthor(data, maxAuthors = 5) {
       : family;
   });
 
-  const display = authors.length > maxAuthors
-    ? authors.slice(0, maxAuthors) // TODO make nuanaced + expandable
-    : authors;
-
-  return display.length
-    ? html`<div class="cite-author">${display.join(', ')}</div>`
-    : null;
+  const diff = authors.length - maxAuthors;
+  if (diff > 1) { // ensure > 1, prevents case of +1 author only
+    function more() {
+      this.querySelector('.cite-author-expand').style.display = 'none';
+      this.querySelector('.cite-author-hidden').style.display = 'inline';
+    };
+    function less() {
+      this.querySelector('.cite-author-expand').style.display = 'inline';
+      this.querySelector('.cite-author-hidden').style.display = 'none';
+    };
+    const authorsShow = authors.slice(0, maxAuthors).join(', ');
+    const authorsHide = ', ' + authors.slice(maxAuthors).join(', ');
+    const hiddenCount = html`<span class="cite-author-button" @click=${more}>+${diff}&nbsp;authors</span>`;
+    const expand = html`<span class="cite-author-expand"> ${hiddenCount}</span>`;
+    const collapse = html` <span class="cite-author-button" @click=${less}>less</span>`;
+    const hidden = html`<span class="cite-author-hidden">${authorsHide}${collapse}</span>`;
+    return html`<div class="cite-author">${authorsShow}${expand}${hidden}</div>`
+  } else {
+    return authors.length
+      ? html`<div class="cite-author">${authors.join(', ')}</div>`
+      : null;
+  }
 }
+
+
 
 function renderCiteVenue(data) {
   const { venue } = data;

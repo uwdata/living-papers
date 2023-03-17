@@ -38,6 +38,18 @@
   margin-top: 0.25em;
 }
 
+.cite-author-button {
+  padding: 4px;
+  background-color: #eee;
+  border-radius: 6px;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+.cite-author-hidden {
+  display: none;
+}
+
 .cite-year, .cite-author, .cite-venue {
   color: #666;
 }
