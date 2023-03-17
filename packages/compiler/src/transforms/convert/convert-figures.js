@@ -1,4 +1,4 @@
-import { getPropertyValue, setValueProperty, visitNodes } from '@living-papers/ast';
+import { getPropertyValue, removeProperty, setValueProperty, visitNodes } from '@living-papers/ast';
 import { renderPage } from './render-page.js';
 import { screenshot } from './screenshot.js';
 
@@ -34,6 +34,7 @@ export default function({
       const data = await screenshot(await get(id), options); // generate image
       const url = `data:image/png;base64,${data}`; // create data url
       setValueProperty(node, 'data-url', url); // update AST node
+      removeProperty(node, AST_ID_KEY);
     }
 
     // shutdown puppeteer and proxy server
