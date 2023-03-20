@@ -514,10 +514,11 @@ export class PandocASTParser {
   }
 
   parseImage(item) {
-    const [ attrs, alt, [src, title] ] = item;
+    const [ attrs, alt, [href, title] ] = item;
+    const src = href ? decodeURI(href) : undefined;
     const props = {
       alt: extractText(alt) || undefined,
-      src: src || undefined,
+      src,
       title: (title !== ':fig' && title) || undefined
     };
     return createComponentNode(
