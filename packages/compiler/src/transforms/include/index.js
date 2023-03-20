@@ -63,7 +63,7 @@ async function getIncludedContent(node, context) {
     } else {
       // include as parsed AST content
       // TODO: infer inputType?
-      const ast = await parse({ ...context, inputFile });
+      const ast = await parse({ ...context, inputFile, recursive: true });
       return ast.article.children;
     }
   } catch (error) {

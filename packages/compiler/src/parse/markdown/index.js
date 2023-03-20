@@ -37,14 +37,17 @@ export async function parsePandoc(options) {
 }
 
 export async function parseMarkdown(context) {
+  const { recursive = false } = context;
   return transformAST(
     await parsePandoc(context),
     context,
     [
       include,
-      runtime,
-      notes,
-      citations
+      ...(recursive ? [] : [
+        runtime,
+        notes,
+        citations
+      ])
     ]
   );
 }
