@@ -1,7 +1,7 @@
 import { html } from 'lit';
-import { ArticleElement } from './article-element.js';
+import { Tooltip } from './tooltip.js';
 
-export class CiteRef extends ArticleElement {
+export class CiteRef extends Tooltip {
 
   static get properties() {
     return {
@@ -14,45 +14,6 @@ export class CiteRef extends ArticleElement {
   constructor() {
     super();
     this.mode = 'citation';
-    this.addEventListener('keydown', this.keyDown);
-    this.addEventListener('mousedown', this.openCitation);
-    this.addEventListener('focusout', this.focusOut);
-  }
-
-  focusOut(event) {
-    if (!this.contains(event.relatedTarget)) {
-      this.closeCitation();
-    }
-  }
-
-  keyDown(event) {
-    if (event.key == 'Enter') {
-      this.openCitation();
-    } else if (event.key == 'Escape') {
-      this.closeCitation();
-    }
-  }
-
-  closeCitation() {
-    for (const child of this.querySelector('.cite-ref').children) {
-      child.style.display = 'none';
-    }
-  }
-
-  openCitation() {
-    for (const child of this.querySelector('.cite-ref').children) {
-      child.style.display = 'inline-block';
-    }
-  }
-
-  // Expand and collapse info content
-  toggleContent(event) {
-    if (!window.getSelection().toString()) {
-      const summary = event.target.querySelector('summary');
-      event.target.open
-        ? summary.textContent = summary.getAttribute('data-longtext')
-        : summary.textContent = summary.getAttribute('data-shorttext');
-      }
   }
 
   initialChildNodes(nodes) {
@@ -68,49 +29,99 @@ export class CiteRef extends ArticleElement {
 
   render() {
     const { key, index, mode, data = this.citeData() } = this;
-    const wrapper = html`<div class='cite-info-wrapper'></div>`;
 
-    // Unresolved citation
-    if (data == null) {
-      const ref = index ?? '??';
-      return html`<span class='cite-ref unresolved'>${ref}${wrapper}<div class='cite-info'>
-        <b>Unresolved citation</b><br>"${key}"</div></span>`;
-    }
-
-    const { fullInfo, shortInfo } = infoBody(data);
-    const desctext = descBody(data);
-
-    // Citation contents
-    const subtitle = data.venue ? html`<div class='cite-head-subtitle'>${data.venue}</div>` : null;
-    const info = shortInfo
-      ? html`<details class='cite-body-auth' @toggle=${this.toggleContent}>
-              <summary data-shorttext=${shortInfo} data-longtext=${fullInfo}>${shortInfo}</summary>
-            </details>`
-      : html`<div class='cite-body-auth'>${fullInfo}</div>`;
-    const desc = data.abstract && data.abstract !== desctext
-      ? html`<details class='cite-body-desc' @toggle=${this.toggleContent}>
-              <summary data-shorttext=${desctext} data-longtext=${data.abstract}>${desctext}</summary>
-            </details>`
-      : html`<div class='cite-body-desc'>${desctext}</div>`;
-
-    // Inline content
-    const body = mode === 'inline-author' ? inlineContent(data, index) : index;
-
-    return html`<span class='cite-ref' tabindex=0>${body}${wrapper}<div class='cite-info'>
-      <a class='cite-head' href=${data.url} target="_blank" rel="noopener noreferrer" style="color: inherit;">
-        <div class='cite-head-title'>${data.title}</div>${subtitle}
-      </a>
-      <div class='cite-body'>
-        ${info}${desc}
-      </div>
-    </div></span>`;
+    const classes = `cite-ref${data ? '' : ' unresolved'}`;
+    const content = data == null ? (index ?? '??')
+      : mode === 'inline-author' ? inlineContent(data, index)
+      : index;
+    return this.renderWithTooltip(classes, content, renderCiteInfo(key, data));
   }
+}
+
+function renderCiteInfo(key, data) {
+  if (data) {
+    return html`<div class="cite-info">
+      ${renderCiteTitle(data)}
+      ${renderCiteAuthor(data)}
+      ${renderCiteVenue(data)}
+      ${renderCiteDetail(data)}
+    </div>`;
+  } else {
+    return html`<div class="cite-info">
+      <strong>Unresolved citation</strong><br>"${key}"
+    </div>`;
+  }
+}
+
+function renderCiteTitle(data) {
+  const { url, title, year } = data;
+  const date = year ? html`\u2022 <span class="cite-year">${year}</a>` : '';
+  return html`<div class="cite-title">
+    <a href=${url} target="_blank" rel="noopener noreferrer">${title}</a>
+    ${date}
+  </div>`;
+}
+
+function renderCiteAuthor(data, maxAuthors = 4) {
+  const { author } = data;
+  const authors = (author || []).map(({ given, family }) => {
+    return given
+      ? `${given.includes('.') ? given : given[0] + '.'} ${family}`
+      : family;
+  });
+
+  const diff = authors.length - maxAuthors;
+  if (diff > 1) { // ensure > 1, prevents case of +1 author only
+    const authorsShow = authors.slice(0, maxAuthors).join(', ');
+    const authorsHide = ', ' + authors.slice(maxAuthors).join(', ');
+    const hiddenCount = html`<span class="cite-author-button" @click=${more}>+${diff}&nbsp;authors</span>`;
+    const expand = html`<span class="cite-author-expand"> ${hiddenCount}</span>`;
+    const collapse = html` <span class="cite-author-button" @click=${less}>less</span>`;
+    const hidden = html`<span class="cite-author-hidden">${authorsHide}${collapse}</span>`;
+    return html`<div class="cite-author">${authorsShow}${expand}${hidden}</div>`
+  } else {
+    return authors.length
+      ? html`<div class="cite-author">${authors.join(', ')}</div>`
+      : null;
+  }
+}
+
+function more() {
+  this.querySelector('.cite-author-expand').style.display = 'none';
+  this.querySelector('.cite-author-hidden').style.display = 'inline';
+}
+
+function less() {
+  this.querySelector('.cite-author-expand').style.display = 'inline';
+  this.querySelector('.cite-author-hidden').style.display = 'none';
+}
+
+function renderCiteVenue(data) {
+  const { venue } = data;
+  return venue
+    ? html`<div class="cite-venue">${venue}</div>`
+    : null;
+}
+
+function renderCiteDetail(data, limit = 300) {
+  const { abstract, tldr } = data;
+  const detail = tldr || abstract;
+  if (!detail) return null;
+  const desc = detail !== tldr && detail.length > limit
+    ? detail.slice(0, detail.slice(0, limit).lastIndexOf(' ')) + '…'
+    : detail;
+
+  // TODO: make shortened text expandable?
+  return html`<div class="cite-detail">${desc}</div>`;
 }
 
 // Returns inline authors, or abbrev. if there are more than etal authors
 function inlineContent(data, index, etal = 2) {
   const { author, title } = data;
-  if (!author || !author.length) return `${title} [${index}]`;
+
+  if (!author || !author.length) {
+    return `${title} [${index}]`;
+  }
 
   let authors = author[0].family;
   if (author.length === 2) {
@@ -119,31 +130,4 @@ function inlineContent(data, index, etal = 2) {
     authors += ' et al.';
   }
   return `${authors} [${index}]`;
-}
-
-function infoBody(data, maxAuthors = 2) {
-  const { author, year } = data;
-  const aMap = (author || []).map(({ given, family }) => {
-    return given
-      ? `${given.includes('.') ? given : given[0] + '.'} ${family}`
-      : family;
-  });
-  const fullInfo = `${year}` + (aMap.length ? ` \u2022 ${aMap.join(', ')}` : '');
-  const shortInfo = aMap.length > maxAuthors
-    ? `${year} \u2022 ${aMap.slice(0, maxAuthors).join(', ')} +${aMap.length - maxAuthors}`
-    : null;
-
-  return { fullInfo, shortInfo };
-}
-
-function descBody(
-  data,
-  charLimit = 300,
-  defaultDesc = 'No description is available for this article.'
-) {
-  const { abstract, tldr } = data;
-  const shortDesc = tldr || abstract || defaultDesc;
-  return shortDesc.length > charLimit
-    ? shortDesc.substring(0, shortDesc.substring(0, charLimit).lastIndexOf(' ')) + '... '
-    : shortDesc;
 }

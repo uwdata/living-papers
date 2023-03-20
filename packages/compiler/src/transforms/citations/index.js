@@ -211,8 +211,28 @@ function createBibComponent(refs) {
     'ol',
     createProperties({ class: 'references' })
   );
-  list.children = lines.map(text => {
-    return createComponentNode('li', null, [ createTextNode(text) ]);
+  list.children = lines.map((text, i) => {
+    return createComponentNode(
+      'li',
+      createProperties({ id: `ref-${i}` }),
+      createBibEntry(text)
+    );
   });
   return createComponentNode(REFERENCES, null, [ list ]);
+}
+
+function createBibEntry(text) {
+  const parts = text.split(/ (https?:\/\/.*$)/);
+  if (parts.length > 1) {
+    return [
+      createTextNode(parts[0] + ' '),
+      createComponentNode(
+        'link',
+        createProperties({ href: parts[1] }),
+        [ createTextNode(parts[1]) ]
+      )
+    ];
+  } else {
+    return [ createTextNode(text) ];
+  }
 }

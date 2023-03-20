@@ -8,3 +8,4 @@ export { InlineNote } from './inline-note.js';
 export { RangeText } from './range-text.js';
 export { TexEquation } from './tex-equation.js';
 export { TexMath } from './tex-math.js';
+export { Tooltip } from './tooltip.js';

@@ -336,14 +336,14 @@ The work was supported by a Moore Foundation software grant.
   title = {Recursively implementing the {G}aussian and its derivatives},
   year = {1993},
   institution = {INRIA},
-  url = {http://hal.inria.fr/docs/00/07/47/78/PDF/RR-1893.svg}
+  url = {http://hal.inria.fr/docs/00/07/47/78/PDF/RR-1893.pdf}
 }
 
 @misc{CarsData,
   author = {Ernesto Ramos and David Donoho},
   title = {{ASA} Data Exposition Dataset},
   year = {1983},
-  howpublished = {\url{http://stat-computing.org/dataexpo/1983.html}}
+  url = {http://stat-computing.org/dataexpo/1983.html}
 }
 
 @article{Getreuer:2013,

@@ -59,6 +59,17 @@ blockquote {
 	text-decoration: underline dashed 1px #444;
 }
 
+.tooltip {
+	display: none;
+	background-color: white;
+	z-index: 1;
+	position: absolute;
+	filter: drop-shadow(3px 3px 3px rgba(0,0,0,0.2));
+	border: 1px solid #ccc;
+	padding: 0.5em;
+	cursor: auto;
+}
+
 header h1 {
 	font-size: var(--huge-size);
 }
