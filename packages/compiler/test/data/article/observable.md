@@ -33,6 +33,8 @@ $$x^2 = ${a*a}$$
 
 The square of `js a` is `js format(a * a)`.
 
+![IDL logo](`'http://idl.cs.washington.edu/static/images/logo/idl-logo.png'`)
+
 # Multi-Cell Code Blocks
 
 ``` js

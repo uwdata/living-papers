@@ -1,15 +1,17 @@
 import {
-  getChildren, getPropertyValue, getPropertyBoolean, setValueProperty, visitNodes
+  getChildren, getPropertyValue, getPropertyBoolean, setValueProperty, visitNodes, removeProperty
 } from '@living-papers/ast';
 
 const ID = 'id';
 const COUNTER = 'data-counter';
 const CAPTION = 'caption';
 const NONUMBER = 'nonumber';
+const APPENDIX = 'appendix';
 
 export default function(toKey, lookup) {
   return function(ast) {
     const sections = nestedCounter();
+    const appendices = nestedCounter(alphaLabel);
     const counts = new Map;
 
     function set(node, value) {
@@ -36,7 +38,14 @@ export default function(toKey, lookup) {
           }
         }
       } else if (isHeader(node)) {
-        set(node, sections(headerLevel(node)));
+        const isAppendix = getPropertyValue(node, APPENDIX);
+        const level = headerLevel(node);
+        if (isAppendix) {
+          set(node, appendices(level));
+          removeProperty(node, APPENDIX);
+        } else {
+          set(node, sections(level));
+        }
       }
     });
 
@@ -56,7 +65,7 @@ function headerLevel(node) {
   return +node.name.slice(1);
 }
 
-function nestedCounter() {
+function nestedCounter(valueof = numberLabel) {
   const tally = [0];
   let depth = 1;
 
@@ -70,6 +79,26 @@ function nestedCounter() {
       tally.push(0);
     }
     tally[tally.length - 1] += 1;
-    return tally.join('.');
+    return valueof(tally);
   };
+}
+
+function numberLabel(tally) {
+  return tally.join('.');
+}
+
+function alphaLabel(tally) {
+  return toAlpha(tally[0]) + (tally.length > 1
+    ? ('.' + numberLabel(tally.slice(1)))
+    : '');
+}
+
+function toAlpha(index) {
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+  let label = '';
+  for (let i = index; i > 0; i = Math.floor((i-1) / 26)) {
+    label = letters[(i-1) % 26] + label;
+  }
+  return label;
 }

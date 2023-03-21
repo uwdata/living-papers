@@ -164,6 +164,26 @@
       },
       {
         "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "component",
+            "name": "image",
+            "properties": {
+              "alt": {
+                "type": "value",
+                "value": "IDL logo"
+              },
+              "src": {
+                "type": "expression",
+                "value": "'http://idl.cs.washington.edu/static/images/logo/idl-logo.png'"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "component",
         "name": "h1",
         "properties": {
           "id": {

@@ -19,10 +19,11 @@ function isHeader(node) {
 export default function(ast) {
   visitNodes(ast.article, (node, parent) => {
     if (aliases.has(node.name)) {
-      // special sections should not contain numbered sections
+      // special sections should not contain normally numbered sections
+      const prop = node.name === 'appendix' ? 'appendix' : 'nonumber';
       visitNodes(node, child => {
         if (isHeader(child)) {
-          setValueProperty(child, 'nonumber', true);
+          setValueProperty(child, prop, true);
         }
       });
 
