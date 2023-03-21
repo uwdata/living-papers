@@ -30,48 +30,14 @@
   content: var(--equation-prefix);
 }
 
-.fig-tooltip {
-  display: none;
-	background-color: white;
-	z-index: 1;
-	position: absolute;
-	filter: drop-shadow(3px 3px 3px rgba(0,0,0,0.2));
-	border: 1px solid #ccc;
-	cursor: auto;
-  min-width: 100px;
-  min-height: 100px;
-  width: 400px;
-  border-radius: 4px;
-  overflow: hidden;
-  resize: both;
-  transform: translate(-1.5em, 1.4em);
-}
-
-.fig-body {
-  padding: 0.5em;
-}
-
-.fig-controls a {
+.cross-ref-tooltip {
   color: black;
-  padding: 0.15em;
 }
 
-.fig-controls a:hover {
-  background-color: #ddd;
-  cursor: pointer;
+.cross-ref-tooltip figure {
+  max-width: 400px;
 }
 
-.fig-controls {
-  display: flex;
-  justify-content: right;
-  background-color: #eee;
-  border-bottom: 1px solid #ccc;
-}
-
-.fig-minimize::before {
-  content: '\2013';
-}
-
-.fig-close::before {
-  content: '\2716';
+.cross-ref-tooltip figcaption {
+  background-color: white;
 }
