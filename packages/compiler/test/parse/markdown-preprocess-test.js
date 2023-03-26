@@ -97,6 +97,22 @@ describe('preprocess', () => {
     );
   });
 
+  it('does not modify fenced blocks within code blocks', () => {
+    test(
+      '```\n::: figure {#id}\n![](image.png)\n| Caption\n:::\n```',
+      '```\n::: figure {#id}\n![](image.png)\n| Caption\n:::\n```'
+    );
+    test(
+      '::: figure\n```\n::: figure {#id}\n![](image.png)\n| Caption\n:::\n```\n:::',
+      '::: {component=figure}\n```\n::: figure {#id}\n![](image.png)\n| Caption\n:::\n```\n:::'
+    );
+    test('```\n~~~ equation\n~~~\n```', '```\n~~~ equation\n~~~\n```');
+    test('````\n``` js\n```\n````', '````\n``` js\n```\n````');
+    test('~~~~\n``` js\n```\n~~~~', '~~~~\n``` js\n```\n~~~~');
+    test('````\n``` js\n```\n`````', '````\n``` js\n```\n`````');
+    test('~~~~\n``` js\n```\n~~~~~', '~~~~\n``` js\n```\n~~~~~');
+  });
+
   it('handles pipes', () => {
     test(':::\nfoo\n| bar', ':::\nfoo\n\n| bar');
     test(':::\nfoo\n| bar\n| baz', ':::\nfoo\n\n| bar\n| baz');
