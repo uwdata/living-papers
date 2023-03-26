@@ -21,9 +21,21 @@ export class TexFormat {
     let i = 0;
     let h = 0;
     for (; i < n; ++i) {
+      let j;
       let p;
+      let m = 0;
       const c = str[i];
       switch (c) {
+        case '-':
+          for (j = i + 1, p = '-'; j < n && str[j] === '-'; ++j, ++m) {
+            p += '\\/-';
+          }
+          if (j - i < 2) {
+            p = null;
+          }
+          break;
+        case '\'': p = '\\textquotesingle{}'; break;
+        case '`': p = '\\textasciigrave{}'; break;
         case '’': p = '\''; break;
         case '”': p = '\'\''; break;
         case '–': p = '--'; break;
@@ -52,6 +64,7 @@ export class TexFormat {
           b.push(str.slice(h, i));
         }
         b.push(p);
+        i += m;
         h = i + 1;
       }
     }
