@@ -36,8 +36,10 @@
 
 .cross-ref-tooltip figure {
   max-width: 400px;
+  padding-bottom: 0;
 }
 
 .cross-ref-tooltip figcaption {
   background-color: white;
+  padding-bottom: 0;
 }

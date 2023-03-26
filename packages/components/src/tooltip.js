@@ -5,9 +5,19 @@ export class Tooltip extends ArticleElement {
 
   constructor() {
     super();
+    this.visible = false;
     this.addEventListener('keydown', this.keyDown);
-    this.addEventListener('mousedown', this.show);
+    this.addEventListener('mousedown', this.mouseDown);
     this.addEventListener('focusout', this.focusOut);
+  }
+
+  mouseDown(event) {
+    event.preventDefault();
+    if (this.visible) {
+      this.hide();
+    } else {
+      this.show();
+    }
   }
 
   focusOut(event) {
@@ -26,16 +36,19 @@ export class Tooltip extends ArticleElement {
 
   hide() {
     this.querySelector('.tooltip').style.display = 'none';
+    this.visible = false;
   }
 
   show() {
-    this.querySelector('.tooltip').style.display = 'inline-block';
+    const bbox = this.getBoundingClientRect();
+    const ttip = this.querySelector('.tooltip');
+    ttip.style.transform = `translate(-${bbox.width}px, ${4 + bbox.height}px)`;
+    ttip.style.display = 'inline-block';
+    this.visible = true;
   }
 
   renderWithTooltip(classes, body, tooltip) {
-    // TODO: dynamic positioning
-    const style = 'transform: translate(-1.5em, 1.4em);';
-    const tip = html`<div class="tooltip" style=${style}>${tooltip}</div>`;
+    const tip = html`<div class="tooltip">${tooltip}</div>`;
     return html`<span class=${classes} tabindex=0>${body}${tip}</span>`;
   }
 }

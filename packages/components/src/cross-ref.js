@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { Tooltip } from './tooltip';
+import { Tooltip } from './tooltip.js';
 
 export class CrossRef extends Tooltip {
   static get properties() {
@@ -15,8 +15,7 @@ export class CrossRef extends Tooltip {
     if (this.index != null) {
       this.renderTooltipContent(document.getElementById(this.xref));
     }
-
-    this.querySelector('.tooltip').style.display = 'inline-block';
+    super.show();
   }
 
   goto(event) {
@@ -42,7 +41,7 @@ export class CrossRef extends Tooltip {
 
     // clear all additional styling classes on figures and tables
     tooltip.firstElementChild.className = (this.type === referenceTypes.FIGURE)
-      ? 'figure' 
+      ? 'figure'
       : (this.type === referenceTypes.TABLE) ? 'table' : '';
   }
 
@@ -53,7 +52,7 @@ export class CrossRef extends Tooltip {
 
     return this.renderWithTooltip(`${cls} unresolved`, '?', tooltipContent);
   }
-  
+
   renderResolvedReference(cls) {
     // render a default reference if it is a section reference
     if (this.type === referenceTypes.SECTION) {
@@ -61,13 +60,16 @@ export class CrossRef extends Tooltip {
       this.removeEventListener('keydown', this.keyDown);
       this.removeEventListener('mousedown', this.show);
       this.removeEventListener('focusout', this.focusOut);
-
       return html`<a class=${cls} href="#${this.xref}" @click=${this.goto}>${this.index}</a>`;
     } else {
       const tooltipContent = html`<div class="cross-ref-tooltip"></div>`;
-
       return this.renderWithTooltip(cls, this.index, tooltipContent);
     }
+  }
+
+  renderWithTooltip(classes, body, tooltip) {
+    const tip = html`<div class="tooltip">${tooltip}</div>`;
+    return html`<span class=${classes} @dblclick=${this.goto} tabindex=0>${body}${tip}</span>`;
   }
 
   render() {
@@ -75,11 +77,9 @@ export class CrossRef extends Tooltip {
     const resolved = index != null;
     const cls = `cross-ref ${type}${!short ? ' full' : ''}`;
 
-    if (resolved) {
-      return this.renderResolvedReference(cls);
-    } else {
-      return this.renderUnresolvedReference(cls);
-    }
+    return resolved
+      ? this.renderResolvedReference(cls)
+      : this.renderUnresolvedReference(cls);
   }
 }
 
