@@ -12,7 +12,6 @@ export class Tooltip extends ArticleElement {
   }
 
   mouseDown(event) {
-    event.preventDefault();
     if (this.visible) {
       this.hide();
     } else {
