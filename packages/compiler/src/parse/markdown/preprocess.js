@@ -104,7 +104,7 @@ function scan(_) {
   const codet = [];
   const fdivs = [];
   let pipe = false;
-  let i = -1, j, k, l;
+  let i = -1, j, k, l, d;
   let c = '\n', cc;
 
   while (i < n) {
@@ -115,7 +115,7 @@ function scan(_) {
       case '\r':
       case '\n':
         // ensure line blocks in a fence are treated as block elements
-        if (fdivs.length && !pipe && _.peek(i + 1, '| ')) {
+        if (!codeq.length && !codet.length && fdivs.length && !pipe && _.peek(i + 1, '| ')) {
           _.write(i, '\n');
           ++i;
           pipe = true;
@@ -127,7 +127,16 @@ function scan(_) {
           : _.peek(i, '~~~') ? '~'
           : _.peek(i, '```') ? '`' : '';
         if (cc) {
-          _.write(i = _.space(_.consume(i, cc)));
+          j = _.consume(i, cc);
+          d = j - i;
+          _.write(i = _.space(j));
+
+          // do nothing if in an unclosed code block
+          if (codeq.length) {
+            if (cc !== '`' || d < codeq[codeq.length-1]) break;
+          } else if (codet.length) {
+            if (cc !== `~` || d < codet[codet.length-1]) break;
+          }
 
           // otherwise process attributes and update state
           j = _.identifier(i);
@@ -161,11 +170,11 @@ function scan(_) {
             }
           }
           if (cc === '`') {
-            codeq.push(i);
+            codeq.push(d);
           } else if (cc === '~') {
-            codet.push(i);
+            codet.push(d);
           } else if (cc === ':') {
-            fdivs.push(i);
+            fdivs.push(d);
           }
         }
         break;
