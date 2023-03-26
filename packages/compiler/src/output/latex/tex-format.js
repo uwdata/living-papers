@@ -237,17 +237,10 @@ export class TexFormat {
 
   image(ast) {
     const src = sanitizeFile(getPropertyValue(ast, 'src'));
-    const alt = getPropertyValue(ast, 'alt');
+    // TODO: find best way to incorporate alt text
+    // const alt = getPropertyValue(ast, 'alt');
     const arg = getImageParams(ast);
-    if (alt) {
-      return `\\begin{figure}[h]
-  \\centering
-  \\includegraphics[${arg}]{${src}}
-  \\caption{${alt}}
-  \\end{figure}\n`;
-    } else {
-      return `\\includegraphics[${arg}]{${src}}`;
-    }
+    return `\\includegraphics[${arg}]{${src}}`;
   }
 
   quoted(ast) {
