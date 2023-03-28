@@ -67,7 +67,7 @@ export class CrossRef extends Tooltip {
 
   renderWithTooltip(classes, body, tooltip) {
     const tip = html`<div class="tooltip">${tooltip}</div>`;
-    return html`<span class=${classes} @dblclick=${this.goto} tabindex=0>${body}${tip}</span>`;
+    return html`<span class=${classes} @dblclick=${this.goto} tabindex=0>${tip}${body}</span>`;
   }
 
   render() {
