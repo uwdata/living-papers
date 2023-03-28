@@ -12,9 +12,7 @@ export class CrossRef extends Tooltip {
   }
 
   show() {
-    if (this.index != null) {
-      this.renderTooltipContent(document.getElementById(this.xref));
-    }
+    this.renderTooltipContent();
     super.show();
   }
 
@@ -32,12 +30,13 @@ export class CrossRef extends Tooltip {
       .scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  renderTooltipContent(ref) {
-    const tooltip = this.querySelector('.cross-ref-tooltip');
+  renderTooltipContent() {
+    if (this.index == null) return;
 
+    const tooltip = this.querySelector('.cross-ref-tooltip');
     // remove previous tooltip content
     tooltip.replaceChildren();
-    cloneReference(tooltip, ref);
+    cloneReference(tooltip, document.getElementById(this.xref));
 
     // clear all additional styling classes on figures and tables
     tooltip.firstElementChild.className = (this.type === referenceTypes.FIGURE)
@@ -58,8 +57,7 @@ export class CrossRef extends Tooltip {
     if (this.type === referenceTypes.SECTION) {
       // remove default tooltip listeners for section references
       this.removeEventListener('keydown', this.keyDown);
-      this.removeEventListener('mousedown', this.show);
-      this.removeEventListener('focusout', this.focusOut);
+      this.removeEventListener('mousedown', this.mouseDown);
       return html`<a class=${cls} href="#${this.xref}" @click=${this.goto}>${this.index}</a>`;
     } else {
       const tooltipContent = html`<div class="cross-ref-tooltip"></div>`;
