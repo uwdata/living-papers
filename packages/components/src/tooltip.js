@@ -32,11 +32,10 @@ export class Tooltip extends ArticleElement {
   }
 
   show() {
-    const bbox = this.getBoundingClientRect();
     const ttip = this.querySelector('.tooltip');
     ttip.style.display = 'inline-block';
     this.visible = true;
-    transformTooltip(bbox, ttip);
+    transformTooltip(this.getBoundingClientRect().height, ttip);
 
     // check if the user has clicked outside of the parent element
     const mouseDownClose = (event) => {
@@ -56,27 +55,22 @@ export class Tooltip extends ArticleElement {
 
   renderWithTooltip(classes, body, tooltip) {
     const tip = html`<div class="tooltip">${tooltip}</div>`;
-    return html`<span class=${classes} tabindex=0>${body}${tip}</span>`;
+    return html`<span class=${classes} tabindex=0>${tip}${body}</span>`;
   }
 }
 
-function transformTooltip(bbox, ttip) {
+function transformTooltip(boxHeight, ttip) {
   ttip.style.transform = `translate(0, 0)`;
   const ttbb = ttip.getBoundingClientRect();
-  const hasMultiLineBody =  bbox.width > ttbb.left;
   const docWidthWithRightPad = document.body.clientWidth - 16;
-  const translateY = (hasMultiLineBody ? bbox.height/2 : bbox.height) + 4;
 
   // case 1: tooltip is wider than document, shift to the leftmost point
   // case 2: tooltip extends out of view, shift it back that amount
-  // case 3: tooltip wraps lines, shift it to leftmost point of tooltip body
-  // otherwise, shift it back the width of tooltip body
+  // otherwise, do not shift
   const translateX = ttbb.width > docWidthWithRightPad
     ? -ttbb.left
     : ttbb.right > docWidthWithRightPad
-    ? docWidthWithRightPad - ttbb.right
-    : hasMultiLineBody
-    ? bbox.left - ttbb.left : -bbox.width;
+    ? docWidthWithRightPad - ttbb.right : 0;
 
-  ttip.style.transform = `translate(${translateX}px, ${translateY}px)`;
+  ttip.style.transform = `translate(${translateX}px, ${boxHeight + 4}px)`;
 }
