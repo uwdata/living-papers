@@ -10,8 +10,20 @@ export class Tooltip extends ArticleElement {
     this.addEventListener('mousedown', this.mouseDown);
   }
 
+  mouseDownClose = (event) => { 
+    if (this.contains(event.target)) return;
+
+    this.hide();
+  }
+
+  keyDownClose = (event) => { 
+    if (!isCloseKey(event.key)) return;
+
+    this.hide();
+  }
+
   keyDown(event) {
-    if (event.key !== 'Enter' || this.visible) return;
+    if (!isOpenKey(event.key) || this.visible) return;
 
     this.show();
   }
@@ -37,17 +49,6 @@ export class Tooltip extends ArticleElement {
     this.visible = true;
     transformTooltip(this.getBoundingClientRect().height, ttip);
 
-    // check if the user has clicked outside of the parent element
-    const mouseDownClose = (event) => {
-      if (!this.contains(event.target)) this.hide();
-    }
-    this.mouseDownClose = mouseDownClose;
-
-    const keyDownClose = (event) => {
-      if (event.key == 'Escape') this.hide();
-    }
-    this.keyDownClose = keyDownClose;
-
     // add the close tooltip events
     document.addEventListener('keydown', this.keyDownClose);
     document.addEventListener('mousedown', this.mouseDownClose);
@@ -58,6 +59,10 @@ export class Tooltip extends ArticleElement {
     return html`<span class=${classes} tabindex=0>${tip}${body}</span>`;
   }
 }
+
+const isOpenKey = (key, openKey = 'Enter') => key === openKey;
+
+const isCloseKey = (key, closeKey = 'Escape') => key === closeKey;
 
 function transformTooltip(boxHeight, ttip) {
   ttip.style.transform = `translate(0, 0)`;
