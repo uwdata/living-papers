@@ -1,11 +1,17 @@
 import { setValueProperty } from '@living-papers/ast';
 import { CELL_VIEW, DATA_CELL } from '@living-papers/runtime';
-import { compile, generateModule, handler, splitCodeCells } from '@living-papers/runtime-compiler';
+import { compile, generateModule, generateObservableModule, handler, splitCodeCells } from '@living-papers/runtime-compiler';
 
 const isTrue = b => String(b).toLowerCase() === 'true';
 
 export function astToScript(ast) {
   return { ast, script: generateScript(gatherCode(ast)) };
+}
+
+export function astToModule(ast) {
+  const { cells } = gatherCode(ast);
+  const module = generateObservableModule(cells, compile);
+  return { ast, module };
 }
 
 function gatherCode(ast) {

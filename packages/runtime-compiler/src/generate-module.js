@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 const _api = name => `https://api.observablehq.com/${name}.js?v=3`;
 const _initial = name => `initial ${name}`;
 const _mutable = name => `mutable ${name}`;
@@ -27,7 +29,7 @@ export function processCells(codeCells, compile) {
       const { injections, specifiers } = cell.body;
       const inject = [];
       (injections || []).forEach(({ imported: { name }, local: { name: alias } }) => {
-        if (name !== alias) inject.push({ name, alias });
+        inject.push({ name, alias });
       });
       defs.push({ module:`define${++i}`, id:i, inject });
       // import variables
@@ -63,9 +65,23 @@ function generateImports(cells) {
   let i = 0;
   cells.forEach(cell => {
     if (!cell.import) return;
-    code += `import define${++i} from "${_api(cell.body.source.value)}";\n`;
+    code += `import define${++i} from "${loadModule(cell.body.source.value)}";\n`;
   });
   return code + (code ? '\n' : '');
+}
+
+function loadModule(identifier) {
+  if (identifier?.startsWith('@')) {
+    // load from Observable notebook API
+    return _api(identifier);
+  } else if (/(https?:)?\/\//.test(identifier)) {
+    // identifier is URL, leave as-is
+    return identifier;
+  } else {
+    // assume identifier is a file path
+    // TODO resolve npm package (e.g. in node_modules)
+    return path.resolve(process.cwd(), identifier);
+  }
 }
 
 // generate cell function definitions
