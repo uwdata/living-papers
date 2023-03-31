@@ -11,7 +11,7 @@ export class Tooltip extends ArticleElement {
     this.addEventListener('focusout', this.focusOut);
   }
 
-  mouseDown(event) {
+  mouseDown() {
     if (this.visible) {
       this.hide();
     } else {
