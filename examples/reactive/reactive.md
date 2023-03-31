@@ -37,5 +37,7 @@ plot = Plot.plot({
 
 The square of `js a` is `js format(a * a)`.
 
+::: .html:only
 Living Papers articles can import reactive runtime content from other articles.
 Here is [an article that reuses this article's plot](./import)!
+:::
