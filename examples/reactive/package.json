@@ -4,7 +4,7 @@
   "description": "Living Papers example article with reactive updates.",
   "repository": "uwdata/living-papers",
   "scripts": {
-    "build": "lpub -o build reactive.md"
+    "build": "lpub -o build reactive.md && lpub -o build/import import.md"
   },
   "devDependencies": {
     "@living-papers/cli": "*"
