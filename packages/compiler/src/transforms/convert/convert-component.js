@@ -1,6 +1,11 @@
 import { convertImage } from './convert-image.js';
 
 export async function convertComponent(handle, node, options) {
+  if (!handle) {
+    // no element matching the node was found
+    return;
+  }
+
   // wait for element to be ready, get content type
   const isText = await handle.evaluate(async el => {
     if (el.observers) {
@@ -13,6 +18,7 @@ export async function convertComponent(handle, node, options) {
       const type = typeof value;
       return type === 'string' || type === 'number';
     }
+    return el.tagName.endsWith('-TEXT');
   });
 
   // TODO? handle HTML that can be converted to AST
