@@ -1,39 +1,27 @@
+import path from 'node:path';
+
 const _api = name => `https://api.observablehq.com/${name}.js?v=3`;
 const _initial = name => `initial ${name}`;
 const _mutable = name => `mutable ${name}`;
 const _viewof = name => `viewof ${name}`;
 
 export function generateModule(exportName, codeCells, compile) {
-  let code = '';
-  let i = 0;
-  let v = 0;
+  if (!codeCells?.length) return '';
+  const { cells, defs } = processCells(codeCells, compile);
+  return generateImports(cells)
+    + `export function ${exportName}() {\n`
+    + generateCellFunctions(cells)
+    + `return [\n`
+    + defs.map(generateDefinition).join(',\n')
+    + '\n];\n}';
+}
 
-  if (!codeCells?.length) {
-    return '';
-  }
-
+export function processCells(codeCells, compile) {
   const cells = codeCells.map(compile);
 
-  // generate import statements
-  cells.forEach(cell => {
-    if (!cell.import) return;
-    code += `import define${++i} from "${_api(cell.body.source.value)}";\n`;
-  });
-  if (i > 0) code += '\n';
-
-  code += `export function ${exportName}() {\n`
-
-  // generate cell function definitions
-  cells.forEach(cell => {
-    if (cell.import) return;
-    const { fnargs, body, async, generator } = cell;
-    const fn = (async ? 'async ' : '') + 'function' + (generator ? '*' : '');
-    code += `${fn} _${++v}(${fnargs.join(',')}){${body}}\n\n`;
-  });
-
   // generate module definition
-  i = 0;
-  v = 0;
+  let i = 0;
+  let v = 0;
   const defs = [];
   cells.forEach((cell, idx) => {
     if (cell.import) {
@@ -41,7 +29,7 @@ export function generateModule(exportName, codeCells, compile) {
       const { injections, specifiers } = cell.body;
       const inject = [];
       (injections || []).forEach(({ imported: { name }, local: { name: alias } }) => {
-        if (name !== alias) inject.push({ name, alias });
+        inject.push({ name, alias });
       });
       defs.push({ module:`define${++i}`, id:i, inject });
       // import variables
@@ -67,14 +55,49 @@ export function generateModule(exportName, codeCells, compile) {
       }
     }
   });
-  code += `return [\n`
-    + defs.map(definition).join(',\n')
-    + '\n];\n}';
 
+  return { cells, defs };
+}
+
+// generate import statements
+function generateImports(cells) {
+  let code = '';
+  let i = 0;
+  cells.forEach(cell => {
+    if (!cell.import) return;
+    code += `import define${++i} from "${loadModule(cell.body.source.value)}";\n`;
+  });
+  return code + (code ? '\n' : '');
+}
+
+function loadModule(identifier) {
+  if (identifier?.startsWith('@')) {
+    // load from Observable notebook API
+    return _api(identifier);
+  } else if (/(https?:)?\/\//.test(identifier)) {
+    // identifier is URL, leave as-is
+    return identifier;
+  } else {
+    // assume identifier is a file path
+    // TODO resolve npm package (e.g. in node_modules)
+    return path.resolve(process.cwd(), identifier);
+  }
+}
+
+// generate cell function definitions
+function generateCellFunctions(cells) {
+  let code = '';
+  let v = 0;
+  cells.forEach(cell => {
+    if (cell.import) return;
+    const { fnargs, body, async, generator } = cell;
+    const fn = (async ? 'async ' : '') + 'function' + (generator ? '*' : '');
+    code += `${fn} _${++v}(${fnargs.join(',')}){${body}}\n\n`;
+  });
   return code;
 }
 
-function definition(v) {
+function generateDefinition(v) {
   let prop;
   if (v.defn) {
     const n = v.name ? `"${v.name}"` : 'null';
@@ -90,4 +113,38 @@ function definition(v) {
   }
   const cell = v.cell != null ? `, cell:${v.cell}` : '';
   return `  {${prop}${cell}}`;
+}
+
+export function generateObservableModule(codeCells, compile) {
+  if (!codeCells?.length) return '';
+  const { cells, defs } = processCells(codeCells, compile);
+
+  let code = '';
+  code += generateImports(cells);
+  code += generateCellFunctions(cells);
+  code += `export default function define(runtime, observer) {\n`;
+  code += ` const main = runtime.module();\n`;
+
+  let i = 0;
+  defs.forEach(def => {
+    if (def.module) {
+      code += ` const child${++i} = runtime.module(define${i});\n`
+    } else if (def.import) {
+      const args = [
+        JSON.stringify(def.import),
+        def.alias ? JSON.stringify(def.alias) : null,
+        `child${def.from}`
+      ].filter(x => x);
+      code += ` main.import(${args.join(', ')});\n`;
+    } else {
+      const { name, inputs, defn } = def;
+      const id = name ? JSON.stringify(name) : '';
+      const deps = inputs ? `[${inputs.map(i => JSON.stringify(i)).join(', ')}]` : '';
+      const args = [id, deps, defn].filter(x => x);
+      code += ` main.variable(observer(${id})).define(${args.join(', ')});\n`;
+    }
+  });
+  code += ` return main;\n}\n`;
+
+  return code;
 }

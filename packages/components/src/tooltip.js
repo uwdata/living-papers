@@ -12,25 +12,21 @@ export class Tooltip extends ArticleElement {
 
   mouseDownClose = (event) => { 
     if (this.contains(event.target)) return;
-
     this.hide();
   }
 
   keyDownClose = (event) => { 
     if (!isCloseKey(event.key)) return;
-
     this.hide();
   }
 
   keyDown(event) {
     if (!isOpenKey(event.key) || this.visible) return;
-
     this.show();
   }
 
   mouseDown() {
     if (this.visible) return;
-
     this.show();
   }
 

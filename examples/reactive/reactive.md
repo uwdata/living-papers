@@ -6,6 +6,7 @@ author:
 output:
   html: true
   latex: true
+  runtime: true
 ---
 
 ``` js { hide=true }
@@ -20,7 +21,7 @@ viewof a = Inputs.range([0, 255], {step: 1, value: init})
 ``` js
 format = new Intl.NumberFormat().format
 ---
-Plot.plot({
+plot = Plot.plot({
   marginLeft: 50,
   y: { grid: true },
   marks: [
@@ -35,3 +36,8 @@ Plot.plot({
 :::
 
 The square of `js a` is `js format(a * a)`.
+
+::: .html:only
+Living Papers articles can import reactive runtime content from other articles.
+Here is [an article that reuses this article's plot](./import)!
+:::
