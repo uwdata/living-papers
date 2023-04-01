@@ -11,13 +11,12 @@ function filePath(name) {
 }
 
 async function parseTest(inputFile, astFile, debug = DEBUG) {
-  const { doc, ...ast } = await parsePandoc({
+  const ast = await parsePandoc({
     inputFile: filePath(inputFile)
   });
   const actual = JSON.stringify(ast, 0, 2);
 
   if (debug) {
-    console.log(JSON.stringify(doc, 0, 2));
     console.log(actual);
   }
 

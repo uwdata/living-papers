@@ -167,6 +167,10 @@
                 "value": "\\vspace{-10pt}"
               }
             ]
+          },
+          {
+            "type": "component",
+            "name": "caption"
           }
         ]
       }

@@ -121,6 +121,10 @@
                 "value": "tex"
               }
             }
+          },
+          {
+            "type": "component",
+            "name": "caption"
           }
         ]
       }

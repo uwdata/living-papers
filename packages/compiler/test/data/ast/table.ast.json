@@ -225,6 +225,10 @@
                 ]
               }
             ]
+          },
+          {
+            "type": "component",
+            "name": "caption"
           }
         ]
       },
