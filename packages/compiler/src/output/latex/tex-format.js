@@ -342,7 +342,7 @@ export class TexFormat {
     const isTable = hasClass(ast, 'table');
     const name = isTable ? 'table' : 'figure';
     const prefix = isTable ? 'tbl' : 'fig';
-    const page = hasClass(ast, 'page');
+    const page = hasClass(ast, 'latex:page') || hasClass(ast, 'page');
     const env = name + (page ? '*' : '');
     return this.env(
       env,
