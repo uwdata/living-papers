@@ -13,11 +13,11 @@
     "prepublishOnly": "npm run test & npm run lint"
   },
   "dependencies": {
+    "@living-papers/article-api": "^0.1.0",
     "@living-papers/ast": "^0.1.0",
     "@living-papers/components": "^0.1.2",
     "@living-papers/html-templates": "^0.1.0",
     "@living-papers/latex-templates": "^0.1.2",
-    "@living-papers/paper-api": "^0.0.9",
     "@living-papers/runtime": "^0.1.0",
     "@living-papers/runtime-compiler": "^0.1.2",
     "@living-papers/transforms": "^0.1.2",
