@@ -380,6 +380,7 @@ export class PandocASTParser {
     const [attrs, content, name] = item;
     const [id, classes, props] = attrs;
 
+    let hasCaption = false;
     const children = content.map(block => {
       if (block.t === LineBlock) {
         // extract captions from line blocks
@@ -388,6 +389,7 @@ export class PandocASTParser {
           if (i > 0) cap.push({ t: SoftBreak });
           l.forEach(({ t, c }) => cap.push({ t, c: t === Str ? c.trim() : c }));
         });
+        hasCaption = true;
         return createComponentNode('caption', null, this.parseInline(cap))
       } else {
         // flatten internal paragraphs
@@ -395,6 +397,11 @@ export class PandocASTParser {
         return parsed.name === 'p' ? parsed.children : parsed;
       }
     });
+
+    if (!hasCaption) {
+      // add empty caption
+      children.push(createComponentNode('caption', null));
+    }
 
     // create component, inject name as a class
     return createComponentNode(
