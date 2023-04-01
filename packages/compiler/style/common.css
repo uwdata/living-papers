@@ -68,6 +68,8 @@ blockquote {
 	border: 1px solid #ccc;
 	padding: 0.5em;
 	cursor: auto;
+	text-indent: initial;
+	text-align: initial;
 }
 
 header h1 {
