@@ -10,12 +10,12 @@ export class Tooltip extends ArticleElement {
     this.addEventListener('mousedown', this.mouseDown);
   }
 
-  mouseDownClose = (event) => { 
+  mouseDownClose = (event) => {
     if (this.contains(event.target)) return;
     this.hide();
   }
 
-  keyDownClose = (event) => { 
+  keyDownClose = (event) => {
     if (!isCloseKey(event.key)) return;
     this.hide();
   }
@@ -40,10 +40,11 @@ export class Tooltip extends ArticleElement {
   }
 
   show() {
+    const bbox = this.getBoundingClientRect();
     const ttip = this.querySelector('.tooltip');
     ttip.style.display = 'inline-block';
     this.visible = true;
-    transformTooltip(this.getBoundingClientRect().height, ttip);
+    transformTooltip(bbox, ttip);
 
     // add the close tooltip events
     document.addEventListener('keydown', this.keyDownClose);
@@ -60,18 +61,24 @@ const isOpenKey = (key, openKey = 'Enter') => key === openKey;
 
 const isCloseKey = (key, closeKey = 'Escape') => key === closeKey;
 
-function transformTooltip(boxHeight, ttip) {
+function transformTooltip(spanBBox, ttip) {
+  // set translate to zero to undo any prior settings
   ttip.style.transform = `translate(0, 0)`;
-  const ttbb = ttip.getBoundingClientRect();
-  const docWidthWithRightPad = document.body.clientWidth - 16;
+  const tipBBox = ttip.getBoundingClientRect();
+  const tipWidth = tipBBox.width;
+  const tipX = tipBBox.left;
+  const spanX = spanBBox.left;
+  const maxWidth = document.body.clientWidth - 16;
 
   // case 1: tooltip is wider than document, shift to the leftmost point
-  // case 2: tooltip extends out of view, shift it back that amount
-  // otherwise, do not shift
-  const translateX = ttbb.width > docWidthWithRightPad
-    ? -ttbb.left
-    : ttbb.right > docWidthWithRightPad
-    ? docWidthWithRightPad - ttbb.right : 0;
+  // case 2: tooltip extends out of view, shift back until it fits
+  // otherwise, shift to match left-most edge of span
+  const dx = tipWidth > maxWidth ? -tipX
+    : spanX + tipWidth > maxWidth ? maxWidth - (tipX + tipWidth)
+    : spanX - tipX;
 
-  ttip.style.transform = `translate(${translateX}px, ${boxHeight + 4}px)`;
+  // offset tooltip to 2 pixels below bottom of span
+  const dy = spanBBox.bottom - tipBBox.top + 2;
+
+  ttip.style.transform = `translate(${dx}px, ${dy}px)`;
 }
