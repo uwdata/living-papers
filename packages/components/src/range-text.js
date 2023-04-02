@@ -1,7 +1,6 @@
-import { html } from 'lit';
-import { ArticleElement } from './article-element.js';
+import { DraggableText } from './draggable-text.js';
 
-export class RangeText extends ArticleElement {
+export class RangeText extends DraggableText {
   static get properties() {
     return {
       value: {type: Number},
@@ -9,7 +8,9 @@ export class RangeText extends ArticleElement {
       span: {type: Number},
       min: {type: Number},
       max: {type: Number},
-      title: {type: String}
+      title: {type: String},
+      prefix: {type: String},
+      suffix: {type: String}
     };
   }
 
@@ -17,53 +18,37 @@ export class RangeText extends ArticleElement {
     super();
     this.value = 0;
     this.step = 1;
-    this.span = 1;
     this.min = -1000;
     this.max = +1000;
-    this.title = 'Draggable text';
-    this.addEventListener('click', e => e.stopPropagation());
-    this.addEventListener('mousedown', e => this.onMouseDown(e));
   }
 
-  onMouseDown(e) {
-    e.stopImmediatePropagation();
-    const mx = e.x;
-    const mv = +this.value;
-
-    const cursor = this.ownerDocument.body.style.cursor;
-    this.ownerDocument.body.style.cursor = 'ew-resize';
-
-    const select = this.style.MozUserSelect;
-    this.style.MozUserSelect = 'none';
-
-    const move = e => {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      const { step, span, min, max } = this;
-      const dx = step * Math.round((e.x - mx) / span);
-      const value = Math.max(Math.min(mv + dx, max), min);
-      if (this.value !== value) {
-        this.value = value;
-        this.dispatchEvent(new CustomEvent('input'));
-        this.requestUpdate();
-      }
-    };
-
-    const up = e => {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      this.ownerDocument.body.style.cursor = cursor;
-      this.style.MozUserSelect = select;
-      window.removeEventListener('mousemove', move);
-      window.removeEventListener('mouseup', up);
-    };
-
-    window.addEventListener('mousemove', move);
-    window.addEventListener('mouseup', up);
+  currentIndex() {
+    const { min, step, value } = this;
+    const v = +value || 0;
+    return Math.floor((v - min) / step);
   }
 
-  render() {
-    const digits = Math.max(0, Math.ceil(-Math.log10(this.step)));
-    return html`<span class="range-text" title=${this.title}>${this.value.toFixed(digits)}</span>`;
+  updatedIndex(x1, x2, index) {
+    const { step, span, min, max } = this;
+    const di = Math.round((x2 - x1) / span);
+    const mi = Math.floor((max - min) / step);
+    return Math.max(Math.min(index + di, mi), 0);
+  }
+
+  getValue(index) {
+    return this.min + this.step * index;
+  }
+
+  setValue(index) {
+    this.value = this.getValue(index);
+  }
+
+  content() {
+    if (typeof this.value !== 'number') {
+      return this. value;
+    } else {
+      const digits = Math.max(0, Math.ceil(-Math.log10(this.step)));
+      return this.value.toFixed(digits);
+    }
   }
 }

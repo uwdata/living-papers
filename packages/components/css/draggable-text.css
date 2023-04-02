@@ -1,0 +1,4 @@
+.draggable-text {
+  text-decoration: underline dashed #888;
+  cursor: ew-resize;
+}

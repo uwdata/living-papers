@@ -1,4 +1,4 @@
-.range-text {
+.toggle-text {
   text-decoration: underline dashed #888;
-  cursor: ew-resize;
+  cursor: pointer;
 }

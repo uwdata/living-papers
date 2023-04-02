@@ -28,7 +28,7 @@
         "name": "cite-ref",
         "import": "CiteRef",
         "file": "src/cite-ref.js",
-        "css": "css/cite.css"
+        "css": "css/cite-ref.css"
       },
       {
         "name": "code-block",
@@ -51,7 +51,13 @@
         "name": "range-text",
         "import": "RangeText",
         "file": "src/range-text.js",
-        "css": "css/range-text.css"
+        "css": "css/draggable-text.css"
+      },
+      {
+        "name": "option-text",
+        "import": "OptionText",
+        "file": "src/option-text.js",
+        "css": "css/draggable-text.css"
       },
       {
         "name": "tex-equation",
