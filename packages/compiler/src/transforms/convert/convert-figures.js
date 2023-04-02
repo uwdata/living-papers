@@ -19,7 +19,7 @@ export default function({
     // exit early if no conversion is needed
     if (nodes.size === 0) return ast;
 
-    logger.debug('Convert: generate figure environment images');
+    logger.debug('Convert: figure environments');
 
     // render article page in puppeteer
     const opts = { html, delay, viewport: { deviceScaleFactor: 2, width: 1200, height: 900 } };
@@ -31,9 +31,24 @@ export default function({
 
     // annotate nodes with image data urls
     for (const [id, node] of nodes) {
-      const data = await screenshot(await get(id), options); // generate image
+      const handle = await get(id);
+
+      // extract rendered caption text
+      const text = await handle.evaluate(el => {
+        // suppress mathml to avoid extraneous text
+        const mathml = el.querySelectorAll('.katex .katex-mathml');
+        for (const ml of mathml) ml.style.display = 'none';
+        // get caption text
+        const caption = el.querySelector('figcaption');
+        return caption?.innerText || null;
+      });
+      if (text) setValueProperty(node, 'data-caption', text);
+
+      // extract image
+      const data = await screenshot(handle, options); // generate image
       const url = `data:image/png;base64,${data}`; // create data url
       setValueProperty(node, 'data-url', url); // update AST node
+
       removeProperty(node, AST_ID_KEY);
     }
 

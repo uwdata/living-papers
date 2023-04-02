@@ -1,13 +1,20 @@
 import {
-  extractText, getPropertyValue, queryNode, queryNodes, setParentNodes
+  extractText, getPropertyValue, hasClass, queryNode, queryNodes, setParentNodes
 } from '@living-papers/ast';
 
 const ABSTRACT = 'abstract';
 const CITEREF = 'citeref';
 const FIGURE = 'figure';
+const TEASER = 'teaser';
 const CAPTION = 'caption';
 const TABLE = 'table';
 const EQUATION = 'equation';
+
+const isFigureNode = node => node.name === FIGURE
+  && (hasClass(node, FIGURE) || hasClass(node, TEASER));
+const isTableNode = node => node.name === FIGURE && hasClass(node, TABLE);
+const isCaptionNode = node => node.name === CAPTION;
+const isEquationNode = node => node.name === EQUATION;
 
 /**
  * Extract information from a Living Papers article.
@@ -87,24 +94,23 @@ export class ArticleAPI {
   }
 
   get figureNodes() {
-    return this.queryNodes(node => node.name === FIGURE);
+    return this.queryNodes(isFigureNode);
   }
 
   get figureCaptionNodes() {
-    return this.queryNodes(node => node.name === FIGURE)
-      .map(node => queryNode(node, node => node.name === CAPTION));
-  }
-
-  get figureCaptionText() {
-    return this.figureCaptionNodes.map(node => extractText(node));
+    return this.figureNodes.map(node => queryNode(node, isCaptionNode));
   }
 
   get tableNodes() {
-    return this.queryNodes(node => node.name === TABLE);
+    return this.queryNodes(isTableNode);
+  }
+
+  get tableCaptionNodes() {
+    return this.tableNodes.map(node => queryNode(node, isCaptionNode));
   }
 
   get equationNodes() {
-    return this.queryNodes(node => node.name === EQUATION);
+    return this.queryNodes(isEquationNode);
   }
 
   get equationText() {
@@ -124,5 +130,15 @@ export class ArticleAPI {
   equationImage(index) {
     const node = this.equationNodes[index];
     return node && getPropertyValue(node, 'data-url');
+  }
+
+  figureCaption(index) {
+    const node = this.figureNodes[index];
+    return node && getPropertyValue(node, 'data-caption') || null;
+  }
+
+  tableCaption(index) {
+    const node = this.tableNodes[index];
+    return node && getPropertyValue(node, 'data-caption') || null;
   }
 }

@@ -50,6 +50,7 @@ export async function screenshot(handle, { format, page, path, encoding, css = '
         position: absolute;
         left: 0;
         top: 0;
+        width: auto;
         margin: 0 !important;
       }
       .lpub-screenshot-target > * {
