@@ -1,6 +1,6 @@
 /* Only handles layout, e.g. no color styles */
 :root {
-	--max-article-width: 100ex;
+	--max-article-width: 85ex;
 	--article-padding: 32px;
 	--margin-width: 400px;
 	--gap-width: 100px;
@@ -116,7 +116,7 @@ aside > :last-child {
 
 .page {
 	text-align: justify;
-	width: calc(100vw - 2 * var(--article-padding) - 2 * var(--article-margin-left));
+	width: calc(90vw - 2 * var(--article-padding) - 2 * var(--article-margin-left));
 }
 
 pre,
