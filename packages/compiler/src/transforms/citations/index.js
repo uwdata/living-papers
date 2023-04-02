@@ -198,9 +198,13 @@ function updateCitationLists(ast) {
     node.children.sort(
       (a, b) => getPropertyValue(a, 'index') - getPropertyValue(b, 'index')
     );
-    node.children = node.children
-      .map((node, i) => i > 0 ? [ createTextNode(', '), node ] : node)
-      .flat();
+    node.children = [
+      createTextNode('['),
+      ...node.children
+        .map((node, i) => i > 0 ? [ createTextNode(', '), node ] : node)
+        .flat(),
+      createTextNode(']')
+    ];
   });
   return ast;
 }
