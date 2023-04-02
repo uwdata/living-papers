@@ -149,15 +149,16 @@ async function citationData(citations, api, logger) {
 
   return citations.refs().map((ref, i) => {
     const s2 = s2data[i] || {};
+    const title = (ref.title ?? '') + (ref.subtitle?.length ? `: ${ref.subtitle}` : '');
     return {
       id: ref.id,
       doi: ref.DOI || s2.doi || undefined,
       s2id: s2.paperId,
       year: s2.year || ref.issued?.['date-parts'][0][0],
       author: ref.author,
-      title: ref.title + (ref.subtitle ? `: ${ref.subtitle}` : ''),
+      title: title.replace('&amp;', '&'),
       venue: ref['container-title'] || s2.venue || undefined,
-      url: s2.url || ref.URL || undefined,
+      url: ref.URL || s2.url || undefined,
       abstract: s2.abstract || undefined,
       tldr: s2.tldr?.text
     };

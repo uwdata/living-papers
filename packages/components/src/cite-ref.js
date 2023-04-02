@@ -54,22 +54,31 @@ function renderCiteInfo(key, data) {
 }
 
 function renderCiteTitle(data) {
-  const { url, title, year } = data;
+  const { url, title, year, author } = data;
   const date = year ? html`\u2022 <span class="cite-year">${year}</a>` : '';
-  return html`<div class="cite-title">
-    <a href=${url} target="_blank" rel="noopener noreferrer">${title}</a>
-    ${date}
-  </div>`;
+  const text = title || authorNames(author).join(', ') || 'Unknown Title';
+  if (url) {
+    return html`<div class="cite-title">
+      <a href=${url} target="_blank" rel="noopener noreferrer">${text}</a>
+      ${date}
+    </div>`;
+  } else {
+    return html`<div class="cite-title">${text}${date}</div>`;
+  }
 }
 
-function renderCiteAuthor(data, maxAuthors = 4) {
-  const { author } = data;
-  const authors = (author || []).map(({ given, family }) => {
+function authorNames(authorList) {
+  return (authorList || []).map(({ given, family }) => {
     return given
       ? `${given.includes('.') ? given : given[0] + '.'} ${family}`
       : family;
   });
+}
 
+function renderCiteAuthor(data, maxAuthors = 4) {
+  const { author, title } = data;
+  if (!title) return null; // authors will be listed under title instead
+  const authors = authorNames(author);
   const diff = authors.length - maxAuthors;
   if (diff > 1) { // ensure > 1, prevents case of +1 author only
     const authorsShow = authors.slice(0, maxAuthors).join(', ');
