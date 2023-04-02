@@ -1,7 +1,7 @@
 {
   "name": "@living-papers/article-api",
   "description": "JavaScript API to extract content from a Living Papers article.",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "license": "BSD-3-Clause",
   "repository": "uwdata/living-papers",
   "main": "src/index.js",
