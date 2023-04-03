@@ -48,15 +48,15 @@
         "css": "css/inline-note.css"
       },
       {
-        "name": "range-text",
-        "import": "RangeText",
-        "file": "src/range-text.js",
-        "css": "css/draggable-text.css"
-      },
-      {
         "name": "option-text",
         "import": "OptionText",
         "file": "src/option-text.js",
+        "css": "css/draggable-text.css"
+      },
+      {
+        "name": "range-text",
+        "import": "RangeText",
+        "file": "src/range-text.js",
         "css": "css/draggable-text.css"
       },
       {
@@ -70,6 +70,12 @@
         "import": "TexMath",
         "file": "src/tex-math.js",
         "css": "css/tex-math.css"
+      },
+      {
+        "name": "toggle-text",
+        "import": "ToggleText",
+        "file": "src/toggle-text.js",
+        "css": "css/toggle-text.css"
       }
     ]
   }
