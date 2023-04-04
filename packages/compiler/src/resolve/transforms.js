@@ -1,6 +1,6 @@
 import path from 'node:path';
+import url from 'node:url';
 import { readFile } from '../util/fs.js';
-import url from 'url';
 
 export async function resolveTransforms(transforms, context) {
   const { inputDir, logger, resolve } = context;
