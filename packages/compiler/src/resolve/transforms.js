@@ -1,5 +1,6 @@
 import path from 'node:path';
 import { readFile } from '../util/fs.js';
+import url from 'url';
 
 export async function resolveTransforms(transforms, context) {
   const { inputDir, logger, resolve } = context;
@@ -47,8 +48,8 @@ export async function resolveTransforms(transforms, context) {
 }
 
 async function loadTransform(item, dir) {
-  const file = path.resolve(path.join(dir, item.file));
-  const module = await import(file);
+  const fileUrl = url.pathToFileURL(path.resolve(path.join(dir, item.file)));
+  const module = await import(fileUrl);
   // TODO support named imports as part of item?
   return module.default;
 }
