@@ -1,7 +1,7 @@
 {
   "name": "@living-papers/compiler",
   "description": "Authoring tools for scholarly communication.",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "license": "BSD-3-Clause",
   "repository": "uwdata/living-papers",
   "main": "src/index.js",
@@ -15,10 +15,10 @@
   "dependencies": {
     "@living-papers/article-api": "^0.1.4",
     "@living-papers/ast": "^0.1.0",
-    "@living-papers/components": "^0.1.5",
+    "@living-papers/components": "^0.1.6",
     "@living-papers/html-templates": "^0.1.0",
     "@living-papers/latex-templates": "^0.1.2",
-    "@living-papers/runtime": "^0.1.5",
+    "@living-papers/runtime": "^0.1.6",
     "@living-papers/runtime-compiler": "^0.1.2",
     "@living-papers/transforms": "^0.1.2",
     "@rollup/plugin-node-resolve": "^15.0.1",
