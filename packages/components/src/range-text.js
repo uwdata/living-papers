@@ -16,16 +16,15 @@ export class RangeText extends DraggableText {
 
   constructor() {
     super();
-    this.value = 0;
     this.step = 1;
     this.min = -1000;
     this.max = +1000;
+    this.value = NaN;
   }
 
   currentIndex() {
     const { min, step, value } = this;
-    const v = +value || 0;
-    return Math.floor((v - min) / step);
+    return isNaN(value) ? 0 : Math.floor((+value - min) / step);
   }
 
   updatedIndex(x1, x2, index) {
@@ -45,10 +44,11 @@ export class RangeText extends DraggableText {
 
   content() {
     if (typeof this.value !== 'number') {
-      return this. value;
+      return this.value;
     } else {
       const digits = Math.max(0, Math.ceil(-Math.log10(this.step)));
-      return this.value.toFixed(digits);
+      const value = Number.isNaN(this.value) ? this.min : this.value;
+      return value.toFixed(digits);
     }
   }
 }
