@@ -38,7 +38,7 @@ function observeAttrs(resolve, attrs) {
     const node = resolve(target);
     const observer = new Observer((status, value) => {
       if (status === FULFILLED) {
-        node.setAttribute(name, value);
+        node.setAttribute(name, attrValue(value));
       } else if (status === REJECTED) {
         console.error(value.error);
       }
@@ -47,6 +47,10 @@ function observeAttrs(resolve, attrs) {
     node.observers.set(name, observer);
     return observer;
   };
+}
+
+function attrValue(value) {
+  return typeof value === 'object' ? JSON.stringify(value) : value;
 }
 
 function observeEvent(resolve, event, runtime) {
