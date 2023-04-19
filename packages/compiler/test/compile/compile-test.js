@@ -52,6 +52,10 @@ describe('compile', () => {
     return compileTest('article/components.md');
   });
 
+  it('an article with dynamic properties', () => {
+    return compileTest('article/properties.md');
+  });
+
   it('an article with cross-references', () => {
     return compileTest('article/crossref.md', { warn: 3 });
   });

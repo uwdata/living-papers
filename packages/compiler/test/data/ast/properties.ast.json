@@ -1,0 +1,279 @@
+{
+  "metadata": {
+    "title": "Component Properties"
+  },
+  "article": {
+    "type": "component",
+    "name": "article",
+    "children": [
+      {
+        "type": "component",
+        "name": "codeblock",
+        "properties": {
+          "language": {
+            "type": "value",
+            "value": "js"
+          },
+          "hide": {
+            "type": "value",
+            "value": "true"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "min = 1\n---\nmax = 10\n---\nvalues = [1,2,5,10,100,1000]"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "as-block-components"
+          },
+          "nonumber": {
+            "type": "value",
+            "value": "true"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "As Block Components"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Range (static):"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "range-text",
+        "properties": {
+          "min": {
+            "type": "value",
+            "value": "1"
+          },
+          "max": {
+            "type": "value",
+            "value": "10"
+          },
+          "span": {
+            "type": "value",
+            "value": "5"
+          }
+        }
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Range (dynamic):"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "range-text",
+        "properties": {
+          "min": {
+            "type": "expression",
+            "value": "min"
+          },
+          "max": {
+            "type": "expression",
+            "value": "max"
+          },
+          "span": {
+            "type": "value",
+            "value": "5"
+          }
+        }
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Option (static):"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "option-text",
+        "properties": {
+          "options": {
+            "type": "value",
+            "value": "[1,2,5,10,100,1000]"
+          },
+          "span": {
+            "type": "value",
+            "value": "5"
+          }
+        }
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Option (dynamic):"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "option-text",
+        "properties": {
+          "options": {
+            "type": "expression",
+            "value": "values"
+          },
+          "span": {
+            "type": "value",
+            "value": "5"
+          }
+        }
+      },
+      {
+        "type": "component",
+        "name": "h1",
+        "properties": {
+          "id": {
+            "type": "value",
+            "value": "as-inline-components"
+          },
+          "nonumber": {
+            "type": "value",
+            "value": "true"
+          }
+        },
+        "children": [
+          {
+            "type": "textnode",
+            "value": "As Inline Components"
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Range (static):\n"
+          },
+          {
+            "type": "component",
+            "name": "range-text",
+            "properties": {
+              "min": {
+                "type": "value",
+                "value": "1"
+              },
+              "max": {
+                "type": "value",
+                "value": "10"
+              },
+              "span": {
+                "type": "value",
+                "value": "5"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Range (dynamic):\n"
+          },
+          {
+            "type": "component",
+            "name": "range-text",
+            "properties": {
+              "min": {
+                "type": "expression",
+                "value": "min"
+              },
+              "max": {
+                "type": "expression",
+                "value": "max"
+              },
+              "span": {
+                "type": "value",
+                "value": "5"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Option (static):\n"
+          },
+          {
+            "type": "component",
+            "name": "option-text",
+            "properties": {
+              "options": {
+                "type": "value",
+                "value": "[1,2,5,10,100,1000]"
+              },
+              "span": {
+                "type": "value",
+                "value": "5"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "component",
+        "name": "p",
+        "children": [
+          {
+            "type": "textnode",
+            "value": "Option (dynamic):\n"
+          },
+          {
+            "type": "component",
+            "name": "option-text",
+            "properties": {
+              "options": {
+                "type": "expression",
+                "value": "values"
+              },
+              "span": {
+                "type": "value",
+                "value": "5"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

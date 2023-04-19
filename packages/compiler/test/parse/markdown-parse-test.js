@@ -51,6 +51,10 @@ describe('parseMarkdown', () => {
     await parseTest('article/components.md', 'ast/components.ast.json');
   });
 
+  it('parses properties', async () => {
+    await parseTest('article/properties.md', 'ast/properties.ast.json');
+  });
+
   it('parses include component', async () => {
     await parseTest('article/include.md', 'ast/include.ast.json');
   });
