@@ -1,116 +1,38 @@
 \documentclass[<<class_options>><<^class_options>>journal<</class_options>>]{vgtc}
-%\documentclass[journal]{vgtc}           % final (journal style)
-%\documentclass[review,journal]{vgtc}    % review (journal style)
-%\documentclass[widereview]{vgtc}        % wide-spaced review
-%\documentclass[preprint,journal]{vgtc}  % preprint (journal style)
+%\documentclass[journal,hideappendix]{vgtc}        % final (journal style) without appendices
+%\documentclass[review,journal]{vgtc}              % review (journal style)
+%\documentclass[review,journal,hideappendix]{vgtc} % review (journal style)
+%\documentclass[widereview]{vgtc}                  % wide-spaced review
+%\documentclass[preprint,journal]{vgtc}            % preprint (journal style)
 
 %% Uncomment one of the lines above depending on where your paper is
 %% in the conference process. ``review'' and ``widereview'' are for review
-%% submission, ``preprint'' is for pre-publication, and the final version
-%% doesn't use a specific qualifier.
-
-%% Please use one of the ``review'' options in combination with the
-%% assigned online id (see below) ONLY if your paper uses a double blind
-%% review process. Some conferences, like IEEE Vis and InfoVis, have NOT
-%% in the past.
-
-%% Please use the ``preprint''  option when producing a preprint version
-%% for sharing your article on an open access repository
-
-%% Please note that the use of figures other than the optional teaser is not permitted on the first page
-%% of the journal version.  Figures should begin on the second page and be
-%% in CMYK or Grey scale format, otherwise, colour shifting may occur
-%% during the printing process.  Papers submitted with figures other than the optional teaser on the
-%% first page will be refused. Also, the teaser figure should only have the
-%% width of the abstract as the template enforces it.
-
-%% These few lines make a distinction between latex and pdflatex calls and they
-%% bring in essential packages for graphics and font handling.
-%% Note that due to the \DeclareGraphicsExtensions{} call it is no longer necessary
-%% to provide the the path and extension of a graphics file:
-%% \includegraphics{diamondrule} is completely sufficient.
-%%
-\ifpdf%                                % if we use pdflatex
-  \pdfoutput=1\relax                   % create PDFs from pdfLaTeX
-  \pdfcompresslevel=9                  % PDF Compression
-  \pdfoptionpdfminorversion=7          % create PDF 1.7
-  \ExecuteOptions{pdftex}
-  \usepackage{graphicx}                % allow us to embed graphics files
-  \DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg} % for pdflatex we expect .pdf, .png, or .jpg files
-\else%                                 % else we use pure latex
-  \ExecuteOptions{dvips}
-  \usepackage{graphicx}                % allow us to embed graphics files
-  \DeclareGraphicsExtensions{.eps}     % for pure latex we expect eps files
-\fi%
-
-%% it is recomended to use ``\autoref{sec:bla}'' instead of ``Fig.~\ref{sec:bla}''
-\graphicspath{{figures/}{pictures/}{images/}{./}} % where to search for the images
-
-\usepackage{amsmath,amssymb}
-\usepackage{microtype}                 % use micro-typography (slightly more compact, better to read)
-\PassOptionsToPackage{warn}{textcomp}  % to address font issues with \textrightarrow
-\usepackage{textcomp}                  % use better special symbols
-\usepackage{mathptmx}                  % use matching math font
-\usepackage{times}                     % we use Times as the main font
-\renewcommand*\ttdefault{txtt}         % a nicer typewriter font
-\usepackage{cite}                      % needed to automatically sort the references
-\usepackage{tabu}                      % only used for the table example
-\usepackage{booktabs}                  % only used for the table example
-\usepackage{minted}
-%% We encourage the use of mathptmx for consistent usage of times font
-%% throughout the proceedings. However, if you encounter conflicts
-%% with other math-related packages, you may want to disable it.
-
-%% Custom preamble directives
-<<preamble>>
-
-%% In preprint mode you may define your own headline. If not, the default IEEE copyright message will appear in preprint mode.
-%\preprinttext{To appear in IEEE Transactions on Visualization and Computer Graphics.}
-
-%% In preprint mode, this adds a link to the version of the paper on IEEEXplore
-%% Uncomment this line when you produce a preprint version of the article
-%% after the article receives a DOI for the paper from IEEE
-%\ieeedoi{xx.xxxx/TVCG.201x.xxxxxxx}
-
-%% If you are submitting a paper to a conference for review with a double
-%% blind reviewing process, please replace the value ``0'' below with your
-%% OnlineID. Otherwise, you may safely leave it at ``0''.
-% \onlineid{0}
-
-%% declare the category of your paper, only shown in review mode
-% \vgtccategory{Research}
-%% please declare the paper type of your paper to help reviewers, only shown in review mode
-%% choices:
-%% * algorithm/technique
-%% * application/design study
-%% * evaluation
-%% * system
-%% * theory/model
-% \vgtcpapertype{please specify}
+%% submission, ``preprint'' is for pre-publication in an open access repository,
+%% and the final version doesn't use a specific qualifier.
 
 %% Paper title.
 \title{<<title>>}
 
-%% This is how authors are specified in the journal style
-
-%% indicate IEEE Member or Student Member in form indicated below
-
-%% Authors
+%% Author ORCID IDs should be specified using \authororcid inside of the
+%% \author command. ORCID IDs can be registered at https://orcid.org/.
+%% Include only the 16-digit dashed ID.
+%% Like so: \authororcid{Josiah S.\ Carberry}{0000-0002-1825-0097}
 \author{
 <<author_names>>
 }
+
 %% Affiliations
 \authorfooter{
 %% insert punctuation at end of each item
 <<#author>>
 \item
-  <<name>> is with <<org>>. E-mail: <<email>>.
+  <<name>> is with <<org>>.
+	E-mail: <<email>>.
 <</author>>
 }
 
-%other entries to be set up for journal
+% other entries to be set up for journal
 \shortauthortitle{<<author_short>>: <<title_short>>}
-%\shortauthortitle{Firstauthor \MakeLowercase{\textit{et al.}}: Paper Title}
 
 %% Abstract section.
 \abstract{<<abstract>>} % end of abstract
@@ -118,16 +40,6 @@
 %% Keywords that describe your work. Will show as 'Index Terms' in journal
 %% please capitalize first letter and insert punctuation after last keyword
 \keywords{<<keywords>>}
-
-%% ACM Computing Classification System (CCS).
-%% See <http://www.acm.org/class/1998/> for details.
-%% The ``\CCScat'' command takes four arguments.
-
-% \CCScatlist{ % not used in journal version
-%  \CCScat{K.6.1}{Management of Computing and Information Systems}%
-% {Project and People Management}{Life Cycle};
-%  \CCScat{K.7.m}{The Computing Profession}{Miscellaneous}{Ethics}
-% }
 
 %% A teaser figure can be included as follows
 <<#teaser>>
@@ -142,20 +54,63 @@
 
 %% Copyright space is enabled by default as required by guidelines.
 %% It is disabled by the 'review' option or via the following command:
-% \nocopyrightspace
+%\nocopyrightspace
 
+%% If you are submitting a paper to a conference for review with a double
+%% blind reviewing process, please use one of the ``review'' options and replace the value ``0'' below with your
+%% OnlineID. Otherwise, you may safely leave it at ``0''.
+% \onlineid{0}
 
-\vgtcinsertpkg
+%% In preprint mode you may define your own headline. If not, the default IEEE copyright message will appear in preprint mode.
+%\preprinttext{To appear in IEEE Transactions on Visualization and Computer Graphics.}
+
+%% In preprint mode, this adds a link to the version of the paper on IEEEXplore
+%% Uncomment this line when you produce a preprint version of the article
+%% after the article receives a DOI for the paper from IEEE
+%\ieeedoi{xx.xxxx/TVCG.201x.xxxxxxx}
+
+%% declare the category of your paper, only shown in review mode
+% \vgtccategory{Research}
+
+%% please declare the paper type of your paper to help reviewers, only shown in review mode
+%% choices:
+%% * algorithm/technique
+%% * application/design study
+%% * evaluation
+%% * system
+%% * theory/model
+% \vgtcpapertype{please specify}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% LOAD PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Tell graphicx where to find files for figures when calling \includegraphics.
+%% Note that due to the \DeclareGraphicsExtensions{} call it is no longer necessary
+%% to provide the the path and extension of a graphics file:
+%% \includegraphics{diamondrule} is completely sufficient.
+\graphicspath{{figs/}{figures/}{pictures/}{images/}{./}} % where to search for the images
+
+%% We encourage the use of mathptmx for consistent usage of times font
+%% throughout the proceedings. However, if you encounter conflicts
+%% with other math-related packages, you may want to disable it.
+\usepackage{amsmath,amssymb}
+\usepackage{microtype}                 % use micro-typography (slightly more compact, better to read)
+\PassOptionsToPackage{warn}{textcomp}  % to address font issues with \textrightarrow
+\usepackage{textcomp}                  % use better special symbols
+\usepackage{mathptmx}                  % use matching math font
+
+%% Custom preamble directives
+<<preamble>>
+
+\begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%% START OF THE PAPER %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{document}
-
 %% The ``\maketitle'' command must be the first command after the
 %% ``\begin{document}'' command. It prepares and prints the title block.
-
 %% the only exception to this rule is the \firstsection command
 % \firstsection{Introduction}
 
@@ -170,11 +125,10 @@
 <</acknowledgments>>
 
 <<#bibtex>>
-%\bibliographystyle{abbrv}
-\bibliographystyle{abbrv-doi}
-%\bibliographystyle{abbrv-doi-narrow}
-%\bibliographystyle{abbrv-doi-hyperref}
+\bibliographystyle{abbrv-doi-hyperref}
 %\bibliographystyle{abbrv-doi-hyperref-narrow}
+%\bibliographystyle{abbrv-doi}
+%\bibliographystyle{abbrv-doi-narrow}
 \bibliography{<<.>>}
 <</bibtex>>
 
@@ -184,4 +138,3 @@
 <</appendix>>
 
 \end{document}
-

@@ -1,7 +1,7 @@
 {
   "template": "template.tex",
   "files": [
-    "files/abbrv-doi.bst",
+    "files/abbrv-doi-hyperref.bst",
     "files/diamondrule.eps",
     "files/diamondrule.pdf",
     "files/vgtc.cls"

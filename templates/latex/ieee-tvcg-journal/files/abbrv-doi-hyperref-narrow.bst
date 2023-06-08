@@ -99,7 +99,7 @@ FUNCTION {output.nonnull}
     }
   if$
   s
-  add.link
+  %add.link
 }
 
 FUNCTION {output}
