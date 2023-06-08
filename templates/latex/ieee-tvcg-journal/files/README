@@ -1,15 +1,17 @@
-Created by Torsten Moeller (vis@cs.sfu.ca), April 6 2004
+Created by Torsten Moeller, April 6 2004
 modified by Steven Bergner and Torsten Moeller, June 30 2006
 modified by James Peltier and Torsten Moeller, March 28, 2007
 modified by Bernhard Finkbeiner, July 5, 2010
 modified by Tobias Isenberg, January 2016
 modified by Filip Sadlo, March 2016
 modified by Tobias Isenberg, July 2016
+modified by Cagatay Turkay and Soumya Dutta, September 2019
+modified by Cody Dunne, January and March 2023
 
 This distribution provides a document class for formatting papers according to the specifications for submission to conferences sponsored by the IEEE Visualization & Graphics Technical Committee (VGTC).
 
 Conferences that use the 'journal' document option:
-- IEEE Visualization Conference (VIS, incl. InfoVis, SciVis, VAST)
+- IEEE Visualization Conference (VIS)
 - IEEE Virtual Reality (VR)
 - IEEE International Symposium on Mixed and Augmented Reality (ISMAR)
 
@@ -29,7 +31,7 @@ pictures/       - subdirectory with sample images, both in EPS and in direct pix
 Usage
 =====
 
-The template can be used as such (using the established LaTeX environments) by calling pdfLaTeX or LaTex. For Windows-based LaTeX installations you can use, for example, the environment provided by http://www.texniccenter.org/ along with MikTeX (http://miktex.org/). For Uinux-based installations, please use your favorite LaTeX distribution and editing environment or use the makefile following the instructions below.
+The template can be used with an established LaTeX environment by calling pdfLaTeX or LaTex. For online collaborative editing or without a local LaTeX installation, one option is to use https://www.overleaf.com/. For Windows-based LaTeX installations you can use, for example, the environment provided by http://www.texniccenter.org/ along with MikTeX (http://miktex.org/). For Unix-based installations, please use your favorite LaTeX distribution and editing environment or use the makefile following the instructions below.
 
 Use of the Makefile
 ===================
