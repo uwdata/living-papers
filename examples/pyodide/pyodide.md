@@ -5,7 +5,7 @@ author:
     org: University of Washington
 transforms:
   pyodide:
-    micropip: [altair, vega_datasets]
+    micropip: [jsonschema<4.18.0, altair, vega_datasets]
 ---
 
 _Warning: It may take a few seconds to load the Python interpreter and libraries._
