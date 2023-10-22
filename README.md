@@ -9,6 +9,30 @@ Then take a look at other [example articles](https://github.com/uwdata/living-pa
 
 This repo is a research testbed for Living Papers development. There will be bugs. Contributions (issues, PRs, etc) are welcome!
 
+## Background
+
+For more about Living Papers' motivation and development please see:
+
+- [Living Papers UIST'23 paper](https://github.com/uwdata/living-papers-paper)
+- [Living Papers overview video](https://www.youtube.com/watch?v=5-4wd3dVtEk).
+
+To cite Living Papers in research publication, please use the following citation data:
+
+``` bibtex
+@inproceedings{heer2023living,
+  author = {Heer, Jeffrey and Conlen, Matthew and Devireddy, Vishal and Nguyen, Tu and Horowitz, Joshua},
+  title = {Living Papers: A Language Toolkit for Augmented Scholarly Communication},
+  year = {2023},
+  url = {https://doi.org/10.1145/3586183.3606791},
+  doi = {10.1145/3586183.3606791},
+  booktitle = {Proceedings of the 36th Annual ACM Symposium on User Interface Software and Technology},
+  articleno = {42},
+  numpages = {13},
+  series = {UIST '23}
+}
+```
+
+
 ## Setup
 
 ### Pre-Requisites
