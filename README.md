@@ -11,10 +11,7 @@ This repo is a research testbed for Living Papers development. There will be bug
 
 ## Background
 
-For more about Living Papers' motivation and development please see:
-
-- [Living Papers UIST'23 paper](https://github.com/uwdata/living-papers-paper)
-- [Living Papers overview video](https://www.youtube.com/watch?v=5-4wd3dVtEk).
+For more about Living Papers' motivation and development please see the **[Living Papers UIST'23 paper](https://github.com/uwdata/living-papers-paper)** and **[overview video](https://www.youtube.com/watch?v=5-4wd3dVtEk)**.
 
 To cite Living Papers in research publication, please use the following citation data:
 
@@ -31,7 +28,6 @@ To cite Living Papers in research publication, please use the following citation
   series = {UIST '23}
 }
 ```
-
 
 ## Setup
 
