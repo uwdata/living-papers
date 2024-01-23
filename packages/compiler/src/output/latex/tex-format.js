@@ -250,10 +250,9 @@ export class TexFormat {
 
   image(ast) {
     const src = sanitizeFile(getPropertyValue(ast, 'src'));
-    // TODO: find best way to incorporate alt text
-    // const alt = getPropertyValue(ast, 'alt');
+    const alt = getPropertyValue(ast, 'alt');
     const arg = getImageParams(ast);
-    return `\\includegraphics[${arg}]{${src}}`;
+    return `\\includegraphics[${arg}${alt ? `,alt={${alt}}` : ''}]{${src}}`;
   }
 
   quoted(ast) {
