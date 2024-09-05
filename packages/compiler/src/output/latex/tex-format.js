@@ -233,7 +233,7 @@ export class TexFormat {
     return this.size(ast, getClasses(ast)
       .map(cls => this.options.classes.get(cls))
       .filter(x => x)
-      .reduce((s, c) => this.command(s, c), this.fragment(ast)));
+      .reduce((s, c) => this.command(s, c), ast));
   }
 
   link(ast) {
