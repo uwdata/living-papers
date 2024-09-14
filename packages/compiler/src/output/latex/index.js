@@ -42,7 +42,8 @@ export async function outputLatex(ast, context, options) {
     pdf = true,
     stdout = false,
     latexDir = path.join(pdf ? tempDir : outputDir, 'latex'),
-    vspace = {}
+    vspace = {},
+    classToCommand,
   } = options;
 
   const articleName = path.parse(inputFile).name;
@@ -71,7 +72,8 @@ export async function outputLatex(ast, context, options) {
       ['bold', 'textbf'],
       ['strong', 'textbf'],
       ['demi', 'textbf'],
-      ['underline', 'uline']
+      ['underline', 'uline'],
+      ...classToCommand || [],
     ]),
     sizes: new Map([
       ['tiny', 'tiny'],
