@@ -13,7 +13,7 @@
     "prepublishOnly": "npm run test && npm run lint"
   },
   "dependencies": {
-    "@observablehq/parser": "^6.0.0",
-    "acorn-walk": "^8.2.0"
+    "@observablehq/parser": "^6.1.0",
+    "acorn-walk": "^8.3.4"
   }
 }

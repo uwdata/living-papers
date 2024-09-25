@@ -16,6 +16,6 @@
     "prepublishOnly": "npm run test && npm run lint"
   },
   "dependencies": {
-    "@observablehq/runtime": "^5.5.2"
+    "@observablehq/runtime": "^5.9.9"
   }
 }
