@@ -1,7 +1,7 @@
 {
   "name": "@living-papers/transforms",
   "description": "Built-in Living Papers AST transforms.",
-  "version": "0.1.2",
+  "version": "0.1.8",
   "license": "BSD-3-Clause",
   "repository": "uwdata/living-papers",
   "type": "module",
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@living-papers/ast": "^0.1.0",
-    "@living-papers/runtime-compiler": "^0.1.2"
+    "@living-papers/runtime-compiler": "^0.1.8"
   },
   "living-papers": {
     "transforms": [
