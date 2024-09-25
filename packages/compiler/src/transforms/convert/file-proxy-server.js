@@ -43,7 +43,7 @@ export async function startServer(basePath, port = DEFAULT_PORT) {
     let stats;
     try {
       stats = await fs.stat(pathname);
-    } catch (err) {
+    } catch (err) { // eslint-disable-line no-unused-vars
       // if the file is not found, return 404
       res.statusCode = 404;
       res.end(`File ${pathname} not found!`);

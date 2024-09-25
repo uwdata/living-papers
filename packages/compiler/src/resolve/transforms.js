@@ -20,7 +20,7 @@ export async function resolveTransforms(transforms, context) {
     try {
       const pkg = JSON.parse(await readFile(pkgPath));
       defs = pkg?.['living-papers']?.transforms || [];
-    } catch (err) {
+    } catch (err) { // eslint-disable-line no-unused-vars
       // fail silently for now
       // TODO? error messaging
     }

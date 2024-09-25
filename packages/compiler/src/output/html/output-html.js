@@ -107,7 +107,7 @@ export async function outputHTML(ast, context, options) {
   // copy all assets in style/assets over
   try {
     await copy(styleAssetsDir, assetsPath);
-  } catch (err) {
+  } catch (err) { // eslint-disable-line no-unused-vars
     // not all styles have assets, let this fail silently
   }
 

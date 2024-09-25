@@ -31,7 +31,7 @@ export async function resolveComponents(components, context) {
     try {
       const pkg = JSON.parse(await readFile(pkgPath));
       list = pkg?.['living-papers']?.components || [];
-    } catch (err) {
+    } catch (err) { // eslint-disable-line no-unused-vars
       // fail silently for now
       // TODO? error messaging
     }

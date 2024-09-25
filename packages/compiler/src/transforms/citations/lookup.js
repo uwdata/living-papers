@@ -12,7 +12,7 @@ export function lookup(
       try {
         ref = await method(id);
         ref.id = key;
-      } catch (err) {
+      } catch (err) { // eslint-disable-line no-unused-vars
         ref = null;
       }
       cache.set(key, ref);
