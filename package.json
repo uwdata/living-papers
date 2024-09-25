@@ -11,13 +11,13 @@
     "release": "npm run test && npm run lint && lerna publish"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^15.0.1",
-    "eslint": "^8.37.0",
-    "lerna": "^6.6.1",
-    "mkdirp": "^2.1.6",
-    "mocha": "^10.2.0",
-    "rimraf": "^4.4.1",
-    "rollup": "^3.20.2"
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "eslint": "^9.11.1",
+    "lerna": "^8.1.8",
+    "mkdirp": "^3.0.1",
+    "mocha": "^10.7.3",
+    "rimraf": "^6.0.1",
+    "rollup": "^4.22.4"
   },
   "workspaces": [
     "packages/*",
