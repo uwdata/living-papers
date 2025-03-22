@@ -294,8 +294,8 @@ export class TexFormat {
     const type = getPropertyValue(ast, 'type');
     const xref = getPropertyValue(ast, 'xref');
     const short = getPropertyValue(ast, 'short');
-    const prefix = (!short && this.options.prefix.get(type)) || '';
-    return `${prefix}\\ref{${type}:${xref}}`;
+    const ref = short ? '\\ref' : '\\autoref';
+    return `${ref}{${type}:${xref}}`;
   }
 
   math(ast) {
