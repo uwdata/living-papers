@@ -10,7 +10,7 @@
   "devDependencies": {
     "@living-papers/cli": "*",
     "@living-papers/components": "*",
-    "mkdirp": "^2.1.6"
+    "mkdirp": "^3.0.1"
   },
   "living-papers": {
     "components": [

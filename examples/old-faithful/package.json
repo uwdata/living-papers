@@ -11,6 +11,6 @@
   },
   "devDependencies": {
     "@living-papers/cli": "*",
-    "mkdirp": "^2.1.6"
+    "mkdirp": "^3.0.1"
   }
 }

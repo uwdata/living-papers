@@ -14,7 +14,7 @@
   "dependencies": {
     "@living-papers/runtime": "^0.1.8",
     "d3-require": "^1.3.0",
-    "lit": "^3.2.0"
+    "lit": "^3.2.1"
   },
   "living-papers": {
     "components": [

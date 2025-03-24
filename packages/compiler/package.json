@@ -21,16 +21,16 @@
     "@living-papers/runtime": "^0.1.8",
     "@living-papers/runtime-compiler": "^0.1.8",
     "@living-papers/transforms": "^0.1.8",
-    "@rollup/plugin-node-resolve": "^15.0.1",
-    "@rollup/plugin-replace": "^5.0.2",
-    "@rollup/plugin-terser": "^0.4.0",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-replace": "^6.0.2",
+    "@rollup/plugin-terser": "^0.4.4",
     "@uwdata/file-cache": "0.0.1",
     "citation-js": "^0.6.7",
     "clean-css": "^5.3.3",
     "mustache": "^4.2.0",
     "node-fetch": "^3.3.2",
-    "puppeteer": "^23.4.1",
-    "rollup": "^4.22.4",
+    "puppeteer": "^24.4.0",
+    "rollup": "^4.37.0",
     "rollup-plugin-bundle-size": "^1.0.3"
   }
 }

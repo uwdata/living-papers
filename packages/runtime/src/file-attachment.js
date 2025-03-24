@@ -1,4 +1,4 @@
-import { Runtime } from '@observablehq/runtime';
+import { FileAttachments } from '@observablehq/stdlib';
 
 /**
  * Resolve a file attachment name.
@@ -10,4 +10,4 @@ function resolve(name) {
   return name;
 }
 
-export const FileAttachment = Runtime.prototype.fileAttachments(resolve);
+export const FileAttachment = FileAttachments(resolve);

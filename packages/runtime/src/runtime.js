@@ -1,4 +1,5 @@
-import { Runtime, Library } from '@observablehq/runtime';
+import { Runtime } from '@observablehq/runtime';
+import { Library } from '@observablehq/stdlib';
 import { FileAttachment } from './file-attachment.js';
 
 /**
