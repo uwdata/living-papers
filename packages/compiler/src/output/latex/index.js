@@ -58,12 +58,6 @@ export async function outputLatex(ast, context, options) {
   // prepare LaTeX formatter
   const tex = new TexFormat({
     references: citations?.data,
-    prefix: new Map([
-      ['fig', 'Figure~'],
-      ['tbl', 'Table~'],
-      ['eqn', 'Equation~'],
-      ['sec', '\\S']
-    ]),
     // TODO handle colors?
     classes: new Map([
       ['smallcaps', 'textsc'],
