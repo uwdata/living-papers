@@ -202,6 +202,9 @@ function extractNode(node, tex) {
     case 'latex:preamble':
       // extract as new preamble node
       return { name: 'preamble', content: node.children[0].value };
+    case 'latex:copyright':
+      // extract as new copyright node
+      return { name: 'copyright', content: node.children[0].value };
     case 'figure':
       // extract if the figure is a teaser
       name = hasClass(node, 'teaser') ? 'teaser' : null;
