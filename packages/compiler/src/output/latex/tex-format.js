@@ -87,11 +87,6 @@ export class TexFormat {
       return; // skip on non-latex output namespace
     }
 
-    const maybeEnv = this.options.nameToEnv.get(ast.name);
-    if (maybeEnv) {
-      return this.env(maybeEnv, this.fragment(ast));
-    }
-
     switch (ast.name) {
       case 'article':
         return this.fragment(ast);
@@ -102,8 +97,9 @@ export class TexFormat {
       case 'h3':
         return this.header(ast, 2);
       case 'p':
-      case 'div':
         return this.paragraph(ast);
+      case 'div':
+        return this.div(ast);
       case 'hr':
         return this.env('center', '\\rule{0.5\\linewidth}{0.5pt}');
       case 'blockquote':
@@ -232,6 +228,15 @@ export class TexFormat {
       .map(cls => this.options.sizes.get(cls))
       .filter(x => x)
       .reduce((s, c) => `{\\${c} ${s}}`, content);
+  }
+
+  div(ast) {
+    const maybeEnv = getClasses(ast)
+      .map(cls => this.options.classToEnv.get(cls)).find(Boolean);
+    if (maybeEnv) {
+      return this.env(maybeEnv, this.fragment(ast));
+    }
+    return this.paragraph(ast);
   }
 
   span(ast) {
