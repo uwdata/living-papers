@@ -44,6 +44,7 @@ export async function outputLatex(ast, context, options) {
     latexDir = path.join(pdf ? tempDir : outputDir, 'latex'),
     vspace = {},
     classToCommand,
+    nameToEnv,
   } = options;
 
   const articleName = path.parse(inputFile).name;
@@ -86,7 +87,8 @@ export async function outputLatex(ast, context, options) {
       ['huge', 'huge']
     ]),
     places: places(article),
-    vspace: new Map(Object.entries(vspace))
+    vspace: new Map(Object.entries(vspace)),
+    nameToEnv: new Map(nameToEnv || [])
   });
 
   // Marshal template data

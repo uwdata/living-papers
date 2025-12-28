@@ -87,6 +87,11 @@ export class TexFormat {
       return; // skip on non-latex output namespace
     }
 
+    const maybeEnv = this.options.nameToEnv.get(ast.name);
+    if (maybeEnv) {
+      return this.env(maybeEnv, this.fragment(ast));
+    }
+
     switch (ast.name) {
       case 'article':
         return this.fragment(ast);
