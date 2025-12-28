@@ -37,6 +37,7 @@ export async function outputLatex(ast, context, options) {
   const { inputDir, inputFile, outputDir, tempDir, logger } = context;
   const {
     template,
+    templateOptions,
     tags = ['<<', '>>'],
     classOptions,
     pdf = true,
@@ -92,6 +93,7 @@ export async function outputLatex(ast, context, options) {
   // Marshal template data
   const author = metadata.author || [{name: 'Unknown Author'}];
   const data = {
+    ...templateOptions,
     class_options: classOptions,
     date: tex.tex(metadata.date) || getDate(),
     title: tex.tex(metadata.title) || 'Untitled Article',
